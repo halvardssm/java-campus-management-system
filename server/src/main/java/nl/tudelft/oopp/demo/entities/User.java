@@ -65,7 +65,7 @@ public class User {
      * @param password Encrypted password of the user.
      * @param role     Role of the user.
      */
-    public User(String id, String email, String password, String role) {
+    public User(String id, String email, String password, Role role) {
         createUser(id, email, password, role);
     }
 
@@ -81,7 +81,7 @@ public class User {
         return this.password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return this.role;
     }
 
@@ -105,7 +105,7 @@ public class User {
         this.password = password;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
