@@ -1,11 +1,15 @@
 package nl.tudelft.oopp.demo.entities;
 
-import org.hibernate.annotations.LazyGroup;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-
-import javax.persistence.*;
 import java.sql.Blob;
 import java.util.UUID;
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import org.hibernate.annotations.LazyGroup;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 @Entity
 @Table(name = "users")
@@ -22,8 +26,8 @@ public class User {
     private String token;
 
     @Lob
-    @Basic( fetch = FetchType.LAZY )
-    @LazyGroup( "lobs" )
+    @Basic(fetch = FetchType.LAZY)
+    @LazyGroup("lobs")
     private Blob image;
 
     private void createUser(String id, String email, String password, String role) {
@@ -32,9 +36,11 @@ public class User {
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
         this.role = role;
         this.token = UUID.fromString(id).toString();
+        this.image = null;
     }
 
-    public User() {}
+    public User() {
+    }
 
     /**
      * Create a new User instance.
@@ -59,25 +65,53 @@ public class User {
         createUser(id, email, password, role);
     }
 
-    public String getId() { return this.id; }
+    public String getId() {
+        return this.id;
+    }
 
-    public String getEmail() { return this.email; }
+    public String getEmail() {
+        return this.email;
+    }
 
-    public String getPassword() { return this.password; }
+    public String getPassword() {
+        return this.password;
+    }
 
-    public String getRole() { return this.role; }
+    public String getRole() {
+        return this.role;
+    }
 
-    public String getToken() { return this.token; }
+    public String getToken() {
+        return this.token;
+    }
 
-    public void setId(String id) { this.id = id; }
+    public Blob getImage() {
+        return this.image;
+    }
 
-    public void setEmail(String email) { this.email = email; }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-    public void setPassword(String password) { this.password = password; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public void setRole(String role) { this.role = role; }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-    public void setToken(String token) { this.token = token; }
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public void setImage(Blob image) {
+        this.image = image;
+    }
 
     public boolean passwordIsValid(String password) {
         return BCrypt.checkpw(password, this.password);
@@ -95,9 +129,10 @@ public class User {
         User user = (User) o;
 
         return this.id.equals(user.id)
-                && this.email.equals(user.email)
-                && this.password.equals(user.password)
-                && this.role.equals(user.role)
-                && this.token.equals(user.token);
+            && this.email.equals(user.email)
+            && this.password.equals(user.password)
+            && this.role.equals(user.role)
+            && this.token.equals(user.token)
+            && this.image.equals(user.image);
     }
 }
