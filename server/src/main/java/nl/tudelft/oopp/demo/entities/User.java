@@ -21,7 +21,7 @@ public class User {
 
     private String password;
 
-    private String role;
+    private Role role;
 
     private String token;
 
@@ -30,7 +30,11 @@ public class User {
     @LazyGroup("lobs")
     private Blob image;
 
-    private void createUser(String id, String email, String password, String role) {
+    public enum Role {
+        STUDENT, STAFF, ADMIN
+    }
+
+    private void createUser(String id, String email, String password, Role role) {
         this.id = id;
         this.email = email;
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
@@ -50,7 +54,7 @@ public class User {
      * @param password Encrypted password of the user.
      */
     public User(String id, String email, String password) {
-        createUser(id, email, password, "student");
+        createUser(id, email, password, Role.STUDENT);
     }
 
     /**
