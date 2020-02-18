@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.entities;
+package nl.tudelft.oopp.group39.user;
 
 import java.sql.Blob;
 import java.util.UUID;
@@ -16,32 +16,14 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 public class User {
     @Id
     private String id;
-
     private String email;
-
     private String password;
-
     private Role role;
-
     private String token;
-
     @Lob
     @Basic(fetch = FetchType.LAZY)
     @LazyGroup("lobs")
     private Blob image;
-
-    public enum Role {
-        STUDENT, STAFF, ADMIN
-    }
-
-    private void createUser(String id, String email, String password, Role role) {
-        this.id = id;
-        this.email = email;
-        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
-        this.role = role;
-        this.token = UUID.fromString(id).toString();
-        this.image = null;
-    }
 
     public User() {
     }
@@ -54,7 +36,7 @@ public class User {
      * @param password Encrypted password of the user.
      */
     public User(String id, String email, String password) {
-        createUser(id, email, password, Role.STUDENT);
+        new User(id, email, password, Role.STUDENT);
     }
 
     /**
@@ -66,51 +48,56 @@ public class User {
      * @param role     Role of the user.
      */
     public User(String id, String email, String password, Role role) {
-        createUser(id, email, password, role);
+        this.id = id;
+        this.email = email;
+        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+        this.role = role;
+        this.token = UUID.fromString(id).toString();
+        this.image = null;
     }
 
     public String getId() {
         return this.id;
     }
 
-    public String getEmail() {
-        return this.email;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public Role getRole() {
-        return this.role;
-    }
-
-    public String getToken() {
-        return this.token;
-    }
-
-    public Blob getImage() {
-        return this.image;
-    }
-
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return this.email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public String getPassword() {
+        return this.password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return this.role;
     }
 
     public void setRole(Role role) {
         this.role = role;
     }
 
+    public String getToken() {
+        return this.token;
+    }
+
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Blob getImage() {
+        return this.image;
     }
 
     public void setImage(Blob image) {
@@ -138,5 +125,9 @@ public class User {
             && this.role.equals(user.role)
             && this.token.equals(user.token)
             && this.image.equals(user.image);
+    }
+
+    public enum Role {
+        STUDENT, STAFF, ADMIN
     }
 }
