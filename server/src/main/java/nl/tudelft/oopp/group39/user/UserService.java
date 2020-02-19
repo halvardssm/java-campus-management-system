@@ -28,7 +28,7 @@ public class UserService {
      *
      * @return user by id {@link User}.
      */
-    public User readUser(String id) {
+    public User readUser(String id) throws UserNotFoundException {
         return repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
@@ -37,10 +37,15 @@ public class UserService {
      *
      * @return the created user {@link User}.
      */
-    public User createUser(User user) {
-        repository.save(user);
+    public User createUser(User newUser) {
+        try {
+            User user = readUser(newUser.getId());
+            throw new UserExistsException(user.getId());
+        } catch (UserNotFoundException e) {
+            repository.save(newUser);
 
-        return user;
+            return newUser;
+        }
     }
 
     /**
@@ -48,7 +53,7 @@ public class UserService {
      *
      * @return the updated user {@link User}.
      */
-    public User updateUser(User newEmployee, String id) {
+    public User updateUser(User newEmployee, String id) throws UserNotFoundException {
         return repository.findById(id)
             .map(user -> {
                 user.setEmail(newEmployee.getEmail());
