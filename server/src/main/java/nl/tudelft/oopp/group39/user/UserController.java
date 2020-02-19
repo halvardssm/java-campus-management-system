@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -19,40 +21,48 @@ public class UserController {
     /**
      * GET Endpoint to retrieve all users.
      *
-     * @return randomly selected {@link User}.
+     * @return a list of users {@link User}.
      */
-    @GetMapping("/user")
+    @GetMapping("/")
     public List<User> listUsers() {
         return service.listUsers();
     }
 
     /**
-     * GET Endpoint to retrieve a user.
+     * POST Endpoint to retrieve an user.
      *
-     * @return randomly selected {@link User}.
+     * @return the created user {@link User}.
      */
-    @GetMapping("/user/{id}")
+    @PostMapping("/")
+    public User postUser(@RequestBody User user) {
+        return service.createUser(user);
+    }
+
+    /**
+     * GET Endpoint to retrieve an user.
+     *
+     * @return the requested user {@link User}.
+     */
+    @GetMapping("/{id}")
     public User readUser(@PathVariable String id) {
         return service.readUser(id);
     }
 
     /**
-     * POST Endpoint to retrieve a user.
+     * PUT Endpoint to update an user.
      *
-     * @return randomly selected {@link User}.
+     * @return the updated user {@link User}.
      */
-    @PostMapping("/user")
-    public User postUser(@RequestBody User user) {
-        return service.createUser(user);
-    }
-
-    @PutMapping("/user/{id}")
+    @PutMapping("/{id}")
     public User updateUser(@RequestBody User user, @PathVariable String id) {
         return service.updateUser(user, id);
     }
 
-    @DeleteMapping("/user/{id}")
-    void deleteEmployee(@PathVariable String id) {
+    /**
+     * DELETE Endpoint to delete am user.
+     */
+    @DeleteMapping("/{id}")
+    public void deleteEmployee(@PathVariable String id) {
         service.deleteUser(id);
     }
 }
