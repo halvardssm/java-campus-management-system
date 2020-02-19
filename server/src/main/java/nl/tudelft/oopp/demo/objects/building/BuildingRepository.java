@@ -26,4 +26,7 @@ public interface BuildingRepository extends JpaRepository<Building, Long> {
     @Query("SELECT u FROM Building u WHERE u.id IN :ids")
     List<Building> getAllBuildingsByIds(@Param("ids") List<Integer> ids);
 
+    @Query("SELECT u FROM Building u WHERE u.id = :id")
+    List<Building> findById(@Param("id") int id);
+
 }

@@ -5,6 +5,8 @@ import nl.tudelft.oopp.demo.objects.building.Exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
+
 @Controller
 public class BuildingActions {
 
@@ -13,7 +15,11 @@ public class BuildingActions {
     private BuildingRepository buildingRepository;
 
     public Building readBuilding(int id) throws BuildingNotFoundException {
-        return buildingRepository.findById((long) id).orElseThrow(() -> new BuildingNotFoundException(id));
+        List<Building> buildings = buildingRepository.findById(id);
+        if(buildings.size() > 0) {
+            return buildings.get(0);
+        }
+        throw new BuildingNotFoundException((int) id);
     }
 
     public Building createBuilding(Building newBuilding) {
@@ -29,7 +35,7 @@ public class BuildingActions {
     }
 
     public Building updateBuilding(Building newBuilding, int id) throws BuildingNotFoundException {
-        return buildingRepository.findById((long) id)
+        return buildingRepository.findById((long) id) //Test if this is the problem, create own method
                 .map(building -> {
                     building.setName(newBuilding.getName());
                     building.setLocation(newBuilding.getLocation());
