@@ -7,7 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 
-public class MainSceneController {
+public class BuildingSceneController {
     @FXML
     private TextField nameField;
     @FXML

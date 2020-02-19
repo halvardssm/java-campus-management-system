@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="nl.tudelft.oopp.demo.controllers.RoomSceneController">
+
+    <Label text=""/>
+    <Label text="Get all rooms."/>
+    <Button fx:id="button" text="Submit" onAction="#getRoomButton"/>
+
+    <Label text="-------------------------------"/>
+    <Label text="Filter Rooms"/>
+    <Label text=""/>
+    <Label text="Name to filter on."/>
+    <TextField fx:id="nameField"/>
+
+    <Label text="Location to filter on."/>
+    <TextField fx:id="locationField"/>
+    <Button fx:id="button2" text="Submit" onAction="#getFilteredBuildings"/>
+    <Label text=""/>
+    <Label text=""/>
+</VBox>

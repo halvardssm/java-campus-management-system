@@ -2,12 +2,11 @@ package nl.tudelft.oopp.demo.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 
-public class MainSceneController {
+public class RoomSceneController {
     @FXML
     private TextField nameField;
     @FXML
@@ -24,8 +23,8 @@ public class MainSceneController {
     /**
      * Handles clicking the button.
      */
-    public void getBuildingButton() {
-        buttonClicked("getBuilding");
+    public void getRoomButton() {
+        buttonClicked("getRoom");
     }
     public void getFilteredBuildings() {
         buttonClicked("getFilteredBuilding");
@@ -42,6 +41,9 @@ public class MainSceneController {
         switch(function) {
             case "getBuilding":
                 alert.setContentText(ServerCommunication.getBuilding());
+                break;
+            case "getRoom":
+                alert.setContentText(ServerCommunication.getRoom());
                 break;
             case "getFilteredBuilding":
                 String name = nameField.getText();

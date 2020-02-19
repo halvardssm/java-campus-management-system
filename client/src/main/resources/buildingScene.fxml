@@ -7,18 +7,25 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="nl.tudelft.oopp.demo.controllers.MainSceneController">
+      fx:controller="nl.tudelft.oopp.demo.controllers.BuildingSceneController">
 
-    <Button fx:id="button" text="Get all buildings!" onAction="#getBuildingButton"/>
+    <Label text=""/>
+    <Label text="Get all buildings."/>
+    <Button fx:id="button" text="Submit" onAction="#getBuildingButton"/>
 
+    <Label text="-------------------------------"/>
+    <Label text="Filter Buildings"/>
+    <Label text=""/>
     <Label text="Name to filter on."/>
     <TextField fx:id="nameField"/>
 
     <Label text="Location to filter on."/>
     <TextField fx:id="locationField"/>
-    <Button fx:id="button2" text="Filter buildings!" onAction="#getFilteredBuildings"/>
+    <Button fx:id="button2" text="Submit" onAction="#getFilteredBuildings"/>
 
+    <Label text="-------------------------------"/>
     <Label text="Make a new Building."/>
+    <Label text=""/>
     <Label text="Name of the building."/>
     <TextField fx:id="nameField2"/>
 
@@ -27,5 +34,7 @@
 
     <Label text="Description of the building."/>
     <TextField fx:id="descriptionField"/>
-    <Button fx:id="button3" text="Submit your building" onAction="#newBuildingButton"/>
+    <Button fx:id="button3" text="Submit" onAction="#newBuildingButton"/>
+    <Label text=""/>
+    <Label text=""/>
 </VBox>

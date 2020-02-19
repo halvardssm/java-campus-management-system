@@ -14,8 +14,35 @@ public class ServerCommunication {
      * @return the body of a get request to the server.
      * @throws Exception if communication with the server fails.
      */
-    public static String getQuote() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/quote")).build();
+//    public static String getQuote() {
+//        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/quote")).build();
+//        HttpResponse<String> response = null;
+//        try {
+//            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return "Communication with server failed";
+//        }
+//        if (response.statusCode() != 200) {
+//            System.out.println("Status: " + response.statusCode());
+//        }
+//        return response.body();
+//    }
+
+    public static String getData(String func) {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/building")).build();
+        switch(func) {
+            case "building":
+                request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/building")).build();
+                break;
+            case "room":
+                request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room")).build();
+                break;
+            case "filterBuilding":
+                String urlString = "http://localhost:8080/FilterBuildings?capacity=10&building=e&location=new";
+                request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
+                break;
+        }
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -27,6 +54,49 @@ public class ServerCommunication {
             System.out.println("Status: " + response.statusCode());
         }
         return response.body();
+    }
+
+    public static String getBuilding() {
+        return getData("building");
+    }
+    public static String getRoom() {
+        return getData("room");
+    }
+
+    public static String getFilteredBuildings(String name, String location) {
+//        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/building")).build();
+        String urlString = "http://localhost:8080/FilterBuildings?capacity=10&building="+name+"&location="+location;
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Communication with server failed";
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        return response.body();
+//        return getData("filterBuilding");
+    }
+
+    public static String addBuilding(String name, String location, String description) {
+//        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/building")).build();
+        String urlString = "http://localhost:8080/addBuilding?building="+name+"&location="+location+"&description="+description;
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Communication with server failed";
+        }
+        if (response.statusCode() != 200) {
+            System.out.println("Status: " + response.statusCode());
+        }
+        return response.body();
+//        return getData("filterBuilding");
     }
 
 }

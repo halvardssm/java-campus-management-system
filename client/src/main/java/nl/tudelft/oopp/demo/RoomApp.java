@@ -2,8 +2,8 @@ package nl.tudelft.oopp.demo;
 
 import nl.tudelft.oopp.demo.views.*;
 
-public class MainApp {
+public class RoomApp {
     public static void main(String[] args) {
-        BuildingDisplay.main(new String[0]);
+        RoomDisplay.main(new String[0]);
     }
 }
