@@ -2,12 +2,14 @@ package nl.tudelft.oopp.demo.objects.building.BuildingActions.BuildingController
 
 import nl.tudelft.oopp.demo.objects.building.Building;
 import nl.tudelft.oopp.demo.objects.building.BuildingActions.BuildingController.BuildingController;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
+@Controller
 public class BuildingMaps extends BuildingController {
 
     //To test this in cmd (only after seeding the database! -> look in room/RoomController to see how to seed the database) ->
