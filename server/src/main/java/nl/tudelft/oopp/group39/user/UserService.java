@@ -67,7 +67,8 @@ public class UserService {
     /**
      * Delete an user {@link User}.
      */
-    public void deleteUser(String id) {
+    public void deleteUser(String id) throws UserNotFoundException {
+        readUser(id);
         repository.deleteById(id);
     }
 }

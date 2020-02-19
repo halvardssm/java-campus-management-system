@@ -1,7 +1,7 @@
 package nl.tudelft.oopp.group39.user;
 
 import java.sql.Blob;
-import java.util.UUID;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,7 +19,6 @@ public class User {
     private String email;
     private String password;
     private Role role;
-    private String token;
     @Lob
     @Basic(fetch = FetchType.LAZY)
     @LazyGroup("lobs")
@@ -34,26 +33,15 @@ public class User {
      * @param id       Unique identifier as to be used in the database.
      * @param email    Email address of the user.
      * @param password Encrypted password of the user.
-     */
-    public User(String id, String email, String password) {
-        new User(id, email, password, Role.STUDENT);
-    }
-
-    /**
-     * Create a new User instance.
-     *
-     * @param id       Unique identifier as to be used in the database.
-     * @param email    Email address of the user.
-     * @param password Encrypted password of the user.
      * @param role     Role of the user.
+     * @param image    Image of the user.
      */
-    public User(String id, String email, String password, Role role) {
+    public User(String id, String email, String password, Role role, Blob image) {
         this.id = id;
         this.email = email;
         this.password = BCrypt.hashpw(password, BCrypt.gensalt());
-        this.role = role;
-        this.token = UUID.fromString(id).toString();
-        this.image = null;
+        this.role = role == null ? Role.STUDENT : role;
+        this.image = image;
     }
 
     public String getId() {
@@ -88,14 +76,6 @@ public class User {
         this.role = role;
     }
 
-    public String getToken() {
-        return this.token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     public Blob getImage() {
         return this.image;
     }
@@ -113,18 +93,15 @@ public class User {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof User)) {
             return false;
         }
-
         User user = (User) o;
-
-        return this.id.equals(user.id)
-            && this.email.equals(user.email)
-            && this.password.equals(user.password)
-            && this.role.equals(user.role)
-            && this.token.equals(user.token)
-            && this.image.equals(user.image);
+        return getId().equals(user.getId())
+            && getEmail().equals(user.getEmail())
+            && getPassword().equals(user.getPassword())
+            && getRole() == user.getRole()
+            && Objects.equals(getImage(), user.getImage());
     }
 
     public enum Role {
