@@ -19,4 +19,7 @@ public interface RoomFacilityRepository extends JpaRepository<RoomFacility, Long
     @Query("SELECT MAX(u.id) FROM RoomFacility u")
     int getMaxId();
 
+    @Query("SELECT u.id FROM RoomFacility u WHERE u.roomId = :roomId")
+    int[] getRoomFacilityIdsByRoomId(@Param("roomId") long roomId);
+
 }

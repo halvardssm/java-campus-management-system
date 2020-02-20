@@ -3,11 +3,14 @@ package nl.tudelft.oopp.demo.objects.room.RoomActions.RoomController;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.tudelft.oopp.demo.objects.room.Exceptions.RoomNotFoundException;
 import nl.tudelft.oopp.demo.objects.room.Room;
 import nl.tudelft.oopp.demo.objects.room.RoomActions.RoomActions;
 import nl.tudelft.oopp.demo.objects.building.*;
 import nl.tudelft.oopp.demo.objects.room.RoomRepository;
 import nl.tudelft.oopp.demo.objects.roomFacility.*;
+import nl.tudelft.oopp.demo.objects.roomFacility.Exceptions.RoomFacilityNotFoundException;
+import nl.tudelft.oopp.demo.objects.roomFacility.RoomFacilityActions.RoomFacilityActions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -64,10 +67,26 @@ public class RoomController extends RoomActions{
         long newId = (roomRepository.findAll().size() > 0 ? roomRepository.getMaxId() + 1 : 0);
         Room n = new Room(newId,buildingId,capacity,onlyStaff,description);
         createRoom(n);
+        createRoomFacilities(newId,facilities);
+    }
+
+    //Function for updating a room
+    public void updateRoom(long id, int capacity, boolean onlyStaff, int[] facilities, long buildingId, String description) {
+        int[] facilityIds = roomFacilityRepository.getRoomFacilityIdsByRoomId(id);
+        long newId = (roomRepository.findAll().size() > 0 ? roomRepository.getMaxId() + 1 : 0);
+        Room n = new Room(newId,buildingId,capacity,onlyStaff,description);
+        n = updateRoom(n, (int) id);
+        for (int facility : facilityIds) {
+            deleteRoomFacility(facility);
+        }
+        createRoomFacilities(newId,facilities);
+    }
+
+    public void createRoomFacilities(long newId,int[] facilities) {
         for (int facility : facilities) {
             long newFId = (roomFacilityRepository.findAll().size() > 0 ? roomFacilityRepository.getMaxId() + 1 : 0);
             RoomFacility f = new RoomFacility(newFId, newId, facility);
-            roomFacilityRepository.save(f);
+            createRoomFacility(f);
         }
     }
 

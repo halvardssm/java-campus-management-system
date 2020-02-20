@@ -3,18 +3,12 @@ package nl.tudelft.oopp.demo.objects.room.RoomActions;
 import nl.tudelft.oopp.demo.objects.room.Exceptions.*;
 import nl.tudelft.oopp.demo.objects.room.Room;
 import nl.tudelft.oopp.demo.objects.room.RoomRepository;
+import nl.tudelft.oopp.demo.objects.roomFacility.RoomFacilityActions.RoomFacilityActions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-//@Configuration
-//@EnableJpaRepositories(basePackages = {
-//        "nl.tudelft.oopp.demo.repositories",
-//        "nl.tudelft.oopp.demo.objects.building",
-//        "nl.tudelft.oopp.demo.objects.room",
-//        "nl.tudelft.oopp.demo.objects.roomFacility"
-//})
 @Controller
-public class RoomActions {
+public class RoomActions extends RoomFacilityActions {
 
     @Autowired
     private RoomRepository roomRepository;

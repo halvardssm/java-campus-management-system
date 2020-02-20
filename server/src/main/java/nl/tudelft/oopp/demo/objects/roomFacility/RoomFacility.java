@@ -27,11 +27,20 @@ public class RoomFacility {
         this.facilityId = facilityId;
     }
 
+    public long getId() {
+        return id;
+    }
     public long getRoomId() {
         return roomId;
     }
-
     public long getFacilityId() {
         return facilityId;
+    }
+
+    public void setRoomId(long roomId) {
+        this.roomId = roomId;
+    }
+    public void setFacilityId(long facilityId) {
+        this.facilityId = facilityId;
     }
 }
