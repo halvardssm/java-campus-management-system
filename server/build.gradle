@@ -22,7 +22,7 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	runtimeOnly 'mysql:mysql-connector-java'
-	runtimeOnly 'org.postgresql:postgresql'
+//	runtimeOnly 'org.postgresql:postgresql'
 
 	// Local test database (in-memory)
 	implementation 'com.h2database:h2'
