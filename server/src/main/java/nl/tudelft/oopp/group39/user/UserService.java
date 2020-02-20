@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class UserService {
@@ -70,5 +71,26 @@ public class UserService {
     public void deleteUser(String id) throws UserNotFoundException {
         readUser(id);
         repository.deleteById(id);
+    }
+
+    /**
+     *
+     * Adds a user with specified values.
+     *
+     * @param id id of the user
+     * @param email email address of the user
+     * @param password password of the user
+     * @param role role of the user. Currently 3 roles(STUDENT, STAFF, ADMIN) exist.
+     */
+
+    User insertUser(String id, String email, String password, User.Role role){
+        User userToAdd = new User();
+        userToAdd.setId(id);
+        userToAdd.setEmail(email);
+        userToAdd.setPassword(password);
+        userToAdd.setRole(role);
+        userToAdd.setImage(null);
+        repository.save(userToAdd);
+        return userToAdd;
     }
 }
