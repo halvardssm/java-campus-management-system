@@ -20,21 +20,8 @@ public class BuildingController extends BuildingActions {
     private BuildingRepository buildingRepository;
 
     public List<Building> filterBuildings(int capacity, String building, String location) {
-        int[] buildingIds;
-        if(!building.equals("") && !location.equals("")) {
-            buildingIds = buildingRepository.filterBuildingsOnLocationAndName(building, location);
-        }
-        else if(!building.equals("")) {
-            buildingIds = buildingRepository.filterBuildingsOnName(building);
-        }
-        else if(!location.equals("")) {
-            buildingIds = buildingRepository.filterBuildingsOnLocation(location);
-        }
-        else {
-            buildingIds = buildingRepository.getAllBuildingIds();
-        }
+        int[] buildingIds = buildingRepository.filterBuildingsOnLocationAndName(building, location);
         List<Long> resBuildingIds = new ArrayList<>();
-        boolean allFacs = true;
         for (int buildingId : buildingIds) {
             if (roomRepository.getRoomsByBuildingId(buildingId).size() > 0) {
                 int maxCapacity = roomRepository.getMaxRoomCapacityByBuildingId(buildingId);
@@ -43,14 +30,11 @@ public class BuildingController extends BuildingActions {
                 }
             }
         }
-        List<Building> newB = new ArrayList<>();
-        newB = (resBuildingIds.size() > 0 ? buildingRepository.getAllBuildingsByIds(resBuildingIds) : newB);
-        return newB;
+        return (resBuildingIds.size() > 0 ? buildingRepository.getAllBuildingsByIds(resBuildingIds) : new ArrayList<Building>());
     }
 
     public void addBuilding(String name, String location, String description) {
         int newId = (buildingRepository.findAll().size() > 0 ? buildingRepository.getMaxId() + 1 : 0);
-//        int newId = buildingRepository.getMaxId() + 1;
         Building n = new Building(newId,name,location,description);
         createBuilding(n);
     }

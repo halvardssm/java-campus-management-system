@@ -45,32 +45,18 @@ public class RoomController extends RoomActions{
                     allFacs =  (buildingId == nBId? true : allFacs);
                 }
             }
-            System.out.println(allFacs);
             if (allFacs) {
-//                if (!location.equals("")) {
-//                    buildingIds = buildingRepository.filterBuildingsOnLocation(location);
-//                    allFacs = false;
-//                    if (buildingIds.length > 0) {
-//                        for (int buildingId : buildingIds) {
-//                            if (buildingId == nBId) {
-//                                allFacs = true;
-//                            }
-//                        }
-//                    }
-//                }
                 if (facilities.length > 0) {
-                    for (int facility : facilities) {
-                        allFacs = (roomFacilityRepository.filterRooms(roomId, facility).size() == 0 ? false : allFacs);
+                    for (long facility : facilities) {
+                        allFacs = (roomFacilityRepository.filterRooms((long)roomId, facility).size() == 0 ? false : allFacs);
                     }
                 }
             }
-            System.out.println(allFacs);
             if (allFacs) {
                 resRoomIds.add((long)roomId);
             }
         }
-        System.out.println(resRoomIds.size());
-        return roomRepository.filterRooms(capacity, onlyStaff, resRoomIds);
+        return (resRoomIds.size() > 0 ? roomRepository.filterRooms(capacity, onlyStaff, resRoomIds) : new ArrayList<Room>());
     }
 
     //Function for adding a new room

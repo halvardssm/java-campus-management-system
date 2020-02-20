@@ -17,11 +17,11 @@ public class RoomFacility {
     private long roomId;
 
     @Column(name = "facilityId")
-    private int facilityId;
+    private long facilityId;
 
     public RoomFacility() {}
 
-    public RoomFacility(long id, long roomId, int facilityId) {
+    public RoomFacility(long id, long roomId, long facilityId) {
         this.id = id;
         this.roomId = roomId;
         this.facilityId = facilityId;
