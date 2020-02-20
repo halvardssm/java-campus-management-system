@@ -4,7 +4,14 @@ import java.util.List;
 
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/user")
@@ -31,28 +38,6 @@ public class UserController {
     @PostMapping("/")
     public User postUser(@RequestBody User user) {
         return service.createUser(user);
-    }
-
-    /**
-     *
-     * POST Endpoint that creates a user without an image, and then returns said user.
-     *
-     * @param id id of the user
-     * @param email email address of the user
-     * @param password password of the user
-     * @param role role of the user. Currently 3 roles(STUDENT, STAFF, ADMIN) exist.
-     *
-     * @return the requested user {@link User}
-     */
-    @PostMapping("/addUser")
-    public User insertUser(@RequestParam String id,
-                           @RequestParam String email,
-                           @RequestParam String password,
-                           @RequestParam User.Role role) {
-        if (role == null) {
-            role = User.Role.STUDENT;
-        }
-        return service.insertUser(id,email,password,role);
     }
 
     /**

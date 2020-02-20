@@ -15,11 +15,14 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories
 @PropertySource("application-dev.properties")
 @EnableTransactionManagement
-public class DbConnection{
+public class DbConfiguration {
 
     @Autowired
     private Environment environment;
 
+    /**
+     * Set up the connection to the database.
+     */
     @Bean
     public DataSource dataSource() {
 
