@@ -29,4 +29,11 @@ public class BuildingMaps extends BuildingController {
         addBuilding(building, location, description);
         return "saved";
     }
+
+    @GetMapping("i")
+    @ResponseBody
+    public String i() {
+        return System.getProperty("user.dir");
+    }
+
 }

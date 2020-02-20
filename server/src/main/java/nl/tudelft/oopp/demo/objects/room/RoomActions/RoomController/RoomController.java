@@ -10,9 +10,13 @@ import nl.tudelft.oopp.demo.objects.room.RoomRepository;
 import nl.tudelft.oopp.demo.objects.roomFacility.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+//@EnableJpaRepositories(basePackages = {
+//        "nl.tudelft.oopp.demo.repositories",
+//        "nl.tudelft.oopp.demo.objects.building",
+//        "nl.tudelft.oopp.demo.objects.room",
+//        "nl.tudelft.oopp.demo.objects.roomFacility"
+//})
 @Controller
 public class RoomController extends RoomActions{
 
@@ -28,55 +32,54 @@ public class RoomController extends RoomActions{
     // string of the inputted location
     public List<Room> filterRooms(int capacity, boolean onlyStaff, int[] facilities, String building, String location) {
         int[] roomIds = roomRepository.getAllRoomIds();
-        List<Integer> resRoomIds = new ArrayList<>();
+        List<Long> resRoomIds = new ArrayList<>();
         int[] buildingIds;
         boolean allFacs = true;
         for (int roomId : roomIds) {
-            if (!building.equals("")) {
-                buildingIds = buildingRepository.filterBuildingsOnName(building);
-                allFacs = false;
-                if (buildingIds.length > 0) {
-                    for (int buildingId : buildingIds) {
-                        if (buildingId == roomRepository.getRoomById(roomId).getBuilding()) {
-                            allFacs = true;
-                        }
-                    }
+            long nBId = roomRepository.getRoomById(roomId).getBuilding();
+            buildingIds = buildingRepository.filterBuildingsOnLocationAndName(location,building);
+            allFacs = false;
+            System.out.println(buildingIds.length);
+            if (buildingIds.length > 0) {
+                for (int buildingId : buildingIds) {
+                    allFacs =  (buildingId == nBId? true : allFacs);
                 }
             }
+            System.out.println(allFacs);
             if (allFacs) {
-                if (!location.equals("")) {
-                    buildingIds = buildingRepository.filterBuildingsOnLocation(location);
-                    allFacs = false;
-                    if (buildingIds.length > 0) {
-                        for (int buildingId : buildingIds) {
-                            if (buildingId == roomRepository.getRoomById(roomId).getBuilding()) {
-                                allFacs = true;
-                            }
-                        }
-                    }
-                }
+//                if (!location.equals("")) {
+//                    buildingIds = buildingRepository.filterBuildingsOnLocation(location);
+//                    allFacs = false;
+//                    if (buildingIds.length > 0) {
+//                        for (int buildingId : buildingIds) {
+//                            if (buildingId == nBId) {
+//                                allFacs = true;
+//                            }
+//                        }
+//                    }
+//                }
                 if (facilities.length > 0) {
                     for (int facility : facilities) {
-                        if (roomFacilityRepository.filterRooms(roomId, facility).size() == 0) {
-                            allFacs = false;
-                        }
+                        allFacs = (roomFacilityRepository.filterRooms(roomId, facility).size() == 0 ? false : allFacs);
                     }
                 }
             }
+            System.out.println(allFacs);
             if (allFacs) {
-                resRoomIds.add(roomId);
+                resRoomIds.add((long)roomId);
             }
         }
-        return roomRepository.filterRooms(11, true, resRoomIds);
+        System.out.println(resRoomIds.size());
+        return roomRepository.filterRooms(capacity, onlyStaff, resRoomIds);
     }
 
     //Function for adding a new room
-    public void addRoom(int capacity, boolean onlyStaff, int[] facilities, int buildingId, String description) {
-        int newId = roomRepository.getMaxId() + 1;
+    public void addRoom(int capacity, boolean onlyStaff, int[] facilities, long buildingId, String description) {
+        long newId = (roomRepository.findAll().size() > 0 ? roomRepository.getMaxId() + 1 : 0);
         Room n = new Room(newId,buildingId,capacity,onlyStaff,description);
         createRoom(n);
         for (int facility : facilities) {
-            int newFId = roomFacilityRepository.getMaxId() + 1;
+            long newFId = (roomFacilityRepository.findAll().size() > 0 ? roomFacilityRepository.getMaxId() + 1 : 0);
             RoomFacility f = new RoomFacility(newFId, newId, facility);
             roomFacilityRepository.save(f);
         }

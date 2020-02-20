@@ -10,10 +10,10 @@ import javax.persistence.Table;
 public class Room {
     @Id
     @Column(name = "id")
-    private int id;
+    private long id;
 
     @Column(name = "buildingId")
-    private int buildingId;
+    private long buildingId;
 
     @Column(name = "capacity")
     private int capacity;
@@ -26,7 +26,7 @@ public class Room {
 
     public Room() {}
 
-    public Room(int id, int buildingId, int capacity, boolean onlyStaff, String description) {
+    public Room(long id, long buildingId, int capacity, boolean onlyStaff, String description) {
         this.id = id;
         this.buildingId = buildingId;
         this.capacity = capacity;
@@ -34,10 +34,10 @@ public class Room {
         this.description = description;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
-    public int getBuilding() {
+    public long getBuilding() {
         return buildingId;
     }
     public int getCapacity() {
@@ -50,7 +50,7 @@ public class Room {
         return description;
     }
 
-    public void setBuilding(int buildingId) {
+    public void setBuilding(long buildingId) {
         this.buildingId = buildingId;
     }
     public void setCapacity(int capacity) {

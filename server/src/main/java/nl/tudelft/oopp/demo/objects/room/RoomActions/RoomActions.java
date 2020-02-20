@@ -6,26 +6,27 @@ import nl.tudelft.oopp.demo.objects.room.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import java.util.List;
-
+//@Configuration
+//@EnableJpaRepositories(basePackages = {
+//        "nl.tudelft.oopp.demo.repositories",
+//        "nl.tudelft.oopp.demo.objects.building",
+//        "nl.tudelft.oopp.demo.objects.room",
+//        "nl.tudelft.oopp.demo.objects.roomFacility"
+//})
 @Controller
 public class RoomActions {
 
     @Autowired
     private RoomRepository roomRepository;
 
-    public Room readRoom(int id) throws RoomNotFoundException {
-        List<Room> rooms = roomRepository.findById(id);
-        if(rooms.size() > 0) {
-            return rooms.get(0);
-        }
-        throw new RoomNotFoundException(id);
+    public Room readRoom(long id) throws RoomNotFoundException {
+        return roomRepository.findById(id).orElseThrow(() -> new RoomNotFoundException((int)id));
     }
 
     public Room createRoom(Room newRoom) {
         try {
-            Room room = readRoom(newRoom.getId());
-            throw new RoomExistsException(newRoom.getId());
+            Room room = readRoom((int)newRoom.getId());
+            throw new RoomExistsException((int)newRoom.getId());
         }
         catch (RoomNotFoundException e){
             roomRepository.save(newRoom);

@@ -11,27 +11,27 @@ import java.util.List;
 public class RoomFacility {
     @Id
     @Column(name = "id")
-    private int id;
+    private long id;
 
     @Column(name = "roomId")
-    private int roomId;
+    private long roomId;
 
     @Column(name = "facilityId")
     private int facilityId;
 
     public RoomFacility() {}
 
-    public RoomFacility(int id, int roomId, int facilityId) {
+    public RoomFacility(long id, long roomId, int facilityId) {
         this.id = id;
         this.roomId = roomId;
         this.facilityId = facilityId;
     }
 
-    public int getRoomId() {
+    public long getRoomId() {
         return roomId;
     }
 
-    public int getFacilityId() {
+    public long getFacilityId() {
         return facilityId;
     }
 }

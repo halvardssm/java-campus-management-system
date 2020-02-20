@@ -4,7 +4,7 @@ import nl.tudelft.oopp.demo.objects.building.*;
 import nl.tudelft.oopp.demo.objects.building.Exceptions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
+//import nl.tudelft.oopp.demo.config.MysqlConfig;
 import java.util.List;
 
 @Controller
@@ -14,18 +14,14 @@ public class BuildingActions {
     @Autowired
     private BuildingRepository buildingRepository;
 
-    public Building readBuilding(int id) throws BuildingNotFoundException {
-        List<Building> buildings = buildingRepository.findById(id);
-        if(buildings.size() > 0) {
-            return buildings.get(0);
-        }
-        throw new BuildingNotFoundException((int) id);
+    public Building readBuilding(long id) throws BuildingNotFoundException {
+        return buildingRepository.findById(id).orElseThrow(() -> new BuildingNotFoundException((int) id));
     }
 
     public Building createBuilding(Building newBuilding) {
         try {
-            Building building = readBuilding(newBuilding.getId());
-            throw new BuildingExistsException(newBuilding.getId());
+            Building building = readBuilding((int)newBuilding.getId());
+            throw new BuildingExistsException((int)newBuilding.getId());
         }
         catch (BuildingNotFoundException e){
             buildingRepository.save(newBuilding);

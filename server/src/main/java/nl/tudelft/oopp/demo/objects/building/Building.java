@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class Building {
     @Id
     @Column(name = "id")
-    private int id;
+    private long id;
 
     @Column(name = "name")
     private String name;
@@ -24,14 +24,14 @@ public class Building {
 
     public Building() {}
 
-    public Building(int id, String name, String location, String description) {
+    public Building(long id, String name, String location, String description) {
         this.id = id;
         this.name = name;
         this.location = location;
         this.description = description;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
     public String getName() {

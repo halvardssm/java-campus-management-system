@@ -4,9 +4,11 @@ import nl.tudelft.oopp.demo.objects.building.Building;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface BuildingRepository extends JpaRepository<Building, Long> {
     @Query("SELECT u.id FROM Building u WHERE u.name LIKE CONCAT('%',:name,'%')")
     int[] filterBuildingsOnName(@Param("name") String name);
@@ -24,7 +26,7 @@ public interface BuildingRepository extends JpaRepository<Building, Long> {
     int getMaxId();
 
     @Query("SELECT u FROM Building u WHERE u.id IN :ids")
-    List<Building> getAllBuildingsByIds(@Param("ids") List<Integer> ids);
+    List<Building> getAllBuildingsByIds(@Param("ids") List<Long> ids);
 
     @Query("SELECT u FROM Building u WHERE u.id = :id")
     List<Building> findById(@Param("id") int id);

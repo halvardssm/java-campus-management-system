@@ -2,6 +2,7 @@ package nl.tudelft.oopp.demo.config;
 
 import javax.sql.DataSource;
 
+import java.sql.Connection;
 import nl.tudelft.oopp.demo.entities.Quote;
 import nl.tudelft.oopp.demo.repositories.QuoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         "nl.tudelft.oopp.demo.objects.room",
         "nl.tudelft.oopp.demo.objects.roomFacility"
 })
-@PropertySource("application-dev.properties")
+//@PropertySource("application.properties")
 @EnableTransactionManagement
 public class H2Config {
 
@@ -36,13 +37,30 @@ public class H2Config {
     /**
      * Set up the connection to the database.
      */
+//    @Bean
+//    public DataSource dataSource() {
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//        dataSource.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
+//        dataSource.setUrl(environment.getProperty("jdbc.url"));
+//        dataSource.setUsername(environment.getProperty("jdbc.user"));
+//        dataSource.setPassword(environment.getProperty("jdbc.pass"));
+//
+////        dataSource.setDriverClassName(environment.getProperty("mysql.driverClassName"));
+////        dataSource.setUrl(environment.getProperty("mysql.url"));
+////        dataSource.setUsername(environment.getProperty("mysql.user"));
+////        dataSource.setPassword(environment.getProperty("mysql.pass"));
+//
+//        return dataSource;
+//    }
+
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
-        dataSource.setUrl(environment.getProperty("jdbc.url"));
-        dataSource.setUsername(environment.getProperty("jdbc.user"));
-        dataSource.setPassword(environment.getProperty("jdbc.pass"));
+
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUsername("springuser");
+        dataSource.setPassword("12345678");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/db_example?createDatabaseIfNotExist=true&useSSL=false");
 
         return dataSource;
     }
