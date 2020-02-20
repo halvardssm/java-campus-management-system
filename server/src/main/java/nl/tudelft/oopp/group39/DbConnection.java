@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories
 @PropertySource("application-dev.properties")
 @EnableTransactionManagement
-public class dbConnection{
+public class DbConnection{
 
     @Autowired
     private Environment environment;
