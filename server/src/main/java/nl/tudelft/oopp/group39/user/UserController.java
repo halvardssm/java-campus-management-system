@@ -49,8 +49,11 @@ public class UserController {
                            @RequestParam String email,
                            @RequestParam String password,
                            @RequestParam User.Role role) {
-        if (role==null) role = User.Role.STUDENT;
-        return service.insertUser(id,email,password,role);}
+        if (role == null) {
+            role = User.Role.STUDENT;
+        }
+        return service.insertUser(id,email,password,role);
+    }
 
     /**
      * GET Endpoint to retrieve an user.
