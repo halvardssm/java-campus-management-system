@@ -25,7 +25,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         "nl.tudelft.oopp.demo.repositories",
         "nl.tudelft.oopp.demo.objects.building",
         "nl.tudelft.oopp.demo.objects.room",
-        "nl.tudelft.oopp.demo.objects.roomFacility"
+        "nl.tudelft.oopp.demo.objects.roomFacility",
+        "nl.tudelft.oopp.demo.objects.facility"
 })
 //@PropertySource("application.properties")
 @EnableTransactionManagement
