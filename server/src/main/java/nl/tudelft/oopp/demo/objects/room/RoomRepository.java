@@ -36,4 +36,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query("SELECT MAX(u.id) FROM Room u")
     int getMaxId();
 
+    @Query("SELECT u FROM Room u where u.id = :id")
+    List<Room> findById(@Param("id") int id);
+
 }
