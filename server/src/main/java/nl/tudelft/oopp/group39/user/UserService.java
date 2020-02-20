@@ -74,7 +74,6 @@ public class UserService {
     }
 
     /**
-     *
      * Adds a user with specified values.
      *
      * @param id id of the user
@@ -83,7 +82,7 @@ public class UserService {
      * @param role role of the user. Currently 3 roles(STUDENT, STAFF, ADMIN) exist.
      */
 
-    User insertUser(String id, String email, String password, User.Role role){
+    User insertUser(String id, String email, String password, User.Role role) {
         User userToAdd = new User();
         userToAdd.setId(id);
         userToAdd.setEmail(email);

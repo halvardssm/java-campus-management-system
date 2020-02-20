@@ -45,7 +45,10 @@ public class UserController {
      * @return the requested user {@link User}
      */
     @PostMapping("/addUser")
-    public User insertUser(@RequestParam String id, @RequestParam String email, @RequestParam String password, @RequestParam User.Role role) {
+    public User insertUser(@RequestParam String id,
+                           @RequestParam String email,
+                           @RequestParam String password,
+                           @RequestParam User.Role role) {
         if (role==null) role = User.Role.STUDENT;
         return service.insertUser(id,email,password,role);}
 
