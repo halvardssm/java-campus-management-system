@@ -53,7 +53,7 @@ public class UserService {
      *
      * @return the updated user {@link User}.
      */
-    public User updateUser(User newEmployee, String id) throws UserNotFoundException {
+    public User updateUser(String id, User newEmployee) throws UserNotFoundException {
         return repository.findById(id)
             .map(user -> {
                 user.setEmail(newEmployee.getEmail());
