@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Controller
@@ -17,16 +18,16 @@ public class BuildingMaps extends BuildingController {
     // for example: curl localhost:8080/FilterBuildings?capacity=0&building=test&location=test
     @GetMapping("FilterBuildings")
     @ResponseBody
-    public List<Building> FilterBuildings(@RequestParam int capacity, @RequestParam String building, @RequestParam String location) {
-        return filterBuildings(capacity,building,location);
+    public List<Building> FilterBuildings(@RequestParam int capacity, @RequestParam String building, @RequestParam String location){//, @RequestParam LocalTime open, @RequestParam LocalTime closed) {
+        return filterBuildings(capacity,building,location);//, open, closed);
     }
 
     //To test this in cmd ->
     // curl localhost:8080/addBuilding?building={put building here}&location={put location here}&description={put description here}
     @GetMapping("addBuilding")
     @ResponseBody
-    public String AddBuilding(@RequestParam String building, @RequestParam String location, @RequestParam String description) {
-        addBuilding(building, location, description);
+    public String AddBuilding(@RequestParam String building, @RequestParam String location, @RequestParam String description){//, @RequestParam LocalTime open, @RequestParam LocalTime closed) {
+        addBuilding(building, location, description);//, open, closed);
         return "saved";
     }
 

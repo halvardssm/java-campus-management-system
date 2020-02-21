@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.demo.objects.room.RoomActions.RoomController;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,24 +35,27 @@ public class RoomController extends RoomActions{
     // should be present (if so their facility ids should be in the facilities array), the building name and a
     // string of the inputted location
     public List<Room> filterRooms(int capacity, boolean onlyStaff, int[] facilities, String building, String location) {
+        LocalTime open = LocalTime.now();
+        LocalTime closed = LocalTime.now().plusHours(4); //Put as method params later
+
         int[] roomIds = roomRepository.getAllRoomIds();
         List<Long> resRoomIds = new ArrayList<>();
         int[] buildingIds;
         boolean allFacs = true;
         for (int roomId : roomIds) {
             long nBId = roomRepository.getRoomById(roomId).getBuilding();
-            buildingIds = buildingRepository.filterBuildingsOnLocationAndName(location,building);
+            buildingIds = buildingRepository.filterBuildingsOnLocationAndNameAndTime(location,building,open,closed);
             allFacs = false;
             System.out.println(buildingIds.length);
             if (buildingIds.length > 0) {
                 for (int buildingId : buildingIds) {
-                    allFacs =  (buildingId == nBId? true : allFacs);
+                    allFacs =  buildingId == nBId? true : allFacs;
                 }
             }
             if (allFacs) {
                 if (facilities.length > 0) {
                     for (long facility : facilities) {
-                        allFacs = (roomFacilityRepository.filterRooms((long)roomId, facility).size() == 0 ? false : allFacs);
+                        allFacs = roomFacilityRepository.filterRooms((long)roomId, facility).size() == 0 ? false : allFacs;
                     }
                 }
             }
@@ -64,7 +68,7 @@ public class RoomController extends RoomActions{
 
     //Function for adding a new room
     public void addRoom(int capacity, boolean onlyStaff, int[] facilities, long buildingId, String description) {
-        long newId = (roomRepository.findAll().size() > 0 ? roomRepository.getMaxId() + 1 : 0);
+        long newId = roomRepository.findAll().size() > 0 ? roomRepository.getMaxId() + 1 : 0;
         Room n = new Room(newId,buildingId,capacity,onlyStaff,description);
         createRoom(n);
         createRoomFacilities(newId,facilities);
@@ -73,7 +77,7 @@ public class RoomController extends RoomActions{
     //Function for updating a room
     public void updateRoom(long id, int capacity, boolean onlyStaff, int[] facilities, long buildingId, String description) {
         int[] facilityIds = roomFacilityRepository.getRoomFacilityIdsByRoomId(id);
-        long newId = (roomRepository.findAll().size() > 0 ? roomRepository.getMaxId() + 1 : 0);
+        long newId = roomRepository.findAll().size() > 0 ? roomRepository.getMaxId() + 1 : 0;
         Room n = new Room(newId,buildingId,capacity,onlyStaff,description);
         n = updateRoom(n, (int) id);
         for (int facility : facilityIds) {
@@ -84,7 +88,7 @@ public class RoomController extends RoomActions{
 
     public void createRoomFacilities(long newId,int[] facilities) {
         for (int facility : facilities) {
-            long newFId = (roomFacilityRepository.findAll().size() > 0 ? roomFacilityRepository.getMaxId() + 1 : 0);
+            long newFId = roomFacilityRepository.findAll().size() > 0 ? roomFacilityRepository.getMaxId() + 1 : 0;
             RoomFacility f = new RoomFacility(newFId, newId, facility);
             createRoomFacility(f);
         }

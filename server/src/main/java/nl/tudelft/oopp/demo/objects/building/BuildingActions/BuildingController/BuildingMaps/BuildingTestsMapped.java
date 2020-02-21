@@ -20,21 +20,21 @@ public class BuildingTestsMapped extends BuildingController {
     @Autowired
     private BuildingRepository buildingRepository;
 
-    @GetMapping("ab")
-    @ResponseBody
-    public String nBuilding() {
-        int[] facilities = {0,6,9};
-        addBuilding("drebbel", "tu", "testAdd");
-        return "saved";
-    }
-    @GetMapping("bfr")
-    @ResponseBody
-    public List<Building> BuildingFilterRes() {
-        return filterBuildings(0,"","");
-    }
-    @GetMapping("bf")
-    @ResponseBody
-    public List<Building> BuildingFilter() {
-        return filterBuildings(0,"test","test");
-    }
+//    @GetMapping("ab")
+//    @ResponseBody
+//    public String nBuilding() {
+//        int[] facilities = {0,6,9};
+//        addBuilding("drebbel", "tu", "testAdd");
+//        return "saved";
+//    }
+//    @GetMapping("bfr")
+//    @ResponseBody
+//    public List<Building> BuildingFilterRes() {
+//        return filterBuildings(0,"","");
+//    }
+//    @GetMapping("bf")
+//    @ResponseBody
+//    public List<Building> BuildingFilter() {
+//        return filterBuildings(0,"test","test");
+//    }
 }

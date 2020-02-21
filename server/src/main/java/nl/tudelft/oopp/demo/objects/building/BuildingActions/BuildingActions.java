@@ -36,6 +36,8 @@ public class BuildingActions {
                     building.setName(newBuilding.getName());
                     building.setLocation(newBuilding.getLocation());
                     building.setDescription(newBuilding.getDescription());
+                    building.setOpen(newBuilding.getOpen());
+                    building.setClosed(newBuilding.getClosed());
                     return buildingRepository.save(building);
                 }).orElseThrow(() -> new BuildingNotFoundException(id));
     }

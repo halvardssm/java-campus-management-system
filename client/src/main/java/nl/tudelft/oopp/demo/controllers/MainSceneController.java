@@ -7,6 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 
+import java.time.LocalTime;
+
 public class MainSceneController {
     @FXML
     private TextField nameField;
@@ -46,6 +48,9 @@ public class MainSceneController {
             case "getFilteredBuilding":
                 String name = nameField.getText();
                 String location = locationField.getText();
+//                LocalTime open = timeOpenField.getT;
+//                LocalTime closed = timeClosedField;
+//                alert.setContentText(ServerCommunication.getFilteredBuildings(name, location,LocalTime.now(), LocalTime.now()));
                 alert.setContentText(ServerCommunication.getFilteredBuildings(name, location));
                 break;
             case "newBuildingButton":
