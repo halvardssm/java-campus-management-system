@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.group39.user;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +16,7 @@ public class UserService {
      * @return a list of users {@link User}.
      */
     public List<User> listUsers() {
-        List<User> users = new ArrayList<>();
-        repository.findAll().forEach(users::add);
-
-        return users;
+        return repository.findAll();
     }
 
     /**
