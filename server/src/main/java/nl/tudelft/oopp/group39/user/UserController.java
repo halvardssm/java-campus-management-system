@@ -23,7 +23,7 @@ public class UserController {
      *
      * @return a list of users {@link User}.
      */
-    @GetMapping("/")
+    @GetMapping("")
     public List<User> listUsers() {
         return service.listUsers();
     }
@@ -33,7 +33,7 @@ public class UserController {
      *
      * @return the created user {@link User}.
      */
-    @PostMapping("/")
+    @PostMapping("")
     public User postUser(@RequestBody User user) {
         return service.createUser(user);
     }
