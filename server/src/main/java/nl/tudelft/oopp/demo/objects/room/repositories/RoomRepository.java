@@ -1,6 +1,6 @@
-package nl.tudelft.oopp.demo.objects.room;
+package nl.tudelft.oopp.demo.objects.room.repositories;
 
-import nl.tudelft.oopp.demo.objects.room.Room;
+import nl.tudelft.oopp.demo.objects.room.Entities.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

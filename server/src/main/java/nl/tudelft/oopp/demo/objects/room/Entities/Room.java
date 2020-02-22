@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.objects.room;
+package nl.tudelft.oopp.demo.objects.room.Entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

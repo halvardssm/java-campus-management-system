@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.objects.building;
+package nl.tudelft.oopp.demo.objects.building.Entities;
 
 
 import javax.persistence.Column;
@@ -89,6 +89,9 @@ public class Building {
 
         Building building = (Building) o;
 
-        return id == building.id;
+        boolean equals = (building.location.contentEquals(location)) && (building.name.contentEquals(name));
+        equals = equals && (building.description.contentEquals(description)) && (building.open == open);
+        equals = equals && (building.closed == closed) && (id == building.id);
+        return equals;
     }
 }

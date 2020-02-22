@@ -5,8 +5,9 @@ import nl.tudelft.oopp.demo.objects.roomFacility.Exceptions.RoomFacilityExistsEx
 import nl.tudelft.oopp.demo.objects.roomFacility.Exceptions.RoomFacilityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
-@Controller
+@Service
 public class RoomFacilityActions {
 
     @Autowired

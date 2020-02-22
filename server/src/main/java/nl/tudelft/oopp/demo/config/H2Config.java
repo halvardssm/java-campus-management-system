@@ -38,33 +38,33 @@ public class H2Config {
     /**
      * Set up the connection to the database.
      */
-    @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
-        dataSource.setUrl(environment.getProperty("jdbc.url"));
-        dataSource.setUsername(environment.getProperty("jdbc.user"));
-        dataSource.setPassword(environment.getProperty("jdbc.pass"));
-//
-////        dataSource.setDriverClassName(environment.getProperty("mysql.driverClassName"));
-////        dataSource.setUrl(environment.getProperty("mysql.url"));
-////        dataSource.setUsername(environment.getProperty("mysql.user"));
-////        dataSource.setPassword(environment.getProperty("mysql.pass"));
-//
-        return dataSource;
-    }
-
 //    @Bean
 //    public DataSource dataSource() {
 //        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//
-//        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-//        dataSource.setUsername("springuser");
-//        dataSource.setPassword("12345678");
-//        dataSource.setUrl("jdbc:mysql://localhost:3306/db_example?createDatabaseIfNotExist=true&useSSL=false");
-//
+//        dataSource.setDriverClassName(environment.getProperty("jdbc.driverClassName"));
+//        dataSource.setUrl(environment.getProperty("jdbc.url"));
+//        dataSource.setUsername(environment.getProperty("jdbc.user"));
+//        dataSource.setPassword(environment.getProperty("jdbc.pass"));
+////
+//////        dataSource.setDriverClassName(environment.getProperty("mysql.driverClassName"));
+//////        dataSource.setUrl(environment.getProperty("mysql.url"));
+//////        dataSource.setUsername(environment.getProperty("mysql.user"));
+//////        dataSource.setPassword(environment.getProperty("mysql.pass"));
+////
 //        return dataSource;
 //    }
+
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUsername("springuser");
+        dataSource.setPassword("12345678");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/db_example?createDatabaseIfNotExist=true&useSSL=false");
+
+        return dataSource;
+    }
 
 //    @Bean
 //    public QuoteRepository quoteRepository() {

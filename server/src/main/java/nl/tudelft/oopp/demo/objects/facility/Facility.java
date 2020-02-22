@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.demo.objects.facility;
 
-import nl.tudelft.oopp.demo.objects.building.Building;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;

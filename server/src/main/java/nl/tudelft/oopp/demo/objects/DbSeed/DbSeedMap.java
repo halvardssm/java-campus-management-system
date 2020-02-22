@@ -1,9 +1,9 @@
 package nl.tudelft.oopp.demo.objects.DbSeed;
 
-import nl.tudelft.oopp.demo.objects.building.Building;
-import nl.tudelft.oopp.demo.objects.building.BuildingRepository;
-import nl.tudelft.oopp.demo.objects.room.Room;
-import nl.tudelft.oopp.demo.objects.room.RoomRepository;
+import nl.tudelft.oopp.demo.objects.building.Entities.Building;
+import nl.tudelft.oopp.demo.objects.building.Repositories.BuildingRepository;
+import nl.tudelft.oopp.demo.objects.room.Entities.Room;
+import nl.tudelft.oopp.demo.objects.room.repositories.RoomRepository;
 import nl.tudelft.oopp.demo.objects.roomFacility.RoomFacility;
 import nl.tudelft.oopp.demo.objects.roomFacility.RoomFacilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
