@@ -15,20 +15,20 @@ public class BuildingController {
     @Autowired
     private BuildingService service;
 
-    @GetMapping("/list")
+    @GetMapping("")
     public List<Building> ListBuildings() {
         return service.listBuildings();
     }
 
-    @GetMapping("/delete")
+    @DeleteMapping("/{id}")
     public void DeleteBuilding(@RequestParam int id) {
         service.deleteBuilding((long) id);
     }
 
-    @GetMapping("/add")
+    @PostMapping("")
     @ResponseBody
-    public String AddBuilding(@RequestParam String building, @RequestParam String location, @RequestParam String description){//, @RequestParam LocalTime open, @RequestParam LocalTime closed) {
-        service.addBuilding(building, location, description);//, open, closed);
+    public String AddBuilding(@RequestBody Building building){//, @RequestParam LocalTime open, @RequestParam LocalTime closed) {
+        service.addBuilding(building.getName(), building.getLocation(), building.getDescription());//, open, closed);
         return "saved";
     }
 
@@ -38,17 +38,15 @@ public class BuildingController {
         return service.filterBuildings(capacity,building,location);//, open, closed);
     }
 
-    @GetMapping("/read")
+    @GetMapping("/{id}")
     @ResponseBody
     public Building ReadBuilding(@RequestParam int id) {
         return service.readBuilding((long) id);
     }
 
-    @GetMapping ("/update")
+    @PutMapping ("/{id}")
     @ResponseBody
-    public Building updateBuilding(@RequestParam String building, @RequestParam String location, @RequestParam String description, @RequestParam int id) {//, @RequestParam LocalTime open, @RequestParam LocalTime closed) {
-        LocalTime open = LocalTime.now();
-        Building updated = new Building((long)id, building, location, description, open, open);
+    public Building updateBuilding(@RequestBody Building updated, @PathVariable int id) {//, @RequestParam LocalTime open, @RequestParam LocalTime closed) 
         return service.updateBuilding(updated, id);
     }
 

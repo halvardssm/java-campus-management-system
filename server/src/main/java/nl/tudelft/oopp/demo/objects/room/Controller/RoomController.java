@@ -14,20 +14,21 @@ public class RoomController {
     @Autowired
     private RoomService service;
 
-    @GetMapping("/list")
+    @GetMapping("")
     public List<Room> ListRooms() {
         return service.listRooms();
     }
 
-    @GetMapping("/delete")
-    public void DeleteRoom(@RequestParam int id) {
+    @DeleteMapping("/{id}")
+    public void DeleteRoom(@PathVariable int id) {
         service.deleteRoom(id);
     }
 
-    @GetMapping("/add")
+    @PostMapping("")
     @ResponseBody
-    public String AddRoom(@RequestParam int capacity, @RequestParam boolean onlyStaff, @RequestParam int[] facilities,@RequestParam int buildingId, @RequestParam String description) {
-        service.addRoom(16,true,facilities,1,"test2");
+    public String AddRoom(@RequestBody Room newRoom) {
+        int[] facilities = new int[0];
+        service.addRoom(newRoom.getCapacity(),newRoom.getOnlyStaff(),facilities,newRoom.getBuilding(),newRoom.getDescription());
         return "saved";
     }
 
@@ -37,16 +38,15 @@ public class RoomController {
         return service.filterRooms(capacity,onlyStaff,facilities, building, location);
     }
 
-    @GetMapping("/read")
+    @GetMapping("/{id}")
     @ResponseBody
-    public Room ReadRoom(@RequestParam int id) {
+    public Room ReadRoom(@PathVariable int id) {
         return service.readRoom((long) id);
     }
 
-    @GetMapping ("/update")
+    @PutMapping ("/{id}")
     @ResponseBody
-    public Room updateRoom(@RequestParam int id,@RequestParam int capacity, @RequestParam boolean onlyStaff, @RequestParam int[] facilities, @RequestParam int buildingId, @RequestParam String description) {
-        Room updated = new Room((long)id, capacity, buildingId, onlyStaff, description);
+    public Room updateRoom(@RequestBody Room updated, @PathVariable int id, @PathVariable int[] facilities) {
         service.deleteRoomFacilities(id, facilities);
         service.createRoomFacilities(id,facilities);
         return service.updateRoom(updated, id);
