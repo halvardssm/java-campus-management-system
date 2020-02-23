@@ -46,7 +46,7 @@ public class BuildingController {
 
     @PutMapping ("/{id}")
     @ResponseBody
-    public Building updateBuilding(@RequestBody Building updated, @PathVariable int id) {//, @RequestParam LocalTime open, @RequestParam LocalTime closed) 
+    public Building updateBuilding(@RequestBody Building updated, @PathVariable int id) {//, @RequestParam LocalTime open, @RequestParam LocalTime closed)
         return service.updateBuilding(updated, id);
     }
 
