@@ -11,7 +11,6 @@ public class ServerCommunication {
 
     /**
      * Retrieves a quote from the server.
-     *
      * @return the body of a get request to the server.
      * @throws Exception if communication with the server fails.
      */
