@@ -54,17 +54,17 @@ public class H2Config {
 //        return dataSource;
 //    }
 
-    @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUsername("springuser");
-        dataSource.setPassword("12345678");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/db_example?createDatabaseIfNotExist=true&useSSL=false");
-
-        return dataSource;
-    }
+//    @Bean
+//    public DataSource dataSource() {
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//
+//        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+//        dataSource.setUsername("springuser");
+//        dataSource.setPassword("12345678");
+//        dataSource.setUrl("jdbc:mysql://localhost:3306/db_example?createDatabaseIfNotExist=true&useSSL=false");
+//
+//        return dataSource;
+//    }
 
 //    @Bean
 //    public QuoteRepository quoteRepository() {

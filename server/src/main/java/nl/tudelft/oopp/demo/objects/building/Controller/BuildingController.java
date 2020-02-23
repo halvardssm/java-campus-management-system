@@ -21,7 +21,7 @@ public class BuildingController {
     }
 
     @DeleteMapping("/{id}")
-    public void DeleteBuilding(@RequestParam int id) {
+    public void DeleteBuilding(@PathVariable int id) {
         service.deleteBuilding((long) id);
     }
 
@@ -40,7 +40,7 @@ public class BuildingController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public Building ReadBuilding(@RequestParam int id) {
+    public Building ReadBuilding(@PathVariable int id) {
         return service.readBuilding((long) id);
     }
 
