@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.communication;
+package nl.tudelft.oopp.group39.communication;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -13,10 +13,9 @@ public class ServerCommunication {
      * Retrieves a quote from the server.
      *
      * @return the body of a get request to the server.
-     * @throws Exception if communication with the server fails.
      */
-    public static String getQuote() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/quote")).build();
+    public static String getUsers() {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/user")).build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
