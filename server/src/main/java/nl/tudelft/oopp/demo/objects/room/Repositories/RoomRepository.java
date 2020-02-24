@@ -29,15 +29,19 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query("SELECT u FROM Room u WHERE u.id = :id")
     Room getRoomById(@Param("id") long id);
 
+    //Returns the maximum capacity of a room in a chosen building
     @Query("SELECT MAX(u.capacity) FROM Room u WHERE u.buildingId = :id")
     int getMaxRoomCapacityByBuildingId(@Param("id") long id);
 
+    //Returns the rooms that match the chosen building id
     @Query("SELECT u FROM Room u WHERE u.buildingId = :id")
     List<Room> getRoomsByBuildingId(@Param("id") long id);
 
+    //Returns the maximum amount of users (capacity) in a room
     @Query("SELECT MAX(u.id) FROM Room u")
     int getMaxId();
 
+    //Returns the rooms which a selected user has reserved
     @Query("SELECT u FROM Room u where u.id = :id")
     List<Room> findById(@Param("id") int id);
 
