@@ -1,0 +1,38 @@
+.bar {
+    -fx-background-color: #63bcff;
+}
+
+#title {
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-fill: white;
+}
+
+.buttons {
+    -fx-background-color: #63bcff;
+    -fx-text-fill: white;
+    -fx-font-size: 12;
+}
+
+#signin {
+    -fx-font-size: 16;
+    -fx-pref-width: 90;
+    -fx-padding: 3 10;
+}
+
+.labeltext {
+    -fx-font-size: 14;
+}
+
+#pagetitle {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+#backbtn {
+    -fx-background-color: none;
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-padding: 0;
+}

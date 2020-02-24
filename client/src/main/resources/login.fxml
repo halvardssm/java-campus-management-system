@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import java.net.URL?>
+<BorderPane xmlns:fx="http://javafx.com/fxml">
+    <top>
+        <HBox styleClass="bar" spacing="10">
+            <padding><Insets top="15" right="12" bottom="15" left="12"/></padding>
+            <Text id="title" text="Some Name"/>
+        </HBox>
+    </top>
+<!--    <left>-->
+<!--        <VBox>-->
+<!--            <Button id="backbtn" text="Back">-->
+<!--                <VBox.margin>-->
+<!--                    <Insets top="20" left="20"/>-->
+<!--                </VBox.margin>-->
+<!--            </Button>-->
+<!--        </VBox>-->
+<!--    </left>-->
+    <center>
+        <GridPane id="loginpanel" alignment="center" hgap="20" vgap="20">
+            <padding><Insets top="10" right="25" bottom="10" left="25"/></padding>
+            <Text id="pagetitle" text="Login" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2"/>
+
+            <Label styleClass="labeltext" text="Username:"
+                   GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+
+            <TextField
+                    GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+            <Label styleClass="labeltext" text="Password:"
+                   GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+
+            <PasswordField fx:id="passwordField"
+                           GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+            <Button styleClass="buttons" id="signin" text="Sign In"
+                    GridPane.columnIndex="1" GridPane.rowIndex = "3"/>
+
+            <Text text="Don't have an account yet?"
+                  GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+
+            <Button styleClass="buttons" id="signup" text="Sign Up"
+                    GridPane.columnIndex="1" GridPane.rowIndex = "5"/>
+
+        </GridPane>
+    </center>
+    <bottom>
+        <HBox styleClass="bar" spacing="10">
+            <padding><Insets top="15" right="12" bottom="15" left="12"/></padding>
+            <Button id="backbtn" text="◀ Back"/>
+        </HBox>
+    </bottom>
+    <stylesheets>
+        <URL value="@login.css" />
+    </stylesheets>
+</BorderPane>
