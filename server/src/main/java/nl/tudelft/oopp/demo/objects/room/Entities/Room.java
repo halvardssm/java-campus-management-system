@@ -24,7 +24,8 @@ public class Room {
     @Column(name = "description")
     private String description;
 
-    public Room() {}
+    public Room() {
+    }
 
     public Room(long id, long buildingId, int capacity, boolean onlyStaff, String description) {
         this.id = id;
