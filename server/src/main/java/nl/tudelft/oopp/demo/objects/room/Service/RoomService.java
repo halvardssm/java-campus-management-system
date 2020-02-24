@@ -5,7 +5,7 @@ import nl.tudelft.oopp.demo.objects.room.Exceptions.*;
 import nl.tudelft.oopp.demo.objects.room.Entities.Room;
 import nl.tudelft.oopp.demo.objects.room.Repositories.RoomRepository;
 import nl.tudelft.oopp.demo.objects.roomFacility.Exceptions.RoomFacilityNotFoundException;
-import nl.tudelft.oopp.demo.objects.roomFacility.RoomFacilityActions.RoomFacilityService;
+import nl.tudelft.oopp.demo.objects.roomFacility.RoomFacilityService.RoomFacilityService;
 import nl.tudelft.oopp.demo.objects.roomFacility.Repositories.RoomFacilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

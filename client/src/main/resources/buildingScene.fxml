@@ -10,8 +10,20 @@
       fx:controller="nl.tudelft.oopp.demo.controllers.BuildingSceneController">
 
     <Label text=""/>
+    <Label text="Get all rooms."/>
+    <Button fx:id="button1" text="Submit" onAction="#getRoomsButton"/>
+
+    <Label text="-------------------------------"/>
+    <Label text="Get all room-facilities."/>
+    <Button fx:id="button2" text="Submit" onAction="#getRoomFacilitiesButton"/>
+
+    <Label text="-------------------------------"/>
+    <Label text="Get all facilities."/>
+    <Button fx:id="button3" text="Submit" onAction="#getFacilitiesButton"/>
+
+    <Label text="-------------------------------"/>
     <Label text="Get all buildings."/>
-    <Button fx:id="button" text="Submit" onAction="#getBuildingButton"/>
+    <Button fx:id="button4" text="Submit" onAction="#getBuildingsButton"/>
 
     <Label text="-------------------------------"/>
     <Label text="Filter Buildings"/>
@@ -21,7 +33,7 @@
 
     <Label text="Location to filter on."/>
     <TextField fx:id="locationField"/>
-    <Button fx:id="button2" text="Submit" onAction="#getFilteredBuildings"/>
+    <Button fx:id="button5" text="Submit" onAction="#getFilteredBuildings"/>
 
     <Label text="-------------------------------"/>
     <Label text="Make a new Building."/>
@@ -34,7 +46,7 @@
 
     <Label text="Description of the building."/>
     <TextField fx:id="descriptionField"/>
-    <Button fx:id="button3" text="Submit" onAction="#newBuildingButton"/>
+    <Button fx:id="button6" text="Submit" onAction="#newBuildingButton"/>
     <Label text=""/>
     <Label text=""/>
 </VBox>

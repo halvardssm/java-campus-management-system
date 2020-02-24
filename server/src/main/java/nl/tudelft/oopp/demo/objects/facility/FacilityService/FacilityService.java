@@ -1,10 +1,10 @@
-package nl.tudelft.oopp.demo.objects.facility.FacilityActions;
+package nl.tudelft.oopp.demo.objects.facility.FacilityService;
 
 import nl.tudelft.oopp.demo.objects.facility.Exceptions.FacilityExistsException;
 import nl.tudelft.oopp.demo.objects.facility.Entities.Facility;
 import nl.tudelft.oopp.demo.objects.facility.Exceptions.FacilityNotFoundException;
 import nl.tudelft.oopp.demo.objects.facility.Repositories.FacilityRepository;
-import nl.tudelft.oopp.demo.objects.roomFacility.RoomFacilityActions.RoomFacilityService;
+import nl.tudelft.oopp.demo.objects.roomFacility.RoomFacilityService.RoomFacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

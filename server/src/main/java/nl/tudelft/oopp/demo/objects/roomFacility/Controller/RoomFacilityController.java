@@ -2,7 +2,7 @@ package nl.tudelft.oopp.demo.objects.roomFacility.Controller;
 
 
 import nl.tudelft.oopp.demo.objects.roomFacility.Entities.RoomFacility;
-import nl.tudelft.oopp.demo.objects.roomFacility.RoomFacilityActions.RoomFacilityService;
+import nl.tudelft.oopp.demo.objects.roomFacility.RoomFacilityService.RoomFacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

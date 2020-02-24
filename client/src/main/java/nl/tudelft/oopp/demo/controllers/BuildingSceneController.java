@@ -30,8 +30,17 @@ public class BuildingSceneController {
     /**
      * Handles clicking the button.
      */
-    public void getBuildingButton() {
-        buttonClicked("getBuilding");
+    public void getFacilitiesButton() {
+        buttonClicked("getFacilities");
+    }
+    public void getRoomFacilitiesButton() {
+        buttonClicked("getRoomFacilities");
+    }
+    public void getRoomsButton() {
+        buttonClicked("getRooms");
+    }
+    public void getBuildingsButton() {
+        buttonClicked("getBuildings");
     }
     public void getFilteredBuildings() {
         buttonClicked("getFilteredBuilding");
@@ -46,8 +55,17 @@ public class BuildingSceneController {
         alert.setTitle("Building shown.");
         alert.setHeaderText(null);
         switch(function) {
-            case "getBuilding":
-                alert.setContentText(ServerCommunication.getBuilding());
+            case "getBuildings":
+                alert.setContentText(ServerCommunication.getBuildings());
+                break;
+            case "getRooms":
+                alert.setContentText(ServerCommunication.getRooms());
+                break;
+            case "getFacilities":
+                alert.setContentText(ServerCommunication.getFacilities());
+                break;
+            case "getRoomFacilities":
+                alert.setContentText(ServerCommunication.getRoomFacilities());
                 break;
             case "getFilteredBuilding":
                 String name = nameField.getText();

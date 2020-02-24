@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.demo.objects.roomFacility.RoomFacilityActions;
+package nl.tudelft.oopp.demo.objects.roomFacility.RoomFacilityService;
 
 import nl.tudelft.oopp.demo.objects.roomFacility.Entities.RoomFacility;
 import nl.tudelft.oopp.demo.objects.roomFacility.Exceptions.RoomFacilityExistsException;

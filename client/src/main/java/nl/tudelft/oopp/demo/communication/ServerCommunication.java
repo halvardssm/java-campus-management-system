@@ -28,12 +28,20 @@ public class ServerCommunication {
         return GenData(request);
     }
 
-    public static String getBuilding() {
+    public static String getBuildings() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/building")).build();
         return GenData(request);
     }
-    public static String getRoom() {
+    public static String getRooms() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room")).build();
+        return GenData(request);
+    }
+    public static String getFacilities() {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/facility")).build();
+        return GenData(request);
+    }
+    public static String getRoomFacilities() {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/roomfacility")).build();
         return GenData(request);
     }
 

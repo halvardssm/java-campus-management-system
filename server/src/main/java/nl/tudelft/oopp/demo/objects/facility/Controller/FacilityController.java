@@ -1,7 +1,7 @@
 package nl.tudelft.oopp.demo.objects.facility.Controller;
 
 import nl.tudelft.oopp.demo.objects.facility.Entities.Facility;
-import nl.tudelft.oopp.demo.objects.facility.FacilityActions.FacilityService;
+import nl.tudelft.oopp.demo.objects.facility.FacilityService.FacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -2,6 +2,8 @@ package nl.tudelft.oopp.demo.objects.DbSeed;
 
 import nl.tudelft.oopp.demo.objects.building.Entities.Building;
 import nl.tudelft.oopp.demo.objects.building.Repositories.BuildingRepository;
+import nl.tudelft.oopp.demo.objects.facility.Entities.Facility;
+import nl.tudelft.oopp.demo.objects.facility.Repositories.FacilityRepository;
 import nl.tudelft.oopp.demo.objects.room.Entities.Room;
 import nl.tudelft.oopp.demo.objects.room.Repositories.RoomRepository;
 import nl.tudelft.oopp.demo.objects.roomFacility.Entities.RoomFacility;
@@ -22,6 +24,8 @@ public class DbSeedMap {
     private RoomFacilityRepository roomFacilityRepository;
     @Autowired
     private BuildingRepository buildingRepository;
+    @Autowired
+    private FacilityRepository facilityRepository;
 
 
     //To seed the database: type in cmd ->
@@ -32,6 +36,7 @@ public class DbSeedMap {
         db_seed_rooms();
         db_seed_room_facilities();
         db_seed_buildings();
+        db_seed_facilities();
         return "saved";
     }
     //To seed the database (for testing purposes)
@@ -61,5 +66,19 @@ public class DbSeedMap {
         b = new Building(1,"new","new","new", open, closed);
 //        b = new Building(1,"new","new","new", open.plusHours(4), closed.minusHours(4));
         buildingRepository.save(b);
+    }
+    public void db_seed_facilities() {
+        LocalTime open = LocalTime.now();//.minusHours(3);
+        LocalTime closed = LocalTime.now();//.plusHours(3);
+        Facility b = new Facility(0,"smartboard");
+        facilityRepository.save(b);
+        b = new Facility(1,"whiteboard");
+        facilityRepository.save(b);
+        b = new Facility(2,"projectroom");
+        facilityRepository.save(b);
+        b = new Facility(3,"projector");
+        facilityRepository.save(b);
+        b = new Facility(4,"computers");
+        facilityRepository.save(b);
     }
 }
