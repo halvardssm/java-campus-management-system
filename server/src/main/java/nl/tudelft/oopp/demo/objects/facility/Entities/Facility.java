@@ -44,6 +44,9 @@ public class Facility {
 
         Facility facility = (Facility) o;
 
-        return id == facility.id;
+        //return id == facility.id;
+
+        boolean equals = (description.contentEquals(facility.description)) && (id == facility.id);
+        return equals;
     }
 }

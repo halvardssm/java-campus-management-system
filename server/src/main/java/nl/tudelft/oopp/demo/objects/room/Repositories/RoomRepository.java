@@ -33,7 +33,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query("SELECT MAX(u.capacity) FROM Room u WHERE u.buildingId = :id")
     int getMaxRoomCapacityByBuildingId(@Param("id") long id);
 
-    //Returns the rooms that match the chosen building id
+    //Returns a list with the rooms that match the chosen building id
     @Query("SELECT u FROM Room u WHERE u.buildingId = :id")
     List<Room> getRoomsByBuildingId(@Param("id") long id);
 
@@ -41,7 +41,7 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     @Query("SELECT MAX(u.id) FROM Room u")
     int getMaxId();
 
-    //Returns the rooms which a selected user has reserved
+    //Returns a list with the rooms which a selected user has reserved
     @Query("SELECT u FROM Room u where u.id = :id")
     List<Room> findById(@Param("id") int id);
 

@@ -74,6 +74,11 @@ public class Room {
 
         Room room = (Room) o;
 
-        return id == room.id;
+        //return id == room.id;
+
+        boolean equals = (capacity == room.capacity) && (onlyStaff == room.onlyStaff);
+        equals = equals && (room.description.contentEquals(description));
+        equals = equals && (buildingId == room.buildingId) && (id == room.id);
+        return equals;
     }
 }
