@@ -3,11 +3,10 @@ package nl.tudelft.oopp.demo.objects.room.Service;
 import nl.tudelft.oopp.demo.objects.building.Repositories.BuildingRepository;
 import nl.tudelft.oopp.demo.objects.room.Exceptions.*;
 import nl.tudelft.oopp.demo.objects.room.Entities.Room;
-import nl.tudelft.oopp.demo.objects.room.repositories.RoomRepository;
+import nl.tudelft.oopp.demo.objects.room.Repositories.RoomRepository;
 import nl.tudelft.oopp.demo.objects.roomFacility.Exceptions.RoomFacilityNotFoundException;
-import nl.tudelft.oopp.demo.objects.roomFacility.RoomFacility;
-import nl.tudelft.oopp.demo.objects.roomFacility.RoomFacilityActions.RoomFacilityActions;
-import nl.tudelft.oopp.demo.objects.roomFacility.RoomFacilityRepository;
+import nl.tudelft.oopp.demo.objects.roomFacility.RoomFacilityActions.RoomFacilityService;
+import nl.tudelft.oopp.demo.objects.roomFacility.Repositories.RoomFacilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,7 @@ public class RoomService {
     @Autowired
     private BuildingRepository buildingRepository;
     @Autowired
-    private RoomFacilityActions rfService;
+    private RoomFacilityService rfService;
 
     public Room readRoom(long id) throws RoomNotFoundException {
         return roomRepository.findById(id).orElseThrow(() -> new RoomNotFoundException((int)id));
@@ -98,13 +97,14 @@ public class RoomService {
         long newId = roomRepository.findAll().size() > 0 ? roomRepository.getMaxId() + 1 : 0;
         Room n = new Room(newId,buildingId,capacity,onlyStaff,description);
         createRoom(n);
-        createRoomFacilities(newId,facilities);
+        rfService.createRoomFacilities(newId,facilities);
     }
 
     public Room deleteRoom(int id) throws RoomFacilityNotFoundException{
         try {
             Room rf = readRoom((long) id);
             roomRepository.delete(readRoom((long) id));
+            rfService.deleteRoomFacilities(id, "room");
             return rf;
         }
         catch (RoomFacilityNotFoundException e) {
@@ -117,25 +117,8 @@ public class RoomService {
         int[] facilityIds = roomFacilityRepository.getRoomFacilityIdsByRoomId(id);
         Room n = new Room(id,buildingId,capacity,onlyStaff,description);
         n = updateRoom(n, (int) id);
-        for (int facility : facilityIds) {
-            rfService.deleteRoomFacility(facility);
-        }
-        createRoomFacilities(id,facilities);
-    }
-
-    public void createRoomFacilities(long newId,int[] facilities) {
-        for (int facility : facilities) {
-            long newFId = roomFacilityRepository.findAll().size() > 0 ? roomFacilityRepository.getMaxId() + 1 : 0;
-            RoomFacility f = new RoomFacility(newFId, newId, facility);
-            rfService.createRoomFacility(f);
-        }
-    }
-
-    public void deleteRoomFacilities(long id,int[] facilities) {
-        int[] facilityIds = roomFacilityRepository.getRoomFacilityIdsByRoomId(id);
-        for (int facility : facilityIds) {
-            rfService.deleteRoomFacility(facility);
-        }
+        rfService.deleteRoomFacilities(id, "room");
+        rfService.createRoomFacilities(id,facilities);
     }
 
 }

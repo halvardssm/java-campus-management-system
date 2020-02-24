@@ -8,7 +8,7 @@ import nl.tudelft.oopp.demo.objects.building.Entities.Building;
 import nl.tudelft.oopp.demo.objects.building.Exceptions.BuildingExistsException;
 import nl.tudelft.oopp.demo.objects.building.Exceptions.BuildingNotFoundException;
 import nl.tudelft.oopp.demo.objects.building.Repositories.BuildingRepository;
-import nl.tudelft.oopp.demo.objects.room.repositories.RoomRepository;
+import nl.tudelft.oopp.demo.objects.room.Repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,6 +65,7 @@ public class BuildingService {
 
     public Building createBuilding(Building newBuilding) {
         try {
+            Building building = readBuilding((int)newBuilding.getId());
             throw new BuildingExistsException((int)newBuilding.getId());
         }
         catch (BuildingNotFoundException e){

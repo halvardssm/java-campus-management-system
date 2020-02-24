@@ -1,20 +1,26 @@
 package nl.tudelft.oopp.demo.objects.roomFacility.RoomFacilityActions;
 
-import nl.tudelft.oopp.demo.objects.roomFacility.*;
+import nl.tudelft.oopp.demo.objects.roomFacility.Entities.RoomFacility;
 import nl.tudelft.oopp.demo.objects.roomFacility.Exceptions.RoomFacilityExistsException;
 import nl.tudelft.oopp.demo.objects.roomFacility.Exceptions.RoomFacilityNotFoundException;
+import nl.tudelft.oopp.demo.objects.roomFacility.Repositories.RoomFacilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class RoomFacilityActions {
+public class RoomFacilityService {
 
     @Autowired
     private RoomFacilityRepository roomFacilityRepository;
 
     public RoomFacility readRoomFacility(long id) throws RoomFacilityNotFoundException {
         return roomFacilityRepository.findById(id).orElseThrow(() -> new RoomFacilityNotFoundException((int)id));
+    }
+
+    public List<RoomFacility> listRoomFacilities() {
+        return roomFacilityRepository.findAll();
     }
 
     public RoomFacility createRoomFacility(RoomFacility newRoomFacility) {
@@ -49,4 +55,31 @@ public class RoomFacilityActions {
         }
     }
 
+    public void createRoomFacilities(long newId,int[] facilities) {
+        for (int facility : facilities) {
+            long newFId = roomFacilityRepository.findAll().size() > 0 ? roomFacilityRepository.getMaxId() + 1 : 0;
+            RoomFacility f = new RoomFacility(newFId, newId, facility);
+            createRoomFacility(f);
+        }
+    }
+
+    public void deleteRoomFacilities(long id,String type) {
+        int[] facilityIds = new int[0];
+        switch(type) {
+            case "room":
+                facilityIds = roomFacilityRepository.getRoomFacilityIdsByRoomId(id);
+                break;
+            default:
+                facilityIds = roomFacilityRepository.getRoomFacilityIdsByFacilityId(id);
+        }
+        for (int facility : facilityIds) {
+            deleteRoomFacility(facility);
+        }
+    }
+
+    public void addRoomFacility(int roomId, int facilityId) {
+        int newId = roomFacilityRepository.findAll().size() > 0 ? roomFacilityRepository.getMaxId() + 1 : 0;
+        RoomFacility n = new RoomFacility(newId,roomId,facilityId);
+        createRoomFacility(n);
+    }
 }

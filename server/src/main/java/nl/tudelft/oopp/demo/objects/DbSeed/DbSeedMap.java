@@ -3,9 +3,9 @@ package nl.tudelft.oopp.demo.objects.DbSeed;
 import nl.tudelft.oopp.demo.objects.building.Entities.Building;
 import nl.tudelft.oopp.demo.objects.building.Repositories.BuildingRepository;
 import nl.tudelft.oopp.demo.objects.room.Entities.Room;
-import nl.tudelft.oopp.demo.objects.room.repositories.RoomRepository;
-import nl.tudelft.oopp.demo.objects.roomFacility.RoomFacility;
-import nl.tudelft.oopp.demo.objects.roomFacility.RoomFacilityRepository;
+import nl.tudelft.oopp.demo.objects.room.Repositories.RoomRepository;
+import nl.tudelft.oopp.demo.objects.roomFacility.Entities.RoomFacility;
+import nl.tudelft.oopp.demo.objects.roomFacility.Repositories.RoomFacilityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,7 +58,8 @@ public class DbSeedMap {
         LocalTime closed = LocalTime.now();//.plusHours(3);
         Building b = new Building(0,"test","test","test", open, closed);
         buildingRepository.save(b);
-        b = new Building(1,"new","new","new", open.plusHours(4), closed.minusHours(4));
+        b = new Building(1,"new","new","new", open, closed);
+//        b = new Building(1,"new","new","new", open.plusHours(4), closed.minusHours(4));
         buildingRepository.save(b);
     }
 }

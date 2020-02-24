@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.demo.communication;
 
+import netscape.javascript.JSObject;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -17,83 +19,38 @@ public class ServerCommunication {
      */
     public static String getQuote() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/quote")).build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Communication with server failed";
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
-        return response.body();
+        return GenData(request);
     }
 
     //IMPORTANT FOR SUNDAY
     public static String getUsers() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/user")).build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Communication with server failed";
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
-        return response.body();
-    }
-
-    public static String getData(String func) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/building")).build();
-        switch(func) {
-            case "building":
-                request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/building")).build();
-                break;
-            case "room":
-                request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room")).build();
-                break;
-            case "filterBuilding":
-                String urlString = "http://localhost:8080/FilterBuildings?capacity=10&building=e&location=new";
-                request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
-                break;
-        }
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Communication with server failed";
-        }
-        if (response.statusCode() != 200) {
-            System.out.println("Status: " + response.statusCode());
-        }
-        return response.body();
+        return GenData(request);
     }
 
     public static String getBuilding() {
-        return getData("building");
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/building")).build();
+        return GenData(request);
     }
     public static String getRoom() {
-        return getData("room");
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room")).build();
+        return GenData(request);
     }
 
     public static String getFilteredBuildings(String name, String location){//, LocalTime open, LocalTime closed) {
-//        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/building")).build();
-        String urlString = "http://localhost:8080/FilterBuildings?capacity=10&building="+name+"&location="+location;//+"&open="+open+"&closed="+closed;
-        return GenData(urlString);
+        String urlString = "http://localhost:8080/building/filter?capacity=10&building="+name+"&location="+location;//+"&open="+open+"&closed="+closed;
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
+        return GenData(request);
     }
 
     public static String addBuilding(String name, String location, String description) {
-//        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/building")).build();
-        String urlString = "http://localhost:8080/addBuilding?building="+name+"&location="+location+"&description="+description;
-        return GenData(urlString);
+        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"name\": \""+name+ "\", \"location\":\""+ location+"\", \"description\":\""+ description +"\"}");
+        HttpRequest request = HttpRequest.newBuilder().POST(newBuilding).uri(URI.create("http://localhost:8080/building")).header("Content-Type", "application/json").build();
+        return GenData(request);
     }
 
-    public static String GenData(String urlString) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
+    public static String GenData(HttpRequest req) {
+        HttpRequest request = req;
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());

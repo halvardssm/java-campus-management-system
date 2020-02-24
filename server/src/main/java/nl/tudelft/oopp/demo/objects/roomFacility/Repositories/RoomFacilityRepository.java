@@ -1,5 +1,6 @@
-package nl.tudelft.oopp.demo.objects.roomFacility;
+package nl.tudelft.oopp.demo.objects.roomFacility.Repositories;
 
+import nl.tudelft.oopp.demo.objects.roomFacility.Entities.RoomFacility;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,5 +22,8 @@ public interface RoomFacilityRepository extends JpaRepository<RoomFacility, Long
 
     @Query("SELECT u.id FROM RoomFacility u WHERE u.roomId = :roomId")
     int[] getRoomFacilityIdsByRoomId(@Param("roomId") long roomId);
+
+    @Query("SELECT u.id FROM RoomFacility u WHERE u.facilityId = :facilityId")
+    int[] getRoomFacilityIdsByFacilityId(@Param("facilityId") long facilityId);
 
 }

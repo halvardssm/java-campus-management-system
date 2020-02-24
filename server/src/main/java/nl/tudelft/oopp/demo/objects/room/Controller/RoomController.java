@@ -46,9 +46,7 @@ public class RoomController {
 
     @PutMapping ("/{id}")
     @ResponseBody
-    public Room updateRoom(@RequestBody Room updated, @PathVariable int id, @PathVariable int[] facilities) {
-        service.deleteRoomFacilities(id, facilities);
-        service.createRoomFacilities(id,facilities);
+    public Room updateRoom(@RequestBody Room updated, @PathVariable int id) {
         return service.updateRoom(updated, id);
     }
 
