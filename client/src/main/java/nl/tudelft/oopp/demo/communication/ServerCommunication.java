@@ -1,12 +1,9 @@
 package nl.tudelft.oopp.demo.communication;
 
-import netscape.javascript.JSObject;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.LocalTime;
 
 public class ServerCommunication {
 
@@ -19,45 +16,45 @@ public class ServerCommunication {
      */
     public static String getQuote() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/quote")).build();
-        return GenData(request);
+        return HttpRequest(request);
     }
 
     //IMPORTANT FOR SUNDAY
     public static String getUsers() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/user")).build();
-        return GenData(request);
+        return HttpRequest(request);
     }
 
     public static String getBuildings() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/building")).build();
-        return GenData(request);
+        return HttpRequest(request);
     }
     public static String getRooms() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room")).build();
-        return GenData(request);
+        return HttpRequest(request);
     }
     public static String getFacilities() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/facility")).build();
-        return GenData(request);
+        return HttpRequest(request);
     }
     public static String getRoomFacilities() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/roomfacility")).build();
-        return GenData(request);
+        return HttpRequest(request);
     }
 
     public static String getFilteredBuildings(String name, String location){//, LocalTime open, LocalTime closed) {
         String urlString = "http://localhost:8080/building/filter?capacity=10&building="+name+"&location="+location;//+"&open="+open+"&closed="+closed;
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
-        return GenData(request);
+        return HttpRequest(request);
     }
 
     public static String addBuilding(String name, String location, String description) {
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"name\": \""+name+ "\", \"location\":\""+ location+"\", \"description\":\""+ description +"\"}");
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding).uri(URI.create("http://localhost:8080/building")).header("Content-Type", "application/json").build();
-        return GenData(request);
+        return HttpRequest(request);
     }
 
-    public static String GenData(HttpRequest req) {
+    public static String HttpRequest(HttpRequest req) {
         HttpRequest request = req;
         HttpResponse<String> response = null;
         try {
