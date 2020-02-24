@@ -4,6 +4,7 @@ import nl.tudelft.oopp.group39.room.Entities.Room;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -47,12 +48,9 @@ public class Facility {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
         Facility facility = (Facility) o;
-
-        //return id == facility.id;
-
-        boolean equals = (description.contentEquals(facility.description)) && (id == facility.id);
-        return equals;
+        return getId() == facility.getId() &&
+            Objects.equals(getDescription(), facility.getDescription()) &&
+            rooms.equals(facility.rooms);
     }
 }
