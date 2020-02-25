@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.user;
+package nl.tudelft.oopp.group39.user.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(String id) {

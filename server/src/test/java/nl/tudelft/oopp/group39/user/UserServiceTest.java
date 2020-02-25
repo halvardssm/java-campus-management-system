@@ -4,6 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+import nl.tudelft.oopp.group39.role.entity.Role;
+import nl.tudelft.oopp.group39.role.enums.Roles;
+import nl.tudelft.oopp.group39.user.entity.User;
+import nl.tudelft.oopp.group39.user.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +16,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class UserServiceTest {
-    private final User testUser = new User("test", "test@tudelft.nl", "test", null, null);
+    private final User testUser = new User(
+        "test",
+        "test@tudelft.nl",
+        "test",
+        null,
+        List.of(new Role(Roles.ROLE_STUDENT))
+    );
 
     @Autowired
     UserService userService;
@@ -25,7 +35,7 @@ class UserServiceTest {
     @AfterEach
     void tearDown() {
         for (User user : userService.listUsers()) {
-            userService.deleteUser(user.getId());
+            userService.deleteUser(user.getUsername());
         }
     }
 
@@ -33,17 +43,17 @@ class UserServiceTest {
     void listUsers() {
         List<User> users = userService.listUsers();
 
-        List<User> testUsers = new ArrayList<>();
-        testUsers.add(testUser);
-        assertEquals(users, testUsers);
+        assertEquals(1, users.size());
+        assertEquals(testUser, users.get(0));
     }
 
     @Test
     void createUser() {
-        User user = new User("test2", "test2@tudelft.nl", "test2", null, null);
-        userService.createUser(user);
+        User user = testUser;
+        user.setUsername("user2");
 
-        User user2 = userService.readUser("test2");
+        User user2 = userService.createUser(user);
+
         assertEquals(user, user2);
     }
 
@@ -55,11 +65,11 @@ class UserServiceTest {
 
     @Test
     void updateUser() {
-        User updatedUser = new User("test", "test@student.tudelft.nl", "test", null, null);
-        userService.updateUser("test", updatedUser);
+        User user = testUser;
+        user.setEmail("test@tudelft.nl");
+        User user2 = userService.updateUser("test", user);
 
-        User user2 = userService.readUser("test");
-        assertEquals(updatedUser, user2);
+        assertEquals(user, user2);
     }
 
     @Test
