@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39;
+package nl.tudelft.oopp.group39.auth.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

@@ -6,7 +6,6 @@ import nl.tudelft.oopp.group39.role.entity.Role;
 import nl.tudelft.oopp.group39.role.service.RoleService;
 import nl.tudelft.oopp.group39.user.entity.User;
 import nl.tudelft.oopp.group39.user.exceptions.UserExistsException;
-import nl.tudelft.oopp.group39.user.exceptions.UserNotFoundException;
 import nl.tudelft.oopp.group39.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,8 +37,8 @@ public class UserService implements UserDetailsService {
      *
      * @return user by id {@link User}.
      */
-    public User readUser(String id) throws UserNotFoundException {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    public User readUser(String id) throws UsernameNotFoundException {
+        return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(id));
     }
 
     /**
@@ -51,7 +50,7 @@ public class UserService implements UserDetailsService {
         try {
             User user = readUser(newUser.getUsername());
             throw new UserExistsException(user.getUsername());
-        } catch (UserNotFoundException e) {
+        } catch (UsernameNotFoundException e) {
             mapRolesForUser(newUser);
 
             userRepository.save(newUser);
@@ -65,19 +64,19 @@ public class UserService implements UserDetailsService {
      *
      * @return the updated user {@link User}.
      */
-    public User updateUser(String id, User newUser) throws UserNotFoundException {
+    public User updateUser(String id, User newUser) throws UsernameNotFoundException {
         return userRepository.findById(id)
             .map(user -> {
                 newUser.setUsername(id);
                 mapRolesForUser(newUser);
                 return userRepository.save(newUser);
-            }).orElseThrow(() -> new UserNotFoundException(id));
+            }).orElseThrow(() -> new UsernameNotFoundException(id));
     }
 
     /**
      * Delete an user {@link User}.
      */
-    public void deleteUser(String id) throws UserNotFoundException {
+    public void deleteUser(String id) throws UsernameNotFoundException {
         readUser(id);
         userRepository.deleteById(id);
     }
