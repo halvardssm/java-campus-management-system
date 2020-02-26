@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 public class LoginController {
     @FXML
@@ -50,4 +51,6 @@ public class LoginController {
         Parent root = FXMLLoader.load(getClass().getResource("/signup.fxml"));
         currentstage.setScene(new Scene(root, 700, 600));
     }
+
+
 }
