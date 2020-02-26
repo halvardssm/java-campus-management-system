@@ -19,7 +19,6 @@ import org.hibernate.annotations.LazyGroup;
 import org.springframework.data.annotation.Transient;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 
 @Entity
 public class User implements UserDetails {
@@ -55,7 +54,7 @@ public class User implements UserDetails {
     public User(String username, String email, String password, Blob image, List<GrantedAuthority> roles) {
         this.username = username;
         this.email = email;
-        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
+        this.password = password;
         this.roles = roles;
         this.image = image;
     }
@@ -92,10 +91,6 @@ public class User implements UserDetails {
 
     public void setImage(Blob image) {
         this.image = image;
-    }
-
-    public boolean passwordIsValid(String password) {
-        return BCrypt.checkpw(password, this.password);
     }
 
     @Override

@@ -2,7 +2,9 @@ package nl.tudelft.oopp.group39.user.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import nl.tudelft.oopp.group39.role.entity.Role;
+import nl.tudelft.oopp.group39.role.enums.Roles;
 import nl.tudelft.oopp.group39.role.service.RoleService;
 import nl.tudelft.oopp.group39.user.entity.User;
 import nl.tudelft.oopp.group39.user.exceptions.UserExistsException;
@@ -12,10 +14,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements UserDetailsService {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRepository userRepository;
@@ -50,7 +56,9 @@ public class UserService implements UserDetailsService {
         try {
             User user = readUser(newUser.getUsername());
             throw new UserExistsException(user.getUsername());
+
         } catch (UsernameNotFoundException e) {
+            newUser.setPassword(encryptPassword(newUser.getPassword()));
             mapRolesForUser(newUser);
 
             userRepository.save(newUser);
@@ -68,6 +76,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id)
             .map(user -> {
                 newUser.setUsername(id);
+                newUser.setPassword(encryptPassword(newUser.getPassword()));
                 mapRolesForUser(newUser);
                 return userRepository.save(newUser);
             }).orElseThrow(() -> new UsernameNotFoundException(id));
@@ -93,6 +102,28 @@ public class UserService implements UserDetailsService {
         }
 
         user.setAuthorities(roles);
+    }
+
+    private String encryptPassword(String password) {
+        return passwordEncoder.encode(password);
+    }
+
+    @PostConstruct
+    private void initUsers() {
+        User user = new User(
+            "admin",
+            "admin@tudelft.nl",
+            encryptPassword("pwd"),
+            null,
+            List.of(
+                new Role(Roles.ROLE_ADMIN),
+                new Role(Roles.ROLE_STAFF),
+                new Role(Roles.ROLE_STUDENT)
+            )
+        );
+
+        userRepository.saveAndFlush(user);
+        System.out.println("[SEED] Admin user created");
     }
 
     @Override

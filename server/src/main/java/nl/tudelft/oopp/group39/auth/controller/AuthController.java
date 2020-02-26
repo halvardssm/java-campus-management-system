@@ -27,12 +27,14 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createToken(@RequestBody JwtRequest jwtRequest) throws Exception {
+    public ResponseEntity<?> createToken(@RequestBody JwtRequest jwtRequest) throws BadAuthException {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 jwtRequest.getUsername(),
                 jwtRequest.getPassword()
-            ));
+            );
+
+            authenticationManager.authenticate(token);
         } catch (Exception e) {
             throw new BadAuthException();
         }
