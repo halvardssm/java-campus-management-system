@@ -90,6 +90,11 @@ public class UserService implements UserDetailsService {
         userRepository.deleteById(id);
     }
 
+    /**
+     * Will map the roles of a user to the roles in the db.
+     *
+     * @param user A user to map roles for
+     */
     private void mapRolesForUser(User user) {
         List<GrantedAuthority> roles = new ArrayList<>();
 
@@ -104,22 +109,33 @@ public class UserService implements UserDetailsService {
         user.setAuthorities(roles);
     }
 
+    /**
+     * Encrypts a password with the local password encoder.
+     *
+     * @param password An unencrypted password
+     * @return An encrypted password
+     */
     private String encryptPassword(String password) {
         return passwordEncoder.encode(password);
     }
 
+    /**
+     * Initiates the database with an admin user with all authorities.
+     */
     @PostConstruct
     private void initUsers() {
+        List<GrantedAuthority> roles = new ArrayList<>();
+
+        for (Roles role : Roles.values()) {
+            roles.add(new Role(role));
+        }
+
         User user = new User(
             "admin",
             "admin@tudelft.nl",
             encryptPassword("pwd"),
             null,
-            List.of(
-                new Role(Roles.ROLE_ADMIN),
-                new Role(Roles.ROLE_STAFF),
-                new Role(Roles.ROLE_STUDENT)
-            )
+            roles
         );
 
         userRepository.saveAndFlush(user);

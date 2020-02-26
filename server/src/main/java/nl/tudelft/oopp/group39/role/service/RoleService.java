@@ -18,15 +18,6 @@ public class RoleService {
     public RoleService() {
     }
 
-    @PostConstruct
-    private void initRoles() {
-        for (Roles role : Roles.values()) {
-            roleRepository.save(new Role(role));
-        }
-        roleRepository.flush();
-        System.out.println("[SEED] Roles created");
-    }
-
     public Role readRole(Roles role) {
         return roleRepository.findByRole(role.name());
     }
@@ -37,5 +28,17 @@ public class RoleService {
 
     public List<Role> listRoles() {
         return roleRepository.findAll();
+    }
+
+    /**
+     * Initiates the db with all the roles.
+     */
+    @PostConstruct
+    private void initRoles() {
+        for (Roles role : Roles.values()) {
+            roleRepository.save(new Role(role));
+        }
+        roleRepository.flush();
+        System.out.println("[SEED] Roles created");
     }
 }

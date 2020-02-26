@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import nl.tudelft.oopp.group39.role.entity.Role;
 import org.hibernate.annotations.LazyGroup;
 import org.springframework.data.annotation.Transient;
@@ -21,7 +22,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
+@Table(name = User.TABLE_NAME)
 public class User implements UserDetails {
+    public static final String TABLE_NAME = "users";
+
     @Id
     private String username;
     private String email;
@@ -51,7 +55,13 @@ public class User implements UserDetails {
      * @param roles    Roles of the user.
      * @param image    Image of the user.
      */
-    public User(String username, String email, String password, Blob image, List<GrantedAuthority> roles) {
+    public User(
+        String username,
+        String email,
+        String password,
+        Blob image,
+        List<GrantedAuthority> roles
+    ) {
         this.username = username;
         this.email = email;
         this.password = password;

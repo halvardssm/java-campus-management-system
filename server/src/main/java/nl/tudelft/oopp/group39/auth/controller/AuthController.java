@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AuthController {
+    public static final String REST_MAPPING = "/authenticate";
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -26,8 +27,16 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<?> createToken(@RequestBody JwtRequest jwtRequest) throws BadAuthException {
+    /**
+     * Endpoint to receive a JWT for the user if present.
+     *
+     * @param jwtRequest An object with username and password
+     * @return A JWT string
+     * @throws BadAuthException Is thrown when the username or password is incorrect
+     */
+    @PostMapping(REST_MAPPING)
+    public ResponseEntity<?> createToken(@RequestBody JwtRequest jwtRequest)
+        throws BadAuthException {
         try {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 jwtRequest.getUsername(),

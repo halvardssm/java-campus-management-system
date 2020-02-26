@@ -17,28 +17,64 @@ public class JwtService {
     @Value("${jwt.token.secret}")
     private String secret;
 
+    /**
+     * Decrypts the username.
+     *
+     * @param jwt The JWT string
+     * @return The username
+     */
     public String decryptUsername(String jwt) {
         return decrypt(jwt, Claims::getSubject);
     }
 
+    /**
+     * Decrypts expiration property.
+     *
+     * @param jwt The JWT string
+     * @return The expiration date
+     */
     public Date decryptExpiration(String jwt) {
         return decrypt(jwt, Claims::getExpiration);
     }
 
+    /**
+     * Checks if the JWT is expired.
+     *
+     * @param jwt The JWT string
+     * @return If the JWT is expired
+     */
     private Boolean isExpired(String jwt) {
         return decryptExpiration(jwt).before(new Date());
     }
 
+    /**
+     * Validates a JWT string.
+     *
+     * @param jwt         The JWT string to validate
+     * @param userDetails The user to validate against
+     * @return If the JWT is valid
+     */
     public Boolean validate(String jwt, UserDetails userDetails) {
         String username = decryptUsername(jwt);
         return username.equals(userDetails.getUsername()) && !isExpired(jwt);
     }
 
+    /**
+     * Creates a signing key from the secret.
+     *
+     * @return The signing key
+     */
     private Key getSigningKey() {
         byte[] secretBytes = secret.getBytes();
         return Keys.hmacShaKeyFor(secretBytes);
     }
 
+    /**
+     * Encrypts the user and generates a JWT string.
+     *
+     * @param userDetails The user to generate the JWT from
+     * @return The JWT string
+     */
     public String encrypt(UserDetails userDetails) {
         Date now = new Date();
 
@@ -50,11 +86,25 @@ public class JwtService {
             .compact();
     }
 
+    /**
+     * Decrypts a claim of a JWT.
+     *
+     * @param jwt      The JWT string
+     * @param resolver The claim to decrypt
+     * @param <T>      The type of the decrypted claim
+     * @return The decrypted claim
+     */
     public <T> T decrypt(String jwt, Function<Claims, T> resolver) {
         Claims claims = decryptAll(jwt);
         return resolver.apply(claims);
     }
 
+    /**
+     * Decrypts all properties of the JWT.
+     *
+     * @param jwt The JWT string
+     * @return All claims of a JWT
+     */
     private Claims decryptAll(String jwt) {
         return Jwts.parserBuilder()
             .setSigningKey(getSigningKey())
