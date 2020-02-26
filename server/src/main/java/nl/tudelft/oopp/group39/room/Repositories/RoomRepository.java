@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.room.Repositories;
 
+import nl.tudelft.oopp.group39.facility.Entities.Facility;
 import nl.tudelft.oopp.group39.room.Entities.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,8 +15,8 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     //Returns a list of all rooms that match the inputted capacity param, the inputted onlyStaff param and the
     //inputted id param
-    @Query("SELECT u FROM Room u WHERE u.capacity >= :capacity and u.onlyStaff = :onlyStaff and u.id IN :id")
-    List<Room> filterRooms(@Param("capacity") int capacity, @Param("onlyStaff") boolean onlyStaff, @Param("id") List<Long> id);
+    @Query("SELECT u FROM Room u WHERE u.capacity >= :capacity and u.onlyStaff = :onlyStaff and u.buildingId IN :buildingId and u.facilities IN :facilities")
+    List<Room> filterRooms(@Param("capacity") int capacity, @Param("onlyStaff") boolean onlyStaff, @Param("buildingId") List<Long> buildingId, @Param("facilities") List<Facility> facilities);
 
     //Returns an array of all room ids
     @Query("SELECT id FROM Room")

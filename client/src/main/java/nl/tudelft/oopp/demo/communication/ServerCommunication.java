@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalTime;
 
 public class ServerCommunication {
 
@@ -33,23 +34,27 @@ public class ServerCommunication {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/room")).build();
         return HttpRequest(request);
     }
+
     public static String getFacilities() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/facility")).build();
         return HttpRequest(request);
     }
+
     public static String getRoomFacilities() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create("http://localhost:8080/roomfacility")).build();
         return HttpRequest(request);
     }
 
-    public static String getFilteredBuildings(String name, String location){//, LocalTime open, LocalTime closed) {
-        String urlString = "http://localhost:8080/building/filter?capacity=10&building="+name+"&location="+location;//+"&open="+open+"&closed="+closed;
+    public static String getFilteredBuildings(String name, String location, LocalTime open, LocalTime closed) {
+        String nOpen = open == null ? LocalTime.MAX.toString() : open.toString();
+        String nClosed = closed == null ? LocalTime.MIN.toString() : closed.toString();
+        String urlString = "http://localhost:8080/building?capacity=&building=" + name + "&location=" + location + "&open=" + nOpen + "&closed=" + nClosed;
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
         return HttpRequest(request);
     }
 
     public static String addBuilding(String name, String location, String description) {
-        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"name\": \""+name+ "\", \"location\":\""+ location+"\", \"description\":\""+ description +"\"}");
+        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"name\": \"" + name + "\", \"location\":\"" + location + "\", \"description\":\"" + description + "\"}");
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding).uri(URI.create("http://localhost:8080/building")).header("Content-Type", "application/json").build();
         return HttpRequest(request);
     }

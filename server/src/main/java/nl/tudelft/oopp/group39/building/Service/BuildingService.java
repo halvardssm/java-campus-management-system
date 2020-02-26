@@ -19,32 +19,21 @@ public class BuildingService {
     @Autowired
     private BuildingRepository buildingRepository;
 
-    public List<Building> filterBuildings(int capacity, String building, String location) {
-        LocalTime open = LocalTime.now().plusHours(2);
-        LocalTime closed = LocalTime.now().minusHours(2);
+    public List<Building> filterBuildings(int capacity, String building, String location, LocalTime open, LocalTime closed) {
         int[] buildingIds = buildingRepository.filterBuildingsOnLocationAndNameAndTime(building, location, open, closed);
-
         List<Long> resBuildingIds = new ArrayList<>();
         for (int buildingId : buildingIds) {
             if (roomRepository.getRoomsByBuildingId(buildingId).size() > 0) {
                 int maxCapacity = roomRepository.getMaxRoomCapacityByBuildingId(buildingId);
                 if (capacity <= maxCapacity) {
-                    resBuildingIds.add((long)buildingId);
+                    resBuildingIds.add((long) buildingId);
                 }
             }
         }
         return (resBuildingIds.size() > 0 ? buildingRepository.getAllBuildingsByIds(resBuildingIds) : new ArrayList<Building>());
     }
 
-    public void addBuilding(String name, String location, String description){//, LocalTime open, LocalTime closed) {
-        LocalTime open = LocalTime.now().minusHours(4);
-        LocalTime closed = LocalTime.now().plusHours(4);
-        int newId = buildingRepository.findAll().size() > 0 ? buildingRepository.getMaxId() + 1 : 0;
-        Building n = new Building(newId,name,location,description, open, closed);
-        createBuilding(n);
-    }
-
-    public List<Building> listBuildings(){
+    public List<Building> listBuildings() {
         return buildingRepository.findAll();
     }
 
@@ -57,18 +46,16 @@ public class BuildingService {
             Building rf = readBuilding(id);
             buildingRepository.delete(readBuilding(id));
             return rf;
-        }
-        catch (BuildingNotFoundException e) {
-            throw new BuildingNotFoundException((int)id);
+        } catch (BuildingNotFoundException e) {
+            throw new BuildingNotFoundException((int) id);
         }
     }
 
     public Building createBuilding(Building newBuilding) {
         try {
-            Building building = readBuilding((int)newBuilding.getId());
-            throw new BuildingExistsException((int)newBuilding.getId());
-        }
-        catch (BuildingNotFoundException e){
+            Building building = readBuilding((int) newBuilding.getId());
+            throw new BuildingExistsException((int) newBuilding.getId());
+        } catch (BuildingNotFoundException e) {
             buildingRepository.save(newBuilding);
             return newBuilding;
 
