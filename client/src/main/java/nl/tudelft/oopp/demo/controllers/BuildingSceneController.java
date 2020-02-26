@@ -2,12 +2,9 @@ package nl.tudelft.oopp.demo.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
-
-import java.time.LocalTime;
 
 public class BuildingSceneController {
     @FXML
@@ -73,7 +70,7 @@ public class BuildingSceneController {
 //                LocalTime open = timeOpenField.getT;
 //                LocalTime closed = timeClosedField;
 //                alert.setContentText(ServerCommunication.getFilteredBuildings(name, location,LocalTime.now(), LocalTime.now()));
-                alert.setContentText(ServerCommunication.getFilteredBuildings(name, location));
+                alert.setContentText(ServerCommunication.getFilteredBuildings(name, location, null, null));
                 break;
             case "newBuildingButton":
                 String nName = nameField2.getText();

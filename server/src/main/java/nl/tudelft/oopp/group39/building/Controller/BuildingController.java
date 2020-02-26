@@ -5,6 +5,7 @@ import nl.tudelft.oopp.group39.building.Service.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -15,8 +16,18 @@ public class BuildingController {
     private BuildingService service;
 
     @GetMapping("")
-    public List<Building> ListBuildings() {
-        return service.listBuildings();
+    public List<Building> ListBuildings(@RequestParam(required = false) Integer capacity, @RequestParam(required = false) String building, @RequestParam(required = false) String location, @RequestParam(required = false) String open, @RequestParam(required = false) String closed) {
+        capacity = capacity == null ? 0 : capacity;
+        LocalTime nOpen = open == null ? LocalTime.MIN : LocalTime.parse(open);
+        LocalTime nClosed = closed == null ? LocalTime.MAX : LocalTime.parse(closed);
+        building = building == null ? "" : building;
+        location = location == null ? "" : location;
+        boolean allEmpty = capacity == 0
+                && building.contentEquals("")
+                && location.contentEquals("")
+                && nOpen.compareTo(LocalTime.MIN) == 0 //opening time is equal to 23:59
+                && nClosed.compareTo(LocalTime.MAX) == 0;
+        return allEmpty ? service.listBuildings() : service.filterBuildings(capacity, building, location, nOpen, nClosed);
     }
 
     @DeleteMapping("/{id}")
@@ -27,14 +38,8 @@ public class BuildingController {
     @PostMapping("")
     @ResponseBody
     public String AddBuilding(@RequestBody Building building){//, @RequestParam LocalTime open, @RequestParam LocalTime closed) {
-        service.addBuilding(building.getName(), building.getLocation(), building.getDescription());//, open, closed);
+        service.createBuilding(building);//, open, closed);
         return "saved";
-    }
-
-    @GetMapping("/filter")
-    @ResponseBody
-    public List<Building> FilterBuildings(@RequestParam int capacity, @RequestParam String building, @RequestParam String location){//, @RequestParam LocalTime open, @RequestParam LocalTime closed) {
-        return service.filterBuildings(capacity,building,location);//, open, closed);
     }
 
     @GetMapping("/{id}")

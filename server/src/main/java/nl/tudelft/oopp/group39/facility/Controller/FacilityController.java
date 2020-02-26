@@ -1,7 +1,7 @@
 package nl.tudelft.oopp.group39.facility.Controller;
 
 import nl.tudelft.oopp.group39.facility.Entities.Facility;
-import nl.tudelft.oopp.group39.facility.FacilityService.FacilityService;
+import nl.tudelft.oopp.group39.facility.Service.FacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

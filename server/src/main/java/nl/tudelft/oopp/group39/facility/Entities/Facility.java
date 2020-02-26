@@ -22,8 +22,7 @@ public class Facility {
     public Facility() {
     }
 
-    public Facility(long id, String description, Set<Room> rooms) {
-        this.id = id;
+    public Facility(String description, Set<Room> rooms) {
         this.description = description;
         this.rooms = rooms == null ? new HashSet<>() : rooms;
     }
@@ -38,6 +37,10 @@ public class Facility {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setRooms(Set<Room> rooms) {
+        this.rooms = rooms.size() == 0 ? new HashSet<>() : rooms;
     }
 
     @Override

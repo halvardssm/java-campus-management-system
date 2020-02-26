@@ -8,7 +8,7 @@ import java.time.LocalTime;
 @Table(name = "buildings")
 public class Building {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String name;
@@ -26,8 +26,7 @@ public class Building {
     public Building() {
     }
 
-    public Building(long id, String name, String location, String description, LocalTime open, LocalTime closed) {
-        this.id = id;
+    public Building(String name, String location, String description, LocalTime open, LocalTime closed) {
         this.name = name;
         this.location = location;
         this.description = description;
