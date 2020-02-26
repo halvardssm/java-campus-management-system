@@ -8,7 +8,6 @@ import nl.tudelft.oopp.group39.role.entity.Role;
 import nl.tudelft.oopp.group39.role.enums.Roles;
 import nl.tudelft.oopp.group39.user.entity.User;
 import nl.tudelft.oopp.group39.user.service.UserService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +28,11 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        userService.createUser(testUser);
-    }
-
-    @AfterEach
-    void tearDown() {
         for (User user : userService.listUsers()) {
             userService.deleteUser(user.getUsername());
         }
+
+        userService.createUser(testUser);
     }
 
     @Test

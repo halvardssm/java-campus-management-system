@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.group39.auth.entity;
 
 import java.io.Serializable;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JwtRequest implements Serializable {
     private String username;
     private String password;
