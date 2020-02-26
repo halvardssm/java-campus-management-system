@@ -5,10 +5,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Text?>
 <?import java.net.URL?>
-<BorderPane xmlns:fx="http://javafx.com/fxml">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="nl.tudelft.oopp.group39.controllers.LoginController">
     <top>
         <HBox styleClass="bar" spacing="10">
-            <padding><Insets top="15" right="12" bottom="15" left="12"/></padding>
+            <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
             <Text id="title" text="Some Name"/>
         </HBox>
     </top>
@@ -29,7 +29,7 @@
             <Label styleClass="labeltext" text="Username:"
                    GridPane.columnIndex="0" GridPane.rowIndex="1"/>
 
-            <TextField
+            <TextField fx:id="usernameField"
                     GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
             <Label styleClass="labeltext" text="Password:"
@@ -38,24 +38,24 @@
             <PasswordField fx:id="passwordField"
                            GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-            <Button styleClass="buttons" id="signin" text="Sign In"
+            <Button styleClass="buttons" id="big" text="Sign In" onAction="#login"
                     GridPane.columnIndex="1" GridPane.rowIndex = "3"/>
 
             <Text text="Don't have an account yet?"
                   GridPane.columnIndex="0" GridPane.rowIndex="5"/>
 
-            <Button styleClass="buttons" id="signup" text="Sign Up"
+            <Button fx:id="signupbtn" styleClass="buttons" id="small" text="Sign Up" onAction="#switchSignup"
                     GridPane.columnIndex="1" GridPane.rowIndex = "5"/>
 
         </GridPane>
     </center>
     <bottom>
         <HBox styleClass="bar" spacing="10">
-            <padding><Insets top="15" right="12" bottom="15" left="12"/></padding>
+            <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
             <Button id="backbtn" text="◀ Back"/>
         </HBox>
     </bottom>
     <stylesheets>
-        <URL value="@login.css" />
+        <URL value="@loginsignup.css" />
     </stylesheets>
 </BorderPane>
