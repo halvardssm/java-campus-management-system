@@ -1,15 +1,15 @@
 .bar {
-    -fx-background-color: #63bcff;
+    -fx-background-color: #00A6D6;
 }
 
 #title {
-    -fx-font-size: 18;
+    -fx-font-size: 20;
     -fx-font-weight: bold;
     -fx-fill: white;
 }
 
 .buttons {
-    -fx-background-color: #63bcff;
+    -fx-background-color: #00A6D6;
     -fx-text-fill: white;
     -fx-font-size: 12;
 }
