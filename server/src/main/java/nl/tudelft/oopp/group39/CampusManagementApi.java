@@ -9,12 +9,14 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class CampusManagementApi {
 
     /**
-     * The entrypoint for the CampusManagementApi.
+     * The entry point for the CampusManagementApi.
      *
      * @param args Array of args
      */
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(CampusManagementApi.class, args);
+        ConfigurableApplicationContext context;
+
+        context = SpringApplication.run(CampusManagementApi.class, args);
 
         context.getBean(DbSeeder.class).seedDatabase();
     }
