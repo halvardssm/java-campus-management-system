@@ -1,7 +1,7 @@
 package nl.tudelft.oopp.group39.config;
 
-import nl.tudelft.oopp.group39.auth.filter.JwtFilter;
-import nl.tudelft.oopp.group39.user.service.UserService;
+import nl.tudelft.oopp.group39.auth.filters.JwtFilter;
+import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
