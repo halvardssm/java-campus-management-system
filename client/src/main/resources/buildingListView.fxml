@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.RoomSceneController">
+   <top>
+      <AnchorPane prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
+         <Hyperlink layoutX="520.0" onAction="#toLogin" text="Login" textFill="WHITE" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
+            <font>
+               <Font size="25.0" />
+            </font>
+         </Hyperlink>
+         <Label layoutY="16.0" prefHeight="50.0" text="SomeName" textFill="WHITE" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0">
+            <font>
+               <Font size="25.0" />
+            </font>
+         </Label>
+      </AnchorPane>
+   </top>
+   <left>
+      <VBox alignment="CENTER" prefHeight="339.0" prefWidth="70.0" BorderPane.alignment="CENTER">
+         <Button mnemonicParsing="false" onAction="#addBuilding" text="Add Building" />
+         <Button mnemonicParsing="false" onAction="#removeBuilding" text="Remove All Buildings" />
+         <Button mnemonicParsing="false" onAction="#alertAllBuildings" text="Get All Buildings" />
+      </VBox>
+   </left>
+   <center>
+      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <FlowPane fx:id="flowPane" hgap="20.0" prefHeight="200.0" prefWidth="200.0" vgap="20.0" />
+      </ScrollPane>
+   </center>
+</BorderPane>
