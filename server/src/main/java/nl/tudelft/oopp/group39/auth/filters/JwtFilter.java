@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.auth.filters;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -32,33 +33,38 @@ public class JwtFilter extends OncePerRequestFilter {
         HttpServletResponse response,
         FilterChain filterChain
     ) throws ServletException, IOException {
-        String authHeader = request.getHeader(headerAuthorization);
+        try {
+            String authHeader = request.getHeader(headerAuthorization);
 
-        String username = null;
-        String jwt = null;
+            String username = null;
+            String jwt = null;
 
-        if (authHeader != null && authHeader.startsWith(headerBearer)) {
-            jwt = authHeader.substring(7);
-            username = jwtService.decryptUsername(jwt);
+            if (authHeader != null && authHeader.startsWith(headerBearer)) {
+                jwt = authHeader.substring(7);
+                username = jwtService.decryptUsername(jwt);
 
-            if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userService.loadUserByUsername(username);
+                if (SecurityContextHolder.getContext().getAuthentication() == null) {
+                    UserDetails userDetails = this.userService.loadUserByUsername(username);
 
-                if (jwtService.validate(jwt, userDetails)) {
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                        new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
+                    if (jwtService.validate(jwt, userDetails)) {
+                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                            new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities()
+                            );
+                        usernamePasswordAuthenticationToken.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request)
                         );
-                    usernamePasswordAuthenticationToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                    );
-                    SecurityContextHolder.getContext()
-                        .setAuthentication(usernamePasswordAuthenticationToken);
+                        SecurityContextHolder.getContext()
+                            .setAuthentication(usernamePasswordAuthenticationToken);
+                    }
                 }
             }
+        } catch (ExpiredJwtException e) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token Expired");
+        } finally {
+            filterChain.doFilter(request, response);
         }
-        filterChain.doFilter(request, response);
     }
 }
