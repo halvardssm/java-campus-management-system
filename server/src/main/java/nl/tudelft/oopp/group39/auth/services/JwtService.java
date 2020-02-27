@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
-    public static Integer tokenExpirationTime = 1000 * 3600;
+    public static final Integer tokenExpirationTime = 1000 * 3600;
 
     @Value("${jwt.token.secret}")
     private String secret;

@@ -29,6 +29,11 @@ public class AuthController {
 
     /**
      * Endpoint to receive a JWT for the user if present.
+     * Example of body:
+     * {
+     * "username": "test",
+     * "password": "password"
+     * }
      *
      * @param jwtRequest An object with username and password
      * @return A JWT string

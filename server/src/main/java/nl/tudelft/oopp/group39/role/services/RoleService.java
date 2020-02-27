@@ -18,11 +18,11 @@ public class RoleService {
     }
 
     public Role readRole(Roles role) {
-        return roleRepository.findByRole(role.name());
+        return roleRepository.findByRole(role);
     }
 
     public Role readRole(String role) {
-        return roleRepository.findByRole(role);
+        return roleRepository.findByRole(Roles.valueOf(role));
     }
 
     public List<Role> listRoles() {

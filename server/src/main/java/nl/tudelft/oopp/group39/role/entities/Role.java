@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.group39.role.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,17 +19,18 @@ public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Roles role;
 
     public Role() {
     }
 
     public Role(String role) {
-        this.role = role;
+        this.role = Roles.valueOf(role);
     }
 
     public Role(Roles role) {
-        this.role = role.name();
+        this.role = role;
     }
 
     public Long getId() {
@@ -38,12 +41,16 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
-    public void setAuthority(String role) {
+    @Override
+    public String getAuthority() {
+        return this.role.name();
+    }
+
+    public void setAuthority(Roles role) {
         this.role = role;
     }
 
-    @Override
-    public String getAuthority() {
+    public Roles getAuthorityAsRoles() {
         return this.role;
     }
 

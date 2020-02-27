@@ -19,7 +19,7 @@ class UserServiceTest {
         "test@tudelft.nl",
         "test",
         null,
-        List.of(new Role(Roles.ROLE_STUDENT))
+        List.of(new Role(Roles.STUDENT))
     );
 
     @Autowired

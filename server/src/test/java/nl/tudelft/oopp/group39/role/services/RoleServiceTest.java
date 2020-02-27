@@ -32,16 +32,16 @@ class RoleServiceTest {
 
     @Test
     void readRole() {
-        Role role = roleService.readRole(Roles.ROLE_ADMIN);
+        Role role = roleService.readRole(Roles.ADMIN);
 
-        Assertions.assertEquals(Roles.ROLE_ADMIN.name(), role.getAuthority());
+        Assertions.assertEquals(Roles.ADMIN.name(), role.getAuthority());
     }
 
     @Test
     void readRoleString() {
-        Role role = roleService.readRole(Roles.ROLE_ADMIN.name());
+        Role role = roleService.readRole(Roles.ADMIN.name());
 
-        Assertions.assertEquals(Roles.ROLE_ADMIN.name(), role.getAuthority());
+        Assertions.assertEquals(Roles.ADMIN.name(), role.getAuthority());
     }
 
     @Test
