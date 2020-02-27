@@ -1,11 +1,12 @@
 package nl.tudelft.oopp.group39.role.service;
 
 import java.util.List;
-import javax.annotation.PostConstruct;
 import nl.tudelft.oopp.group39.role.entity.Role;
 import nl.tudelft.oopp.group39.role.enums.Roles;
 import nl.tudelft.oopp.group39.role.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,12 +34,18 @@ public class RoleService {
     /**
      * Initiates the db with all the roles.
      */
-    @PostConstruct
-    private void initRoles() {
+    @EventListener(ApplicationReadyEvent.class)
+    public void initRoles() {
+        if (roleRepository.count() > 0) {
+            return;
+        }
+
         for (Roles role : Roles.values()) {
             roleRepository.save(new Role(role));
         }
+
         roleRepository.flush();
+
         System.out.println("[SEED] Roles created");
     }
 }

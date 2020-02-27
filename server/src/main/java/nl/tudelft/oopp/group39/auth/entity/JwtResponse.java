@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 public class JwtResponse implements Serializable {
     private String jwt;
 
+    public JwtResponse() {
+    }
+
     public JwtResponse(String jwt) {
         this.jwt = jwt;
     }

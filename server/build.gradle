@@ -1,47 +1,50 @@
 plugins {
-	id 'org.springframework.boot' version '2.2.4.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-	id 'org.asciidoctor.convert' version '1.5.8'
+    id 'org.springframework.boot' version '2.2.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'org.asciidoctor.convert' version '1.5.8'
 }
 
 mainClassName = 'nl.tudelft.oopp.group39.CampusManagementApi'
 
 configurations {
-	developmentOnly
-	runtimeClasspath {
-		extendsFrom developmentOnly
-	}
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
-	compile 'io.jsonwebtoken:jjwt-api:0.11.0'
-	runtime 'io.jsonwebtoken:jjwt-impl:0.11.0',
-			'io.jsonwebtoken:jjwt-jackson:0.11.0'
-	// or 'io.jsonwebtoken:jjwt-gson:0.11.0' for gson
+    compile 'io.jsonwebtoken:jjwt-api:0.11.0'
 
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtime 'io.jsonwebtoken:jjwt-impl:0.11.0'
+    runtime 'io.jsonwebtoken:jjwt-gson:0.11.0'
 
-	runtimeOnly 'mysql:mysql-connector-java'
-	runtimeOnly 'org.postgresql:postgresql'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-	// Local test database (in-memory)
-	implementation 'com.h2database:h2'
-	developmentOnly 'org.hibernate:hibernate-entitymanager'
+    runtimeOnly 'mysql:mysql-connector-java'
+    runtimeOnly 'org.postgresql:postgresql'
 
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
-	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-	testImplementation 'org.springframework.security:spring-security-test'
+    // Local test database (in-memory)
+    implementation 'com.h2database:h2'
+    developmentOnly 'org.hibernate:hibernate-entitymanager'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'io.jsonwebtoken:jjwt-impl:0.11.0'
+
 }
 
 asciidoctor {
-	inputs.dir snippetsDir
-	dependsOn test
+    inputs.dir snippetsDir
+    dependsOn test
 }
 

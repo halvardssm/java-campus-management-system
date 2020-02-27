@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.auth.config;
+package nl.tudelft.oopp.group39.config;
 
 import nl.tudelft.oopp.group39.auth.filter.JwtFilter;
 import nl.tudelft.oopp.group39.user.service.UserService;
