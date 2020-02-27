@@ -51,7 +51,7 @@ public class LandingPage extends Application {
         grid.add(picture, 1, 0 );
         grid.add(title, 1, 1, 2, 1);
         grid.add(desc, 1, 2,2,1);
-        grid.setStyle("-fx-background-color: #abdbff;");
+        grid.setStyle("-fx-background-color: rgba(0,166,214,0.29);");
         return grid;
     }
 
@@ -69,7 +69,7 @@ public class LandingPage extends Application {
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15, 12, 15, 12));
         hbox.setSpacing(10);
-        hbox.setStyle("-fx-background-color: #63bcff;");
+        hbox.setStyle("-fx-background-color: #00A6D6;");
         Text title = new Text("Some Title");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 28));
         title.setFill(Color.WHITE);
