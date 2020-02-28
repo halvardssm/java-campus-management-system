@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="nl.tudelft.oopp.demo.controllers.BuildingSceneController">
+      fx:controller="nl.tudelft.oopp.group39.controllers.MainSceneController">
 
     <Label text=""/>
     <Button fx:id="button1" text="Get all rooms." onAction="#getRoomsButton"/>
@@ -14,6 +14,9 @@
 
     <Label text="-------------------------------"/>
     <Button fx:id="button4" text="Get all buildings." onAction="#getBuildingsButton"/>
+
+    <Label text="-------------------------------"/>
+    <Button fx:id="button11" text="Get all users." onAction="#getUsersButton"/>
 
     <Label text="-------------------------------"/>
     <Label text="Filter Buildings"/>

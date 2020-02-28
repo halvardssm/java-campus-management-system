@@ -6,6 +6,8 @@ import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.repositories.FacilityRepository;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.repositories.RoomRepository;
+import nl.tudelft.oopp.group39.user.User;
+import nl.tudelft.oopp.group39.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +26,8 @@ public class DbSeedMap {
     private BuildingRepository buildingRepository;
     @Autowired
     private FacilityRepository facilityRepository;
+    @Autowired
+    private UserRepository userRepository;
 
 
     //To seed the database: type in cmd ->
@@ -34,6 +38,7 @@ public class DbSeedMap {
         db_seed_facilities();
         db_seed_buildings();
         db_seed_rooms();
+        db_seed_users();
         return "saved";
     }
 
@@ -82,5 +87,12 @@ public class DbSeedMap {
         rooms.clear();
         rooms.add(n);
         facilityRepository.getOne((long) 2).setRooms(rooms);
+    }
+
+    public void db_seed_users() {
+        User b = new User("1", "t", "t", null, null);
+        userRepository.save(b);
+        b = new User("2", "t", "t", null, null);
+        userRepository.save(b);
     }
 }
