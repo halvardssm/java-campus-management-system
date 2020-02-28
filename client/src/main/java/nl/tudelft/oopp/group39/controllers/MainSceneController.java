@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
-import nl.tudelft.oopp.demo.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
 import java.time.LocalTime;
 

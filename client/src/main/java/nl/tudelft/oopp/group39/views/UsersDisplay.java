@@ -18,7 +18,7 @@ public class UsersDisplay extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        URL xmlUrl = getClass().getResource("/buildingScene.fxml");
+        URL xmlUrl = getClass().getResource("/mainScene.fxml");
         loader.setLocation(xmlUrl);
         Parent root = loader.load();
 
