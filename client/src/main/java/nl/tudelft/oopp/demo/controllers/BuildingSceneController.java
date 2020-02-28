@@ -88,6 +88,9 @@ public class BuildingSceneController {
     }
 
     public String getTime(String time, boolean open) {
-        return open ? (time.contentEquals("") ? LocalTime.MAX.toString() : time) : (time.contentEquals("") ? LocalTime.MIN.toString() : time);
+        if (open) {
+            return time.contentEquals("") ? LocalTime.MAX.toString() : time;
+        }
+        return time.contentEquals("") ? LocalTime.MIN.toString() : time;
     }
 }

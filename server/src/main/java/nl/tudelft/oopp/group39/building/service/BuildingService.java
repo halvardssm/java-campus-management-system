@@ -64,7 +64,7 @@ public class BuildingService {
     }
 
     public Building updateBuilding(Building newBuilding, int id) throws BuildingNotFoundException {
-        return buildingRepository.findById((long) id) //Test if this is the problem, create own method
+        return buildingRepository.findById((long) id)
                 .map(building -> {
                     building.setName(newBuilding.getName());
                     building.setLocation(newBuilding.getLocation());
