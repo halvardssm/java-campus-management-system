@@ -5,8 +5,9 @@ import javax.persistence.*;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "buildings")
+@Table(name = Building.TABLE_NAME)
 public class Building {
+    public static final String TABLE_NAME = "buildings";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -9,14 +9,21 @@ import java.time.LocalTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/building")
+@RequestMapping(BuildingController.REST_MAPPING)
 public class BuildingController {
+    public static final String REST_MAPPING = "/building";
+
+    public static final String PARAM_CAPACITY = "capacity";
+    public static final String PARAM_OPEN = "open";
+    public static final String PARAM_CLOSED = "closed";
+    public static final String PARAM_BUILDING = "building";
+    public static final String PARAM_LOCATION = "location";
 
     @Autowired
-    private BuildingService service;
+    private BuildingService buildingService;
 
     @GetMapping("")
-    public List<Building> ListBuildings(@RequestParam(required = false) Integer capacity, @RequestParam(required = false) String building, @RequestParam(required = false) String location, @RequestParam(required = false) String open, @RequestParam(required = false) String closed) {
+    public List<Building> listBuildings(@RequestParam(required = false) Integer capacity, @RequestParam(required = false) String building, @RequestParam(required = false) String location, @RequestParam(required = false) String open, @RequestParam(required = false) String closed) {
         capacity = capacity == null ? 0 : capacity;
         LocalTime nOpen = open == null ? LocalTime.MIN : LocalTime.parse(open);
         LocalTime nClosed = closed == null ? LocalTime.MAX : LocalTime.parse(closed);
@@ -27,31 +34,31 @@ public class BuildingController {
                 && location.contentEquals("")
                 && nOpen.compareTo(LocalTime.MIN) == 0 //opening time is equal to 23:59
                 && nClosed.compareTo(LocalTime.MAX) == 0;
-        return allEmpty ? service.listBuildings() : service.filterBuildings(capacity, building, location, nOpen, nClosed);
-    }
-
-    @DeleteMapping("/{id}")
-    public void DeleteBuilding(@PathVariable int id) {
-        service.deleteBuilding(id);
+        return allEmpty ? buildingService.listBuildings() : buildingService.filterBuildings(capacity, building, location, nOpen, nClosed);
     }
 
     @PostMapping("")
     @ResponseBody
-    public String AddBuilding(@RequestBody Building building) {
-        service.createBuilding(building);
+    public String createBuilding(@RequestBody Building building) {
+        buildingService.createBuilding(building);//, open, closed);
         return "saved";
     }
 
     @GetMapping("/{id}")
     @ResponseBody
-    public Building ReadBuilding(@PathVariable int id) {
-        return service.readBuilding(id);
+    public Building readBuilding(@PathVariable int id) {
+        return buildingService.readBuilding(id);
     }
 
-    @PutMapping ("/{id}")
+    @PutMapping("/{id}")
     @ResponseBody
-    public Building updateBuilding(@RequestBody Building updated, @PathVariable int id) {//, @RequestParam LocalTime open, @RequestParam LocalTime closed)
-        return service.updateBuilding(updated, id);
+    public Building updateBuilding(@RequestBody Building updated, @PathVariable int id) {
+        return buildingService.updateBuilding(updated, id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteBuilding(@PathVariable int id) {
+        buildingService.deleteBuilding(id);
     }
 
 }
