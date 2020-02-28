@@ -15,7 +15,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.stage.Stage;
-import netscape.javascript.JSObject;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
 public class BuildingSceneController {
