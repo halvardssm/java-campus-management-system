@@ -1,7 +1,7 @@
-package nl.tudelft.oopp.group39.building.Controller;
+package nl.tudelft.oopp.group39.building.controller;
 
-import nl.tudelft.oopp.group39.building.Entities.Building;
-import nl.tudelft.oopp.group39.building.Service.BuildingService;
+import nl.tudelft.oopp.group39.building.entities.Building;
+import nl.tudelft.oopp.group39.building.service.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

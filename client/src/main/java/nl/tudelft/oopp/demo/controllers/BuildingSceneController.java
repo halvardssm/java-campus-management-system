@@ -26,8 +26,6 @@ public class BuildingSceneController {
     @FXML
     private TextField timeClosedField;
     @FXML
-    private TextField capacityFieldNew;
-    @FXML
     private TextField timeOpenFieldNew;
     @FXML
     private TextField timeClosedFieldNew;
@@ -70,7 +68,7 @@ public class BuildingSceneController {
             case "getFilteredBuilding":
                 String name = nameField.getText();
                 String location = locationField.getText();
-                String capacity = capacityFieldNew.getText().contentEquals("") ? "0" : capacityFieldNew.getText();
+                String capacity = capacityField.getText().contentEquals("") ? "0" : capacityField.getText();
                 String open = getTime(timeOpenField.getText(), true);
                 String closed = getTime(timeClosedField.getText(), false);
                 alert.setContentText(ServerCommunication.getFilteredBuildings(name, location, open, closed, capacity));
@@ -90,9 +88,6 @@ public class BuildingSceneController {
     }
 
     public String getTime(String time, boolean open) {
-        if (open) {
-            return time.contentEquals("") ? LocalTime.MAX.toString() : time;
-        }
-        return time.contentEquals("") ? LocalTime.MIN.toString() : time;
+        return open ? (time.contentEquals("") ? LocalTime.MAX.toString() : time) : (time.contentEquals("") ? LocalTime.MIN.toString() : time);
     }
 }
