@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.RoomSceneController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.BuildingSceneController">
    <top>
       <AnchorPane prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
          <Hyperlink layoutX="520.0" onAction="#toLogin" text="Login" textFill="WHITE" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
@@ -27,8 +27,8 @@
    </top>
    <left>
       <VBox alignment="CENTER" prefHeight="339.0" prefWidth="70.0" BorderPane.alignment="CENTER">
-         <Button mnemonicParsing="false" onAction="#addBuilding" text="Add Building" />
-         <Button mnemonicParsing="false" onAction="#removeBuilding" text="Remove All Buildings" />
+         <Button mnemonicParsing="false" onAction="#refreshBuildings" text="Refresh" />
+<!--         <Button mnemonicParsing="false" onAction="#removeBuilding" text="Remove All Buildings" />-->
          <Button mnemonicParsing="false" onAction="#alertAllBuildings" text="Get All Buildings" />
       </VBox>
    </left>
