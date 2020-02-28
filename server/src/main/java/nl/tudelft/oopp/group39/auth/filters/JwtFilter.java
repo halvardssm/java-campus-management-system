@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,8 +19,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
-    public static final String headerAuthorization = "Authorization";
-    public static final String headerBearer = "Bearer ";
 
     @Autowired
     private UserService userService;
@@ -34,12 +33,12 @@ public class JwtFilter extends OncePerRequestFilter {
         FilterChain filterChain
     ) throws ServletException, IOException {
         try {
-            String authHeader = request.getHeader(headerAuthorization);
+            String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
             String username;
             String jwt;
 
-            if (authHeader != null && authHeader.startsWith(headerBearer)) {
+            if (authHeader != null && authHeader.startsWith(JwtService.HEADER_BEARER)) {
                 jwt = authHeader.substring(7);
                 username = jwtService.decryptUsername(jwt);
 

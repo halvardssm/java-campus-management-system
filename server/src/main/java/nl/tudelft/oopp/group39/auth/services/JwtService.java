@@ -12,7 +12,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
-    public static final Integer tokenExpirationTime = 1000 * 3600;
+    public static final Integer TOKEN_EXPIRATION_TIME = 1000 * 3600;
+    public static final String HEADER_BEARER = "Bearer ";
 
     @Value("${jwt.token.secret}")
     private String secret;
@@ -81,7 +82,7 @@ public class JwtService {
         return Jwts.builder()
             .setSubject(userDetails.getUsername())
             .setIssuedAt(now)
-            .setExpiration(new Date(now.getTime() + tokenExpirationTime))
+            .setExpiration(new Date(now.getTime() + TOKEN_EXPIRATION_TIME))
             .signWith(getSigningKey())
             .compact();
     }

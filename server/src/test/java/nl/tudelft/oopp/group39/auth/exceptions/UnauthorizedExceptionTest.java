@@ -5,12 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BadAuthExceptionTest {
+class UnauthorizedExceptionTest {
 
     @Test
     public void exceptionTest() {
-        Assertions.assertThrows(BadAuthException.class, () -> {
-            throw new BadAuthException();
+        Assertions.assertThrows(UnauthorizedException.class, () -> {
+            throw new UnauthorizedException();
         });
     }
 }
