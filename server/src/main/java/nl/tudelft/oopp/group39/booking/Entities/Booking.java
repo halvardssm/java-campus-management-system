@@ -1,32 +1,33 @@
 package nl.tudelft.oopp.group39.booking.Entities;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
 @Table(name = "bookings")
 public class Booking {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long bookingId;
+    private long roomId;
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
     private long userId;
+    private String location;
 
     public Booking() {
     }
 
-    public Booking(long id, long bookingId, LocalDate date, LocalTime startTime, LocalTime endTime, long userId) {
-        this.id = id;
-        this.bookingId = bookingId;
+    public Booking(long roomId, LocalDate date, LocalTime startTime, LocalTime endTime, long userId, String location) {
+        this.roomId = roomId;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.userId = userId;
+        this.location = location;
 
     }
 
@@ -39,12 +40,12 @@ public class Booking {
         this.id = id;
     }
 
-    public long getBookingId() {
-        return bookingId;
+    public long getRoomId() {
+        return roomId;
     }
 
-    public void setBookingId(long bookingId) {
-        this.bookingId = bookingId;
+    public void setRoomId(long roomId) {
+        this.roomId = roomId;
     }
 
     public LocalDate getDate() {
@@ -79,6 +80,14 @@ public class Booking {
         this.userId = userId;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -89,10 +98,12 @@ public class Booking {
         }
         Booking booking = (Booking) o;
         return getId() == booking.getId() &&
-            getBookingId() == booking.getBookingId() &&
+            getRoomId() == booking.getRoomId() &&
             getUserId() == booking.getUserId() &&
             getDate().equals(booking.getDate()) &&
-            getStartTime().equals(booking.getStartTime()) &&
-            getEndTime().equals(booking.getEndTime());
+            getStartTime().compareTo(booking.getStartTime()) == 0 &&
+            getEndTime().compareTo(booking.getEndTime()) == 0 && //difference of time = 0
+            getLocation().equals(booking.getLocation());
     }
 }
+
