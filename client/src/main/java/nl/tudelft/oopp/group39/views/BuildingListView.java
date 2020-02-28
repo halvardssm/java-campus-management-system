@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
-public class RoomListView extends Application {
+public class BuildingListView extends Application {
 
     public static Stage window;
 

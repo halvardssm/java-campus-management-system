@@ -6,8 +6,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-
-
 public class ServerCommunication {
 
     private static HttpClient client = HttpClient.newBuilder().build();
