@@ -4,7 +4,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.LocalTime;
 
 public class ServerCommunication {
 
@@ -45,16 +44,14 @@ public class ServerCommunication {
         return HttpRequest(request);
     }
 
-    public static String getFilteredBuildings(String name, String location, LocalTime open, LocalTime closed) {
-        String nOpen = open == null ? LocalTime.MAX.toString() : open.toString();
-        String nClosed = closed == null ? LocalTime.MIN.toString() : closed.toString();
-        String urlString = "http://localhost:8080/building?capacity=&building=" + name + "&location=" + location + "&open=" + nOpen + "&closed=" + nClosed;
+    public static String getFilteredBuildings(String name, String location, String open, String closed, String capacity) {
+        String urlString = "http://localhost:8080/building?capacity=" + capacity + "&building=" + name + "&location=" + location + "&open=" + open + "&closed=" + closed;
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
         return HttpRequest(request);
     }
 
-    public static String addBuilding(String name, String location, String description) {
-        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"name\": \"" + name + "\", \"location\":\"" + location + "\", \"description\":\"" + description + "\"}");
+    public static String addBuilding(String name, String location, String description, String open, String closed) {
+        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"name\": \"" + name + "\", \"location\":\"" + location + "\", \"description\":\"" + description + "\", \"open\":\"" + open + "\", \"closed\":\"" + closed + "\"}");
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding).uri(URI.create("http://localhost:8080/building")).header("Content-Type", "application/json").build();
         return HttpRequest(request);
     }

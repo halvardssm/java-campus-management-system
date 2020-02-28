@@ -6,33 +6,39 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import nl.tudelft.oopp.demo.communication.ServerCommunication;
 
+import java.time.LocalTime;
+
 public class BuildingSceneController {
     @FXML
     private TextField nameField;
     @FXML
     private TextField locationField;
     @FXML
-    private TextField nameField2;
+    private TextField nameFieldNew;
     @FXML
-    private TextField locationField2;
+    private TextField locationFieldNew;
     @FXML
-    private TextField descriptionField;
-//    @FXML
-//    private TextField timeOpenField;
-//    @FXML
-//    private TextField timeClosedField;
+    private TextField descriptionFieldNew;
+    @FXML
+    private TextField capacityField;
+    @FXML
+    private TextField timeOpenField;
+    @FXML
+    private TextField timeClosedField;
+    @FXML
+    private TextField capacityFieldNew;
+    @FXML
+    private TextField timeOpenFieldNew;
+    @FXML
+    private TextField timeClosedFieldNew;
 
-//    @FXML
-//    private Button submitButton;
     /**
      * Handles clicking the button.
      */
     public void getFacilitiesButton() {
         buttonClicked("getFacilities");
     }
-    public void getRoomFacilitiesButton() {
-        buttonClicked("getRoomFacilities");
-    }
+
     public void getRoomsButton() {
         buttonClicked("getRooms");
     }
@@ -61,26 +67,32 @@ public class BuildingSceneController {
             case "getFacilities":
                 alert.setContentText(ServerCommunication.getFacilities());
                 break;
-            case "getRoomFacilities":
-                alert.setContentText(ServerCommunication.getRoomFacilities());
-                break;
             case "getFilteredBuilding":
                 String name = nameField.getText();
                 String location = locationField.getText();
-//                LocalTime open = timeOpenField.getT;
-//                LocalTime closed = timeClosedField;
-//                alert.setContentText(ServerCommunication.getFilteredBuildings(name, location,LocalTime.now(), LocalTime.now()));
-                alert.setContentText(ServerCommunication.getFilteredBuildings(name, location, null, null));
+                String capacity = capacityFieldNew.getText().contentEquals("") ? "0" : capacityFieldNew.getText();
+                String open = getTime(timeOpenField.getText(), true);
+                String closed = getTime(timeClosedField.getText(), false);
+                alert.setContentText(ServerCommunication.getFilteredBuildings(name, location, open, closed, capacity));
                 break;
             case "newBuildingButton":
-                String nName = nameField2.getText();
-                String nLocation = locationField2.getText();
-                String nDescr = descriptionField.getText();
-                alert.setContentText(ServerCommunication.addBuilding(nName, nLocation, nDescr));
+                String nName = nameFieldNew.getText();
+                String nLocation = locationFieldNew.getText();
+                String nDescr = descriptionFieldNew.getText();
+                String nOpen = getTime(timeOpenFieldNew.getText(), true);
+                String nClosed = getTime(timeClosedFieldNew.getText(), false);
+                alert.setContentText(ServerCommunication.addBuilding(nName, nLocation, nDescr, nOpen, nClosed));
                 break;
             default:
                 alert.setContentText("No such function");
         }
         alert.showAndWait();
+    }
+
+    public String getTime(String time, boolean open) {
+        if (open) {
+            return time.contentEquals("") ? LocalTime.MAX.toString() : time;
+        }
+        return time.contentEquals("") ? LocalTime.MIN.toString() : time;
     }
 }

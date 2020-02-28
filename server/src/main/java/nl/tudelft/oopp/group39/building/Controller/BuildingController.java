@@ -37,8 +37,8 @@ public class BuildingController {
 
     @PostMapping("")
     @ResponseBody
-    public String AddBuilding(@RequestBody Building building){//, @RequestParam LocalTime open, @RequestParam LocalTime closed) {
-        service.createBuilding(building);//, open, closed);
+    public String AddBuilding(@RequestBody Building building) {
+        service.createBuilding(building);
         return "saved";
     }
 
