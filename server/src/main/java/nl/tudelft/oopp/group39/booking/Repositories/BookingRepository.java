@@ -11,17 +11,23 @@ import java.util.List;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-    @Query("SELECT u.id FROM Booking u WHERE u.location LIKE CONCAT('%',:location,'%')")
-    int[] filterBookingsOnLocation(@Param("location") String location);
+    @Query("SELECT u.id FROM Booking u WHERE u.buildingId = :buildingId")
+    int[] filterBookingsOnLocation(@Param("buildingId") long buildingId);
 
-    @Query("SELECT u.id FROM Booking u WHERE u.location LIKE CONCAT('%',:location,'%') and u.roomId = :roomId")
-    int[] filterBookingsOnLocationAndRoomId(@Param("location") String location, @Param("roomId") long roomId);
+    @Query("SELECT u.id FROM Booking u WHERE u.buildingId = :buildingId and u.roomId = :roomId")
+    int[] filterBookingsOnLocationAndRoomId(@Param("buildingId") long buildingId, @Param("roomId") long roomId);
 
-    @Query("SELECT u.id FROM Booking u WHERE u.location LIKE CONCAT('%',:location,'%') and u.startTime <= :startTime and u.endTime >= :endTime and u.endTime>=u.startTime")
-    int[] filterBookingsOnLocationAndTime(@Param("location") String location, @Param("startTime") LocalTime startTime, @Param("endTime") LocalTime endTime);
+    @Query("SELECT u.id FROM Booking u WHERE u.userId = :userId")
+    int[] filterBookingsOnUserId(@Param("userId") long userId);
 
-    @Query("SELECT u FROM Booking u WHERE u.location LIKE CONCAT('%',:location,'%') and u.startTime <= :startTime and u.endTime >= :endTime and u.endTime>=u.startTime")
-    List<Long> filterBookingsOnLocationAndTimeList(@Param("location") String location, @Param("startTime") LocalTime startTime, @Param("endTime") LocalTime endTime);
+    @Query("SELECT u.id FROM Booking u WHERE u.startTime <= :startTime and u.endTime >= :endTime and u.endTime>=u.startTime")
+    int[] filterBookingsOnTime(@Param("startTime") LocalTime startTime, @Param("endTime") LocalTime endTime);
+
+    @Query("SELECT u.id FROM Booking u WHERE u.buildingId = :buildingId and u.startTime <= :startTime and u.endTime >= :endTime and u.endTime>=u.startTime")
+    int[] filterBookingsOnLocationAndTime(@Param("buildingId") long buildingId, @Param("startTime") LocalTime startTime, @Param("endTime") LocalTime endTime);
+
+    @Query("SELECT u FROM Booking u WHERE u.buildingId = :buildingId and u.startTime <= :startTime and u.endTime >= :endTime and u.endTime>=u.startTime")
+    List<Long> filterBookingsOnLocationAndTimeList(@Param("buildingId") long buildingId, @Param("startTime") LocalTime startTime, @Param("endTime") LocalTime endTime);
 
     //Returns an array with all the bookings in it
     @Query("SELECT id FROM Booking")

@@ -16,18 +16,18 @@ public class Booking {
     private LocalTime startTime;
     private LocalTime endTime;
     private long userId;
-    private String location;
+    private long buildingId;
 
     public Booking() {
     }
 
-    public Booking(long roomId, LocalDate date, LocalTime startTime, LocalTime endTime, long userId, String location) {
+    public Booking(long roomId, LocalDate date, LocalTime startTime, LocalTime endTime, long userId, long buildingId) {
         this.roomId = roomId;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.userId = userId;
-        this.location = location;
+        this.buildingId = buildingId;
 
     }
 
@@ -80,12 +80,12 @@ public class Booking {
         this.userId = userId;
     }
 
-    public String getLocation() {
-        return location;
+    public long getBuildingId() {
+        return buildingId;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setBuildingId(long buildingId) {
+        this.buildingId = buildingId;
     }
 
     @Override
@@ -103,7 +103,7 @@ public class Booking {
             getDate().equals(booking.getDate()) &&
             getStartTime().compareTo(booking.getStartTime()) == 0 &&
             getEndTime().compareTo(booking.getEndTime()) == 0 && //difference of time = 0
-            getLocation().equals(booking.getLocation());
+            getBuildingId() == booking.getBuildingId();
     }
 }
 
