@@ -18,7 +18,7 @@ public class SignupController {
     private TextField emailField ;
 
     @FXML
-    private TextField userIDField ;
+    private TextField netIDField ;
 
     @FXML
     private PasswordField passwordField ;
@@ -32,14 +32,13 @@ public class SignupController {
     @FXML
     private void signup() {
         String email = emailField.getText();
-        String user = userIDField.getText();
+        String netID = netIDField.getText();
         String password = passwordField.getText();
         String confirmpassword = confirmpasswordField.getText();
-        checkEmpty(email, user, password, confirmpassword);
-        isInt(user);
+        checkEmpty(email, netID, password, confirmpassword);
         isValid(email);
         checkPwd(password, confirmpassword);
-        System.out.println(email + user + password + confirmpassword);
+        System.out.println(email + netID + password + confirmpassword);
     }
 
     public boolean checkEmpty(String email, String userID, String pwd, String confirm){
@@ -59,18 +58,6 @@ public class SignupController {
         alert.showAndWait();
     }
 
-    public boolean isInt(String str){
-        try{
-            int id = Integer.parseInt(str);
-        }
-        catch(NumberFormatException nfe){
-            alertErr("Please provide a valid user ID");
-            return false;
-        }
-        return true;
-    }
-
-
     @FXML
     private void switchLogin(ActionEvent actionEvent) throws IOException {
         Stage currentstage = (Stage) loginbtn.getScene().getWindow();
@@ -79,11 +66,11 @@ public class SignupController {
     }
 
     public boolean isValid(String email) {
-        String emailRegex = "^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
+        String emailRegex = "[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+)*@(student.)?tudelft.nl$";
 
         Pattern pat = Pattern.compile(emailRegex);
         if (email == null || pat.matcher(email).matches() == false){
-            alertErr("Please provide a valid email address");
+            alertErr("Please provide a valid tudelft email address");
             return false;
         }
         else {

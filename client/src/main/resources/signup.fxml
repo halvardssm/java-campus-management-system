@@ -32,10 +32,10 @@
             <TextField fx:id="emailField"
                        GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-            <Label styleClass="labeltext" text="UserID:"
+            <Label styleClass="labeltext" text="NetID:"
                    GridPane.columnIndex="0" GridPane.rowIndex="2"/>
 
-            <TextField fx:id="userIDField"
+            <TextField fx:id="netIDField"
                        GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
             <Label styleClass="labeltext" text="Password:"
