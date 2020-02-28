@@ -59,7 +59,10 @@ public class UserController {
      * @return the updated user {@link User}.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> updateUser(@RequestBody User user, @PathVariable String id) {
+    public ResponseEntity<RestResponse<Object>> updateUser(
+        @RequestBody User user,
+        @PathVariable String id
+    ) {
         return RestResponse.create(service.updateUser(id, user));
     }
 

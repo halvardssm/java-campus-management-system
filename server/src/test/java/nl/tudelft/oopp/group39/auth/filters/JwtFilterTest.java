@@ -10,6 +10,7 @@ import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.role.entities.Role;
 import nl.tudelft.oopp.group39.role.enums.Roles;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.repositories.UserRepository;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +30,9 @@ class JwtFilterTest {
     UserService userService;
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     JwtService jwtService;
 
     @Autowired
@@ -37,11 +41,13 @@ class JwtFilterTest {
     @BeforeEach
     void setUp() {
         SecurityContextHolder.clearContext();
+        userRepository.deleteAll();
     }
 
     @AfterEach
     void tearDown() {
         SecurityContextHolder.clearContext();
+        userRepository.deleteAll();
     }
 
     @Test
