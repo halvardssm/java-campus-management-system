@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.user.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -115,24 +116,28 @@ public class User implements UserDetails {
 
     @Override
     @Transient
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
     @Transient
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
     @Transient
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
     @Transient
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
     }

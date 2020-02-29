@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.role.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -50,6 +51,7 @@ public class Role implements GrantedAuthority {
         this.role = role;
     }
 
+    @JsonIgnore
     public Roles getAuthorityAsRoles() {
         return this.role;
     }
