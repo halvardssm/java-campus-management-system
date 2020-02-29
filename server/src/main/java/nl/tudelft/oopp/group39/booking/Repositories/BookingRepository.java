@@ -11,21 +11,28 @@ import java.util.List;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
+
+    //Returns an array with bookings from a chosen building
     @Query("SELECT u.id FROM Booking u WHERE u.buildingId = :buildingId")
     int[] filterBookingsOnLocation(@Param("buildingId") long buildingId);
 
+    //Returns an array with bookings from a chosen room in a chosen building
     @Query("SELECT u.id FROM Booking u WHERE u.buildingId = :buildingId and u.roomId = :roomId")
     int[] filterBookingsOnLocationAndRoomId(@Param("buildingId") long buildingId, @Param("roomId") long roomId);
 
+    //Returns an array with bookings from a chosen user
     @Query("SELECT u.id FROM Booking u WHERE u.userId = :userId")
     int[] filterBookingsOnUserId(@Param("userId") long userId);
 
+    //Returns an array with bookings with a certain start/end-times
     @Query("SELECT u.id FROM Booking u WHERE u.startTime <= :startTime and u.endTime >= :endTime and u.endTime>=u.startTime")
     int[] filterBookingsOnTime(@Param("startTime") LocalTime startTime, @Param("endTime") LocalTime endTime);
 
+    //Returns an array with bookings from a certain building with certain start/end-times
     @Query("SELECT u.id FROM Booking u WHERE u.buildingId = :buildingId and u.startTime <= :startTime and u.endTime >= :endTime and u.endTime>=u.startTime")
     int[] filterBookingsOnLocationAndTime(@Param("buildingId") long buildingId, @Param("startTime") LocalTime startTime, @Param("endTime") LocalTime endTime);
 
+    //Returns a list with bookings from a certain building with certain start/end-times
     @Query("SELECT u FROM Booking u WHERE u.buildingId = :buildingId and u.startTime <= :startTime and u.endTime >= :endTime and u.endTime>=u.startTime")
     List<Long> filterBookingsOnLocationAndTimeList(@Param("buildingId") long buildingId, @Param("startTime") LocalTime startTime, @Param("endTime") LocalTime endTime);
 

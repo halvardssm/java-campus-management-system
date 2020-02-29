@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/booking") //bij service class is dit @Service
+@RequestMapping("/booking")
 public class BookingController {
     //Moet alle incoming http requests handelen en doorverwijzen naar BookingService
 
