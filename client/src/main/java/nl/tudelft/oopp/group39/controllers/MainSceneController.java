@@ -2,11 +2,9 @@ package nl.tudelft.oopp.group39.controllers;
 
 import javafx.scene.control.Alert;
 import javafx.scene.layout.Region;
+import java.io.IOException;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.views.UsersDisplay;
-
-import java.io.IOException;
-import java.time.LocalTime;
 
 public class MainSceneController {
 
@@ -22,9 +20,6 @@ public class MainSceneController {
         alert.showAndWait();
     }
 
-    /**
-     * Handles clicking the button.
-     */
     public void goToMainScene() throws IOException {
         UsersDisplay.sceneHandler("/mainScene.fxml");
     }
@@ -43,12 +38,5 @@ public class MainSceneController {
 
     public void getUsersButton() {
         createAlert(ServerCommunication.getUsers());
-    }
-
-    public String getTime(String time, boolean open) {
-        if (open) {
-            return time.contentEquals("") ? LocalTime.MAX.toString() : time;
-        }
-        return time.contentEquals("") ? LocalTime.MIN.toString() : time;
     }
 }

@@ -7,17 +7,12 @@ import com.google.gson.JsonParser;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
-import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
-public class BuildingSceneController {
+public class BuildingSceneController extends MainSceneController {
 
     @FXML
     private FlowPane flowPane;
@@ -25,24 +20,8 @@ public class BuildingSceneController {
     @FXML
     private GridPane newBuilding;
 
-    /**
-     * Opens login window.
-     *
-     * @throws IOException when not found.
-     */
-    public void toLogin() throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/mainScene.fxml"));
-
-        Stage login = new Stage();
-        login.setScene(new Scene(root));
-        login.show();
-    }
-
     public void refreshBuildings() {
-        Alert alert = (new Alert(Alert.AlertType.INFORMATION));
-
         flowPane.getChildren().clear();
-
         try {
             String room = ServerCommunication.getBuildings();
 
@@ -66,23 +45,16 @@ public class BuildingSceneController {
 
                 flowPane.getChildren().add(newBuilding);
             }
-            return;
         } catch (IOException e) {
-            alert.setContentText("Error: Wrong IO");
+            createAlert("Error: Wrong IO");
         }
-        alert.showAndWait();
     }
 
     public void alertAllBuildings() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-        alert.setTitle("Users shown.");
-        alert.setHeaderText(null);
         try {
-            alert.setContentText(ServerCommunication.getBuildings());
+            createAlert("Users shown.",ServerCommunication.getBuildings());
         } catch (Exception e) {
-            alert.setContentText("Error Occurred.");
+            createAlert("Error Occurred.");
         }
-        alert.showAndWait();
     }
 }
