@@ -1,7 +1,7 @@
 image: gradle:6.1.1-jdk13
 
 services:
-  - mysql:latest
+  - mysql:8.0.18
 
 stages:
   - build
