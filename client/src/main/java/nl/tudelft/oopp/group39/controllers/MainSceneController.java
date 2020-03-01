@@ -5,7 +5,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.views.UsersDisplay;
 
+import java.io.IOException;
 import java.time.LocalTime;
 
 public class MainSceneController {
@@ -29,10 +31,51 @@ public class MainSceneController {
     private TextField timeOpenFieldNew;
     @FXML
     private TextField timeClosedFieldNew;
+    @FXML
+    private TextField updateBuildingField;
+
+    @FXML
+    private TextField updateRoomField;
+    @FXML
+    private TextField roomBuildingIdField;
+    @FXML
+    private TextField roomCapacityField;
+    //    @FXML
+//    private ComboBox<String> roomOnlyStaffField;
+    @FXML
+    private TextField roomDescriptionField;
+//    @FXML
+//    private ComboBox<String> roomFacilitiesBox;
 
     /**
      * Handles clicking the button.
      */
+
+//    @FXML
+//    public ComboBox<String> getVal() {
+//        List<String> test = Arrays.asList(ServerCommunication.getFacilities());
+//        ObservableList<String> test2 = FXCollections.observableList(test);
+//        ComboBox<String> co = new ComboBox<String>();
+//        co.setItems(test2);
+//        return co;
+//        List<String> test = Arrays.asList(ServerCommunication.getFacilities());
+//        ObservableList<String> test2 = FXCollections.observableList(test);
+//        System.out.println(test2);
+////        roomFacilitiesBox.getItems().addAll(test2);
+//        roomFacilitiesBox.getItems().setAll("a","b","c");
+//    }
+    public void goToBuildingScene() throws IOException {
+        UsersDisplay.sceneHandler("/buildingScene.fxml");
+    }
+
+    public void goToRoomScene() throws IOException {
+        UsersDisplay.sceneHandler("/roomScene.fxml");
+    }
+
+    public void goToMainScene() throws IOException {
+        UsersDisplay.sceneHandler("/mainScene.fxml");
+    }
+
     public void getFacilitiesButton() {
         buttonClicked("getFacilities");
     }
@@ -55,6 +98,18 @@ public class MainSceneController {
 
     public void getUsersButton() {
         buttonClicked("getUsers");
+    }
+
+    public void updateBuildingButton() {
+        buttonClicked("updateBuilding");
+    }
+
+    public void newRoomButton() {
+        buttonClicked("newRoom");
+    }
+
+    public void updateRoomButton() {
+        buttonClicked("updateRoom");
     }
 
     public void buttonClicked(String function) {
@@ -87,6 +142,32 @@ public class MainSceneController {
                 String nOpen = getTime(timeOpenFieldNew.getText(), true);
                 String nClosed = getTime(timeClosedFieldNew.getText(), false);
                 alert.setContentText(ServerCommunication.addBuilding(nName, nLocation, nDescr, nOpen, nClosed));
+                break;
+            case "updateBuilding":
+                String uName = nameFieldNew.getText();
+                String uLocation = locationFieldNew.getText();
+                String uDescr = descriptionFieldNew.getText();
+                String uOpen = getTime(timeOpenFieldNew.getText(), true);
+                String uClosed = getTime(timeClosedFieldNew.getText(), false);
+                String uId = updateBuildingField.getText().contentEquals("") ? "1" : updateBuildingField.getText();
+                alert.setContentText(ServerCommunication.updateBuilding(uName, uLocation, uDescr, uOpen, uClosed, uId));
+                break;
+            case "newRoom":
+                String buildingId = roomBuildingIdField.getText();
+                String roomCapacity = roomCapacityField.getText();
+//                String roomOnlyStaff = roomOnlyStaffField.getValue();
+                String roomDescription = roomDescriptionField.getText();
+//                String roomFacilities = roomFacilitiesBox.getValue().toString();
+                alert.setContentText(ServerCommunication.addRoom(buildingId, roomCapacity, roomDescription));
+                break;
+            case "updateRoom":
+                String uBuildingId = roomBuildingIdField.getText();
+                String uRoomCapacity = roomCapacityField.getText();
+//                String uRoomOnlyStaff = descriptionFieldNew.getText();
+                String uRoomDescription = roomDescriptionField.getText();
+//                String uRoomFacilities = getTime(timeClosedFieldNew.getText(), false);
+                String uIdRoom = updateRoomField.getText().contentEquals("") ? "1" : updateRoomField.getText();
+                alert.setContentText(ServerCommunication.updateRoom(uBuildingId, uRoomCapacity, uRoomDescription, uIdRoom));
                 break;
             case "getUsers":
                 alert.setContentText(ServerCommunication.getUsers());

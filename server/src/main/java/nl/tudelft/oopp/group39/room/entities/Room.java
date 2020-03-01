@@ -12,7 +12,7 @@ public class Room {
     public static final String TABLE_NAME = "rooms";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private long buildingId;

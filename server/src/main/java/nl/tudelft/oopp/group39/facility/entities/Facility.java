@@ -13,7 +13,7 @@ public class Facility {
     public static final String TABLE_NAME = "facilities";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String description;

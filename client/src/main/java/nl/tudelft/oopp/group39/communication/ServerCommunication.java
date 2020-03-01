@@ -53,7 +53,25 @@ public class ServerCommunication {
 
     public static String addBuilding(String name, String location, String description, String open, String closed) {
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"name\": \"" + name + "\", \"location\":\"" + location + "\", \"description\":\"" + description + "\", \"open\":\"" + open + "\", \"closed\":\"" + closed + "\"}");
-        HttpRequest request = HttpRequest.newBuilder().POST(newBuilding).uri(URI.create("http://localhost:8080/building")).header("Content-Type", "application/json").build();
+        HttpRequest request = HttpRequest.newBuilder().POST(newBuilding).uri(URI.create("http://localhost:8080/building/")).header("Content-Type", "application/json").build();
+        return HttpRequest(request);
+    }
+
+    public static String addRoom(String buildingId, String roomCapacity, String roomDescription) {
+        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"buildingId\": \"" + buildingId + "\", \"capacity\":\"" + roomCapacity + "\", \"description\":\"" + roomDescription + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().POST(newBuilding).uri(URI.create("http://localhost:8080/room/")).header("Content-Type", "application/json").build();
+        return HttpRequest(request);
+    }
+
+    public static String updateRoom(String buildingId, String roomCapacity, String roomDescription, String id) {
+        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"buildingId\": \"" + buildingId + "\", \"capacity\":\"" + roomCapacity + "\", \"description\":\"" + roomDescription + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding).uri(URI.create("http://localhost:8080/room/" + id)).header("Content-Type", "application/json").build();
+        return HttpRequest(request);
+    }
+
+    public static String updateBuilding(String name, String location, String description, String open, String closed, String id) {
+        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"name\": \"" + name + "\", \"location\":\"" + location + "\", \"description\":\"" + description + "\", \"open\":\"" + open + "\", \"closed\":\"" + closed + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding).uri(URI.create("http://localhost:8080/building/" + id)).header("Content-Type", "application/json").build();
         return HttpRequest(request);
     }
 
