@@ -33,37 +33,19 @@ public class MainSceneController {
     private TextField timeClosedFieldNew;
     @FXML
     private TextField updateBuildingField;
-
     @FXML
     private TextField updateRoomField;
     @FXML
     private TextField roomBuildingIdField;
     @FXML
     private TextField roomCapacityField;
-    //    @FXML
-//    private ComboBox<String> roomOnlyStaffField;
     @FXML
     private TextField roomDescriptionField;
-//    @FXML
-//    private ComboBox<String> roomFacilitiesBox;
-
     /**
      * Handles clicking the button.
      */
 
-//    @FXML
-//    public ComboBox<String> getVal() {
-//        List<String> test = Arrays.asList(ServerCommunication.getFacilities());
-//        ObservableList<String> test2 = FXCollections.observableList(test);
-//        ComboBox<String> co = new ComboBox<String>();
-//        co.setItems(test2);
-//        return co;
-//        List<String> test = Arrays.asList(ServerCommunication.getFacilities());
-//        ObservableList<String> test2 = FXCollections.observableList(test);
-//        System.out.println(test2);
-////        roomFacilitiesBox.getItems().addAll(test2);
-//        roomFacilitiesBox.getItems().setAll("a","b","c");
-//    }
+
     public void goToBuildingScene() throws IOException {
         UsersDisplay.sceneHandler("/buildingScene.fxml");
     }
@@ -155,17 +137,13 @@ public class MainSceneController {
             case "newRoom":
                 String buildingId = roomBuildingIdField.getText();
                 String roomCapacity = roomCapacityField.getText();
-//                String roomOnlyStaff = roomOnlyStaffField.getValue();
                 String roomDescription = roomDescriptionField.getText();
-//                String roomFacilities = roomFacilitiesBox.getValue().toString();
                 alert.setContentText(ServerCommunication.addRoom(buildingId, roomCapacity, roomDescription));
                 break;
             case "updateRoom":
                 String uBuildingId = roomBuildingIdField.getText();
                 String uRoomCapacity = roomCapacityField.getText();
-//                String uRoomOnlyStaff = descriptionFieldNew.getText();
                 String uRoomDescription = roomDescriptionField.getText();
-//                String uRoomFacilities = getTime(timeClosedFieldNew.getText(), false);
                 String uIdRoom = updateRoomField.getText().contentEquals("") ? "1" : updateRoomField.getText();
                 alert.setContentText(ServerCommunication.updateRoom(uBuildingId, uRoomCapacity, uRoomDescription, uIdRoom));
                 break;
