@@ -9,9 +9,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.regex.Pattern;
+import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
 public class SignupController {
     @FXML
@@ -35,19 +37,25 @@ public class SignupController {
         String netID = netIDField.getText();
         String password = passwordField.getText();
         String confirmpassword = confirmpasswordField.getText();
-        checkEmpty(email, netID, password, confirmpassword);
-        isValid(email);
-        checkPwd(password, confirmpassword);
+
+        if(checkEmpty(email, netID, password, confirmpassword) && isValid(email) && checkPwd(password, confirmpassword)){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Sign up");
+            alert.setHeaderText(null);
+            alert.setContentText(ServerCommunication.addUser(netID, email, password));
+            alert.showAndWait();
+        }
+
         System.out.println(email + netID + password + confirmpassword);
     }
 
     public boolean checkEmpty(String email, String userID, String pwd, String confirm){
         if(email.isEmpty() | userID.isEmpty()  | pwd.isEmpty() | confirm.isEmpty()){
             alertErr("Please fill in all the fields");
-            return true;
+            return false;
         }
         else {
-            return false;
+            return true;
         }
     }
 
