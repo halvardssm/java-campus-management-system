@@ -1,8 +1,12 @@
 package nl.tudelft.oopp.group39.building.entities;
 
 
-import javax.persistence.*;
 import java.time.LocalTime;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = Building.TABLE_NAME)
@@ -44,36 +48,36 @@ public class Building {
         return name;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public LocalTime getOpen() {
-        return open;
-    }
-
-    public LocalTime getClosed() {
-        return closed;
-    }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLocation() {
+        return location;
     }
 
     public void setLocation(String location) {
         this.location = location;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
 
+    public LocalTime getOpen() {
+        return open;
+    }
+
     public void setOpen(LocalTime open) {
         this.open = open;
+    }
+
+    public LocalTime getClosed() {
+        return closed;
     }
 
     public void setClosed(LocalTime closed) {

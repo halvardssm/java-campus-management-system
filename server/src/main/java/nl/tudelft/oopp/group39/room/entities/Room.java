@@ -1,10 +1,18 @@
 package nl.tudelft.oopp.group39.room.entities;
 
-import nl.tudelft.oopp.group39.facility.entities.Facility;
-
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import nl.tudelft.oopp.group39.facility.entities.Facility;
 
 @Entity
 @Table(name = Room.TABLE_NAME)
@@ -12,7 +20,7 @@ public class Room {
     public static final String TABLE_NAME = "rooms";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private long buildingId;
@@ -23,8 +31,14 @@ public class Room {
 
     private String description;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "rooms_facilities", joinColumns = {@JoinColumn(name = "room_id")}, inverseJoinColumns = {@JoinColumn(name = "facility_id")})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinTable(name = "rooms_facilities",
+        joinColumns = {
+            @JoinColumn(name = "room_id", referencedColumnName = "id",
+                nullable = false, updatable = false)},
+        inverseJoinColumns = {
+            @JoinColumn(name = "facility_id", referencedColumnName = "id",
+                nullable = false, updatable = false)})
     private Set<Facility> facilities = new HashSet<>();
 
     public Room() {
@@ -35,7 +49,7 @@ public class Room {
         this.capacity = capacity;
         this.onlyStaff = onlyStaff;
         this.description = description;
-        this.facilities = facilities == null ? new HashSet<>() : facilities;
+        this.facilities.addAll(facilities);
     }
 
     public long getId() {
@@ -46,36 +60,36 @@ public class Room {
         return buildingId;
     }
 
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public boolean getOnlyStaff() {
-        return onlyStaff;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Set<Facility> getFacilities() {
-        return facilities;
-    }
-
     public void setBuilding(long buildingId) {
         this.buildingId = buildingId;
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
 
+    public boolean getOnlyStaff() {
+        return onlyStaff;
+    }
+
     public void setOnlyStaff(boolean onlyStaff) {
         this.onlyStaff = onlyStaff;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<Facility> getFacilities() {
+        return facilities;
     }
 
     public void setFacilities(Set<Facility> facilities) {

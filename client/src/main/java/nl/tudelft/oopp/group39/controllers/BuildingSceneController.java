@@ -46,7 +46,8 @@ public class BuildingSceneController {
         try {
             String room = ServerCommunication.getBuildings();
 
-            JsonArray buildingArray = (JsonArray) JsonParser.parseString(room);
+            JsonObject body = ((JsonObject)JsonParser.parseString(room));
+            JsonArray buildingArray = body.getAsJsonArray("body");
 
             for (JsonElement building : buildingArray) {
                 newBuilding = FXMLLoader.load(getClass().getResource("/buildingCell.fxml"));
@@ -66,8 +67,6 @@ public class BuildingSceneController {
                 flowPane.getChildren().add(newBuilding);
             }
             return;
-        } catch (InterruptedException e) {
-            alert.setContentText("Error: Interrupted");
         } catch (IOException e) {
             alert.setContentText("Error: Wrong IO");
         }

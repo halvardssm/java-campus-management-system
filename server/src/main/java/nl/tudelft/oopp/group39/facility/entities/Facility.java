@@ -1,11 +1,16 @@
 package nl.tudelft.oopp.group39.facility.entities;
 
-import nl.tudelft.oopp.group39.room.entities.Room;
-
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import nl.tudelft.oopp.group39.room.entities.Room;
 
 @Entity
 @Table(name = Facility.TABLE_NAME)
@@ -13,16 +18,12 @@ public class Facility {
     public static final String TABLE_NAME = "facilities";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String description;
 
-    @ManyToMany(
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-            mappedBy = TABLE_NAME
-    )
+    @ManyToMany(mappedBy = "facilities", fetch = FetchType.LAZY)
     private Set<Room> rooms = new HashSet<>();
 
     public Facility() {
@@ -30,11 +31,15 @@ public class Facility {
 
     public Facility(String description, Set<Room> rooms) {
         this.description = description;
-        this.rooms = rooms == null ? new HashSet<>() : rooms;
+        this.rooms.addAll(rooms);
     }
 
     public long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -59,7 +64,7 @@ public class Facility {
         }
         Facility facility = (Facility) o;
         return getId() == facility.getId()
-                && Objects.equals(getDescription(), facility.getDescription())
-                && rooms.equals(facility.rooms);
+            && Objects.equals(getDescription(), facility.getDescription())
+            && rooms.equals(facility.rooms);
     }
 }
