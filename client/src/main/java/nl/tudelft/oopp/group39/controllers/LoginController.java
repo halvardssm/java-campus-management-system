@@ -10,9 +10,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
+import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
 public class LoginController {
     @FXML
@@ -28,7 +30,13 @@ public class LoginController {
     private void login() {
         String user = usernameField.getText();
         String password = passwordField.getText();
-        checkEmpty(user, password);
+        if(checkEmpty(user, password)){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Log in");
+            alert.setHeaderText(null);
+            alert.setContentText(ServerCommunication.userLogin(user, password));
+            alert.showAndWait();
+        }
         System.out.println(user + password);
     }
 
