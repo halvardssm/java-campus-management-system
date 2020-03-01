@@ -45,7 +45,6 @@ public class MainSceneController {
      * Handles clicking the button.
      */
 
-
     public void goToBuildingScene() throws IOException {
         UsersDisplay.sceneHandler("/buildingScene.fxml");
     }
