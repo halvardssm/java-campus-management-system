@@ -2,7 +2,9 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
-mainClassName = "nl.tudelft.oopp.demo.MainApp"
+application {
+    mainClassName = "nl.tudelft.oopp.demo.MainApp"
+}
 
 dependencies {
     testCompile("org.junit.jupiter:junit-jupiter-api:5.6.0")

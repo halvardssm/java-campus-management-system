@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.Region;
 import java.io.IOException;
