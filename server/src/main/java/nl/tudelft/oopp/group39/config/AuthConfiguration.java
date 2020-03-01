@@ -29,11 +29,15 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
-            .cors().disable()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.POST, "/authenticate").permitAll()
-            .antMatchers(HttpMethod.POST, "/user").permitAll()
+                .csrf().disable()
+                .cors().disable()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/authenticate").permitAll()
+                .antMatchers(HttpMethod.POST, "/user").permitAll()
+                .antMatchers(HttpMethod.POST, "/*").permitAll()
+                .antMatchers(HttpMethod.PUT, "/*").permitAll()
+                .antMatchers(HttpMethod.GET, "/*").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/*").permitAll()
             .anyRequest().authenticated()
             .and().exceptionHandling()
             .and().sessionManagement()
