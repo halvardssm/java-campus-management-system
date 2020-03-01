@@ -1,6 +1,11 @@
 package nl.tudelft.oopp.group39.config;
 
+import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.filters.JwtFilter;
+import nl.tudelft.oopp.group39.building.controller.BuildingController;
+import nl.tudelft.oopp.group39.facility.controller.FacilityController;
+import nl.tudelft.oopp.group39.room.controller.RoomController;
+import nl.tudelft.oopp.group39.user.controllers.UserController;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,15 +34,17 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .cors().disable()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/authenticate").permitAll()
-                .antMatchers(HttpMethod.POST, "/user").permitAll()
-                .antMatchers(HttpMethod.POST, "/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/**").permitAll()
+            .csrf().disable()
+            .cors().disable()
+            .authorizeRequests()
+            .antMatchers(HttpMethod.POST, AuthController.REST_MAPPING).permitAll()
+            .antMatchers(HttpMethod.POST, UserController.REST_MAPPING).permitAll()
+            .antMatchers(// Add here at the end the methods that should be available for the guest
+                HttpMethod.GET,
+                RoomController.REST_MAPPING,
+                FacilityController.REST_MAPPING,
+                BuildingController.REST_MAPPING
+            ).permitAll()
             .anyRequest().authenticated()
             .and().exceptionHandling()
             .and().sessionManagement()

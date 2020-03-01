@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.group39.seed;
 
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
@@ -12,10 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @RestController
 public class SeedController {

@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.group39.room.service;
 
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.service.FacilityService;
@@ -9,10 +12,6 @@ import nl.tudelft.oopp.group39.room.exceptions.RoomNotFoundException;
 import nl.tudelft.oopp.group39.room.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class RoomService {
@@ -45,14 +44,7 @@ public class RoomService {
 
     public Room updateRoom(Room newRoom, int id) throws RoomNotFoundException {
         return roomRepository.findById((long) id)
-                .map(room -> {
-                    room.setBuilding(newRoom.getBuilding());
-                    room.setCapacity(newRoom.getCapacity());
-                    room.setDescription(newRoom.getDescription());
-                    room.setOnlyStaff(newRoom.getOnlyStaff());
-                    room.setFacilities(newRoom.getFacilities());
-                    return roomRepository.save(room);
-                }).orElseThrow(() -> new RoomNotFoundException(id));
+            .map(room -> roomRepository.save(newRoom)).orElseThrow(() -> new RoomNotFoundException(id));
     }
 
     // Method to filter rooms based on capacity, a room being accessible to students or not, the facilities that
