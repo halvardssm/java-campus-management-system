@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.dbSeed;
+package nl.tudelft.oopp.group39.seed;
 
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @RestController
-public class DbSeedMap {
+public class SeedController {
 
     @Autowired
     private RoomRepository roomRepository;
