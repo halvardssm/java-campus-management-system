@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/facility")
+@RequestMapping(FacilityController.REST_MAPPING)
 public class FacilityController {
+
+    public static final String REST_MAPPING = "/facility";
 
     @Autowired
     private FacilityService service;
