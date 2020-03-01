@@ -37,14 +37,15 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
             .csrf().disable()
             .cors().disable()
             .authorizeRequests()
-            .antMatchers(HttpMethod.POST, AuthController.REST_MAPPING).permitAll()
-            .antMatchers(HttpMethod.POST, UserController.REST_MAPPING).permitAll()
-            .antMatchers(// Add here at the end the methods that should be available for the guest
-                HttpMethod.GET,
-                RoomController.REST_MAPPING,
-                FacilityController.REST_MAPPING,
-                BuildingController.REST_MAPPING
-            ).permitAll()
+//            .antMatchers(HttpMethod.POST, AuthController.REST_MAPPING).permitAll()
+//            .antMatchers(HttpMethod.POST, UserController.REST_MAPPING).permitAll()
+//            .antMatchers(// Add here at the end the methods that should be available for the guest
+//                HttpMethod.GET,
+//                RoomController.REST_MAPPING,
+//                FacilityController.REST_MAPPING,
+//                BuildingController.REST_MAPPING
+//            ).permitAll()
+            .antMatchers("/**/*").permitAll()
             .anyRequest().authenticated()
             .and().exceptionHandling()
             .and().sessionManagement()

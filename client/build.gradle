@@ -9,6 +9,7 @@ application {
 dependencies {
     testCompile("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.6.0")
+    implementation('com.google.code.gson:gson:2.8.6')
 }
 
 javafx {
