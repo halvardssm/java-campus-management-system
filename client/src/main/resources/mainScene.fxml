@@ -7,15 +7,15 @@
       fx:controller="nl.tudelft.oopp.group39.controllers.MainSceneController">
 
     <Label text=""/>
+    <Label text="Go to a different page:"/>
     <Button fx:id="button1" text="Go to room scene." onAction="#goToRoomScene"/>
+    <Label text=""/>
+    <Button fx:id="button4" text="Go to building scene." onAction="#goToBuildingScene"/>
 
     <Label text="-------------------------------"/>
     <Button fx:id="button3" text="Get all facilities." onAction="#getFacilitiesButton"/>
 
-    <Label text="-------------------------------"/>
-    <Button fx:id="button4" text="Go to building scene." onAction="#goToBuildingScene"/>
-
-    <Label text="-------------------------------"/>
+    <Label text=""/>
     <Button fx:id="button11" text="Get all users." onAction="#getUsersButton"/>
 
     <Label text=""/>

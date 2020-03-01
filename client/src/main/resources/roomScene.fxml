@@ -10,7 +10,7 @@
     <Button fx:id="button1" text="Get all rooms." onAction="#getRoomsButton"/>
 
     <Label text=""/>
-    <Button fx:id="button100" text="Go to room scene." onAction="#goToMainScene"/>
+    <Button fx:id="button100" text="Go to main scene." onAction="#goToMainScene"/>
 
     <Label text="-------------------------------"/>
     <Label text="Make a new Room."/>
