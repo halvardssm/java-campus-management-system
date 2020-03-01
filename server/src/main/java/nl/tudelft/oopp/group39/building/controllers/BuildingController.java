@@ -1,9 +1,9 @@
-package nl.tudelft.oopp.group39.building.controller;
+package nl.tudelft.oopp.group39.building.controllers;
 
 import java.time.LocalTime;
 import java.util.List;
 import nl.tudelft.oopp.group39.building.entities.Building;
-import nl.tudelft.oopp.group39.building.service.BuildingService;
+import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.facility.service;
+package nl.tudelft.oopp.group39.facility.services;
 
 import java.util.List;
 import java.util.Set;

@@ -31,8 +31,14 @@ public class Room {
 
     private String description;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "rooms_facilities", joinColumns = {@JoinColumn(name = "room_id")}, inverseJoinColumns = {@JoinColumn(name = "facility_id")})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinTable(name = "rooms_facilities",
+        joinColumns = {
+            @JoinColumn(name = "room_id", referencedColumnName = "id",
+                nullable = false, updatable = false)},
+        inverseJoinColumns = {
+            @JoinColumn(name = "facility_id", referencedColumnName = "id",
+                nullable = false, updatable = false)})
     private Set<Facility> facilities = new HashSet<>();
 
     public Room() {
@@ -43,7 +49,7 @@ public class Room {
         this.capacity = capacity;
         this.onlyStaff = onlyStaff;
         this.description = description;
-        this.facilities = facilities == null ? new HashSet<>() : facilities;
+        this.facilities.addAll(facilities);
     }
 
     public long getId() {

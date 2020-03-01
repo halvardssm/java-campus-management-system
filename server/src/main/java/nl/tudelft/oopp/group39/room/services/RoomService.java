@@ -1,11 +1,13 @@
-package nl.tudelft.oopp.group39.room.service;
+package nl.tudelft.oopp.group39.room.services;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
-import nl.tudelft.oopp.group39.facility.service.FacilityService;
+import nl.tudelft.oopp.group39.facility.services.FacilityService;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.exceptions.RoomExistsException;
 import nl.tudelft.oopp.group39.room.exceptions.RoomNotFoundException;
@@ -34,17 +36,22 @@ public class RoomService {
     public Room createRoom(Room newRoom) {
         try {
             Room room = readRoom((int) newRoom.getId());
-            throw new RoomExistsException((int) newRoom.getId());
+            throw new RoomExistsException((int) room.getId());
         } catch (RoomNotFoundException e) {
+            mapFacilitiesForRooms(newRoom);
             roomRepository.save(newRoom);
-            return newRoom;
 
+            return newRoom;
         }
     }
 
     public Room updateRoom(Room newRoom, int id) throws RoomNotFoundException {
         return roomRepository.findById((long) id)
-            .map(room -> roomRepository.save(newRoom)).orElseThrow(() -> new RoomNotFoundException(id));
+            .map(room -> {
+                mapFacilitiesForRooms(newRoom);
+
+                return roomRepository.save(newRoom);
+            }).orElseThrow(() -> new RoomNotFoundException(id));
     }
 
     // Method to filter rooms based on capacity, a room being accessible to students or not, the facilities that
@@ -69,11 +76,21 @@ public class RoomService {
         }
     }
 
-    //Function for updating a room
-//    public void updateRoom(long id, int capacity, boolean onlyStaff, Set<Facility> facilities, long buildingId, String description) {
-//        int[] facilityIds = roomFacilityRepository.getRoomFacilityIdsByRoomId(id);
-//        Room n = new Room(id,buildingId,capacity,onlyStaff,description, facilities);
-//        n = updateRoom(n, (int) id);
-//    }
+    /**
+     * Will map the roles of a user to the roles in the db.
+     *
+     * @param room A user to map roles for
+     */
+    private void mapFacilitiesForRooms(Room room) {
+        Set<Facility> facilities = new HashSet<>();
+        for (Facility facility : room.getFacilities()) {
+            Facility mappedFacility = facilityService.readFacility(facility.getId());
 
+            if (mappedFacility != null) {
+                facilities.add(mappedFacility);
+            }
+        }
+        room.getFacilities().clear();
+        room.getFacilities().addAll(facilities);
+    }
 }

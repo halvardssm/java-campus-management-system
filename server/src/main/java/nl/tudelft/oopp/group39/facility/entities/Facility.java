@@ -3,7 +3,6 @@ package nl.tudelft.oopp.group39.facility.entities;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,11 +23,7 @@ public class Facility {
 
     private String description;
 
-    @ManyToMany(
-        fetch = FetchType.LAZY,
-        cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-        mappedBy = TABLE_NAME
-    )
+    @ManyToMany(mappedBy = "facilities", fetch = FetchType.LAZY)
     private Set<Room> rooms = new HashSet<>();
 
     public Facility() {
@@ -36,7 +31,7 @@ public class Facility {
 
     public Facility(String description, Set<Room> rooms) {
         this.description = description;
-        this.rooms = rooms == null ? new HashSet<>() : rooms;
+        this.rooms.addAll(rooms);
     }
 
     public long getId() {

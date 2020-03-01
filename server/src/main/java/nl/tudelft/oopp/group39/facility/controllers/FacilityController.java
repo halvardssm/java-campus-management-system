@@ -1,8 +1,8 @@
-package nl.tudelft.oopp.group39.facility.controller;
+package nl.tudelft.oopp.group39.facility.controllers;
 
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
-import nl.tudelft.oopp.group39.facility.service.FacilityService;
+import nl.tudelft.oopp.group39.facility.services.FacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

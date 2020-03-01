@@ -1,11 +1,11 @@
-package nl.tudelft.oopp.group39.room.controller;
+package nl.tudelft.oopp.group39.room.controllers;
 
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.room.entities.Room;
-import nl.tudelft.oopp.group39.room.service.RoomService;
+import nl.tudelft.oopp.group39.room.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

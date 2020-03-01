@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.building.service;
+package nl.tudelft.oopp.group39.building.services;
 
 import java.time.LocalTime;
 import java.util.ArrayList;

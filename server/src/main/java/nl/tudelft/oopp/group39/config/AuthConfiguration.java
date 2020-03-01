@@ -2,9 +2,9 @@ package nl.tudelft.oopp.group39.config;
 
 import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.filters.JwtFilter;
-import nl.tudelft.oopp.group39.building.controller.BuildingController;
-import nl.tudelft.oopp.group39.facility.controller.FacilityController;
-import nl.tudelft.oopp.group39.room.controller.RoomController;
+import nl.tudelft.oopp.group39.building.controllers.BuildingController;
+import nl.tudelft.oopp.group39.facility.controllers.FacilityController;
+import nl.tudelft.oopp.group39.room.controllers.RoomController;
 import nl.tudelft.oopp.group39.user.controllers.UserController;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
