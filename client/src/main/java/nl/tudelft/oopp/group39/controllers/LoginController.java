@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
-public class LoginController {
+public class LoginController extends MainSceneController {
     @FXML
     private TextField usernameField ;
 
@@ -52,13 +52,5 @@ public class LoginController {
             return false;
         }
     }
-
-    @FXML
-    private void switchSignup(ActionEvent actionEvent) throws IOException {
-        Stage currentstage = (Stage) signupbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/signup.fxml"));
-        currentstage.setScene(new Scene(root, 700, 600));
-    }
-
 
 }

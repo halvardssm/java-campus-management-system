@@ -37,6 +37,14 @@ public class MainSceneController {
         UsersDisplay.sceneHandler("/buildingModifyScene.fxml");
     }
 
+    public void goToLoginScene() throws IOException {
+        UsersDisplay.sceneHandler("/login.fxml");
+    }
+
+    public void goToSignupScene() throws IOException {
+        UsersDisplay.sceneHandler("/signup.fxml");
+    }
+
 
     public void getFacilitiesButton() {
         createAlert(null, ServerCommunication.getFacilities());

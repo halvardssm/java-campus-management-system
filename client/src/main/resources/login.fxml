@@ -35,7 +35,7 @@
             <Text text="Don't have an account yet?"
                   GridPane.columnIndex="0" GridPane.rowIndex="5"/>
 
-            <Button fx:id="signupbtn" styleClass="buttons" id="small" text="Sign Up" onAction="#switchSignup"
+            <Button fx:id="signupbtn" styleClass="buttons" id="small" text="Sign Up" onAction="#goToSignupScene"
                     GridPane.columnIndex="1" GridPane.rowIndex = "5"/>
 
         </GridPane>

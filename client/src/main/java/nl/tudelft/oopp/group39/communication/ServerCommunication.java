@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.group39.communication;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -188,9 +190,12 @@ public class ServerCommunication {
         }
         else{
             System.out.println(response.body());
-            Gson gson = new Gson();
-            gson.fromJson(response.body(), JwtResponse.class);
+            // Gson gson = new Gson();
+            JsonObject body = (JsonObject) JsonParser.parseString(response.body());
+            String jwt = body.getAsJsonObject("body").getAsJsonObject("jwt").getAsString();
+            System.out.println(jwt);
             return "Logged in";
+
         }
     }
 }
