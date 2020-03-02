@@ -1,14 +1,12 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.views.UsersDisplay;
-
-import java.io.IOException;
 import java.time.LocalTime;
 
-public class RoomModifierController extends MainSceneController {
+public class BuildingModifierController extends MainSceneController {
 
     @FXML
     private TextField nameField;
@@ -32,14 +30,6 @@ public class RoomModifierController extends MainSceneController {
     private TextField timeClosedFieldNew;
     @FXML
     private TextField updateBuildingField;
-
-    public void goToBuildingScene() throws IOException {
-        UsersDisplay.sceneHandler("/buildingModifyScene.fxml");
-    }
-
-    public void goToRoomScene() throws IOException {
-        UsersDisplay.sceneHandler("/roomScene.fxml");
-    }
 
     public void getBuildingsButton() {
         createAlert(ServerCommunication.getBuildings());
@@ -83,5 +73,16 @@ public class RoomModifierController extends MainSceneController {
             return time.contentEquals("") ? LocalTime.MAX.toString() : time;
         }
         return time.contentEquals("") ? LocalTime.MIN.toString() : time;
+    }
+
+    public void removeBuildingButton(ActionEvent actionEvent) {
+
+        String id = updateBuildingField.getText();
+
+        id = id.contentEquals("") ? "1" : id;
+
+        ServerCommunication.removeBuilding(id);
+
+        getBuildingsButton();
     }
 }

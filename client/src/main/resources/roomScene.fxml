@@ -27,6 +27,7 @@
     <Label text="Update a Room."/>
     <TextField fx:id="updateRoomField" promptText="room id"/>
     <Button text="Submit" onAction="#updateRoomButton"/>
+    <Button text="Delete Room" onAction="#deleteRoomButton"/>
     <Label/>
     <Label/>
 

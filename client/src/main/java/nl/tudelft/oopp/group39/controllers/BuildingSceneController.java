@@ -24,9 +24,9 @@ public class BuildingSceneController extends MainSceneController {
     public void refreshBuildings() {
         flowPane.getChildren().clear();
         try {
-            String room = ServerCommunication.getBuildings();
+            String buildingString = ServerCommunication.getBuildings();
 
-            JsonObject body = ((JsonObject) JsonParser.parseString(room));
+            JsonObject body = ((JsonObject) JsonParser.parseString(buildingString));
             JsonArray buildingArray = body.getAsJsonArray("body");
 
 //            JsonArray buildingArray = (JsonArray) JsonParser.parseString(room);
