@@ -30,7 +30,7 @@ public class LoginController {
     private void login() {
         String user = usernameField.getText();
         String password = passwordField.getText();
-        if(checkEmpty(user, password)){
+        if(!checkEmpty(user, password)){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Log in");
             alert.setHeaderText(null);

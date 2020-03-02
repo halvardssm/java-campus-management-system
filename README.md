@@ -29,3 +29,13 @@ Add your own name (do not add the names for others!) to the section below.
 ## How to contribute to it
 
 ## Copyright / License (opt.)
+
+## Docker configuration
+
+docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=pwd -e MYSQL_DATABASE=oopp -v `pwd`/data:/var/lib/mysql --rm --name oopp-db mysql:latest
+
+## Get the make command 
+
+1. Download make-4.1-2-without-guile-w32-bin.zip from https://sourceforge.net/projects/ezwinports/
+2. Extract zip.
+3. Copy the contents to your Git\mingw64\ merging the folders, but do NOT overwrite/replace any existing files.
