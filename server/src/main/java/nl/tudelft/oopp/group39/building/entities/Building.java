@@ -1,12 +1,8 @@
 package nl.tudelft.oopp.group39.building.entities;
 
 
+import javax.persistence.*;
 import java.time.LocalTime;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = Building.TABLE_NAME)
@@ -42,6 +38,10 @@ public class Building {
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -100,4 +100,6 @@ public class Building {
         equals = equals && (building.closed == closed) && (id == building.id);
         return equals;
     }
+
+
 }

@@ -1,16 +1,16 @@
 package nl.tudelft.oopp.group39.controllers;
 
-import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.Region;
-import java.io.IOException;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.views.UsersDisplay;
+
+import java.io.IOException;
 
 public class MainSceneController {
 
     public void createAlert(String content) {
-        createAlert(null,content);
+        createAlert(null, content);
     }
 
     public void createAlert(String title, String content) {
@@ -33,8 +33,13 @@ public class MainSceneController {
         UsersDisplay.sceneHandler("/roomScene.fxml");
     }
 
+    public void goToAddBuilding() throws IOException {
+        UsersDisplay.sceneHandler("/buildingScene.fxml");
+    }
+
+
     public void getFacilitiesButton() {
-        createAlert(null,ServerCommunication.getFacilities());
+        createAlert(null, ServerCommunication.getFacilities());
     }
 
     public void getUsersButton() {

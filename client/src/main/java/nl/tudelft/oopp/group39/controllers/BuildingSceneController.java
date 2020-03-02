@@ -4,13 +4,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+
+import java.io.IOException;
 
 public class BuildingSceneController extends MainSceneController {
 
@@ -25,8 +26,10 @@ public class BuildingSceneController extends MainSceneController {
         try {
             String room = ServerCommunication.getBuildings();
 
-            JsonObject body = ((JsonObject)JsonParser.parseString(room));
+            JsonObject body = ((JsonObject) JsonParser.parseString(room));
             JsonArray buildingArray = body.getAsJsonArray("body");
+
+//            JsonArray buildingArray = (JsonArray) JsonParser.parseString(room);
 
             for (JsonElement building : buildingArray) {
                 newBuilding = FXMLLoader.load(getClass().getResource("/buildingCell.fxml"));
@@ -35,10 +38,10 @@ public class BuildingSceneController extends MainSceneController {
                 name.setText(((JsonObject) building).get("name").getAsString());
 
                 String bDetails = ((JsonObject) building).get("location").getAsString()
-                    + "\n" + ((JsonObject) building).get("description").getAsString()
-                    + "\n" + "Max. Capacity"
-                    + "\n" + "Opening times: " + ((JsonObject) building).get("open").getAsString()
-                    + " - " + ((JsonObject) building).get("closed").getAsString();
+                        + "\n" + ((JsonObject) building).get("description").getAsString()
+                        + "\n" + "Max. Capacity"
+                        + "\n" + "Opening times: " + ((JsonObject) building).get("open").getAsString()
+                        + " - " + ((JsonObject) building).get("closed").getAsString();
 
                 Label details = (Label) newBuilding.lookup("#bdetails");
                 details.setText(bDetails);
