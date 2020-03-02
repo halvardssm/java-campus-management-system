@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       xmlns="http://javafx.com/javafx"
-      fx:controller="nl.tudelft.oopp.group39.controllers.RoomModifierController">
+      fx:controller="nl.tudelft.oopp.group39.controllers.BuildingModifierController">
 
     <Label/>
     <Button text="Get all buildings." onAction="#getBuildingsButton"/>
@@ -49,6 +49,7 @@
     <Label text="Update a Building."/>
     <TextField fx:id="updateBuildingField" promptText="building id"/>
     <Button text="Submit" onAction="#updateBuildingButton"/>
+    <Button text = "Remove Building" onAction="#removeBuildingButton"/>
     <Label/>
     <Label/>
 

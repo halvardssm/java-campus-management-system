@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
@@ -43,6 +44,16 @@ public class RoomSceneController extends MainSceneController {
     }
 
     public void getRoomsButton() {
+        createAlert(ServerCommunication.getRooms());
+    }
+
+    public void deleteRoomButton(ActionEvent actionEvent) {
+        String id = updateRoomField.getText();
+
+        id = id.contentEquals("") ? "1" : id;
+
+        ServerCommunication.removeRoom(id);
+
         createAlert(ServerCommunication.getRooms());
     }
 }

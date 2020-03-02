@@ -107,6 +107,17 @@ public class ServerCommunication {
     }
 
 
+    public static void removeBuilding(String id) {
+        HttpRequest request = HttpRequest.newBuilder().DELETE().uri(URI.create(url + "building/" + id)).build();
+        HttpRequest(request);
+    }
+
+    public static void removeRoom(String id) {
+        HttpRequest request = HttpRequest.newBuilder().DELETE().uri(URI.create(url + "room/" + id)).build();
+        HttpRequest(request);
+    }
+
+
     /**
      * @return the body of a get request to the server.
      */
