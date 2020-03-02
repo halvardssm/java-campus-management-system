@@ -4,17 +4,17 @@
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       xmlns="http://javafx.com/javafx"
-      fx:controller="nl.tudelft.oopp.group39.controllers.TempSceneController">
+      fx:controller="nl.tudelft.oopp.group39.controllers.RoomModifierController">
 
-    <Label text=""/>
-    <Button fx:id="button4" text="Get all buildings." onAction="#getBuildingsButton"/>
+    <Label/>
+    <Button text="Get all buildings." onAction="#getBuildingsButton"/>
 
-    <Label text=""/>
-    <Button fx:id="button100" text="Go to main scene." onAction="#goToMainScene"/>
+    <Label/>
+    <Button text="Go to main scene." onAction="#goToMainScene"/>
 
     <Label text="-------------------------------"/>
     <Label text="Filter Buildings"/>
-    <Label text=""/>
+    <Label/>
     <Label text="Name to filter on."/>
     <TextField fx:id="nameField" promptText="name"/>
 
@@ -29,7 +29,7 @@
 
     <Label text="Closing time to filter on."/>
     <TextField fx:id="timeClosedField" promptText="00:00:00"/>
-    <Button fx:id="button10" text="Submit" onAction="#getFilteredBuildings"/>
+    <Button text="Submit" onAction="#getFilteredBuildings"/>
 
     <Label text="-------------------------------"/>
     <Label text="Make a new Building."/>
@@ -44,13 +44,13 @@
 
     <Label text="Closing time."/>
     <TextField fx:id="timeClosedFieldNew" promptText="00:00:00"/>
-    <Button fx:id="button" text="Submit" onAction="#newBuildingButton"/>
+    <Button text="Submit" onAction="#newBuildingButton"/>
 
     <Label text="Update a Building."/>
     <TextField fx:id="updateBuildingField" promptText="building id"/>
-    <Button fx:id="button33" text="Submit" onAction="#updateBuildingButton"/>
-    <Label text=""/>
-    <Label text=""/>
+    <Button text="Submit" onAction="#updateBuildingButton"/>
+    <Label/>
+    <Label/>
 
 </VBox>
 

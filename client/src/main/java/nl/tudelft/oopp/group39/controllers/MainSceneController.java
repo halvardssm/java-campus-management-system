@@ -34,7 +34,7 @@ public class MainSceneController {
     }
 
     public void goToAddBuilding() throws IOException {
-        UsersDisplay.sceneHandler("/buildingScene.fxml");
+        UsersDisplay.sceneHandler("/buildingModifyScene.fxml");
     }
 
 
