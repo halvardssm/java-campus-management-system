@@ -37,12 +37,12 @@ public class SignupController {
         String netID = netIDField.getText();
         String password = passwordField.getText();
         String confirmpassword = confirmpasswordField.getText();
-
+        String role = getRole(email);
         if(checkEmpty(email, netID, password, confirmpassword) && isValid(email) && checkPwd(password, confirmpassword)){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Sign up");
             alert.setHeaderText(null);
-            alert.setContentText(ServerCommunication.addUser(netID, email, password));
+            alert.setContentText(ServerCommunication.addUser(netID, email, password, role));
             alert.showAndWait();
         }
 
@@ -93,6 +93,15 @@ public class SignupController {
         }
         else{
             return true;
+        }
+    }
+
+    public String getRole(String email){
+        if(email.contains("student")){
+            return "STUDENT";
+        }
+        else{
+            return "STAFF";
         }
     }
 }
