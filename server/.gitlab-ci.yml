@@ -1,5 +1,8 @@
 image: gradle:6.1.1-jdk13
 
+services:
+  - mysql:8.0.18
+
 stages:
   - build
   - validate
@@ -8,6 +11,9 @@ stages:
 variables:
   # Disable the Gradle daemon to ensure isolated runs of the CI pipeline.
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  MYSQL_DATABASE: "oopp"
+  MYSQL_ROOT_PASSWORD: "pwd"
+  MYSQL_HOST: "mysql"
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
