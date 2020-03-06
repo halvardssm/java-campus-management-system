@@ -35,11 +35,11 @@ public class BookingService {
     public Booking createBooking(Booking newBooking) {
         try {
             Booking booking = readBooking((int) newBooking.getId());
-            throw new BookingExistsException((int) newBooking.getId());
+            throw new BookingExistsException((int) booking.getId());
+
         } catch (BookingNotFoundException e) {
             bookingRepository.save(newBooking);
             return newBooking;
-
         }
     }
 

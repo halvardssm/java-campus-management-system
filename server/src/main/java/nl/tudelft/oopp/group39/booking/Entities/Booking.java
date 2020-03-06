@@ -6,8 +6,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "bookings")
+@Table(name = Booking.TABLE_NAME)
+
 public class Booking {
+    public static final String TABLE_NAME = "bookings";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -31,7 +34,6 @@ public class Booking {
 
     }
 
-    @Id
     public long getId() {
         return id;
     }

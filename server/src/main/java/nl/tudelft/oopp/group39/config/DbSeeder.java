@@ -1,10 +1,7 @@
 package nl.tudelft.oopp.group39.config;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import nl.tudelft.oopp.group39.booking.Entities.Booking;
+import nl.tudelft.oopp.group39.booking.Service.BookingService;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
@@ -19,6 +16,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * Seeds the database on application load.
  */
@@ -32,6 +36,8 @@ public class DbSeeder {
     private BuildingService buildingService;
     @Autowired
     private FacilityService facilityService;
+    @Autowired
+    private BookingService bookingService;
 
     /**
      * Initiates the db with all the roles.
@@ -42,6 +48,7 @@ public class DbSeeder {
         initFacilities();
         initBuildings();
         initRooms();
+        initBookings();
     }
 
     /**
@@ -102,5 +109,20 @@ public class DbSeeder {
         roomService.createRoom(new Room(2, 15, false, "test3", facilities));
 
         System.out.println("[SEED] Rooms created");
+    }
+
+    private void initBookings() {
+        Set<Booking> bookings = new HashSet<>();
+        LocalDate date = LocalDate.now();
+        LocalTime start = LocalTime.now();
+        LocalTime end = LocalTime.now();
+
+        Booking b = new Booking(1, date, start, end, 1, 1);
+        bookingService.createBooking(b);
+
+        b = new Booking(2, date, start, end, 2, 2);
+        bookingService.createBooking(b);
+
+        System.out.println("[SEED] Bookings created");
     }
 }

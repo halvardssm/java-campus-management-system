@@ -2,46 +2,52 @@ package nl.tudelft.oopp.group39.booking.Controller;
 
 import nl.tudelft.oopp.group39.booking.Entities.Booking;
 import nl.tudelft.oopp.group39.booking.Service.BookingService;
+import nl.tudelft.oopp.group39.config.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/booking")
+@RequestMapping(BookingController.REST_MAPPING)
 public class BookingController {
+    public static final String REST_MAPPING = "/booking";
+
     //Moet alle incoming http requests handelen en doorverwijzen naar BookingService
 
     @Autowired
-    private BookingService service;
+    private BookingService bookingService;
 
     @GetMapping("")
     public List<Booking> listBookings() {
-        return service.listBookings();
+        return bookingService.listBookings();
     }
 
     @DeleteMapping("/{id}")
-    public void DeleteBooking(@PathVariable int id) {
-        service.deleteBooking(id);
+    public ResponseEntity<RestResponse<Object>> deleteBooking(@PathVariable int id) {
+        bookingService.deleteBooking(id);
+
+        return RestResponse.create(null, null, HttpStatus.OK);
     } //wrm is @Pathvariable int en niet long?
 
     @PostMapping("")
     @ResponseBody
-    public String AddBooking(@RequestBody Booking booking) {//, @RequestParam LocalTime open, @RequestParam LocalTime closed) {
-        service.createBooking(booking);//, open, closed);
-        return "saved";
+    public ResponseEntity<RestResponse<Object>> createBooking(@RequestBody Booking newBooking) {//, @RequestParam LocalTime open, @RequestParam LocalTime closed) {
+        return RestResponse.create(bookingService.createBooking(newBooking), null, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
     @ResponseBody
-    public Booking ReadBooking(@PathVariable int id) {
-        return service.readBooking(id);
+    public ResponseEntity<RestResponse<Object>> readBooking(@PathVariable int id) {
+        return RestResponse.create(bookingService.readBooking(id));
     }
 
     @PutMapping("/{id}")
     @ResponseBody
-    public Booking updateBooking(@RequestBody Booking updated, @PathVariable int id) {//, @RequestParam LocalTime open, @RequestParam LocalTime closed)
-        return service.updateBooking(updated, id);
+    public ResponseEntity<RestResponse<Object>> updateBooking(@RequestBody Booking updated, @PathVariable int id) {//, @RequestParam LocalTime open, @RequestParam LocalTime closed)
+        return RestResponse.create(bookingService.updateBooking(updated, id));
     }
 
 }
