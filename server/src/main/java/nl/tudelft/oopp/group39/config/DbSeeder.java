@@ -57,7 +57,7 @@ public class DbSeeder {
         User user = new User(
             "admin",
             "admin@tudelft.nl",
-            userService.encryptPassword("pwd"),
+            "pwd",
             null,
             roles
         );

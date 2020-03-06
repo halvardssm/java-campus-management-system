@@ -53,6 +53,8 @@
             <Button styleClass="buttons" id="big" text="Sign Up" onAction="#signup"
                     GridPane.columnIndex="1" GridPane.rowIndex = "5"/>
 
+            <Text id="errorfield" fx:id="errormsg" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.columnSpan="2"/>
+
             <Text text="Already have an account?"
                   GridPane.columnIndex="0" GridPane.rowIndex="7"/>
 
@@ -64,7 +66,7 @@
     <bottom>
         <HBox styleClass="bar" spacing="10">
             <padding><Insets top="15" right="12" bottom="15" left="15"/></padding>
-            <Button id="backbtn" text="◀ Back"/>
+            <Button id="backbtn" text="◀ Back" onAction="#goToLoginScene"/>
         </HBox>
     </bottom>
     <stylesheets>

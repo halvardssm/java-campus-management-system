@@ -5,11 +5,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Region;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.regex.Pattern;
@@ -29,7 +27,7 @@ public class SignupController extends MainSceneController {
     private PasswordField confirmpasswordField ;
 
     @FXML
-    private Button loginbtn;
+    private Text errormsg;
 
     @FXML
     private void signup() {
@@ -43,7 +41,16 @@ public class SignupController extends MainSceneController {
             alert.setTitle("Sign up");
             alert.setHeaderText(null);
             alert.setContentText(ServerCommunication.addUser(netID, email, password, role));
+            ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Go to log in");
+            ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setOnAction(e -> {
+                try {
+                    goToLoginScene();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            });
             alert.showAndWait();
+
         }
 
         System.out.println(email + netID + password + confirmpassword);
@@ -60,10 +67,7 @@ public class SignupController extends MainSceneController {
     }
 
     public void alertErr(String msg){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText(null);
-        alert.setContentText(msg);
-        alert.showAndWait();
+        errormsg.setText(msg);
     }
 
     public boolean isValid(String email) {

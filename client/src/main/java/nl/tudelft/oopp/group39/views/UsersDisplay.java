@@ -23,18 +23,18 @@ public class UsersDisplay extends Application {
     public static void sceneHandler(String name) throws IOException {
         System.out.println("Scene changing...");
         root = FXMLLoader.load(UsersDisplay.class.getResource(name));
-        window.setScene(new Scene(root));
+        window.setScene(new Scene(root, 700, 600));
     }
 
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        URL xmlUrl = getClass().getResource("/mainScene.fxml");
+        URL xmlUrl = getClass().getResource("/buildingListView.fxml");
         loader.setLocation(xmlUrl);
         root = loader.load();
 
         window = primaryStage;
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(new Scene(root, 700, 600));
         primaryStage.show();
     }
 }

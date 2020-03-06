@@ -38,12 +38,14 @@
             <Button fx:id="signupbtn" styleClass="buttons" id="small" text="Sign Up" onAction="#goToSignupScene"
                     GridPane.columnIndex="1" GridPane.rowIndex = "5"/>
 
+            <Text id="errorfield" fx:id="errormsg" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.columnSpan="2"/>
+
         </GridPane>
     </center>
     <bottom>
         <HBox styleClass="bar" spacing="10">
             <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
-            <Button id="backbtn" text="◀ Back"/>
+            <Button id="backbtn" text="◀ Back" onAction="#goToBuildingScene"/>
         </HBox>
     </bottom>
     <stylesheets>

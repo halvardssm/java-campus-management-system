@@ -36,3 +36,13 @@
     -fx-text-fill: white;
     -fx-padding: 0;
 }
+
+#loginbtn {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-font-size: 14;
+}
+
+#errorfield {
+    -fx-fill: red;
+}

@@ -12,6 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import nl.tudelft.oopp.group39.controllers.MainSceneController;
 
 public class ServerCommunication {
 
@@ -191,9 +192,11 @@ public class ServerCommunication {
         else{
             System.out.println(response.body());
             // Gson gson = new Gson();
-            JsonObject body = (JsonObject) JsonParser.parseString(response.body());
-            String jwt = body.getAsJsonObject("body").getAsJsonObject("jwt").getAsString();
-            System.out.println(jwt);
+            JsonObject body = ((JsonObject) JsonParser.parseString(response.body()));
+            String jwtToken = body.getAsJsonObject("body").get("jwt").getAsString();
+            System.out.println(jwtToken);
+            MainSceneController.jwt = jwtToken;
+            MainSceneController.loggedIn = true;
             return "Logged in";
 
         }

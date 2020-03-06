@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane fx:id="newBuilding" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="240.0" style="-fx-background-color: #00A6D6;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.BuildingSceneController">
+<GridPane onMouseClicked="" fx:id="newBuilding" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="240.0" style="-fx-background-color: rgba(106,123,127,0.27);" xmlns:fx="http://javafx.com/fxml/" >
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="80.0" prefWidth="100.0" />
@@ -26,7 +26,7 @@
         </ImageView>
         <Label fx:id="bname" alignment="CENTER_RIGHT" text="Building Name">
             <font>
-                <Font name="System Bold" size="12.0" />
+                <Font name="System Bold" size="16.0" />
             </font>
         </Label>
         <Label fx:id="bdetails" prefHeight="75.0" prefWidth="190.0" text="Address&#10;Description&#10;Max. Capacity&#10;Opening Times">
@@ -34,7 +34,7 @@
                 <Insets />
             </VBox.margin>
          <font>
-            <Font size="10.0" />
+            <Font size="12.0" />
          </font>
         </Label>
     </VBox>

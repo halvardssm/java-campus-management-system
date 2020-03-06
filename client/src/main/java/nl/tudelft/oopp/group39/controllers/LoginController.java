@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
@@ -24,28 +25,30 @@ public class LoginController extends MainSceneController {
     private PasswordField passwordField ;
 
     @FXML
-    private Button signupbtn;
+    private Text errormsg;
+
 
     @FXML
-    private void login() {
+    private void login() throws IOException {
         String user = usernameField.getText();
         String password = passwordField.getText();
         if(!checkEmpty(user, password)){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Log in");
-            alert.setHeaderText(null);
-            alert.setContentText(ServerCommunication.userLogin(user, password));
-            alert.showAndWait();
+//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//            alert.setTitle("Log in");
+//            alert.setHeaderText(null);
+//            alert.setContentText(ServerCommunication.userLogin(user, password));
+//            alert.showAndWait();
+            if(ServerCommunication.userLogin(user, password).equals("Logged in")){
+                goToBuildingScene();
+                //changeBtn();
+            }
         }
         System.out.println(user + password);
     }
 
     public boolean checkEmpty(String user, String pwd){
         if(user.isEmpty()  | pwd.isEmpty()){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setContentText("Please fill in all the fields");
-            alert.showAndWait();
+            errormsg.setText("Please fill in all the fields");
             return true;
         }
         else {
