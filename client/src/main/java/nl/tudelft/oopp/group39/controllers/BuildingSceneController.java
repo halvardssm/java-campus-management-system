@@ -13,15 +13,15 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLOutput;
 import java.util.ResourceBundle;
 
-public class BuildingSceneController extends MainSceneController implements Initializable {
+public class BuildingSceneController extends MainSceneController implements Initializable{
 
     @FXML
     private FlowPane flowPane;
@@ -29,24 +29,31 @@ public class BuildingSceneController extends MainSceneController implements Init
     @FXML
     private GridPane newBuilding;
 
-    @FXML
-    private Button topbtn;
-
-
     public void refreshBuildings() {
-//        System.out.println(flowPane);
-//        System.out.println(newBuilding);
+        System.out.println(flowPane);
         flowPane.getChildren().clear();
         try {
             String buildingString = ServerCommunication.getBuildings();
+            System.out.println(buildingString);
 
             JsonObject body = ((JsonObject) JsonParser.parseString(buildingString));
             JsonArray buildingArray = body.getAsJsonArray("body");
 
-//            JsonArray buildingArray = (JsonArray) JsonParser.parseString(room);
-//            System.out.println(buildingString);
             for (JsonElement building : buildingArray) {
                 newBuilding = FXMLLoader.load(getClass().getResource("/buildingCell.fxml"));
+                long buildingId = ((JsonObject) building).get("id").getAsLong();
+                String buildingName = ((JsonObject) building).get("name").getAsString();
+                String address = ((JsonObject) building).get("location").getAsString();
+                newBuilding.setOnMouseClicked(e -> {
+                    try {
+//                        System.out.println(buildingId + buildingName + address);
+//                        goToRoomsScene(buildingId, buildingName, address);
+                        goToRoomsScene();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+
+                });
 
                 Label name = (Label) newBuilding.lookup("#bname");
                 name.setText(((JsonObject) building).get("name").getAsString());
@@ -61,8 +68,6 @@ public class BuildingSceneController extends MainSceneController implements Init
                 details.setText(bDetails);
 
                 flowPane.getChildren().add(newBuilding);
-                System.out.println("zou goed moeten gaan");
-//                System.out.println(newBuilding);
             }
         } catch (IOException e) {
             createAlert("Error: Wrong IO");
@@ -79,11 +84,8 @@ public class BuildingSceneController extends MainSceneController implements Init
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("initializing");
-//        System.out.println(flowPane);
-//        System.out.println(newBuilding);
         refreshBuildings();
-        changeBtn(topbtn);
     }
+
 
 }

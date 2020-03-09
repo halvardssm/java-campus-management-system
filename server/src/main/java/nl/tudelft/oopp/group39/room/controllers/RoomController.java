@@ -29,23 +29,27 @@ public class RoomController {
     private RoomService service;
 
     @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listRooms(@RequestParam(required = false) Integer capacity, @RequestParam(required = false) Boolean onlyStaff, @RequestParam(required = false) int[] facilities, @RequestParam(required = false) String building, @RequestParam(required = false) String location, @RequestParam(required = false) String open, @RequestParam(required = false) String closed) {
+    public ResponseEntity<RestResponse<Object>> listRooms(@RequestParam(required = false) Integer capacity, @RequestParam(required = false) String name, @RequestParam(required = false) Boolean onlyStaff, @RequestParam(required = false) int[] facilities, @RequestParam(required = false) Long buildingId, @RequestParam(required = false) String building, @RequestParam(required = false) String location, @RequestParam(required = false) String open, @RequestParam(required = false) String closed) {
         capacity = capacity == null ? 0 : capacity;
+        name = name == null ? "" : name;
         LocalTime nOpen = open == null ? LocalTime.MAX : LocalTime.parse(open);
         LocalTime nClosed = closed == null ? LocalTime.MIN : LocalTime.parse(closed);
         onlyStaff = onlyStaff == null ? false : onlyStaff;
         facilities = facilities == null ? new int[0] : facilities;
+        buildingId = buildingId == null ? 0 : buildingId;
         building = building == null ? "" : building;
         location = location == null ? "" : location;
         boolean allEmpty = capacity == 0
+                && name.contentEquals("")
             && !onlyStaff
             && Arrays.equals(facilities, new int[0])
+                && buildingId == 0
             && building.contentEquals("")
             && location.contentEquals("")
             && nOpen.compareTo(LocalTime.MAX) == 0
             && nClosed.compareTo(LocalTime.MIN) == 0;
 
-        List<Room> result = allEmpty ? service.listRooms() : service.filterRooms(capacity, onlyStaff, facilities, building, location, nOpen, nClosed);
+        List<Room> result = allEmpty ? service.listRooms() : service.filterRooms(capacity, name, onlyStaff, facilities, buildingId, building, location, nOpen, nClosed);
         return RestResponse.create(result);
     }
 
@@ -55,10 +59,16 @@ public class RoomController {
         return RestResponse.create(service.createRoom(newRoom), null, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
+//    @GetMapping("/{id}")
+//    @ResponseBody
+//    public ResponseEntity<RestResponse<Object>> readRoom(@PathVariable int id) {
+//        return RestResponse.create(service.readRoom(id));
+//    }
+
+    @GetMapping("/{buildingId}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> readRoom(@PathVariable int id) {
-        return RestResponse.create(service.readRoom(id));
+    public ResponseEntity<RestResponse<Object>> getRoomsByBuilding(long buildingId) {
+        return RestResponse.create(service.getRoomsByBuilding(buildingId));
     }
 
     @PutMapping("/{id}")

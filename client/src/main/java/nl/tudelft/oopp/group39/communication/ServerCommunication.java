@@ -30,6 +30,11 @@ public class ServerCommunication {
         return HttpRequest(request);
     }
 
+    public static String getUser(String username) {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "user/" + username)).build();
+        return HttpRequest(request);
+    }
+
     /**
      * Retrieves buildings from the server
      *
@@ -126,6 +131,19 @@ public class ServerCommunication {
         HttpRequest(request);
     }
 
+    public static String getRooms(long buildingId){
+        //HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room?capacity=&name=&onlyStaff=&facilities=&buildingId=" + buildingId + "&building=&location=&open=&closed=")).build();
+       // HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room?buildingId=" + buildingId)).build();
+
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room/" + buildingId)).build();
+        return HttpRequest(request);
+    }
+
+    public static String getAllRooms(){
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room")).build();
+        return HttpRequest(request);
+    }
+
 
     /**
      * @return the body of a get request to the server.
@@ -191,14 +209,23 @@ public class ServerCommunication {
         }
         else{
             System.out.println(response.body());
-            // Gson gson = new Gson();
             JsonObject body = ((JsonObject) JsonParser.parseString(response.body()));
             String jwtToken = body.getAsJsonObject("body").get("jwt").getAsString();
             System.out.println(jwtToken);
             MainSceneController.jwt = jwtToken;
             MainSceneController.loggedIn = true;
+            MainSceneController.username = username;
+            //MainSceneController.isAdmin = isAdmin(username);
             return "Logged in";
-
         }
+    }
+
+    public static boolean isAdmin(String username) {
+        String user = getUser(username);
+        JsonObject body = ((JsonObject) JsonParser.parseString(user));
+        System.out.println(body);
+        String role = body.getAsJsonObject("body").get("role").getAsString();
+        if(role.equals("admin")) return true;
+        else return false;
     }
 }

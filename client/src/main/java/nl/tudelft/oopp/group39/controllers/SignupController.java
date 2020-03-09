@@ -95,10 +95,10 @@ public class SignupController extends MainSceneController {
 
     public String getRole(String email){
         if(email.contains("student")){
-            return "STUDENT";
+            return "student";
         }
         else{
-            return "STAFF";
+            return "staff";
         }
     }
 }

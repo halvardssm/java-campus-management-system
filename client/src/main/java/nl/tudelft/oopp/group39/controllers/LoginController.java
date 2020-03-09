@@ -33,16 +33,12 @@ public class LoginController extends MainSceneController {
         String user = usernameField.getText();
         String password = passwordField.getText();
         if(!checkEmpty(user, password)){
-//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//            alert.setTitle("Log in");
-//            alert.setHeaderText(null);
-//            alert.setContentText(ServerCommunication.userLogin(user, password));
-//            alert.showAndWait();
             if(ServerCommunication.userLogin(user, password).equals("Logged in")){
+                changeTopBtn();
                 goToBuildingScene();
-                //changeBtn();
             }
         }
+        System.out.println(loggedIn);
         System.out.println(user + password);
     }
 
@@ -55,5 +51,6 @@ public class LoginController extends MainSceneController {
             return false;
         }
     }
+
 
 }

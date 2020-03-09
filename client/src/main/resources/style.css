@@ -1,0 +1,101 @@
+
+.bar {
+    -fx-background-color: #00A6D6;
+}
+
+#title {
+    -fx-font-size: 22;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+#page {
+    -fx-font-size: 18;
+    -fx-text-fill: white;
+    -fx-text-alignment: left;
+    -fx-text-origin: bottom;
+    -fx-content-display: bottom;
+    -fx-label-padding: 3 0 0 -4;
+}
+
+.buttons {
+    -fx-background-color: #00A6D6;
+    -fx-text-fill: white;
+    -fx-font-size: 12;
+}
+
+#big {
+    -fx-font-size: 16;
+    -fx-pref-width: 90;
+    -fx-padding: 3 10;
+}
+
+.labeltext {
+    -fx-font-size: 14;
+}
+
+#pagetitle {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
+
+#backbtn {
+    -fx-background-color: none;
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-padding: 0;
+}
+
+#loginbtn {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-font-size: 14;
+}
+
+#errorfield {
+    -fx-fill: red;
+}
+
+.buildingAddress {
+    -fx-font-size: 14;
+    -fx-alignment: center;
+    -fx-text-fill: black;
+}
+
+.buildingName {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+.sidebar-item {
+    -fx-pref-width: 120;
+    -fx-text-fill: black;
+    -fx-font-size: 16;
+    -fx-padding: 10 0 10 10;
+}
+
+.sidebar-item:hover {
+    -fx-background-color: #00A6D6;
+    -fx-text-fill: white;
+}
+
+#sidebar {
+    -fx-background-color: rgba(106,123,127,0.27);
+}
+
+#menubtn {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.menu-button {
+    -fx-background-color: white;
+    -fx-font-size: 14;
+}
+
+.menu-item:focused {
+    -fx-background-color: #00A6D6;
+    -fx-text-fill: white;
+}

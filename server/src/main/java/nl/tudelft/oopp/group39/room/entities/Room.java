@@ -17,6 +17,8 @@ public class Room {
 
     private long buildingId;
 
+    private String name;
+
     private int capacity;
 
     private boolean onlyStaff;
@@ -36,8 +38,9 @@ public class Room {
     public Room() {
     }
 
-    public Room(long buildingId, int capacity, boolean onlyStaff, String description, Set<Facility> facilities) {
+    public Room(long buildingId, String name, int capacity, boolean onlyStaff, String description, Set<Facility> facilities) {
         this.buildingId = buildingId;
+        this.name = name;
         this.capacity = capacity;
         this.onlyStaff = onlyStaff;
         this.description = description;
@@ -51,6 +54,10 @@ public class Room {
     public void setId(long id) {
         this.id = id;
     }
+
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
 
     public long getBuilding() {
         return buildingId;

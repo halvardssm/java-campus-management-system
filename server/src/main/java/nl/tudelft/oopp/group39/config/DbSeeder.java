@@ -59,7 +59,7 @@ public class DbSeeder {
             "admin@tudelft.nl",
             "pwd",
             null,
-            roles
+                roles
         );
 
         userService.createUser(user);
@@ -91,15 +91,17 @@ public class DbSeeder {
     private void initRooms() {
         Set<Facility> facilities = new HashSet<>();
 
-        roomService.createRoom(new Room(1, 10, true, "test1", facilities));
+        roomService.createRoom(new Room(1, "somename", 10, true, "test1", facilities));
 
         facilities.add(facilityService.readFacility(1));
 
-        roomService.createRoom(new Room(1, 6, true, "test2", facilities));
+        roomService.createRoom(new Room(1, "test", 6, true, "test2", facilities));
 
         facilities.add(facilityService.readFacility(2));
 
-        roomService.createRoom(new Room(2, 15, false, "test3", facilities));
+        roomService.createRoom(new Room(2, "testing", 15, false, "test3", facilities));
+
+        roomService.createRoom(new Room(1, "testinggg", 15, false, "test3", facilities));
 
         System.out.println("[SEED] Rooms created");
     }

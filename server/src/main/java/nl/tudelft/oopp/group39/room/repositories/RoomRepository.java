@@ -16,8 +16,8 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
      * //Returns a list of all rooms that match the inputted capacity param, the inputted onlyStaff param and the
      * //inputted id param
      */
-    @Query("SELECT u FROM Room u WHERE u.capacity >= :capacity and u.onlyStaff = :onlyStaff and u.buildingId IN :buildingId and u.facilities IN :facilities")
-    List<Room> filterRooms(@Param("capacity") int capacity, @Param("onlyStaff") boolean onlyStaff, @Param("buildingId") List<Long> buildingId, @Param("facilities") List<Facility> facilities);
+    @Query("SELECT u FROM Room u WHERE u.capacity >= :capacity and u.name = :name and u.onlyStaff = :onlyStaff and u.buildingId IN :buildingId and u.facilities IN :facilities")
+    List<Room> filterRooms(@Param("capacity") int capacity, @Param("name") String name, @Param("onlyStaff") boolean onlyStaff, @Param("buildingId") List<Long> buildingId, @Param("facilities") List<Facility> facilities);
 
     /**
      * //Returns an array of all room ids

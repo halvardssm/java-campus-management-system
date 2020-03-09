@@ -60,13 +60,23 @@ public class RoomService {
     // Method to filter rooms based on capacity, a room being accessible to students or not, the facilities that
     // should be present (if so their facility ids should be in the facilities array), the building name and a
     // string of the inputted location
-    public List<Room> filterRooms(int capacity, boolean onlyStaff, int[] facilities, String building, String location, LocalTime open, LocalTime closed) {
+    public List<Room> filterRooms(int capacity, String name, boolean onlyStaff, int[] facilities, long buildingId, String building, String location, LocalTime open, LocalTime closed) {
         List<Facility> nFacilities = new ArrayList<>();
         for (long facility : facilities) {
             nFacilities.add(facilityService.readFacility(facility));
         }
-        List<Long> resRoomIds = buildingRepository.filterBuildingsOnLocationAndNameAndTimeList(location, building, open, closed);
-        return (resRoomIds.size() > 0 ? roomRepository.filterRooms(capacity, onlyStaff, resRoomIds, nFacilities) : new ArrayList<Room>());
+        if(buildingId == 0){
+            List<Long> resRoomIds = buildingRepository.filterBuildingsOnLocationAndNameAndTimeList(location, building, open, closed);
+            return (resRoomIds.size() > 0 ? roomRepository.filterRooms(capacity, name, onlyStaff, resRoomIds, nFacilities) : new ArrayList<Room>());
+        }
+        else {
+            return roomRepository.getRoomsByBuildingId(buildingId);
+        }
+
+    }
+
+    public List<Room> getRoomsByBuilding(long buildingId){
+        return roomRepository.getRoomsByBuildingId(buildingId);
     }
 
     public Room deleteRoom(int id) throws RoomNotFoundException {

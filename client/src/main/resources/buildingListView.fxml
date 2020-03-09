@@ -6,22 +6,32 @@
 
 <?import javafx.geometry.Insets?>
 <?import java.net.URL?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns:fx="http://javafx.com/fxml" fx:controller="nl.tudelft.oopp.group39.controllers.BuildingSceneController">
    <top>
-      <HBox styleClass="bar" spacing="10">
+      <HBox fx:id="topbar" styleClass="bar" spacing="10">
          <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
-         <Text id="title" text="Some Name"/>
-         <Region  HBox.hgrow="ALWAYS" />
-         <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene">
+         <Button onAction="#toggleSidebar" id="menubtn" alignment="CENTER">
+            <graphic>
+               <ImageView fitHeight="28" fitWidth="28"><Image url="@menu-icon.png" /></ImageView>
+            </graphic>
          </Button>
+         <Label id="title" text="Some name |" alignment="CENTER"/>
+         <Label id="page" text="Buildings"/>
+         <Region  HBox.hgrow="ALWAYS" />
+         <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
       </HBox>
    </top>
+   <left>
+      <VBox fx:id="sidebar" id="sidebar"/>
+   </left>
    <center>
       <ScrollPane fitToHeight="true" fitToWidth="true" >
          <FlowPane alignment="TOP_CENTER" fx:id="flowPane" hgap="20.0" vgap="20.0"/><padding><Insets top="30" right="20" bottom="30" left="20"/></padding>
       </ScrollPane>
    </center>
    <stylesheets>
-      <URL value="@loginsignup.css" />
+      <URL value="@style.css" />
    </stylesheets>
 </BorderPane>
