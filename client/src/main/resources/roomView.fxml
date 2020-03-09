@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<?import javafx.geometry.Insets?>
+<?import java.net.URL?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns:fx="http://javafx.com/fxml" fx:controller="nl.tudelft.oopp.group39.controllers.RoomSceneController">
+    <top>
+        <HBox fx:id="topbar" styleClass="bar" spacing="10">
+            <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+            <Button onAction="#toggleSidebar" id="menubtn" alignment="CENTER">
+                <graphic>
+                    <ImageView fitHeight="28" fitWidth="28"><Image url="@menu-icon.png" /></ImageView>
+                </graphic>
+            </Button>
+            <Label id="title" text="Some name |"/>
+            <Label id="page" text="Rooms"/>
+            <Region  HBox.hgrow="ALWAYS" />
+            <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
+        </HBox>
+    </top>
+    <left>
+        <VBox fx:id="sidebar" id="sidebar"/>
+    </left>
+    <center>
+        <VBox>
+            <VBox fx:id="buildingInfo" alignment="CENTER" >
+<!--                <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>-->
+<!--                <Label id="buildingName" fx:id="buildingName" />-->
+<!--                <Label id="buildingAddress" fx:id="buildingAddress" />-->
+            </VBox>
+            <ScrollPane fitToHeight="true" fitToWidth="true" >
+                <FlowPane alignment="TOP_CENTER" fx:id="rooms" hgap="20.0" vgap="20.0"/><padding><Insets top="30" right="20" bottom="30" left="20"/></padding>
+            </ScrollPane>
+        </VBox>
+
+    </center>
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+</BorderPane>
