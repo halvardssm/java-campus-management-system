@@ -64,11 +64,11 @@ public class BuildingService {
 
     public Building updateBuilding(int id, Building newBuilding) throws BuildingNotFoundException {
         return buildingRepository.findById((long) id)
-                .map(building -> {
-                    newBuilding.setId(id);
-                    building = newBuilding;
-                    return buildingRepository.save(building);
-                }).orElseThrow(() -> new BuildingNotFoundException(id));
+            .map(building -> {
+                newBuilding.setId(id);
+                building = newBuilding;
+                return buildingRepository.save(building);
+            }).orElseThrow(() -> new BuildingNotFoundException(id));
     }
 
 }
