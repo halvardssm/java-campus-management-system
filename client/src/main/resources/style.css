@@ -77,12 +77,12 @@
 }
 
 .sidebar-item:hover {
-    -fx-background-color: #00A6D6;
-    -fx-text-fill: white;
+    -fx-background-color: rgba(106, 123, 127, 0.3);
+    -fx-text-fill: black;
 }
 
 #sidebar {
-    -fx-background-color: rgba(106,123,127,0.27);
+    -fx-background-color: rgba(106,123,127,0.18);
 }
 
 #menubtn {
@@ -98,4 +98,14 @@
 .menu-item:focused {
     -fx-background-color: #00A6D6;
     -fx-text-fill: white;
+}
+
+.gridblock {
+    -fx-background-color: rgba(106,123,127,0.18);
+    -fx-border-radius: 6%;
+    -fx-background-radius: 6%;
+}
+
+.gridblock:hover {
+    -fx-background-color: rgba(106, 123, 127, 0.3);
 }
