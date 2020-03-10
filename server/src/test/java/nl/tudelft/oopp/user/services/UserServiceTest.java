@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.role.entities.Role;
 import nl.tudelft.oopp.role.enums.Roles;
+import nl.tudelft.oopp.role.repositories.RoleRepository;
+import nl.tudelft.oopp.role.services.RoleService;
 import nl.tudelft.oopp.user.entities.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,9 +21,13 @@ class UserServiceTest {
         "test@tudelft.nl",
         "test",
         null,
-        List.of(new Role(Roles.STUDENT))
+        new Role(Roles.STUDENT)
     );
 
+    @Autowired
+    RoleRepository roleRepository;
+    @Autowired
+    RoleService roleService;
     @Autowired
     UserService userService;
 
@@ -30,6 +36,10 @@ class UserServiceTest {
         for (User user : userService.listUsers()) {
             userService.deleteUser(user.getUsername());
         }
+
+        roleRepository.deleteAll();
+
+        roleService.createRole(new Role(Roles.STUDENT));
 
         userService.createUser(testUser);
     }

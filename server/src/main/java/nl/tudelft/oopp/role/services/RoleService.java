@@ -25,6 +25,14 @@ public class RoleService {
         return roleRepository.findByRole(Roles.valueOf(role));
     }
 
+    public Role readRole(Role role) {
+        return roleRepository.findByRole(Roles.valueOf(role.getAuthority()));
+    }
+
+    public Role createRole(Role role) {
+        return roleRepository.save(role);
+    }
+
     public List<Role> listRoles() {
         return roleRepository.findAll();
     }

@@ -1,7 +1,7 @@
 package nl.tudelft.oopp.auth.controllers;
 
-import nl.tudelft.oopp.auth.entities.JwtRequest;
-import nl.tudelft.oopp.auth.entities.JwtResponse;
+import nl.tudelft.oopp.auth.entities.AuthRequest;
+import nl.tudelft.oopp.auth.entities.AuthResponse;
 import nl.tudelft.oopp.auth.exceptions.UnauthorizedException;
 import nl.tudelft.oopp.auth.services.JwtService;
 import nl.tudelft.oopp.config.RestResponse;
@@ -37,17 +37,17 @@ public class AuthController {
      * "password": "password"
      * }
      *
-     * @param jwtRequest An object with username and password
+     * @param authRequest An object with username and password
      * @return A JWT string
      * @throws UnauthorizedException Is thrown when the username or password is incorrect
      */
     @PostMapping(REST_MAPPING)
-    public ResponseEntity<RestResponse<JwtResponse>> createToken(@RequestBody JwtRequest jwtRequest)
+    public ResponseEntity<RestResponse<AuthResponse>> createToken(@RequestBody AuthRequest authRequest)
         throws UnauthorizedException {
         try {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                jwtRequest.getUsername(),
-                jwtRequest.getPassword()
+                authRequest.getUsername(),
+                authRequest.getPassword()
             );
 
             authenticationManager.authenticate(token);
@@ -59,10 +59,10 @@ public class AuthController {
             );
         }
 
-        User user = userService.readUser(jwtRequest.getUsername());
+        User user = userService.readUser(authRequest.getUsername());
 
         String jwt = jwtService.encrypt(user);
 
-        return RestResponse.create(new JwtResponse(jwt));
+        return RestResponse.create(new AuthResponse(jwt));
     }
 }

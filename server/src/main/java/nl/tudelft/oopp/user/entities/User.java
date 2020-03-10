@@ -2,19 +2,16 @@ package nl.tudelft.oopp.user.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.sql.Blob;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import nl.tudelft.oopp.role.entities.Role;
 import org.hibernate.annotations.LazyGroup;
@@ -35,16 +32,11 @@ public class User implements UserDetails {
     @Basic(fetch = FetchType.LAZY)
     @LazyGroup("lobs")
     private Blob image;
-    @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinTable(
-        name = "users_roles",
-        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "username"),
-        inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
-    )
-    private List<GrantedAuthority> roles;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     public User() {
-        this.roles = new ArrayList<>();
     }
 
     /**
@@ -53,7 +45,7 @@ public class User implements UserDetails {
      * @param username Unique identifier as to be used in the database.
      * @param email    Email address of the user.
      * @param password Encrypted password of the user.
-     * @param roles    Roles of the user.
+     * @param role     Role of the user.
      * @param image    Image of the user.
      */
     public User(
@@ -61,12 +53,12 @@ public class User implements UserDetails {
         String email,
         String password,
         Blob image,
-        List<GrantedAuthority> roles
+        Role role
     ) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.roles = roles;
+        this.role = role;
         this.image = image;
     }
 
@@ -96,6 +88,14 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public Blob getImage() {
         return this.image;
     }
@@ -106,12 +106,9 @@ public class User implements UserDetails {
 
     @Override
     @Transient
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles;
-    }
-
-    public void setAuthorities(List<GrantedAuthority> authorities) {
-        this.roles = authorities;
+        return List.of(getRole());
     }
 
     @Override
@@ -143,7 +140,6 @@ public class User implements UserDetails {
     }
 
     @Override
-    @Transient
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -153,9 +149,9 @@ public class User implements UserDetails {
         }
         User user = (User) o;
         return getUsername().equals(user.getUsername())
-            && email.equals(user.email)
+            && getEmail().equals(user.getEmail())
             && getPassword().equals(user.getPassword())
             && Objects.equals(getImage(), user.getImage())
-            && roles.equals(user.roles);
+            && getRole().equals(user.getRole());
     }
 }

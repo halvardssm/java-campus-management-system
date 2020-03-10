@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.auth.services;
 
 import java.util.Date;
-import java.util.List;
 import nl.tudelft.oopp.role.entities.Role;
 import nl.tudelft.oopp.role.enums.Roles;
 import nl.tudelft.oopp.user.entities.User;
@@ -17,7 +16,7 @@ class JwtServiceTest {
         "test@tudelft.nl",
         "test",
         null,
-        List.of(new Role(Roles.STUDENT))
+        new Role(Roles.STUDENT)
     );
 
     @Autowired
@@ -63,7 +62,7 @@ class JwtServiceTest {
             "test@tudelft.nl",
             "test",
             null,
-            List.of(new Role(Roles.STUDENT))
+            new Role(Roles.STUDENT)
         );
         Assertions.assertFalse(jwtService.validate(jwtService.encrypt(testUser), user));
     }

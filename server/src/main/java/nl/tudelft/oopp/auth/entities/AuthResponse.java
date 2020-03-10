@@ -4,13 +4,13 @@ import java.io.Serializable;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JwtResponse implements Serializable {
+public class AuthResponse implements Serializable {
     private String jwt;
 
-    public JwtResponse() {
+    public AuthResponse() {
     }
 
-    public JwtResponse(String jwt) {
+    public AuthResponse(String jwt) {
         this.jwt = jwt;
     }
 

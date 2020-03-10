@@ -4,10 +4,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.gson.Gson;
-import java.util.List;
-import nl.tudelft.oopp.auth.entities.JwtRequest;
+import nl.tudelft.oopp.auth.entities.AuthRequest;
 import nl.tudelft.oopp.role.entities.Role;
 import nl.tudelft.oopp.role.enums.Roles;
+import nl.tudelft.oopp.role.services.RoleService;
 import nl.tudelft.oopp.user.entities.User;
 import nl.tudelft.oopp.user.services.UserService;
 import org.junit.jupiter.api.Test;
@@ -27,18 +27,21 @@ class AuthControllerTest {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private RoleService roleService;
 
     @Test
     void createToken() throws Exception {
+        roleService.createRole(new Role(Roles.STUDENT));
         userService.createUser(new User(
             "test",
             "test@tudelft.nl",
             "test",
             null,
-            List.of(new Role(Roles.STUDENT))
+            new Role(Roles.STUDENT)
         ));
 
-        JwtRequest request = new JwtRequest("test", "test");
+        AuthRequest request = new AuthRequest("test", "test");
         Gson gson = new Gson();
         String json = gson.toJson(request);
 
@@ -52,7 +55,7 @@ class AuthControllerTest {
 
     @Test
     void createTokenFailed() throws Exception {
-        JwtRequest request = new JwtRequest("test2", "test");
+        AuthRequest request = new AuthRequest("test2", "test");
         Gson gson = new Gson();
         String json = gson.toJson(request);
 

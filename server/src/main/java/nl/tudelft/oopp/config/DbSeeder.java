@@ -1,9 +1,7 @@
 package nl.tudelft.oopp.config;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import nl.tudelft.oopp.building.entities.Building;
 import nl.tudelft.oopp.building.services.BuildingService;
@@ -11,12 +9,12 @@ import nl.tudelft.oopp.facility.entities.Facility;
 import nl.tudelft.oopp.facility.services.FacilityService;
 import nl.tudelft.oopp.role.entities.Role;
 import nl.tudelft.oopp.role.enums.Roles;
+import nl.tudelft.oopp.role.services.RoleService;
 import nl.tudelft.oopp.room.entities.Room;
 import nl.tudelft.oopp.room.services.RoomService;
 import nl.tudelft.oopp.user.entities.User;
 import nl.tudelft.oopp.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,7 +23,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class DbSeeder {
     @Autowired
-    UserService userService;
+    private RoleService roleService;
+    @Autowired
+    private UserService userService;
     @Autowired
     private RoomService roomService;
     @Autowired
@@ -38,32 +38,39 @@ public class DbSeeder {
      */
     public void seedDatabase() {
         System.out.println("[SEED] Seeding started");
+        initRoles();
         initUsers();
         initFacilities();
         initBuildings();
         initRooms();
+        System.out.println("[SEED] Seeding completed");
     }
 
     /**
      * Initiates the database with an admin user with all authorities.
      */
     private void initUsers() {
-        List<GrantedAuthority> roles = new ArrayList<>();
-
-        for (Roles role : Roles.values()) {
-            roles.add(new Role(role));
-        }
-
         User user = new User(
             "admin",
             "admin@tudelft.nl",
-            userService.encryptPassword("pwd"),
+            "pwd",
             null,
-            roles
+            new Role(Roles.ADMIN)
         );
 
         userService.createUser(user);
         System.out.println("[SEED] Admin user created");
+    }
+
+    /**
+     * Initiates the database with all authorities.
+     */
+    private void initRoles() {
+        for (Roles role : Roles.values()) {
+            roleService.createRole(new Role(role));
+        }
+
+        System.out.println("[SEED] Roles created");
     }
 
     private void initFacilities() {

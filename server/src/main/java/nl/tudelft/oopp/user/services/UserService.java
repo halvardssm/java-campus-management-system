@@ -1,14 +1,13 @@
 package nl.tudelft.oopp.user.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.role.entities.Role;
+import nl.tudelft.oopp.role.enums.Roles;
 import nl.tudelft.oopp.role.services.RoleService;
 import nl.tudelft.oopp.user.entities.User;
 import nl.tudelft.oopp.user.exceptions.UserExistsException;
 import nl.tudelft.oopp.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -52,12 +51,12 @@ public class UserService implements UserDetailsService {
      */
     public User createUser(User newUser) {
         try {
-            User user = readUser(newUser.getUsername());
-            throw new UserExistsException(user.getUsername());
+            readUser(newUser.getUsername());
+            throw new UserExistsException(newUser.getUsername());
 
         } catch (UsernameNotFoundException e) {
             newUser.setPassword(encryptPassword(newUser.getPassword()));
-            mapRolesForUser(newUser);
+            mapRoleForUser(newUser);
 
             userRepository.save(newUser);
 
@@ -75,7 +74,7 @@ public class UserService implements UserDetailsService {
             .map(user -> {
                 newUser.setUsername(id);
                 newUser.setPassword(encryptPassword(newUser.getPassword()));
-                mapRolesForUser(newUser);
+                mapRoleForUser(newUser);
                 return userRepository.save(newUser);
             }).orElseThrow(() -> new UsernameNotFoundException(id));
     }
@@ -93,18 +92,10 @@ public class UserService implements UserDetailsService {
      *
      * @param user A user to map roles for
      */
-    private void mapRolesForUser(User user) {
-        List<GrantedAuthority> roles = new ArrayList<>();
+    private void mapRoleForUser(User user) {
+        Role role = roleService.readRole(user.getRole().getAuthority());
 
-        for (GrantedAuthority authority : user.getAuthorities()) {
-            Role role = roleService.readRole(authority.getAuthority());
-
-            if (role != null) {
-                roles.add(role);
-            }
-        }
-
-        user.setAuthorities(roles);
+        user.setRole(role != null ? role : roleService.readRole(Roles.STUDENT));
     }
 
     /**

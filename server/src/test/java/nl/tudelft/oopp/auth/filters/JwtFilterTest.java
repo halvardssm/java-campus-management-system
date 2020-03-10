@@ -3,7 +3,6 @@ package nl.tudelft.oopp.auth.filters;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import nl.tudelft.oopp.auth.services.JwtService;
@@ -57,7 +56,7 @@ class JwtFilterTest {
             "test@tudelft.nl",
             "test",
             null,
-            List.of(new Role(Roles.STUDENT))
+            new Role(Roles.STUDENT)
         );
 
         userService.createUser(testUser);
