@@ -10,9 +10,7 @@ class RoleTest {
 
     @Test
     void constructWithIllegalRole() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new Role("blah");
-        });
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Role("blah"));
     }
 
     @Test

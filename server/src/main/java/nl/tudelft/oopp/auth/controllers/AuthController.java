@@ -37,17 +37,17 @@ public class AuthController {
      * "password": "password"
      * }
      *
-     * @param authRequest An object with username and password
+     * @param body An object with username and password
      * @return A JWT string
      * @throws UnauthorizedException Is thrown when the username or password is incorrect
      */
     @PostMapping(REST_MAPPING)
-    public ResponseEntity<RestResponse<AuthResponse>> createToken(@RequestBody AuthRequest authRequest)
+    public ResponseEntity<RestResponse<AuthResponse>> createToken(@RequestBody AuthRequest body)
         throws UnauthorizedException {
         try {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                authRequest.getUsername(),
-                authRequest.getPassword()
+                body.getUsername(),
+                body.getPassword()
             );
 
             authenticationManager.authenticate(token);
@@ -59,7 +59,7 @@ public class AuthController {
             );
         }
 
-        User user = userService.readUser(authRequest.getUsername());
+        User user = userService.readUser(body.getUsername());
 
         String jwt = jwtService.encrypt(user);
 
