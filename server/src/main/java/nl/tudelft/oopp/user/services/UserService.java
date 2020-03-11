@@ -1,8 +1,8 @@
 package nl.tudelft.oopp.user.services;
 
 import java.util.List;
-import nl.tudelft.oopp.role.entities.Role;
 import nl.tudelft.oopp.user.entities.User;
+import nl.tudelft.oopp.user.enums.Role;
 import nl.tudelft.oopp.user.exceptions.UserExistsException;
 import nl.tudelft.oopp.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +88,7 @@ public class UserService implements UserDetailsService {
      *
      * @param user A user to map roles for
      */
-    private void mapRoleForUser(User user) {
+    protected void mapRoleForUser(User user) {
         try {
             Role role = Role.valueOf(user.getRole().getAuthority());
             user.setRole(role);

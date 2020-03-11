@@ -13,7 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import nl.tudelft.oopp.role.entities.Role;
+import nl.tudelft.oopp.user.enums.Role;
 import org.hibernate.annotations.LazyGroup;
 import org.springframework.data.annotation.Transient;
 import org.springframework.security.core.GrantedAuthority;

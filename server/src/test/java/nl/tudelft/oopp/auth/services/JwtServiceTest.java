@@ -1,8 +1,8 @@
 package nl.tudelft.oopp.auth.services;
 
 import java.util.Date;
-import nl.tudelft.oopp.role.entities.Role;
 import nl.tudelft.oopp.user.entities.User;
+import nl.tudelft.oopp.user.enums.Role;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

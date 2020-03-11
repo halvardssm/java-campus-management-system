@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.role.entities;
+package nl.tudelft.oopp.user.enums;
 
 import org.springframework.security.core.GrantedAuthority;
 
