@@ -1,12 +1,17 @@
 package nl.tudelft.oopp.group39.event.entities;
 
+import java.util.Date;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.room.entities.Room;
 
@@ -17,10 +22,18 @@ public class Event {
 
     @Id
     private Integer id;
+    @Temporal(TemporalType.DATE)
+    private Date startDate;
+    @Temporal(TemporalType.DATE)
+    private Date endDate;
     @Enumerated(EnumType.STRING)
     private EventTypes type;
-
-    @OneToMany(mappedBy = Room.TABLE_NAME)
+    @ManyToMany
+    @JoinTable(
+        name = TABLE_NAME + "_" + Room.TABLE_NAME,
+        joinColumns = @JoinColumn(name = "event_id"),
+        inverseJoinColumns = @JoinColumn(name = "room_id")
+    )
     private Set<Room> rooms;
 
 }
