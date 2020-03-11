@@ -30,7 +30,11 @@ public class EventController {
      */
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listEvents() {
-        return RestResponse.create(eventService.listEvents());
+        try {
+            return RestResponse.create(eventService.listEvents());
+        } catch (Exception e) {
+            return RestResponse.create(null, e.getMessage(), null);
+        }
     }
 
     /**
@@ -40,7 +44,11 @@ public class EventController {
      */
     @PostMapping("")
     public ResponseEntity<RestResponse<Object>> createEvent(@RequestBody Event event) {
-        return RestResponse.create(eventService.createEvent(event), null, HttpStatus.CREATED);
+        try {
+            return RestResponse.create(eventService.createEvent(event), null, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return RestResponse.create(null, e.getMessage(), null);
+        }
     }
 
     /**
@@ -53,7 +61,7 @@ public class EventController {
         try {
             return RestResponse.create(eventService.readEvent(id));
         } catch (Exception e) {
-            return RestResponse.create(null, e.getMessage(), HttpStatus.OK);
+            return RestResponse.create(null, e.getMessage(), null);
         }
     }
 
@@ -70,7 +78,7 @@ public class EventController {
         try {
             return RestResponse.create(eventService.updateEvent(id, event));
         } catch (Exception e) {
-            return RestResponse.create(null, e.getMessage(), HttpStatus.OK);
+            return RestResponse.create(null, e.getMessage(), null);
         }
     }
 
@@ -79,8 +87,12 @@ public class EventController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteEmployee(@PathVariable Integer id) {
-        eventService.deleteEvent(id);
+        try {
+            eventService.deleteEvent(id);
 
-        return RestResponse.create(null, null, HttpStatus.OK);
+            return RestResponse.create(null, null, HttpStatus.OK);
+        } catch (Exception e) {
+            return RestResponse.create(null, e.getMessage(), null);
+        }
     }
 }

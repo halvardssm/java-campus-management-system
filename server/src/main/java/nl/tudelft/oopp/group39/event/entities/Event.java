@@ -5,6 +5,8 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -21,6 +23,7 @@ public class Event {
     public static final String TABLE_NAME = "events";
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Temporal(TemporalType.DATE)
     private Date startDate;
