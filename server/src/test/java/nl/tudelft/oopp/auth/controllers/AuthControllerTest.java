@@ -6,8 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.google.gson.Gson;
 import nl.tudelft.oopp.auth.entities.AuthRequest;
 import nl.tudelft.oopp.role.entities.Role;
-import nl.tudelft.oopp.role.enums.Roles;
-import nl.tudelft.oopp.role.services.RoleService;
 import nl.tudelft.oopp.user.entities.User;
 import nl.tudelft.oopp.user.services.UserService;
 import org.junit.jupiter.api.Test;
@@ -26,18 +24,15 @@ class AuthControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private UserService userService;
-    @Autowired
-    private RoleService roleService;
 
     @Test
     void createToken() throws Exception {
-        roleService.createRole(new Role(Roles.STUDENT));
         userService.createUser(new User(
             "test",
             "test@tudelft.nl",
             "test",
             null,
-            new Role(Roles.STUDENT)
+            Role.STUDENT
         ));
 
         AuthRequest request = new AuthRequest("test", "test");

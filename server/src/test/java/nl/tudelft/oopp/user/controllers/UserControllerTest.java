@@ -13,9 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.google.gson.Gson;
 import nl.tudelft.oopp.auth.services.JwtService;
 import nl.tudelft.oopp.role.entities.Role;
-import nl.tudelft.oopp.role.enums.Roles;
-import nl.tudelft.oopp.role.repositories.RoleRepository;
-import nl.tudelft.oopp.role.services.RoleService;
 import nl.tudelft.oopp.user.entities.User;
 import nl.tudelft.oopp.user.repositories.UserRepository;
 import nl.tudelft.oopp.user.services.UserService;
@@ -38,7 +35,7 @@ class UserControllerTest {
         "test@tudelft.nl",
         "test",
         null,
-        new Role(Roles.ADMIN)
+        Role.ADMIN
     );
     private final Gson gson = new Gson();
 
@@ -47,10 +44,6 @@ class UserControllerTest {
     @Autowired
     private UserService userService;
     @Autowired
-    private RoleService roleService;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
     private UserRepository userRepository;
     @Autowired
     private JwtService jwtService;
@@ -58,8 +51,6 @@ class UserControllerTest {
     @BeforeEach
     void setUp() {
         userRepository.deleteAll();
-        roleRepository.deleteAll();
-        roleService.createRole(new Role(Roles.ADMIN));
         userService.createUser(testUser);
     }
 

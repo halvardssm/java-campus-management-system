@@ -2,7 +2,6 @@ package nl.tudelft.oopp.auth.services;
 
 import java.util.Date;
 import nl.tudelft.oopp.role.entities.Role;
-import nl.tudelft.oopp.role.enums.Roles;
 import nl.tudelft.oopp.user.entities.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,7 @@ class JwtServiceTest {
         "test@tudelft.nl",
         "test",
         null,
-        new Role(Roles.STUDENT)
+        Role.STUDENT
     );
 
     @Autowired
@@ -62,7 +61,7 @@ class JwtServiceTest {
             "test@tudelft.nl",
             "test",
             null,
-            new Role(Roles.STUDENT)
+            Role.STUDENT
         );
         Assertions.assertFalse(jwtService.validate(jwtService.encrypt(testUser), user));
     }

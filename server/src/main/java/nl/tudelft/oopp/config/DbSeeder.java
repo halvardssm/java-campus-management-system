@@ -8,8 +8,6 @@ import nl.tudelft.oopp.building.services.BuildingService;
 import nl.tudelft.oopp.facility.entities.Facility;
 import nl.tudelft.oopp.facility.services.FacilityService;
 import nl.tudelft.oopp.role.entities.Role;
-import nl.tudelft.oopp.role.enums.Roles;
-import nl.tudelft.oopp.role.services.RoleService;
 import nl.tudelft.oopp.room.entities.Room;
 import nl.tudelft.oopp.room.services.RoomService;
 import nl.tudelft.oopp.user.entities.User;
@@ -22,8 +20,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DbSeeder {
-    @Autowired
-    private RoleService roleService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -38,7 +34,6 @@ public class DbSeeder {
      */
     public void seedDatabase() {
         System.out.println("[SEED] Seeding started");
-        initRoles();
         initUsers();
         initFacilities();
         initBuildings();
@@ -55,22 +50,11 @@ public class DbSeeder {
             "admin@tudelft.nl",
             "pwd",
             null,
-            new Role(Roles.ADMIN)
+            Role.ADMIN
         );
 
         userService.createUser(user);
         System.out.println("[SEED] Admin user created");
-    }
-
-    /**
-     * Initiates the database with all authorities.
-     */
-    private void initRoles() {
-        for (Roles role : Roles.values()) {
-            roleService.createRole(new Role(role));
-        }
-
-        System.out.println("[SEED] Roles created");
     }
 
     private void initFacilities() {

@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import nl.tudelft.oopp.role.entities.Role;
 import org.hibernate.annotations.LazyGroup;
@@ -32,8 +32,7 @@ public class User implements UserDetails {
     @Basic(fetch = FetchType.LAZY)
     @LazyGroup("lobs")
     private Blob image;
-    @ManyToOne
-    @JoinColumn(name = "role_id")
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     public User() {

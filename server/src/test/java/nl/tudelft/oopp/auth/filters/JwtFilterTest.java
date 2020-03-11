@@ -7,7 +7,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import nl.tudelft.oopp.auth.services.JwtService;
 import nl.tudelft.oopp.role.entities.Role;
-import nl.tudelft.oopp.role.enums.Roles;
 import nl.tudelft.oopp.user.entities.User;
 import nl.tudelft.oopp.user.repositories.UserRepository;
 import nl.tudelft.oopp.user.services.UserService;
@@ -56,7 +55,7 @@ class JwtFilterTest {
             "test@tudelft.nl",
             "test",
             null,
-            new Role(Roles.STUDENT)
+            Role.STUDENT
         );
 
         userService.createUser(testUser);

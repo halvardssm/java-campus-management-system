@@ -2,8 +2,6 @@ package nl.tudelft.oopp.user.services;
 
 import java.util.List;
 import nl.tudelft.oopp.role.entities.Role;
-import nl.tudelft.oopp.role.enums.Roles;
-import nl.tudelft.oopp.role.services.RoleService;
 import nl.tudelft.oopp.user.entities.User;
 import nl.tudelft.oopp.user.exceptions.UserExistsException;
 import nl.tudelft.oopp.user.repositories.UserRepository;
@@ -23,8 +21,6 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private RoleService roleService;
 
     /**
      * List all users.
@@ -93,9 +89,12 @@ public class UserService implements UserDetailsService {
      * @param user A user to map roles for
      */
     private void mapRoleForUser(User user) {
-        Role role = roleService.readRole(user.getRole().getAuthority());
-
-        user.setRole(role != null ? role : roleService.readRole(Roles.STUDENT));
+        try {
+            Role role = Role.valueOf(user.getRole().getAuthority());
+            user.setRole(role);
+        } catch (NullPointerException | IllegalArgumentException e) {
+            user.setRole(Role.STUDENT);
+        }
     }
 
     /**
