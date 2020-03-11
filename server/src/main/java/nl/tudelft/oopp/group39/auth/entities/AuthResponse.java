@@ -5,16 +5,16 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AuthResponse implements Serializable {
-    private String jwt;
+    private String token;
 
     public AuthResponse() {
     }
 
-    public AuthResponse(String jwt) {
-        this.jwt = jwt;
+    public AuthResponse(String token) {
+        this.token = token;
     }
 
-    public String getJwt() {
-        return jwt;
+    public String getToken() {
+        return token;
     }
 }

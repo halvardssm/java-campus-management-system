@@ -61,8 +61,8 @@ public class AuthController {
 
         User user = userService.readUser(body.getUsername());
 
-        String jwt = jwtService.encrypt(user);
+        String token = jwtService.encrypt(user);
 
-        return RestResponse.create(new AuthResponse(jwt));
+        return RestResponse.create(new AuthResponse(token));
     }
 }
