@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EventService {
+    public static final String EXCEPTION_EVENT_NOT_FOUND = "Event %s not found";
+
     @Autowired
     private EventRepository eventRepository;
 
@@ -26,8 +28,9 @@ public class EventService {
      *
      * @return event by id {@link Event}.
      */
-    public Event readEvent(String id) throws NotFoundException {
-        return eventRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
+    public Event readEvent(Integer id) throws NotFoundException {
+        return eventRepository.findById(id).orElseThrow(()
+            -> new NotFoundException(String.format(EXCEPTION_EVENT_NOT_FOUND, id)));
     }
 
     /**
@@ -35,19 +38,8 @@ public class EventService {
      *
      * @return the created event {@link Event}.
      */
-    public Event createEvent(Event newEvent) {
-        try {
-            Event event = readEvent(newEvent.getEventname());
-            throw new EventExistsException(event.getEventname());
-
-        } catch (EventnameNotFoundException e) {
-            newEvent.setPassword(encryptPassword(newEvent.getPassword()));
-            mapRolesForEvent(newEvent);
-
-            eventRepository.save(newEvent);
-
-            return newEvent;
-        }
+    public Event createEvent(Event event) throws IllegalArgumentException {
+        return eventRepository.save(event);
     }
 
     /**
@@ -55,21 +47,21 @@ public class EventService {
      *
      * @return the updated event {@link Event}.
      */
-    public Event updateEvent(String id, Event newEvent) throws EventnameNotFoundException {
+    public Event updateEvent(Integer id, Event newEvent) throws NotFoundException {
         return eventRepository.findById(id)
             .map(event -> {
-                newEvent.setEventname(id);
-                newEvent.setPassword(encryptPassword(newEvent.getPassword()));
-                mapRolesForEvent(newEvent);
-                return eventRepository.save(newEvent);
-            }).orElseThrow(() -> new EventnameNotFoundException(id));
+                newEvent.setId(id);
+                event = newEvent;
+
+                return eventRepository.save(event);
+            })
+            .orElseThrow(() -> new NotFoundException(String.format(EXCEPTION_EVENT_NOT_FOUND, id)));
     }
 
     /**
      * Delete an event {@link Event}.
      */
-    public void deleteEvent(String id) throws EventnameNotFoundException {
-        readEvent(id);
+    public void deleteEvent(Integer id) {
         eventRepository.deleteById(id);
     }
 }
