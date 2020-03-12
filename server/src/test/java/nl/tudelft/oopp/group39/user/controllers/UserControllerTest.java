@@ -14,9 +14,8 @@ import com.google.gson.Gson;
 import java.util.List;
 import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
-import nl.tudelft.oopp.group39.role.entities.Role;
-import nl.tudelft.oopp.group39.role.enums.Roles;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.repositories.UserRepository;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.junit.jupiter.api.AfterEach;
@@ -38,19 +37,16 @@ class UserControllerTest {
         "test@tudelft.nl",
         "test",
         null,
-        List.of(new Role(Roles.ADMIN))
+        Role.ADMIN
     );
     private final Gson gson = new Gson();
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private JwtService jwtService;
 
@@ -66,7 +62,7 @@ class UserControllerTest {
     }
 
     @Test
-    void postUser() throws Exception {
+    void createUser() throws Exception {
         User user = testUser;
         user.setUsername("test2");
         String json = gson.toJson(user);

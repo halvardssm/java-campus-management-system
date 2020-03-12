@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class JwtService {
     public static final Integer TOKEN_EXPIRATION_TIME = 1000 * 3600;
 
-    @Value("${jwt.token.secret}")
+    @Value("${auth.token.secret}")
     private String secret;
 
     /**

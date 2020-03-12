@@ -3,14 +3,12 @@ package nl.tudelft.oopp.group39.auth.filters;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
-import nl.tudelft.oopp.group39.role.entities.Role;
-import nl.tudelft.oopp.group39.role.enums.Roles;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.repositories.UserRepository;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.junit.jupiter.api.AfterEach;
@@ -58,7 +56,7 @@ class JwtFilterTest {
             "test@tudelft.nl",
             "test",
             null,
-            List.of(new Role(Roles.STUDENT))
+            Role.STUDENT
         );
 
         userService.createUser(testUser);

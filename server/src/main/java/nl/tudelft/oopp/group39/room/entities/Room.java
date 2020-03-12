@@ -23,10 +23,15 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private long buildingId;
+
     private int capacity;
+
     private boolean onlyStaff;
+
     private String description;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = "rooms_facilities",
         joinColumns = {
