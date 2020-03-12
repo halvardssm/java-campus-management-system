@@ -43,8 +43,8 @@ class AuthControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content(json))
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.body.jwt").exists())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.body.jwt").isNotEmpty());
+            .andExpect(MockMvcResultMatchers.jsonPath("$.body.token").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.body.token").isNotEmpty());
     }
 
     @Test
