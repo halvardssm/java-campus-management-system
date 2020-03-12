@@ -33,7 +33,7 @@ public class EventController {
         try {
             return RestResponse.create(eventService.listEvents());
         } catch (Exception e) {
-            return RestResponse.create(null, e.getMessage(), null);
+            return RestResponse.error(e.getMessage());
         }
     }
 
@@ -47,7 +47,7 @@ public class EventController {
         try {
             return RestResponse.create(eventService.createEvent(event), null, HttpStatus.CREATED);
         } catch (Exception e) {
-            return RestResponse.create(null, e.getMessage(), null);
+            return RestResponse.error(e.getMessage());
         }
     }
 
@@ -61,7 +61,7 @@ public class EventController {
         try {
             return RestResponse.create(eventService.readEvent(id));
         } catch (Exception e) {
-            return RestResponse.create(null, e.getMessage(), null);
+            return RestResponse.error(e.getMessage());
         }
     }
 
@@ -78,7 +78,7 @@ public class EventController {
         try {
             return RestResponse.create(eventService.updateEvent(id, event));
         } catch (Exception e) {
-            return RestResponse.create(null, e.getMessage(), null);
+            return RestResponse.error(e.getMessage());
         }
     }
 
@@ -92,7 +92,7 @@ public class EventController {
 
             return RestResponse.create(null, null, HttpStatus.OK);
         } catch (Exception e) {
-            return RestResponse.create(null, e.getMessage(), null);
+            return RestResponse.error(e.getMessage());
         }
     }
 }

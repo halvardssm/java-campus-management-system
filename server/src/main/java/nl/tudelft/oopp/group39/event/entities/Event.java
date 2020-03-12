@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.event.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,7 +30,9 @@ public class Event {
     private Integer id;
     @Enumerated(EnumType.STRING)
     private EventTypes type;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = TABLE_NAME + "_" + Room.TABLE_NAME,

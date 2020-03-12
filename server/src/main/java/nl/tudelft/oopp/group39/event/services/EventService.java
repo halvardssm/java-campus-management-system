@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EventService {
-    public static final String EXCEPTION_EVENT_NOT_FOUND = "Event %s not found";
+    public static final String EXCEPTION_EVENT_NOT_FOUND = "Event %d not found";
 
     @Autowired
     private EventRepository eventRepository;

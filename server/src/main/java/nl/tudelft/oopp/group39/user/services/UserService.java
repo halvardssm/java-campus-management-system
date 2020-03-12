@@ -69,7 +69,6 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id)
             .map(user -> {
                 newUser.setUsername(id);
-                newUser.setPassword(encryptPassword(newUser.getPassword()));
                 mapRoleForUser(newUser);
                 return userRepository.save(newUser);
             }).orElseThrow(() -> new UsernameNotFoundException(id));

@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.gson.Gson;
-import java.util.List;
 import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.user.entities.User;
@@ -40,6 +39,7 @@ class UserControllerTest {
         Role.ADMIN
     );
     private final Gson gson = new Gson();
+    private String jwt;
 
     @Autowired
     private MockMvc mockMvc;
@@ -54,6 +54,7 @@ class UserControllerTest {
     void setUp() {
         userRepository.deleteAll();
         userService.createUser(testUser);
+        jwt = jwtService.encrypt(testUser);
     }
 
     @AfterEach
@@ -78,8 +79,6 @@ class UserControllerTest {
 
     @Test
     void listUsers() throws Exception {
-        String jwt = jwtService.encrypt(testUser);
-
         ResultActions resultActions = mockMvc.perform(get(REST_MAPPING)
             .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
@@ -91,8 +90,6 @@ class UserControllerTest {
 
     @Test
     void readUser() throws Exception {
-        String jwt = jwtService.encrypt(testUser);
-
         mockMvc.perform(get(REST_MAPPING + "/"
             + testUser.getUsername())
             .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
@@ -104,8 +101,6 @@ class UserControllerTest {
 
     @Test
     void updateUser() throws Exception {
-        String jwt = jwtService.encrypt(testUser);
-
         User user = testUser;
         user.setEmail("test@student.tudelft.nl");
         String json = gson.toJson(user);
@@ -122,8 +117,6 @@ class UserControllerTest {
 
     @Test
     void deleteUser() throws Exception {
-        String jwt = jwtService.encrypt(testUser);
-
         mockMvc.perform(delete(REST_MAPPING + "/"
             + testUser.getUsername())
             .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
