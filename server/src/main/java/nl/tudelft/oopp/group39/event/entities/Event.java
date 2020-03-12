@@ -3,6 +3,7 @@ package nl.tudelft.oopp.group39.event.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -34,7 +35,7 @@ public class Event {
     private LocalDate startDate;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = TABLE_NAME + "_" + Room.TABLE_NAME,
         joinColumns = {
             @JoinColumn(name = "event_id", referencedColumnName = "id",
@@ -100,5 +101,21 @@ public class Event {
 
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Event)) {
+            return false;
+        }
+        Event event = (Event) o;
+        return Objects.equals(getId(), event.getId())
+            && getType() == event.getType()
+            && Objects.equals(getStartDate(), event.getStartDate())
+            && Objects.equals(getEndDate(), event.getEndDate())
+            && getRooms().equals(event.getRooms());
     }
 }

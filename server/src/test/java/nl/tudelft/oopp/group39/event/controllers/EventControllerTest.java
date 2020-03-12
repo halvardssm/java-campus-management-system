@@ -116,7 +116,7 @@ class EventControllerTest {
 
     @Test
     void readEvent() throws Exception {
-        mockMvc.perform(get(REST_MAPPING + "/1"))
+        mockMvc.perform(get(REST_MAPPING + "/" + testEvent.getId()))
             .andExpect(jsonPath("$.body").isMap())
             .andExpect(jsonPath("$.body.type", is(testEvent.getType().name())))
             .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartDate().toString())))
