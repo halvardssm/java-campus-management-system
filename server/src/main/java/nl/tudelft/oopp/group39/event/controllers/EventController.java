@@ -30,11 +30,7 @@ public class EventController {
      */
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listEvents() {
-        try {
-            return RestResponse.create(eventService.listEvents());
-        } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
-        }
+        return RestResponse.create(eventService.listEvents());
     }
 
     /**
@@ -86,13 +82,9 @@ public class EventController {
      * DELETE Endpoint to delete am event.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteEmployee(@PathVariable Integer id) {
-        try {
-            eventService.deleteEvent(id);
+    public ResponseEntity<RestResponse<Object>> deleteEvent(@PathVariable Integer id) {
+        eventService.deleteEvent(id);
 
-            return RestResponse.create(null, null, HttpStatus.OK);
-        } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
-        }
+        return RestResponse.create(null, null, HttpStatus.OK);
     }
 }

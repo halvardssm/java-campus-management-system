@@ -3,6 +3,7 @@ package nl.tudelft.oopp.group39.event.controllers;
 import static nl.tudelft.oopp.group39.event.controllers.EventController.REST_MAPPING;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -46,7 +47,7 @@ class EventControllerTest {
         null,
         Role.ADMIN
     );
-    private static final Event testEvent = new Event(
+    private static Event testEvent = new Event(
         EventTypes.EVENT,
         LocalDate.now(ZoneId.of("Europe/Paris")),
         LocalDate.now(ZoneId.of("Europe/Paris")).plusDays(1),
@@ -65,15 +66,17 @@ class EventControllerTest {
     @Autowired
     private UserService userService;
     @Autowired
+    private EventRepository eventRepository;
+    @Autowired
     private EventService eventService;
     @Autowired
-    private EventRepository eventRepository;
+    private EventController eventController;
 
     @BeforeEach
     void setUp() {
         eventRepository.deleteAll();
-        eventService.createEvent(testEvent);
-
+        Event event = eventService.createEvent(testEvent);
+        testEvent.setId(event.getId());
         userService.createUser(testUser);
         jwt = jwtService.encrypt(testUser);
     }
@@ -81,6 +84,7 @@ class EventControllerTest {
     @AfterEach
     void tearDown() {
         eventRepository.deleteAll();
+        testEvent.setId(null);
         userService.deleteUser(testUser.getUsername());
     }
 
@@ -133,9 +137,7 @@ class EventControllerTest {
         event.setEndDate(LocalDate.now(ZoneId.of("Europe/Paris")).plusDays(5));
         String json = gson.toJson(event);
 
-        Integer id = eventRepository.findAll().get(0).getId();
-
-        mockMvc.perform(put(REST_MAPPING + "/" + id)
+        mockMvc.perform(put(REST_MAPPING + "/" + testEvent.getId())
             .contentType(MediaType.APPLICATION_JSON)
             .content(json)
             .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
@@ -149,12 +151,21 @@ class EventControllerTest {
     }
 
     @Test
-    void deleteEmployee() throws Exception {
-        Integer id = eventRepository.findAll().get(0).getId();
-
-        mockMvc.perform(delete(REST_MAPPING + "/" + id)
+    void deleteEvent() throws Exception {
+        mockMvc.perform(delete(REST_MAPPING + "/" + testEvent.getId())
             .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
+    }
+
+    @Test
+    void testError() {
+        assertEquals("Target object must not be null; nested exception is "
+                + "java.lang.IllegalArgumentException: Target object must not be null",
+            eventController.createEvent(null).getBody().getError());
+
+        assertEquals("Event 0 not found", eventController.readEvent(0).getBody().getError());
+
+        assertEquals("Event 0 not found", eventController.updateEvent(0, null).getBody().getError());
     }
 }

@@ -30,12 +30,7 @@ public class UserController {
      */
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listUsers() {
-        try {
-            return RestResponse.create(service.listUsers());
-        } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
-        }
-
+        return RestResponse.create(service.listUsers());
     }
 
     /**
@@ -73,8 +68,8 @@ public class UserController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> updateUser(
-        @RequestBody User user,
-        @PathVariable String id
+        @PathVariable String id,
+        @RequestBody User user
     ) {
         try {
             return RestResponse.create(service.updateUser(id, user));
@@ -87,13 +82,9 @@ public class UserController {
      * DELETE Endpoint to delete am user.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteEmployee(@PathVariable String id) {
-        try {
-            service.deleteUser(id);
+    public ResponseEntity<RestResponse<Object>> deleteUser(@PathVariable String id) {
+        service.deleteUser(id);
 
-            return RestResponse.create(null, null, HttpStatus.OK);
-        } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
-        }
+        return RestResponse.create(null, null, HttpStatus.OK);
     }
 }

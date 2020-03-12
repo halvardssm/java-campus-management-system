@@ -3,6 +3,7 @@ package nl.tudelft.oopp.group39.user.controllers;
 import static nl.tudelft.oopp.group39.user.controllers.UserController.REST_MAPPING;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -44,11 +45,13 @@ class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private UserService userService;
+    private JwtService jwtService;
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private JwtService jwtService;
+    private UserService userService;
+    @Autowired
+    private UserController userController;
 
     @BeforeEach
     void setUp() {
@@ -122,5 +125,15 @@ class UserControllerTest {
             .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
+    }
+
+    @Test
+    void testError() {
+        assertEquals("User can not be null", userController.createUser(null).getBody().getError());
+
+        assertEquals("User asdf not found", userController.readUser("asdf").getBody().getError());
+
+        assertEquals("User asdf not found", userController.updateUser("asdf", null)
+            .getBody().getError());
     }
 }
