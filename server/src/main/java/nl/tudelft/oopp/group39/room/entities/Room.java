@@ -36,8 +36,9 @@ public class Room {
             @JoinColumn(name = "facility_id", referencedColumnName = "id",
                 nullable = false, updatable = false)})
     private Set<Facility> facilities = new HashSet<>();
-    @ManyToMany(mappedBy = "rooms")
-    private Set<Event> events;
+
+    @ManyToMany(mappedBy = "rooms", fetch = FetchType.LAZY)
+    private Set<Event> events = new HashSet<>();
 
     public Room() {
     }
@@ -98,6 +99,13 @@ public class Room {
         this.facilities = facilities == null ? new HashSet<>() : facilities;
     }
 
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
+    }
 
     @Override
     public boolean equals(Object o) {

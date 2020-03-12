@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.google.gson.Gson;
 import java.util.List;
+import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.role.entities.Role;
 import nl.tudelft.oopp.group39.role.enums.Roles;
@@ -84,7 +85,7 @@ class UserControllerTest {
         String jwt = jwtService.encrypt(testUser);
 
         ResultActions resultActions = mockMvc.perform(get(REST_MAPPING)
-            .header(HttpHeaders.AUTHORIZATION, JwtService.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isArray())
             .andExpect(jsonPath("$.body", hasSize(1)))
@@ -98,7 +99,7 @@ class UserControllerTest {
 
         mockMvc.perform(get(REST_MAPPING + "/"
             + testUser.getUsername())
-            .header(HttpHeaders.AUTHORIZATION, JwtService.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body.username", is(testUser.getUsername())))
             .andExpect(jsonPath("$.body.email", is(testUser.getEmail())))
@@ -117,7 +118,7 @@ class UserControllerTest {
             + testUser.getUsername())
             .contentType(MediaType.APPLICATION_JSON)
             .content(json)
-            .header(HttpHeaders.AUTHORIZATION, JwtService.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body.username", is(user.getUsername())))
             .andExpect(jsonPath("$.body.email", is(user.getEmail())));
@@ -129,7 +130,7 @@ class UserControllerTest {
 
         mockMvc.perform(delete(REST_MAPPING + "/"
             + testUser.getUsername())
-            .header(HttpHeaders.AUTHORIZATION, JwtService.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
     }

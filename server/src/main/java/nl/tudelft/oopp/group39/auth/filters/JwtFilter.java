@@ -6,6 +6,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class JwtFilter extends OncePerRequestFilter {
             String username;
             String jwt;
 
-            if (authHeader != null && authHeader.startsWith(JwtService.HEADER_BEARER)) {
+            if (authHeader != null && authHeader.startsWith(AuthController.HEADER_BEARER)) {
                 jwt = authHeader.substring(7);
                 username = jwtService.decryptUsername(jwt);
 
