@@ -15,8 +15,6 @@ import java.util.List;
 public class BookingController {
     public static final String REST_MAPPING = "/booking";
 
-    //Moet alle incoming http requests handelen en doorverwijzen naar BookingService
-
     @Autowired
     private BookingService bookingService;
 
@@ -30,7 +28,7 @@ public class BookingController {
         bookingService.deleteBooking(id);
 
         return RestResponse.create(null, null, HttpStatus.OK);
-    } //wrm is @Pathvariable int en niet long?
+    }
 
     @PostMapping("")
     @ResponseBody

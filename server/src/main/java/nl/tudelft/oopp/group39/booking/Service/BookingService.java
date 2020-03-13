@@ -44,7 +44,7 @@ public class BookingService {
     }
 
     public Booking updateBooking(Booking newBooking, int id) throws BookingNotFoundException {
-        return bookingRepository.findById((long) id) //Test if this is the problem, create own method
+        return bookingRepository.findById((long) id)
             .map(booking -> {
                 booking.setRoomId(newBooking.getRoomId());
                 booking.setDate(newBooking.getDate());
