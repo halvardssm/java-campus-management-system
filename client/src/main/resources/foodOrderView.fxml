@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<?import javafx.geometry.Insets?>
+<?import java.net.URL?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns:fx="http://javafx.com/fxml" fx:controller="nl.tudelft.oopp.group39.controllers.FoodSceneController">
+    <top>
+        <HBox fx:id="topbar" styleClass="bar" spacing="10">
+            <padding><Insets top="12" right="15" bottom="8" left="15"/></padding>
+            <Button onAction="#toggleSidebar" id="menubtn" alignment="CENTER">
+                <graphic>
+                    <ImageView fitHeight="30" fitWidth="30"><Image url="@menu-icon.png" /></ImageView>
+                </graphic>
+            </Button>
+            <Label id="title" text="ORDER FOOD" alignment="CENTER"/>
+            <Region  HBox.hgrow="ALWAYS" />
+            <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
+        </HBox>
+    </top>
+    <left>
+        <VBox fx:id="sidebar" id="sidebar"/>
+    </left>
+    <center>
+        <ScrollPane fitToHeight="true" fitToWidth="true" >
+            <BorderPane>
+                <center>
+                    <VBox>
+                        <padding><Insets top="15" right="15" bottom="15" left="30"/></padding>
+                        <GridPane fx:id="buildingSelector" hgap="20" vgap="20">
+                            <Label text="Select your building: " GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                            <ComboBox fx:id="buildingsList" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                            <Button text="Get menu" GridPane.columnIndex="2" GridPane.rowIndex="0" onAction="#getMenu"/>
+                        </GridPane>
+                        <ScrollPane>
+                            <FlowPane fx:id="foodmenu">
+
+                            </FlowPane>
+                        </ScrollPane>
+                    </VBox>
+
+                </center>
+                <right>
+                    <VBox prefWidth="300" spacing="10">
+                        <padding><Insets top="15" right="30" bottom="15" left="0"/></padding>
+                        <Label id="carttitle" text="Your cart"/>
+
+                        <VBox fx:id="cartlist" spacing="20">
+                            <Label fx:id="emptycart" id="emptycart" text="Cart is empty"/>
+                        </VBox>
+                    </VBox>
+                </right>
+            </BorderPane>
+        </ScrollPane>
+    </center>
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
+</BorderPane>
+
+

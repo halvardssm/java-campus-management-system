@@ -10,14 +10,13 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="nl.tudelft.oopp.group39.controllers.LoginController">
     <top>
         <HBox fx:id="topbar" styleClass="bar" spacing="10">
-            <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+            <padding><Insets top="12" right="15" bottom="8" left="15"/></padding>
             <Button onAction="#toggleSidebar" id="menubtn" alignment="CENTER">
                 <graphic>
-                    <ImageView fitHeight="28" fitWidth="28"><Image url="@menu-icon.png" /></ImageView>
+                    <ImageView fitHeight="30" fitWidth="30"><Image url="@menu-icon.png" /></ImageView>
                 </graphic>
             </Button>
-            <Label id="title" text="Some name |"/>
-            <Label id="page" text="Login"/>
+            <Label id="title" text="LOGIN"/>
             <Region  HBox.hgrow="ALWAYS" />
             <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
         </HBox>
@@ -55,12 +54,6 @@
 
         </GridPane>
     </center>
-    <bottom>
-        <HBox styleClass="bar" spacing="10">
-            <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
-            <Button id="backbtn" text="◀ Back" onAction="#goToBuildingScene"/>
-        </HBox>
-    </bottom>
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>

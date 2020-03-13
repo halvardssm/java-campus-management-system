@@ -11,20 +11,21 @@
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns:fx="http://javafx.com/fxml" fx:controller="nl.tudelft.oopp.group39.controllers.BuildingSceneController">
    <top>
       <HBox fx:id="topbar" styleClass="bar" spacing="10">
-         <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
-         <Button onAction="#toggleSidebar" id="menubtn" alignment="CENTER">
+         <padding><Insets top="12" right="15" bottom="8" left="15"/></padding>
+         <Button onAction="#toggleSidebar" id="menubtn">
             <graphic>
-               <ImageView fitHeight="28" fitWidth="28"><Image url="@menu-icon.png" /></ImageView>
+               <ImageView fitHeight="30" fitWidth="30"><Image url="@menu-icon.png" /></ImageView>
             </graphic>
          </Button>
-         <Label id="title" text="Some name |" alignment="CENTER"/>
-         <Label id="page" text="Buildings"/>
+         <Label id="title" text="BUILDINGS"/>
+<!--         <Label id="page" text="Buildings"/>-->
          <Region  HBox.hgrow="ALWAYS" />
          <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
       </HBox>
    </top>
    <left>
-      <VBox fx:id="sidebar" id="sidebar"/>
+      <VBox fx:id="sidebar" id="sidebar">
+      </VBox>
    </left>
    <center>
       <ScrollPane fitToHeight="true" fitToWidth="true" >

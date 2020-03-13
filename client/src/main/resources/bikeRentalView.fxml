@@ -8,7 +8,7 @@
 <?import java.net.URL?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns:fx="http://javafx.com/fxml" fx:controller="nl.tudelft.oopp.group39.controllers.RoomSceneController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns:fx="http://javafx.com/fxml" fx:controller="nl.tudelft.oopp.group39.controllers.BikeSceneController">
     <top>
         <HBox fx:id="topbar" styleClass="bar" spacing="10">
             <padding><Insets top="12" right="15" bottom="8" left="15"/></padding>
@@ -17,7 +17,7 @@
                     <ImageView fitHeight="30" fitWidth="30"><Image url="@menu-icon.png" /></ImageView>
                 </graphic>
             </Button>
-            <Label id="title" text="ROOMS"/>
+            <Label id="title" text="BIKE RENTAL" alignment="CENTER"/>
             <Region  HBox.hgrow="ALWAYS" />
             <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
         </HBox>
@@ -26,19 +26,12 @@
         <VBox fx:id="sidebar" id="sidebar"/>
     </left>
     <center>
-        <VBox>
-            <VBox fx:id="buildingInfo" alignment="CENTER" >
-<!--                <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>-->
-<!--                <Label id="buildingName" fx:id="buildingName" />-->
-<!--                <Label id="buildingAddress" fx:id="buildingAddress" />-->
-            </VBox>
-            <ScrollPane fitToHeight="true" fitToWidth="true" >
-                <FlowPane alignment="TOP_CENTER" fx:id="rooms" hgap="20.0" vgap="20.0"/><padding><Insets top="30" right="20" bottom="30" left="20"/></padding>
-            </ScrollPane>
-        </VBox>
-
+        <ScrollPane fitToHeight="true" fitToWidth="true" >
+            <Label text="Rent your bike"></Label>
+        </ScrollPane>
     </center>
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
 </BorderPane>
+

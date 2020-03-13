@@ -89,6 +89,17 @@ public class MainSceneController {
         controller.changeTopBtn();
     }
 
+    public void goToBikeRentalScene() throws IOException {
+        BikeSceneController controller = (BikeSceneController) UsersDisplay.sceneControllerHandler("/bikeRentalView.fxml");
+        controller.changeTopBtn();
+    }
+
+    public void goToFoodOrderScene() throws IOException {
+        FoodSceneController controller = (FoodSceneController) UsersDisplay.sceneControllerHandler("/foodOrderView.fxml");
+        controller.changeTopBtn();
+        controller.getBuildingsList();
+    }
+
 
     public void logout() throws IOException {
         loggedIn = false;
@@ -112,7 +123,7 @@ public class MainSceneController {
         System.out.println(loggedIn);
 
         if (loggedIn){
-            MenuButton myaccount = new MenuButton("My Account");
+            MenuButton myaccount = new MenuButton(username);
             MenuItem myres = new MenuItem("My Reservations");
             MenuItem myacc = new MenuItem("My Account");
             MenuItem logout = new MenuItem("Logout");
@@ -162,7 +173,23 @@ public class MainSceneController {
             });
             Hyperlink bikerental = new Hyperlink("Bike rental");
             bikerental.getStyleClass().add("sidebar-item");
-            sidebar.getChildren().addAll(buildings, rooms, bikerental);
+            bikerental.setOnAction(event -> {
+                try {
+                    goToBikeRentalScene();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            Hyperlink foodorder = new Hyperlink("Order food");
+            foodorder.getStyleClass().add("sidebar-item");
+            foodorder.setOnAction(event -> {
+                try {
+                    goToFoodOrderScene();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            sidebar.getChildren().addAll(buildings, rooms, bikerental, foodorder);
             sidebarShown = true;
         }
         else {
