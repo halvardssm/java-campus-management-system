@@ -46,8 +46,6 @@ public class BuildingSceneController extends MainSceneController implements Init
                 String address = ((JsonObject) building).get("location").getAsString();
                 newBuilding.setOnMouseClicked(e -> {
                     try {
-//                        System.out.println(buildingId + buildingName + address);
-//                        goToRoomsScene(buildingId, buildingName, address);
                         goToRoomsScene();
                     } catch (IOException ex) {
                         ex.printStackTrace();

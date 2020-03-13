@@ -43,7 +43,7 @@ public class LoginController extends MainSceneController {
     }
 
     public boolean checkEmpty(String user, String pwd){
-        if(user.isEmpty()  | pwd.isEmpty()){
+        if(user.isEmpty() || pwd.isEmpty()){
             errormsg.setText("Please fill in all the fields");
             return true;
         }

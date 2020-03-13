@@ -19,6 +19,11 @@ public class ServerCommunication {
     private static HttpClient client = HttpClient.newBuilder().build();
 
     private static String url = "http://localhost:8080/";
+    private static String user = "user/";
+    private static String building = "building/";
+    private static String room = "room/";
+    private static String authenticate = "authenticate/";
+    private static String facility = "facility/";
 
     /**
      * Retrieves users from the server
@@ -26,12 +31,12 @@ public class ServerCommunication {
      * @return the body of a get request to the server.
      */
     public static String getUsers() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "user")).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + user)).build();
         return HttpRequest(request);
     }
 
     public static String getUser(String username) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "user/" + username)).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + user + username)).build();
         return HttpRequest(request);
     }
 
@@ -41,7 +46,7 @@ public class ServerCommunication {
      * @return the body of a get request to the server.
      */
     public static String getBuildings() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "building")).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + building)).build();
         return HttpRequest(request);
     }
 
@@ -51,7 +56,7 @@ public class ServerCommunication {
      * @return the body of a get request to the server.
      */
     public static String getRooms() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room")).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + room)).build();
         return HttpRequest(request);
     }
 
@@ -61,7 +66,7 @@ public class ServerCommunication {
      * @return the body of a get request to the server.
      */
     public static String getFacilities() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "facility")).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + facility)).build();
         return HttpRequest(request);
     }
 
@@ -83,7 +88,7 @@ public class ServerCommunication {
      */
     public static String addBuilding(String name, String location, String description, String open, String closed) {
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"name\": \"" + name + "\", \"location\":\"" + location + "\", \"description\":\"" + description + "\", \"open\":\"" + open + "\", \"closed\":\"" + closed + "\"}");
-        HttpRequest request = HttpRequest.newBuilder().POST(newBuilding).uri(URI.create(url + "building/")).header("Content-Type", "application/json").build();
+        HttpRequest request = HttpRequest.newBuilder().POST(newBuilding).uri(URI.create(url + building)).header("Content-Type", "application/json").build();
         return HttpRequest(request);
     }
 
@@ -94,7 +99,7 @@ public class ServerCommunication {
      */
     public static String addRoom(String buildingId, String roomCapacity, String roomDescription) {
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"buildingId\": \"" + buildingId + "\", \"capacity\":\"" + roomCapacity + "\", \"description\":\"" + roomDescription + "\"}");
-        HttpRequest request = HttpRequest.newBuilder().POST(newBuilding).uri(URI.create(url + "room/")).header("Content-Type", "application/json").build();
+        HttpRequest request = HttpRequest.newBuilder().POST(newBuilding).uri(URI.create(url + room)).header("Content-Type", "application/json").build();
         return HttpRequest(request);
     }
 
@@ -105,7 +110,7 @@ public class ServerCommunication {
      */
     public static String updateRoom(String buildingId, String roomCapacity, String roomDescription, String id) {
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"buildingId\": \"" + buildingId + "\", \"capacity\":\"" + roomCapacity + "\", \"description\":\"" + roomDescription + "\"}");
-        HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding).uri(URI.create(url + "room/" + id)).header("Content-Type", "application/json").build();
+        HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding).uri(URI.create(url + room + id)).header("Content-Type", "application/json").build();
         return HttpRequest(request);
     }
 
@@ -116,31 +121,28 @@ public class ServerCommunication {
      */
     public static String updateBuilding(String name, String location, String description, String open, String closed, String id) {
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"name\": \"" + name + "\", \"location\":\"" + location + "\", \"description\":\"" + description + "\", \"open\":\"" + open + "\", \"closed\":\"" + closed + "\"}");
-        HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding).uri(URI.create(url + "building/" + id)).header("Content-Type", "application/json").build();
+        HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding).uri(URI.create(url + building + id)).header("Content-Type", "application/json").build();
         return HttpRequest(request);
     }
 
 
     public static void removeBuilding(String id) {
-        HttpRequest request = HttpRequest.newBuilder().DELETE().uri(URI.create(url + "building/" + id)).build();
+        HttpRequest request = HttpRequest.newBuilder().DELETE().uri(URI.create(url + building + id)).build();
         HttpRequest(request);
     }
 
     public static void removeRoom(String id) {
-        HttpRequest request = HttpRequest.newBuilder().DELETE().uri(URI.create(url + "room/" + id)).build();
+        HttpRequest request = HttpRequest.newBuilder().DELETE().uri(URI.create(url + room + id)).build();
         HttpRequest(request);
     }
 
     public static String getRooms(long buildingId){
-        //HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room?capacity=&name=&onlyStaff=&facilities=&buildingId=" + buildingId + "&building=&location=&open=&closed=")).build();
-       // HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room?buildingId=" + buildingId)).build();
-
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room/" + buildingId)).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + room + buildingId)).build();
         return HttpRequest(request);
     }
 
     public static String getAllRooms(){
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room")).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + room)).build();
         return HttpRequest(request);
     }
 
@@ -164,10 +166,10 @@ public class ServerCommunication {
     }
 
     public static String addUser(String netID, String email, String password, String role){
-        HttpRequest.BodyPublisher user = HttpRequest.BodyPublishers.ofString("{\"username\": \"" + netID + "\", \"email\":\"" + email + "\", \"password\":\"" + password + "\", \"roles\":\"" + List.of(role) + "\"}");
+        HttpRequest.BodyPublisher newUser = HttpRequest.BodyPublishers.ofString("{\"username\": \"" + netID + "\", \"email\":\"" + email + "\", \"password\":\"" + password + "\", \"roles\":\"" + List.of(role) + "\"}");
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(user)
-                .uri(URI.create("http://localhost:8080/user"))
+                .POST(newUser)
+                .uri(URI.create(url + user))
                 .header("Content-Type", "application/json")
                 .build();
 
@@ -192,7 +194,7 @@ public class ServerCommunication {
         HttpRequest.BodyPublisher user = HttpRequest.BodyPublishers.ofString("{\"username\": \"" + username + "\", \"password\":\"" + pwd + "\"}");
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(user)
-                .uri(URI.create("http://localhost:8080/authenticate"))
+                .uri(URI.create(url + authenticate))
                 .header("Content-Type", "application/json")
                 .build();
 
@@ -210,7 +212,7 @@ public class ServerCommunication {
         else{
             System.out.println(response.body());
             JsonObject body = ((JsonObject) JsonParser.parseString(response.body()));
-            String jwtToken = body.getAsJsonObject("body").get("jwt").getAsString();
+            String jwtToken = body.getAsJsonObject("body").get("token").getAsString();
             System.out.println(jwtToken);
             MainSceneController.jwt = jwtToken;
             MainSceneController.loggedIn = true;
