@@ -14,6 +14,7 @@ variables:
   MYSQL_DATABASE: "oopp"
   MYSQL_ROOT_PASSWORD: "pwd"
   MYSQL_HOST: "mysql"
+  TZ: "Europe/Paris"
 
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
