@@ -2,11 +2,16 @@ package nl.tudelft.oopp.group39.building.entities;
 
 
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.food.entities.Food;
 
 @Entity
 @Table(name = Building.TABLE_NAME)
@@ -26,6 +31,8 @@ public class Building {
     private LocalTime open;
 
     private LocalTime closed;
+    @ManyToMany(mappedBy = TABLE_NAME, fetch = FetchType.LAZY)
+    private Set<Food> food = new HashSet<>();
 
     //opening times (open & closed)
 
@@ -86,6 +93,14 @@ public class Building {
 
     public void setClosed(LocalTime closed) {
         this.closed = closed;
+    }
+
+    public Set<Food> getFood() {
+        return food;
+    }
+
+    public void setFood(Set<Food> food) {
+        this.food = food;
     }
 
     @Override
