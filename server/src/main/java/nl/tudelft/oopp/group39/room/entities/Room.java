@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.room.entities;
 
+import nl.tudelft.oopp.group39.booking.Entities.Booking;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 
 import javax.persistence.*;
@@ -32,6 +33,10 @@ public class Room {
             @JoinColumn(name = "facility_id", referencedColumnName = "id",
                 nullable = false, updatable = false)})
     private Set<Facility> facilities = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
+    @JoinColumn(name = "id", nullable = false, updatable = false)
+    private Set<Booking> bookings = new HashSet<>();
 
     public Room() {
     }

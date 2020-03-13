@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.booking.Entities;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import nl.tudelft.oopp.group39.room.entities.Room;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -23,6 +24,10 @@ public class Booking {
     private LocalTime endTime;
     private long userId;
     private long buildingId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "roomId")
+    private Room room;
 
     public Booking() {
     }
