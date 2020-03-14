@@ -18,17 +18,17 @@ public class BookingService {
         return bookingRepository.findAll();
     }
 
-    public Booking readBooking(long id) throws BookingNotFoundException {
-        return bookingRepository.findById(id).orElseThrow(() -> new BookingNotFoundException((int) id));
+    public Booking readBooking(Integer id) throws BookingNotFoundException {
+        return bookingRepository.findById(id).orElseThrow(() -> new BookingNotFoundException(id));
     }
 
-    public Booking deleteBooking(long id) throws BookingNotFoundException {
+    public Booking deleteBooking(Integer id) throws BookingNotFoundException {
         try {
             Booking rf = readBooking(id);
             bookingRepository.delete(readBooking(id));
             return rf;
         } catch (BookingNotFoundException e) {
-            throw new BookingNotFoundException((int) id);
+            throw new BookingNotFoundException(id);
         }
     }
 
@@ -44,13 +44,13 @@ public class BookingService {
     }
 
     public Booking updateBooking(Booking newBooking, int id) throws BookingNotFoundException {
-        return bookingRepository.findById((long) id)
+        return bookingRepository.findById((Integer) id)
             .map(booking -> {
-                booking.setRoomId(newBooking.getRoomId());
                 booking.setDate(newBooking.getDate());
                 booking.setStartTime(newBooking.getStartTime());
                 booking.setEndTime(newBooking.getEndTime());
-                booking.setUserId(newBooking.getUserId());
+                booking.setUser(newBooking.getUser());
+                booking.setRoom(newBooking.getRoom());
                 return bookingRepository.save(booking);
             }).orElseThrow(() -> new BookingNotFoundException(id));
     }

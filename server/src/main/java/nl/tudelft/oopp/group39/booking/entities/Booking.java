@@ -16,13 +16,11 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer roomId;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
-    private Integer userId;
-    private Integer buildingId;
+    private String user;
 
     @ManyToOne
     @JoinColumn(name = Room.TABLE_NAME)
@@ -31,13 +29,11 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(Integer roomId, LocalDate date, LocalTime startTime, LocalTime endTime, Integer userId, Integer buildingId, Room room) {
-        this.roomId = roomId;
+    public Booking(LocalDate date, LocalTime startTime, LocalTime endTime, String user, Room room) {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.userId = userId;
-        this.buildingId = buildingId;
+        this.user = user;
         this.room = room;
 
     }
@@ -48,14 +44,6 @@ public class Booking {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(Integer roomId) {
-        this.roomId = roomId;
     }
 
     public LocalDate getDate() {
@@ -82,20 +70,12 @@ public class Booking {
         this.endTime = endTime;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getUser() {
+        return user;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getBuildingId() {
-        return buildingId;
-    }
-
-    public void setBuildingId(Integer buildingId) {
-        this.buildingId = buildingId;
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public Room getRoom() {
@@ -115,14 +95,12 @@ public class Booking {
             return false;
         }
         Booking booking = (Booking) o;
-        return getId() == booking.getId() &&
-            getRoomId() == booking.getRoomId() &&
-            getUserId() == booking.getUserId() &&
-            getDate().equals(booking.getDate()) &&
-            getStartTime().compareTo(booking.getStartTime()) == 0 &&
-            getEndTime().compareTo(booking.getEndTime()) == 0 && //difference of time = 0
-            getBuildingId() == booking.getBuildingId() &&
-            getRoom() == booking.getRoom();
+        return getId() == booking.getId()
+            && getUser().equals(booking.getUser())
+            && getDate().equals(booking.getDate())
+            && getStartTime().compareTo(booking.getStartTime()) == 0
+            && getEndTime().compareTo(booking.getEndTime()) == 0
+            && getRoom() == booking.getRoom();
     }
 }
 
