@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.booking.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import nl.tudelft.oopp.group39.room.entities.Room;
+import nl.tudelft.oopp.group39.user.entities.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -20,7 +21,10 @@ public class Booking {
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
-    private String user;
+
+    @ManyToOne
+    @JoinColumn(name = User.TABLE_NAME)
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = Room.TABLE_NAME)
@@ -29,7 +33,7 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(LocalDate date, LocalTime startTime, LocalTime endTime, String user, Room room) {
+    public Booking(LocalDate date, LocalTime startTime, LocalTime endTime, User user, Room room) {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -70,11 +74,11 @@ public class Booking {
         this.endTime = endTime;
     }
 
-    public String getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(String user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -100,7 +104,7 @@ public class Booking {
             && getDate().equals(booking.getDate())
             && getStartTime().compareTo(booking.getStartTime()) == 0
             && getEndTime().compareTo(booking.getEndTime()) == 0
-            && getRoom() == booking.getRoom();
+            && getRoom().equals(booking.getRoom());
     }
 }
 

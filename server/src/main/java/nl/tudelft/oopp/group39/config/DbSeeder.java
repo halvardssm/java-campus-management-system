@@ -52,12 +52,14 @@ public class DbSeeder {
      * Initiates the database with an admin user with all authorities.
      */
     private void initUsers() {
+        Set<Booking> bookings = new HashSet<>();
         User user = new User(
             "admin",
             "admin@tudelft.nl",
             "pwd",
             null,
-            Role.ADMIN
+            Role.ADMIN,
+            bookings
         );
 
         userService.createUser(user);
@@ -109,14 +111,15 @@ public class DbSeeder {
         LocalDate date = LocalDate.now();
         LocalTime start = LocalTime.now();
         LocalTime end = LocalTime.now();
+        User username = username.getUsername();
 
         Room room = new Room(1, 10, true, "test1", facilities, bookings);
 
 
-        Booking b = new Booking(1, date, start, end, 1, 1, room);
+        Booking b = new Booking(date, start, end, username, room);
         bookingService.createBooking(b);
 
-        b = new Booking(2, date, start, end, 2, 2, room);
+        b = new Booking(date, start, end, username, room);
         bookingService.createBooking(b);
 
         System.out.println("[SEED] Bookings created");

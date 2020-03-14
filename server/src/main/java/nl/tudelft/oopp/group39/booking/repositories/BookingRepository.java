@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.booking.repositories;
 
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.room.entities.Room;
+import nl.tudelft.oopp.group39.user.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,7 +24,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
     //Returns an array with bookings from a chosen user
     @Query("SELECT u.id FROM Booking u WHERE u.user = :user")
-    int[] filterBookingsOnUserId(@Param("user") String user);
+    int[] filterBookingsOnUserId(@Param("user") User user);
 
     //Returns an array with bookings with a certain start/end-times
     @Query("SELECT u.id FROM Booking u WHERE u.startTime <= :startTime and u.endTime >= :endTime and u.endTime>=u.startTime")
