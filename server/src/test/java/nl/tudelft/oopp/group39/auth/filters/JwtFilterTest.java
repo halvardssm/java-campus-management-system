@@ -1,11 +1,7 @@
 package nl.tudelft.oopp.group39.auth.filters;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.IOException;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.repositories.UserRepository;
@@ -20,6 +16,14 @@ import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class JwtFilterTest {
@@ -50,12 +54,14 @@ class JwtFilterTest {
 
     @Test
     void doFilterInternal() throws ServletException, IOException {
+        Set<Booking> bookings = new HashSet<>();
         User testUser = new User(
             "test",
             "test@tudelft.nl",
             "test",
             null,
-            Role.STUDENT
+            Role.STUDENT,
+            bookings
         );
 
         userService.createUser(testUser);

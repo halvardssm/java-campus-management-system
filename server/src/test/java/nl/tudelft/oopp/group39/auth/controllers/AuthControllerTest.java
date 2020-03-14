@@ -1,10 +1,8 @@
 package nl.tudelft.oopp.group39.auth.controllers;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.google.gson.Gson;
 import nl.tudelft.oopp.group39.auth.entities.AuthRequest;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.services.UserService;
@@ -15,6 +13,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -27,12 +31,14 @@ class AuthControllerTest {
 
     @Test
     void createToken() throws Exception {
+        Set<Booking> bookings = new HashSet<>();
         userService.createUser(new User(
             "test",
             "test@tudelft.nl",
             "test",
             null,
-            Role.STUDENT
+            Role.STUDENT,
+            bookings
         ));
 
         AuthRequest request = new AuthRequest("test", "test");

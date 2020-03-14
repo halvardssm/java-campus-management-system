@@ -1,17 +1,8 @@
 package nl.tudelft.oopp.group39.user.controllers;
 
-import static nl.tudelft.oopp.group39.user.controllers.UserController.REST_MAPPING;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.google.gson.Gson;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.repositories.UserRepository;
@@ -27,15 +18,27 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import static nl.tudelft.oopp.group39.user.controllers.UserController.REST_MAPPING;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
+    Set<Booking> bookings = new HashSet<>();
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",
         "test",
         null,
-        Role.ADMIN
+        Role.ADMIN,
+        bookings
     );
     private final Gson gson = new Gson();
 
