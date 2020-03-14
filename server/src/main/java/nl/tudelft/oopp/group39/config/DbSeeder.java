@@ -111,15 +111,15 @@ public class DbSeeder {
         LocalDate date = LocalDate.now();
         LocalTime start = LocalTime.now();
         LocalTime end = LocalTime.now();
-        User username = username.getUsername();
+        User user = userService.readUser("admin");
 
         Room room = new Room(1, 10, true, "test1", facilities, bookings);
 
 
-        Booking b = new Booking(date, start, end, username, room);
+        Booking b = new Booking(date, start, end, user, room);
         bookingService.createBooking(b);
 
-        b = new Booking(date, start, end, username, room);
+        b = new Booking(date, start, end, user, room);
         bookingService.createBooking(b);
 
         System.out.println("[SEED] Bookings created");
