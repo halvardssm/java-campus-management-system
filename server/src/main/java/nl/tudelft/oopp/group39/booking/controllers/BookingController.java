@@ -1,7 +1,7 @@
-package nl.tudelft.oopp.group39.booking.Controller;
+package nl.tudelft.oopp.group39.booking.controllers;
 
-import nl.tudelft.oopp.group39.booking.Entities.Booking;
-import nl.tudelft.oopp.group39.booking.Service.BookingService;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

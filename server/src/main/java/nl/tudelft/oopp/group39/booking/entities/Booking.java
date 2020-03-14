@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.booking.Entities;
+package nl.tudelft.oopp.group39.booking.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import nl.tudelft.oopp.group39.room.entities.Room;
@@ -24,8 +24,8 @@ public class Booking {
     private Integer userId;
     private Integer buildingId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id")
+    @ManyToOne
+    @JoinColumn(name = Room.TABLE_NAME)
     private Room room;
 
     public Booking() {

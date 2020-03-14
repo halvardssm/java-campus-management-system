@@ -1,22 +1,12 @@
 package nl.tudelft.oopp.group39.room.entities;
 
-import nl.tudelft.oopp.group39.booking.Entities.Booking;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = Room.TABLE_NAME)
@@ -45,8 +35,7 @@ public class Room {
                 nullable = false, updatable = false)})
     private Set<Facility> facilities = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "room")
-    @JoinColumn(name = "id", nullable = false, updatable = false)
+    @OneToMany(mappedBy = "room")
     private Set<Booking> bookings = new HashSet<>();
 
     public Room() {
@@ -126,12 +115,12 @@ public class Room {
             return false;
         }
         Room room = (Room) o;
-        return getId() == room.getId() &&
-            buildingId == room.buildingId &&
-            getCapacity() == room.getCapacity() &&
-            getOnlyStaff() == room.getOnlyStaff() &&
-            Objects.equals(getDescription(), room.getDescription()) &&
-            Objects.equals(getFacilities(), room.getFacilities()) &&
-            Objects.equals(getBookings(), room.getBookings());
+        return getId() == room.getId()
+            && buildingId == room.buildingId
+            && getCapacity() == room.getCapacity()
+            && getOnlyStaff() == room.getOnlyStaff()
+            && Objects.equals(getDescription(), room.getDescription())
+            && Objects.equals(getFacilities(), room.getFacilities())
+            && Objects.equals(getBookings(), room.getBookings());
     }
 }

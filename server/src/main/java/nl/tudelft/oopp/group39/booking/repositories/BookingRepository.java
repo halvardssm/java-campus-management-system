@@ -1,6 +1,6 @@
-package nl.tudelft.oopp.group39.booking.Repositories;
+package nl.tudelft.oopp.group39.booking.repositories;
 
-import nl.tudelft.oopp.group39.booking.Entities.Booking;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,9 +1,9 @@
-package nl.tudelft.oopp.group39.booking.Service;
+package nl.tudelft.oopp.group39.booking.services;
 
-import nl.tudelft.oopp.group39.booking.Entities.Booking;
-import nl.tudelft.oopp.group39.booking.Exceptions.BookingExistsException;
-import nl.tudelft.oopp.group39.booking.Exceptions.BookingNotFoundException;
-import nl.tudelft.oopp.group39.booking.Repositories.BookingRepository;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.booking.exceptions.BookingExistsException;
+import nl.tudelft.oopp.group39.booking.exceptions.BookingNotFoundException;
+import nl.tudelft.oopp.group39.booking.repositories.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +34,8 @@ public class BookingService {
 
     public Booking createBooking(Booking newBooking) {
         try {
-            Booking booking = readBooking((int) newBooking.getId());
-            throw new BookingExistsException((int) booking.getId());
+            Booking booking = readBooking(newBooking.getId());
+            throw new BookingExistsException(booking.getId());
 
         } catch (BookingNotFoundException e) {
             bookingRepository.save(newBooking);

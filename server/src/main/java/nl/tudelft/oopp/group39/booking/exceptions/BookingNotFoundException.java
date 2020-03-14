@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.booking.Exceptions;
+package nl.tudelft.oopp.group39.booking.exceptions;
 
 public class BookingNotFoundException extends RuntimeException {
     public BookingNotFoundException(int id) {
