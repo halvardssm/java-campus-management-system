@@ -16,14 +16,14 @@ public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private Integer roomId;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private long id;
-    private long roomId;
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
-    private long userId;
-    private long buildingId;
+    private Integer userId;
+    private Integer buildingId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
@@ -32,7 +32,7 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(long roomId, LocalDate date, LocalTime startTime, LocalTime endTime, long userId, long buildingId, Room room) {
+    public Booking(Integer roomId, LocalDate date, LocalTime startTime, LocalTime endTime, Integer userId, Integer buildingId, Room room) {
         this.roomId = roomId;
         this.date = date;
         this.startTime = startTime;
@@ -43,19 +43,19 @@ public class Booking {
 
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public long getRoomId() {
+    public Integer getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(long roomId) {
+    public void setRoomId(Integer roomId) {
         this.roomId = roomId;
     }
 
@@ -83,19 +83,19 @@ public class Booking {
         this.endTime = endTime;
     }
 
-    public long getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public long getBuildingId() {
+    public Integer getBuildingId() {
         return buildingId;
     }
 
-    public void setBuildingId(long buildingId) {
+    public void setBuildingId(Integer buildingId) {
         this.buildingId = buildingId;
     }
 
