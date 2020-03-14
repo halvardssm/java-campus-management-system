@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.group39.booking.Entities;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import nl.tudelft.oopp.group39.room.entities.Room;
 
