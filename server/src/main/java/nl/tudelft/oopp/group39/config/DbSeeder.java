@@ -22,11 +22,6 @@ import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Seeds the database on application load.
  */
@@ -114,7 +109,7 @@ public class DbSeeder {
     private void initEvents() {
         LocalDate today = LocalDate.now();
         LocalDate tomorrow = today.plusDays(1);
-        Room room = new Room(1, 0, false, null, new HashSet<>());
+        Room room = new Room(1, 0, false, null, new HashSet<>(), new HashSet<>());
         HashSet<Room> rooms = new HashSet<>(List.of(room));
         eventService.createEvent(new Event(EventTypes.EVENT, today, tomorrow, rooms));
 

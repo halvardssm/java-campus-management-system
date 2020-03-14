@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.group39.room.entities;
 
-import nl.tudelft.oopp.group39.booking.entities.Booking;
-import nl.tudelft.oopp.group39.facility.entities.Facility;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -14,7 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 
