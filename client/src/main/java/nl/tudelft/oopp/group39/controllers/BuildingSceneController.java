@@ -29,8 +29,6 @@ public class BuildingSceneController extends MainSceneController {
             JsonObject body = ((JsonObject) JsonParser.parseString(buildingString));
             JsonArray buildingArray = body.getAsJsonArray("body");
 
-//            JsonArray buildingArray = (JsonArray) JsonParser.parseString(room);
-
             for (JsonElement building : buildingArray) {
                 newBuilding = FXMLLoader.load(getClass().getResource("/buildingCell.fxml"));
 
