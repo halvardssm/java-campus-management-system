@@ -26,19 +26,20 @@ public class Booking {
     private long buildingId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "roomId")
+    @JoinColumn(name = "room_id")
     private Room room;
 
     public Booking() {
     }
 
-    public Booking(long roomId, LocalDate date, LocalTime startTime, LocalTime endTime, long userId, long buildingId) {
+    public Booking(long roomId, LocalDate date, LocalTime startTime, LocalTime endTime, long userId, long buildingId, Room room) {
         this.roomId = roomId;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.userId = userId;
         this.buildingId = buildingId;
+        this.room = room;
 
     }
 
@@ -98,6 +99,14 @@ public class Booking {
         this.buildingId = buildingId;
     }
 
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -113,7 +122,8 @@ public class Booking {
             getDate().equals(booking.getDate()) &&
             getStartTime().compareTo(booking.getStartTime()) == 0 &&
             getEndTime().compareTo(booking.getEndTime()) == 0 && //difference of time = 0
-            getBuildingId() == booking.getBuildingId();
+            getBuildingId() == booking.getBuildingId() &&
+            getRoom() == booking.getRoom();
     }
 }
 
