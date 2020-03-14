@@ -3,21 +3,12 @@ package nl.tudelft.oopp.group39.config;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 class RestResponseTest {
-
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
-
     @Test
     void constructorBody() {
         RestResponse<?> response = new RestResponse<>(new ArrayList<>());
@@ -58,5 +49,17 @@ class RestResponseTest {
         RestResponse<List<String>> response = new RestResponse<>(new ArrayList<>());
         RestResponse<List<String>> response2 = new RestResponse<>(new LinkedList<>());
         Assertions.assertEquals(response, response2);
+    }
+
+    @Test
+    void testCreate() {
+        List<String> body = List.of("test");
+        String error = "error";
+        HttpStatus status = HttpStatus.ACCEPTED;
+        ResponseEntity<RestResponse<Object>> response = RestResponse.create(body, error, status);
+
+        Assertions.assertEquals(body, response.getBody().getBody());
+        Assertions.assertEquals(error, response.getBody().getError());
+        Assertions.assertEquals(status, response.getStatusCode());
     }
 }

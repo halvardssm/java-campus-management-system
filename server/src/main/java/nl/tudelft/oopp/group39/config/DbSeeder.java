@@ -1,27 +1,19 @@
 package nl.tudelft.oopp.group39.config;
 
-import nl.tudelft.oopp.group39.booking.Entities.Booking;
-import nl.tudelft.oopp.group39.booking.Service.BookingService;
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
-import nl.tudelft.oopp.group39.role.entities.Role;
-import nl.tudelft.oopp.group39.role.enums.Roles;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Seeds the database on application load.
@@ -29,15 +21,13 @@ import java.util.Set;
 @Component
 public class DbSeeder {
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
     private RoomService roomService;
     @Autowired
     private BuildingService buildingService;
     @Autowired
     private FacilityService facilityService;
-    @Autowired
-    private BookingService bookingService;
 
     /**
      * Initiates the db with all the roles.
@@ -48,25 +38,19 @@ public class DbSeeder {
         initFacilities();
         initBuildings();
         initRooms();
-        initBookings();
+        System.out.println("[SEED] Seeding completed");
     }
 
     /**
      * Initiates the database with an admin user with all authorities.
      */
     private void initUsers() {
-        List<GrantedAuthority> roles = new ArrayList<>();
-
-        for (Roles role : Roles.values()) {
-            roles.add(new Role(role));
-        }
-
         User user = new User(
             "admin",
             "admin@tudelft.nl",
-            userService.encryptPassword("pwd"),
+            "pwd",
             null,
-            roles
+            Role.ADMIN
         );
 
         userService.createUser(user);
@@ -109,20 +93,5 @@ public class DbSeeder {
         roomService.createRoom(new Room(2, 15, false, "test3", facilities));
 
         System.out.println("[SEED] Rooms created");
-    }
-
-    private void initBookings() {
-        Set<Booking> bookings = new HashSet<>();
-        LocalDate date = LocalDate.now();
-        LocalTime start = LocalTime.now();
-        LocalTime end = LocalTime.now();
-
-        Booking b = new Booking(1, date, start, end, 1, 1);
-        bookingService.createBooking(b);
-
-        b = new Booking(2, date, start, end, 2, 2);
-        bookingService.createBooking(b);
-
-        System.out.println("[SEED] Bookings created");
     }
 }
