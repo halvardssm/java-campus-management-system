@@ -1,22 +1,18 @@
 package nl.tudelft.oopp.group39.config;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
-import nl.tudelft.oopp.group39.role.entities.Role;
-import nl.tudelft.oopp.group39.role.enums.Roles;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DbSeeder {
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
     private RoomService roomService;
     @Autowired
@@ -42,24 +38,19 @@ public class DbSeeder {
         initFacilities();
         initBuildings();
         initRooms();
+        System.out.println("[SEED] Seeding completed");
     }
 
     /**
      * Initiates the database with an admin user with all authorities.
      */
     private void initUsers() {
-        List<GrantedAuthority> roles = new ArrayList<>();
-
-        for (Roles role : Roles.values()) {
-            roles.add(new Role(role));
-        }
-
         User user = new User(
             "admin",
             "admin@tudelft.nl",
-            userService.encryptPassword("pwd"),
+            "pwd",
             null,
-            roles
+            Role.ADMIN
         );
 
         userService.createUser(user);

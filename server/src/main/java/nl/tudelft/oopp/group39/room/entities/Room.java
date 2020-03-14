@@ -1,10 +1,18 @@
 package nl.tudelft.oopp.group39.room.entities;
 
-import nl.tudelft.oopp.group39.facility.entities.Facility;
-
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import nl.tudelft.oopp.group39.facility.entities.Facility;
 
 @Entity
 @Table(name = Room.TABLE_NAME)
