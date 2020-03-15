@@ -30,16 +30,11 @@ public class UserController {
      */
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listUsers() {
-        try {
-            return RestResponse.create(service.listUsers());
-        } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
-        }
-
+        return RestResponse.create(service.listUsers());
     }
 
     /**
-     * POST Endpoint to retrieve an user.
+     * POST Endpoint to create user.
      *
      * @return the created user {@link User}.
      */
@@ -53,7 +48,7 @@ public class UserController {
     }
 
     /**
-     * GET Endpoint to retrieve an user.
+     * GET Endpoint to retrieve user.
      *
      * @return the requested user {@link User}.
      */
@@ -67,14 +62,14 @@ public class UserController {
     }
 
     /**
-     * PUT Endpoint to update an user.
+     * PUT Endpoint to update user.
      *
      * @return the updated user {@link User}.
      */
     @PutMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> updateUser(
-        @RequestBody User user,
-        @PathVariable String id
+        @PathVariable String id,
+        @RequestBody User user
     ) {
         try {
             return RestResponse.create(service.updateUser(id, user));
@@ -84,16 +79,12 @@ public class UserController {
     }
 
     /**
-     * DELETE Endpoint to delete am user.
+     * DELETE Endpoint to delete user.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteEmployee(@PathVariable String id) {
-        try {
-            service.deleteUser(id);
+    public ResponseEntity<RestResponse<Object>> deleteUser(@PathVariable String id) {
+        service.deleteUser(id);
 
-            return RestResponse.create(null, null, HttpStatus.OK);
-        } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
-        }
+        return RestResponse.create(null, null, HttpStatus.OK);
     }
 }

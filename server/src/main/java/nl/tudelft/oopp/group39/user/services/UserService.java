@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements UserDetailsService {
+    public static final String EXCEPTION_USER_NOT_FOUND = "User %s not found";
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -37,7 +38,8 @@ public class UserService implements UserDetailsService {
      * @return user by id {@link User}.
      */
     public User readUser(String id) throws UsernameNotFoundException {
-        return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException(id));
+        return userRepository.findById(id).orElseThrow(()
+            -> new UsernameNotFoundException(String.format(EXCEPTION_USER_NOT_FOUND, id)));
     }
 
     /**
@@ -57,6 +59,8 @@ public class UserService implements UserDetailsService {
             userRepository.save(newUser);
 
             return newUser;
+        } catch (NullPointerException e) {
+            throw new NullPointerException("User can not be null");
         }
     }
 
@@ -69,10 +73,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id)
             .map(user -> {
                 newUser.setUsername(id);
-                newUser.setPassword(encryptPassword(newUser.getPassword()));
                 mapRoleForUser(newUser);
                 return userRepository.save(newUser);
-            }).orElseThrow(() -> new UsernameNotFoundException(id));
+            }).orElseThrow(()
+                -> new UsernameNotFoundException(String.format(EXCEPTION_USER_NOT_FOUND, id)));
     }
 
     /**
@@ -112,7 +116,7 @@ public class UserService implements UserDetailsService {
         User user = this.userRepository.findUserByUsername(username);
 
         if (user == null) {
-            throw new UsernameNotFoundException("Could not find user " + username);
+            throw new UsernameNotFoundException(String.format(EXCEPTION_USER_NOT_FOUND, username));
         }
 
         return user;

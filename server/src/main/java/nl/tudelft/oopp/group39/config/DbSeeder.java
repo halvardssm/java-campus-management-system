@@ -1,10 +1,15 @@
 package nl.tudelft.oopp.group39.config;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
+import nl.tudelft.oopp.group39.event.entities.Event;
+import nl.tudelft.oopp.group39.event.enums.EventTypes;
+import nl.tudelft.oopp.group39.event.services.EventService;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
 import nl.tudelft.oopp.group39.room.entities.Room;
@@ -28,6 +33,8 @@ public class DbSeeder {
     private BuildingService buildingService;
     @Autowired
     private FacilityService facilityService;
+    @Autowired
+    private EventService eventService;
 
     /**
      * Initiates the db with all the roles.
@@ -38,6 +45,7 @@ public class DbSeeder {
         initFacilities();
         initBuildings();
         initRooms();
+        initEvents();
         System.out.println("[SEED] Seeding completed");
     }
 
@@ -81,17 +89,22 @@ public class DbSeeder {
 
     private void initRooms() {
         Set<Facility> facilities = new HashSet<>();
-
         roomService.createRoom(new Room(1, 10, true, "test1", facilities));
-
         facilities.add(facilityService.readFacility(1));
-
         roomService.createRoom(new Room(1, 6, true, "test2", facilities));
-
         facilities.add(facilityService.readFacility(2));
-
         roomService.createRoom(new Room(2, 15, false, "test3", facilities));
 
         System.out.println("[SEED] Rooms created");
+    }
+
+    private void initEvents() {
+        LocalDate today = LocalDate.now();
+        LocalDate tomorrow = today.plusDays(1);
+        Room room = new Room(1, 0, false, null, new HashSet<>());
+        HashSet<Room> rooms = new HashSet<>(List.of(room));
+        eventService.createEvent(new Event(EventTypes.EVENT, today, tomorrow, rooms));
+
+        System.out.println("[SEED] Events created");
     }
 }

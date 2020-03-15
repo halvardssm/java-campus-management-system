@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
     public static final String REST_MAPPING = "/authenticate";
+    public static final String HEADER_BEARER = "Bearer ";
 
     @Autowired
     private AuthenticationManager authenticationManager;

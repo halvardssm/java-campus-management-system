@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 
 @Entity
@@ -40,6 +41,9 @@ public class Room {
             @JoinColumn(name = "facility_id", referencedColumnName = "id",
                 nullable = false, updatable = false)})
     private Set<Facility> facilities = new HashSet<>();
+
+    @ManyToMany(mappedBy = "rooms", fetch = FetchType.LAZY)
+    private Set<Event> events = new HashSet<>();
 
     public Room() {
     }
@@ -100,6 +104,13 @@ public class Room {
         this.facilities = facilities == null ? new HashSet<>() : facilities;
     }
 
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
+    }
 
     @Override
     public boolean equals(Object o) {
