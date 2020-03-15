@@ -14,6 +14,7 @@ import nl.tudelft.oopp.group39.role.enums.Roles;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,13 +26,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class DbSeeder {
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
     private RoomService roomService;
     @Autowired
     private BuildingService buildingService;
     @Autowired
     private FacilityService facilityService;
+    @Autowired
+    private EventService eventService;
 
     /**
      * Initiates the db with all the roles.
@@ -42,24 +45,20 @@ public class DbSeeder {
         initFacilities();
         initBuildings();
         initRooms();
+        initEvents();
+        System.out.println("[SEED] Seeding completed");
     }
 
     /**
      * Initiates the database with an admin user with all authorities.
      */
     private void initUsers() {
-        List<GrantedAuthority> roles = new ArrayList<>();
-
-        for (Roles role : Roles.values()) {
-            roles.add(new Role(role));
-        }
-
         User user = new User(
             "admin",
             "admin@tudelft.nl",
             "pwd",
             null,
-                roles
+            Role.ADMIN
         );
 
         userService.createUser(user);
@@ -104,5 +103,15 @@ public class DbSeeder {
         roomService.createRoom(new Room(1, "testinggg", 15, false, "test3", facilities));
 
         System.out.println("[SEED] Rooms created");
+    }
+
+    private void initEvents() {
+        LocalDate today = LocalDate.now();
+        LocalDate tomorrow = today.plusDays(1);
+        Room room = new Room(1, 0, false, null, new HashSet<>());
+        HashSet<Room> rooms = new HashSet<>(List.of(room));
+        eventService.createEvent(new Event(EventTypes.EVENT, today, tomorrow, rooms));
+
+        System.out.println("[SEED] Events created");
     }
 }

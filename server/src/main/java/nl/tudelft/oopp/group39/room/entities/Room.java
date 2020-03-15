@@ -1,10 +1,19 @@
 package nl.tudelft.oopp.group39.room.entities;
 
-import nl.tudelft.oopp.group39.facility.entities.Facility;
-
-import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import nl.tudelft.oopp.group39.event.entities.Event;
+import nl.tudelft.oopp.group39.facility.entities.Facility;
 
 @Entity
 @Table(name = Room.TABLE_NAME)
@@ -34,6 +43,9 @@ public class Room {
             @JoinColumn(name = "facility_id", referencedColumnName = "id",
                 nullable = false, updatable = false)})
     private Set<Facility> facilities = new HashSet<>();
+
+    @ManyToMany(mappedBy = "rooms", fetch = FetchType.LAZY)
+    private Set<Event> events = new HashSet<>();
 
     public Room() {
     }
@@ -99,6 +111,13 @@ public class Room {
         this.facilities = facilities == null ? new HashSet<>() : facilities;
     }
 
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
+    }
 
     @Override
     public boolean equals(Object o) {

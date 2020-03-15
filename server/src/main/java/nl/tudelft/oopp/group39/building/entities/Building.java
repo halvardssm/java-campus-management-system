@@ -1,8 +1,12 @@
 package nl.tudelft.oopp.group39.building.entities;
 
 
-import javax.persistence.*;
 import java.time.LocalTime;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = Building.TABLE_NAME)

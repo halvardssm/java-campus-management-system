@@ -1,7 +1,7 @@
 package nl.tudelft.oopp.group39.auth.controllers;
 
-import nl.tudelft.oopp.group39.auth.entities.JwtRequest;
-import nl.tudelft.oopp.group39.auth.entities.JwtResponse;
+import nl.tudelft.oopp.group39.auth.entities.AuthRequest;
+import nl.tudelft.oopp.group39.auth.entities.AuthResponse;
 import nl.tudelft.oopp.group39.auth.exceptions.UnauthorizedException;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.config.RestResponse;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
     public static final String REST_MAPPING = "/authenticate";
+    public static final String HEADER_BEARER = "Bearer ";
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -37,17 +38,17 @@ public class AuthController {
      * "password": "password"
      * }
      *
-     * @param jwtRequest An object with username and password
+     * @param body An object with username and password
      * @return A JWT string
      * @throws UnauthorizedException Is thrown when the username or password is incorrect
      */
     @PostMapping(REST_MAPPING)
-    public ResponseEntity<RestResponse<JwtResponse>> createToken(@RequestBody JwtRequest jwtRequest)
+    public ResponseEntity<RestResponse<AuthResponse>> createToken(@RequestBody AuthRequest body)
         throws UnauthorizedException {
         try {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                jwtRequest.getUsername(),
-                jwtRequest.getPassword()
+                body.getUsername(),
+                body.getPassword()
             );
 
             authenticationManager.authenticate(token);
@@ -59,10 +60,10 @@ public class AuthController {
             );
         }
 
-        User user = userService.readUser(jwtRequest.getUsername());
+        User user = userService.readUser(body.getUsername());
 
-        String jwt = jwtService.encrypt(user);
+        String token = jwtService.encrypt(user);
 
-        return RestResponse.create(new JwtResponse(jwt));
+        return RestResponse.create(new AuthResponse(token));
     }
 }

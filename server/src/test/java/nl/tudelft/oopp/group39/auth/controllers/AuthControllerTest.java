@@ -4,11 +4,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.gson.Gson;
-import java.util.List;
-import nl.tudelft.oopp.group39.auth.entities.JwtRequest;
-import nl.tudelft.oopp.group39.role.entities.Role;
-import nl.tudelft.oopp.group39.role.enums.Roles;
+import nl.tudelft.oopp.group39.auth.entities.AuthRequest;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,6 @@ class AuthControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private UserService userService;
 
@@ -35,10 +32,10 @@ class AuthControllerTest {
             "test@tudelft.nl",
             "test",
             null,
-            List.of(new Role(Roles.STUDENT))
+            Role.STUDENT
         ));
 
-        JwtRequest request = new JwtRequest("test", "test");
+        AuthRequest request = new AuthRequest("test", "test");
         Gson gson = new Gson();
         String json = gson.toJson(request);
 
@@ -46,13 +43,13 @@ class AuthControllerTest {
             .contentType(MediaType.APPLICATION_JSON)
             .content(json))
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.body.jwt").exists())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.body.jwt").isNotEmpty());
+            .andExpect(MockMvcResultMatchers.jsonPath("$.body.token").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.body.token").isNotEmpty());
     }
 
     @Test
     void createTokenFailed() throws Exception {
-        JwtRequest request = new JwtRequest("test2", "test");
+        AuthRequest request = new AuthRequest("test2", "test");
         Gson gson = new Gson();
         String json = gson.toJson(request);
 
