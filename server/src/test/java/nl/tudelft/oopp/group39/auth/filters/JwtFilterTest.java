@@ -1,5 +1,11 @@
 package nl.tudelft.oopp.group39.auth.filters;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.io.IOException;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.user.entities.User;
@@ -69,7 +75,7 @@ class JwtFilterTest {
         String jwt = jwtService.encrypt(testUser);
 
         MockHttpServletRequest request = new MockHttpServletRequest("GET", "/foo");
-        request.addHeader(HttpHeaders.AUTHORIZATION, JwtService.HEADER_BEARER + jwt);
+        request.addHeader(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt);
 
         MockHttpServletResponse response = new MockHttpServletResponse();
         FilterChain filterChain = new MockFilterChain();

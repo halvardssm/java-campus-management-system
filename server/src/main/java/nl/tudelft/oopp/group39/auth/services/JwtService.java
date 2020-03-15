@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class JwtService {
     public static final Integer TOKEN_EXPIRATION_TIME = 1000 * 3600;
-    public static final String HEADER_BEARER = "Bearer ";
 
     @Value("${auth.token.secret}")
     private String secret;
