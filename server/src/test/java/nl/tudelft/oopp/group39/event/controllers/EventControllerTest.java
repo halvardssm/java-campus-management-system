@@ -18,8 +18,9 @@ import com.google.gson.JsonSerializer;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import nl.tudelft.oopp.group39.auth.controllers.AuthController;
+import java.util.HashSet;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
+import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.event.repositories.EventRepository;
@@ -45,7 +46,9 @@ class EventControllerTest {
         "test@tudelft.nl",
         "test",
         null,
-        Role.ADMIN
+        Role.ADMIN,
+        new HashSet<>(),
+        new HashSet<>()
     );
     private static Event testEvent = new Event(
         EventTypes.EVENT,
@@ -109,7 +112,7 @@ class EventControllerTest {
         mockMvc.perform(post(REST_MAPPING)
             .contentType(MediaType.APPLICATION_JSON)
             .content(json)
-            .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.body.type", is(event.getType().name())))
             .andExpect(jsonPath("$.body.startDate", is(event.getStartDate().toString())))
@@ -140,7 +143,7 @@ class EventControllerTest {
         mockMvc.perform(put(REST_MAPPING + "/" + testEvent.getId())
             .contentType(MediaType.APPLICATION_JSON)
             .content(json)
-            .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
             .andExpect(jsonPath("$.body.type", is(EventTypes.HOLIDAY.name())))
@@ -153,7 +156,7 @@ class EventControllerTest {
     @Test
     void deleteEvent() throws Exception {
         mockMvc.perform(delete(REST_MAPPING + "/" + testEvent.getId())
-            .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
     }

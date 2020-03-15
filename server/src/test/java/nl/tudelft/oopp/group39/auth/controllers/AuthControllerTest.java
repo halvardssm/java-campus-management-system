@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.gson.Gson;
+import java.util.HashSet;
 import nl.tudelft.oopp.group39.auth.entities.AuthRequest;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
@@ -32,7 +33,9 @@ class AuthControllerTest {
             "test@tudelft.nl",
             "test",
             null,
-            Role.STUDENT
+            Role.STUDENT,
+            new HashSet<>(),
+            new HashSet<>()
         ));
 
         AuthRequest request = new AuthRequest("test", "test");

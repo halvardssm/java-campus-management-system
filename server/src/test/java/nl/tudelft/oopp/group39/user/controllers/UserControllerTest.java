@@ -12,8 +12,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.gson.Gson;
-import nl.tudelft.oopp.group39.auth.controllers.AuthController;
+import java.util.HashSet;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
+import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.repositories.UserRepository;
@@ -37,7 +38,9 @@ class UserControllerTest {
         "test@tudelft.nl",
         "test",
         null,
-        Role.ADMIN
+        Role.ADMIN,
+        new HashSet<>(),
+        new HashSet<>()
     );
     private final Gson gson = new Gson();
     private String jwt;
@@ -83,7 +86,7 @@ class UserControllerTest {
     @Test
     void listUsers() throws Exception {
         ResultActions resultActions = mockMvc.perform(get(REST_MAPPING)
-            .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isArray())
             .andExpect(jsonPath("$.body", hasSize(1)))
@@ -95,7 +98,7 @@ class UserControllerTest {
     void readUser() throws Exception {
         mockMvc.perform(get(REST_MAPPING + "/"
             + testUser.getUsername())
-            .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body.username", is(testUser.getUsername())))
             .andExpect(jsonPath("$.body.email", is(testUser.getEmail())))
@@ -112,7 +115,7 @@ class UserControllerTest {
             + testUser.getUsername())
             .contentType(MediaType.APPLICATION_JSON)
             .content(json)
-            .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body.username", is(user.getUsername())))
             .andExpect(jsonPath("$.body.email", is(user.getEmail())));
@@ -122,7 +125,7 @@ class UserControllerTest {
     void deleteUser() throws Exception {
         mockMvc.perform(delete(REST_MAPPING + "/"
             + testUser.getUsername())
-            .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
     }

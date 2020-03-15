@@ -40,9 +40,9 @@ public class User implements UserDetails {
     private Blob image;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToMany(mappedBy = MAPPED_NAME)
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
     private Set<Booking> bookings = new HashSet<>();
-    @OneToMany(mappedBy = MAPPED_NAME)
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
     private Set<Reservation> reservations = new HashSet<>();
 
     @Override

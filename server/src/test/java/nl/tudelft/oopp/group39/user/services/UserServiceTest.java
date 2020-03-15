@@ -3,6 +3,7 @@ package nl.tudelft.oopp.group39.user.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
@@ -18,7 +19,9 @@ class UserServiceTest {
         "test@tudelft.nl",
         "test",
         null,
-        Role.STUDENT
+        Role.STUDENT,
+        new HashSet<>(),
+        new HashSet<>()
     );
 
     @Autowired
