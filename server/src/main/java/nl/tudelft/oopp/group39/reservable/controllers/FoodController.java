@@ -1,8 +1,8 @@
-package nl.tudelft.oopp.group39.food.controllers;
+package nl.tudelft.oopp.group39.reservable.controllers;
 
 import nl.tudelft.oopp.group39.config.RestResponse;
-import nl.tudelft.oopp.group39.food.entities.Food;
-import nl.tudelft.oopp.group39.food.services.FoodService;
+import nl.tudelft.oopp.group39.reservable.entities.Food;
+import nl.tudelft.oopp.group39.reservable.services.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

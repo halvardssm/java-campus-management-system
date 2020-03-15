@@ -1,9 +1,9 @@
-package nl.tudelft.oopp.group39.food.services;
+package nl.tudelft.oopp.group39.reservable.services;
 
 import java.util.List;
 import javassist.NotFoundException;
-import nl.tudelft.oopp.group39.food.entities.Food;
-import nl.tudelft.oopp.group39.food.repositories.FoodRepository;
+import nl.tudelft.oopp.group39.reservable.entities.Food;
+import nl.tudelft.oopp.group39.reservable.repositories.FoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

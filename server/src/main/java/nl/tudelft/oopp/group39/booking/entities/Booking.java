@@ -1,29 +1,36 @@
 package nl.tudelft.oopp.group39.booking.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import nl.tudelft.oopp.group39.room.entities.Room;
-import nl.tudelft.oopp.group39.user.entities.User;
-
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import nl.tudelft.oopp.group39.config.Constants;
+import nl.tudelft.oopp.group39.room.entities.Room;
+import nl.tudelft.oopp.group39.user.entities.User;
 
 @Entity
 @Table(name = Booking.TABLE_NAME)
 
 public class Booking {
     public static final String TABLE_NAME = "bookings";
+    public static final String MAPPED_NAME = "booking";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.FORMAT_DATE)
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
 
     @ManyToOne
-    @JoinColumn(name = User.TABLE_NAME)
+    @JoinColumn(name = User.MAPPED_NAME)
     private User user;
 
     @ManyToOne
@@ -99,7 +106,7 @@ public class Booking {
             return false;
         }
         Booking booking = (Booking) o;
-        return getId() == booking.getId()
+        return getId().equals(booking.getId())
             && getUser().equals(booking.getUser())
             && getDate().equals(booking.getDate())
             && getStartTime().compareTo(booking.getStartTime()) == 0

@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import org.springframework.lang.Nullable;
@@ -25,23 +26,24 @@ import org.springframework.lang.Nullable;
 @Table(name = Event.TABLE_NAME)
 public class Event {
     public static final String TABLE_NAME = "events";
+    public static final String MAPPED_NAME = "event";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Enumerated(EnumType.STRING)
     private EventTypes type;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = Constants.FORMAT_DATE)
     private LocalDate startDate;
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = Constants.FORMAT_DATE)
     private LocalDate endDate;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = TABLE_NAME + "_" + Room.TABLE_NAME,
         joinColumns = {
-            @JoinColumn(name = "event_id", referencedColumnName = "id",
+            @JoinColumn(name = MAPPED_NAME, referencedColumnName = "id",
                 nullable = false, updatable = false)},
         inverseJoinColumns = {
-            @JoinColumn(name = "room_id", referencedColumnName = "id",
+            @JoinColumn(name = Room.MAPPED_NAME, referencedColumnName = "id",
                 nullable = false, updatable = false)})
     private Set<Room> rooms = new HashSet<>();
 

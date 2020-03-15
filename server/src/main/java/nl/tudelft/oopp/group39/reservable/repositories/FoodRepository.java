@@ -1,6 +1,6 @@
-package nl.tudelft.oopp.group39.food.repositories;
+package nl.tudelft.oopp.group39.reservable.repositories;
 
-import nl.tudelft.oopp.group39.food.entities.Food;
+import nl.tudelft.oopp.group39.reservable.entities.Food;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

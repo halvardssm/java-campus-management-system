@@ -1,8 +1,8 @@
-package nl.tudelft.oopp.group39.bike.controllers;
+package nl.tudelft.oopp.group39.reservable.controllers;
 
-import nl.tudelft.oopp.group39.bike.entities.Bike;
-import nl.tudelft.oopp.group39.bike.services.BikeService;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.reservable.entities.Bike;
+import nl.tudelft.oopp.group39.reservable.services.BikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

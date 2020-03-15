@@ -1,9 +1,9 @@
-package nl.tudelft.oopp.group39.bike.services;
+package nl.tudelft.oopp.group39.reservable.services;
 
 import java.util.List;
 import javassist.NotFoundException;
-import nl.tudelft.oopp.group39.bike.entities.Bike;
-import nl.tudelft.oopp.group39.bike.repositories.BikeRepository;
+import nl.tudelft.oopp.group39.reservable.entities.Bike;
+import nl.tudelft.oopp.group39.reservable.repositories.BikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,21 +1,34 @@
 package nl.tudelft.oopp.group39.user.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.sql.Blob;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import javax.persistence.Basic;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.reservable.entities.Reservation;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import org.hibernate.annotations.LazyGroup;
 import org.springframework.data.annotation.Transient;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
-import java.sql.Blob;
-import java.util.*;
-
 @Entity
 @Table(name = User.TABLE_NAME)
 public class User implements UserDetails {
     public static final String TABLE_NAME = "users";
+    public static final String MAPPED_NAME = "user";
 
     @Id
     private String username;
@@ -27,38 +40,10 @@ public class User implements UserDetails {
     private Blob image;
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = MAPPED_NAME)
     private Set<Booking> bookings = new HashSet<>();
-
-    public User() {
-    }
-
-    /**
-     * Create a new User instance.
-     *
-     * @param username Unique identifier as to be used in the database.
-     * @param email    Email address of the user.
-     * @param password Encrypted password of the user.
-     * @param role     Role of the user.
-     * @param image    Image of the user.
-     * @param bookings Bookings of user.
-     */
-    public User(
-        String username,
-        String email,
-        String password,
-        Blob image,
-        Role role,
-        Set<Booking> bookings
-    ) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.image = image;
-        this.bookings.addAll(bookings);
-    }
+    @OneToMany(mappedBy = MAPPED_NAME)
+    private Set<Reservation> reservations = new HashSet<>();
 
     @Override
     public String getUsername() {
@@ -110,6 +95,46 @@ public class User implements UserDetails {
         this.bookings = bookings;
     }
 
+    public User() {
+    }
+
+    /**
+     * Create a new User instance.
+     *
+     * @param username     Unique identifier as to be used in the database.
+     * @param email        Email address of the user.
+     * @param password     Encrypted password of the user.
+     * @param role         Role of the user.
+     * @param image        Image of the user.
+     * @param bookings     Bookings of user.
+     * @param reservations Reservations of user.
+     */
+    public User(
+        String username,
+        String email,
+        String password,
+        Blob image,
+        Role role,
+        Set<Booking> bookings,
+        Set<Reservation> reservations
+    ) {
+        setUsername(username);
+        setEmail(email);
+        setPassword(password);
+        setRole(role);
+        setImage(image);
+        this.bookings.addAll(bookings);
+        this.reservations.addAll(reservations);
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
     @Override
     @Transient
     @JsonIgnore
@@ -159,6 +184,7 @@ public class User implements UserDetails {
             && getPassword().equals(user.getPassword())
             && Objects.equals(getImage(), user.getImage())
             && getRole().equals(user.getRole())
-            && getBookings().equals(user.getBookings());
+            && getBookings().equals(user.getBookings())
+            && getReservations().equals(user.getReservations());
     }
 }

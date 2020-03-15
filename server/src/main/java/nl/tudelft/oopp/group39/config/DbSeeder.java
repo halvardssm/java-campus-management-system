@@ -14,6 +14,7 @@ import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.event.services.EventService;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
+import nl.tudelft.oopp.group39.reservable.entities.Reservation;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
 import nl.tudelft.oopp.group39.user.entities.User;
@@ -59,13 +60,15 @@ public class DbSeeder {
      */
     private void initUsers() {
         Set<Booking> bookings = new HashSet<>();
+        Set<Reservation> reservations = new HashSet<>();
         User user = new User(
             "admin",
             "admin@tudelft.nl",
             "pwd",
             null,
             Role.ADMIN,
-            bookings
+            bookings,
+            reservations
         );
 
         userService.createUser(user);

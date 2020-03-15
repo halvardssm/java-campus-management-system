@@ -22,6 +22,7 @@ import nl.tudelft.oopp.group39.facility.entities.Facility;
 @Table(name = Room.TABLE_NAME)
 public class Room {
     public static final String TABLE_NAME = "rooms";
+    public static final String MAPPED_NAME = "room";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,17 +32,17 @@ public class Room {
     private boolean onlyStaff;
     private String description;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinTable(name = "rooms_facilities",
+    @JoinTable(name = TABLE_NAME + "_" + Facility.TABLE_NAME,
         joinColumns = {
-            @JoinColumn(name = "room_id", referencedColumnName = "id",
+            @JoinColumn(name = MAPPED_NAME, referencedColumnName = "id",
                 nullable = false, updatable = false)},
         inverseJoinColumns = {
-            @JoinColumn(name = "facility_id", referencedColumnName = "id",
+            @JoinColumn(name = Facility.MAPPED_NAME, referencedColumnName = "id",
                 nullable = false, updatable = false)})
     private Set<Facility> facilities = new HashSet<>();
-    @ManyToMany(mappedBy = "rooms", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = TABLE_NAME, fetch = FetchType.LAZY)
     private Set<Event> events = new HashSet<>();
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = MAPPED_NAME)
     private Set<Booking> bookings = new HashSet<>();
 
     public Room() {
@@ -111,6 +112,7 @@ public class Room {
     public void setEvents(Set<Event> events) {
         this.events = events;
     }
+
     public Set<Booking> getBookings() {
         return bookings;
     }
