@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.AdminBViewController">
+   <top>
+      <HBox spacing="10" styleClass="bar">
+         <padding>
+            <Insets bottom="15" left="15" right="15" top="15" />
+         </padding>
+         <children>
+            <Text id="title" text="Admin: Building View" />
+         </children>
+      </HBox>
+   </top>
+   <bottom>
+      <HBox spacing="10" styleClass="bar">
+         <padding>
+            <Insets bottom="15" left="15" right="15" top="15" />
+         </padding>
+         <children>
+            <Button id="backbtn" fx:id="backbtn" onAction="#switchBack" text="◀ Back" />
+         </children>
+      </HBox>
+   </bottom>
+   <stylesheets>
+      <URL value="@loginsignup.css" />
+   </stylesheets>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="485.0" fitWidth="700.0" layoutY="-2.0" opacity="0.5" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <image>
+                  <Image url="@../../../../../../../../TuDelft/download.png" />
+               </image>
+            </ImageView>
+            <ListView fx:id="listView" layoutY="75.0" opacity="0.75" prefHeight="392.0" prefWidth="324.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" />
+            <Text layoutX="14.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Buildings" underline="true">
+               <font>
+                  <Font name="System Bold" size="33.0" />
+               </font>
+            </Text>
+            <Button fx:id="BAdd" layoutX="495.0" layoutY="37.0" mnemonicParsing="false" text="Add Building">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Button>
+            <TextField fx:id="BName" layoutX="456.0" layoutY="124.0" prefHeight="31.0" prefWidth="217.0" />
+            <Text layoutX="364.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
+            <Text layoutX="367.0" layoutY="345.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Times:">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Text>
+            <Text layoutX="357.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address:">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Text>
+            <TextField fx:id="BTimes" layoutX="456.0" layoutY="321.0" prefHeight="31.0" prefWidth="216.0" />
+            <TextField fx:id="BAddress" layoutX="456.0" layoutY="218.0" prefHeight="31.0" prefWidth="221.0" />
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
