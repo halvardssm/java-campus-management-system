@@ -40,7 +40,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class EventControllerTest {
+class ReservationControllerTest {
     private static final User testUser = new User(
         "test",
         "test@tudelft.nl",

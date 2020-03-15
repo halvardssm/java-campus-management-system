@@ -19,7 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class EventServiceTest {
+class ReservationServiceTest {
     private static final Event testEvent = new Event(
         EventTypes.EVENT,
         LocalDate.now(ZoneId.of("Europe/Paris")),

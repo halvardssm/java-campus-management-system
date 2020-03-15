@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.reservable.entities;
+package nl.tudelft.oopp.group39.reservation.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.config.Constants;
+import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.user.entities.User;
 
 @Entity

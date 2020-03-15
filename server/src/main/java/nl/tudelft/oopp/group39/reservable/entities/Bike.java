@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.reservable.enums.BikeType;
+import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 
 @Entity
 @Table(name = Bike.TABLE_NAME)
