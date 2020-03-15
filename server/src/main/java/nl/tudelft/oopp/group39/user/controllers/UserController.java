@@ -34,7 +34,7 @@ public class UserController {
     }
 
     /**
-     * POST Endpoint to retrieve an user.
+     * POST Endpoint to create user.
      *
      * @return the created user {@link User}.
      */
@@ -48,7 +48,7 @@ public class UserController {
     }
 
     /**
-     * GET Endpoint to retrieve an user.
+     * GET Endpoint to retrieve user.
      *
      * @return the requested user {@link User}.
      */
@@ -62,7 +62,7 @@ public class UserController {
     }
 
     /**
-     * PUT Endpoint to update an user.
+     * PUT Endpoint to update user.
      *
      * @return the updated user {@link User}.
      */
@@ -79,7 +79,7 @@ public class UserController {
     }
 
     /**
-     * DELETE Endpoint to delete am user.
+     * DELETE Endpoint to delete user.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteUser(@PathVariable String id) {

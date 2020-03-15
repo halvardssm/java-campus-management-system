@@ -34,7 +34,7 @@ public class EventController {
     }
 
     /**
-     * POST Endpoint to retrieve an event.
+     * POST Endpoint to create event.
      *
      * @return the created event {@link Event}.
      */
@@ -48,7 +48,7 @@ public class EventController {
     }
 
     /**
-     * GET Endpoint to retrieve an event.
+     * GET Endpoint to retrieve event.
      *
      * @return the requested event {@link Event}.
      */
@@ -62,7 +62,7 @@ public class EventController {
     }
 
     /**
-     * PUT Endpoint to update an event.
+     * PUT Endpoint to update event.
      *
      * @return the updated event {@link Event}.
      */
@@ -79,7 +79,7 @@ public class EventController {
     }
 
     /**
-     * DELETE Endpoint to delete am event.
+     * DELETE Endpoint to delete event.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteEvent(@PathVariable Integer id) {
