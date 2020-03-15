@@ -142,11 +142,29 @@
 }
 
 .gridblock {
-    -fx-background-color: rgba(106,123,127,0.18);
+    -fx-background-color: rgba(106, 123, 127, 0.18);
     -fx-border-radius: 3%;
     -fx-background-radius: 3%;
 }
 
 .gridblock:hover {
     -fx-background-color: rgba(106, 123, 127, 0.3);
+}
+
+.fooditem {
+    -fx-background-color: rgba(106, 123, 127, 0.18);
+}
+
+
+#getMenuBtn {
+    -fx-background-color: #00A6D6;
+    -fx-text-fill: white;
+}
+
+#getMenuBtn:hover {
+    -fx-background-color: #00607b;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
 }
