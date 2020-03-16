@@ -1,24 +1,13 @@
 package nl.tudelft.oopp.group39.room.entities;
 
 import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import nl.tudelft.oopp.group39.event.entities.Event;
-import nl.tudelft.oopp.group39.facility.entities.Facility;
 
 @Entity
 @Table(name = Room.TABLE_NAME)
@@ -50,7 +39,7 @@ public class Room {
     @ManyToMany(mappedBy = "rooms", fetch = FetchType.LAZY)
     private Set<Event> events = new HashSet<>();
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER)
     private Set<Booking> bookings = new HashSet<>();
 
     public Room() {
@@ -61,8 +50,8 @@ public class Room {
         this.capacity = capacity;
         this.onlyStaff = onlyStaff;
         this.description = description;
-        this.facilities.addAll(facilities);
-        this.bookings.addAll(bookings);
+        this.facilities.addAll(facilities != null ? facilities : new HashSet<>());
+        this.bookings.addAll(bookings != null ? bookings : new HashSet<>());
     }
 
     public long getId() {

@@ -63,7 +63,7 @@ class BookingServiceTest {
     @Test
     void createBooking() {
         Booking booking = testBooking;
-        booking.setId(3);
+        booking.setId(testBooking.getId());
         Booking booking2 = bookingService.createBooking(booking);
 
         assertEquals(booking, booking2);
@@ -71,7 +71,7 @@ class BookingServiceTest {
 
     @Test
     void readBooking() {
-        Booking booking2 = bookingService.readBooking(3);
+        Booking booking2 = bookingService.readBooking(testBooking.getId());
 
         assertEquals(testBooking, booking2);
     }
@@ -84,7 +84,7 @@ class BookingServiceTest {
         booking.setEndTime(booking.getEndTime());
         booking.setUser(booking.getUser());
         booking.setRoom(booking.getRoom());
-        Booking booking2 = bookingService.updateBooking(booking, 3);
+        Booking booking2 = bookingService.updateBooking(booking, testBooking.getId());
 
         assertEquals(booking, booking2);
     }
@@ -92,7 +92,7 @@ class BookingServiceTest {
     @Test
     void deleteBooking() {
         List<Booking> testBookings = new ArrayList<>();
-        bookingService.deleteBooking(3);
+        bookingService.deleteBooking(testBooking.getId());
 
         assertEquals(testBookings, bookingService.listBookings());
     }

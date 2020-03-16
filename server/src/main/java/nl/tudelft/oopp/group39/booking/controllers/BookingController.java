@@ -18,34 +18,69 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
+    /**
+     * GET Endpoint to retrieve all bookings.
+     *
+     * @return a list of bookings {@link Booking}.
+     */
     @GetMapping("")
     public List<Booking> listBookings() {
         return bookingService.listBookings();
     }
 
+    /**
+     * POST Endpoint to create booking.
+     *
+     * @return the created booking {@link Booking}.
+     */
+    @PostMapping("")
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> createBooking(@RequestBody Booking newBooking) {
+        try {
+            return RestResponse.create(bookingService.createBooking(newBooking), null, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return RestResponse.error(e.getMessage());
+        }
+    }
+
+    /**
+     * GET Endpoint to retrieve booking.
+     *
+     * @return the requested booking {@link Booking}.
+     */
+    @GetMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> readBooking(@PathVariable Integer id) {
+        try {
+            return RestResponse.create(bookingService.readBooking(id));
+        } catch (Exception e) {
+            return RestResponse.error(e.getMessage());
+        }
+    }
+
+    /**
+     * PUT Endpoint to update booking.
+     *
+     * @return the updated booking {@link Booking}.
+     */
+    @PutMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> updateBooking(@RequestBody Booking updated, @PathVariable Integer id) {
+        try {
+            return RestResponse.create(bookingService.updateBooking(updated, id));
+        } catch (Exception e) {
+            return RestResponse.error(e.getMessage());
+        }
+    }
+
+    /**
+     * DELETE Endpoint to delete booking.
+     */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteBooking(@PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> deleteBooking(@PathVariable Integer id) {
         bookingService.deleteBooking(id);
 
         return RestResponse.create(null, null, HttpStatus.OK);
-    }
-
-    @PostMapping("")
-    @ResponseBody
-    public ResponseEntity<RestResponse<Object>> createBooking(@RequestBody Booking newBooking) {//, @RequestParam LocalTime open, @RequestParam LocalTime closed) {
-        return RestResponse.create(bookingService.createBooking(newBooking), null, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/{id}")
-    @ResponseBody
-    public ResponseEntity<RestResponse<Object>> readBooking(@PathVariable int id) {
-        return RestResponse.create(bookingService.readBooking(id));
-    }
-
-    @PutMapping("/{id}")
-    @ResponseBody
-    public ResponseEntity<RestResponse<Object>> updateBooking(@RequestBody Booking updated, @PathVariable int id) {//, @RequestParam LocalTime open, @RequestParam LocalTime closed)
-        return RestResponse.create(bookingService.updateBooking(updated, id));
     }
 
 }

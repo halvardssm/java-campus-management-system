@@ -57,7 +57,7 @@ public class User implements UserDetails {
         this.password = password;
         this.role = role;
         this.image = image;
-        this.bookings.addAll(bookings);
+        this.bookings.addAll(bookings != null ? bookings : new HashSet<>());
     }
 
     @Override
