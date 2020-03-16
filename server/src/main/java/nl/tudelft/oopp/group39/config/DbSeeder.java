@@ -58,14 +58,13 @@ public class DbSeeder {
      * Initiates the database with an admin user with all authorities.
      */
     private void initUsers() {
-        Set<Booking> bookings = new HashSet<>();
         User user = new User(
             "admin",
             "admin@tudelft.nl",
             "pwd",
             null,
             Role.ADMIN,
-            bookings
+            null
         );
 
         userService.createUser(user);

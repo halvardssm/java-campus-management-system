@@ -13,14 +13,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class JwtServiceTest {
-    Set<Booking> bookings = new HashSet<>();
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",
         "test",
         null,
         Role.STUDENT,
-        bookings
+        null
     );
 
     @Autowired

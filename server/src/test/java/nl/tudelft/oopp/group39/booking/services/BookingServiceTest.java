@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.booking.repositories.BookingRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class BookingServiceTest {
-    LocalDate date = LocalDate.now();
-    LocalTime start = LocalTime.of(4, 20, 42);
-    LocalTime end = LocalTime.of(6, 9, 20);
+    private LocalDate date = LocalDate.now();
+    private LocalTime start = LocalTime.of(4, 20, 42);
+    private LocalTime end = LocalTime.of(6, 9, 20);
     private final Booking testBooking = new Booking(
         date,
         start,
@@ -34,11 +35,13 @@ class BookingServiceTest {
 
     @BeforeEach
     void setUp() {
-        bookingRepository.deleteAll();
-        Booking booking = bookingRepository.saveAndFlush(testBooking);
+        Booking booking = bookingService.createBooking(testBooking);
         testBooking.setId(booking.getId());
+    }
 
-
+    @AfterEach
+    void tearDown() {
+        bookingRepository.deleteAll();
     }
 
     @Test
