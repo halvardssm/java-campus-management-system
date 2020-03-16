@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
@@ -16,7 +17,7 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
-public class LoginController {
+public class LoginController extends MainSceneController {
     @FXML
     private TextField usernameField ;
 
@@ -24,40 +25,31 @@ public class LoginController {
     private PasswordField passwordField ;
 
     @FXML
-    private Button signupbtn;
+    private Text errormsg;
+
 
     @FXML
-    private void login() {
+    private void login() throws IOException {
         String user = usernameField.getText();
         String password = passwordField.getText();
-        if(checkEmpty(user, password)){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Log in");
-            alert.setHeaderText(null);
-            alert.setContentText(ServerCommunication.userLogin(user, password));
-            alert.showAndWait();
+        if(!checkEmpty(user, password)){
+            if(ServerCommunication.userLogin(user, password).equals("Logged in")){
+                changeTopBtn();
+                goToBuildingScene();
+            }
         }
+        System.out.println(loggedIn);
         System.out.println(user + password);
     }
 
     public boolean checkEmpty(String user, String pwd){
-        if(user.isEmpty()  | pwd.isEmpty()){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setContentText("Please fill in all the fields");
-            alert.showAndWait();
+        if(user.isEmpty() || pwd.isEmpty()){
+            errormsg.setText("Please fill in all the fields");
             return true;
         }
         else {
             return false;
         }
-    }
-
-    @FXML
-    private void switchSignup(ActionEvent actionEvent) throws IOException {
-        Stage currentstage = (Stage) signupbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/signup.fxml"));
-        currentstage.setScene(new Scene(root, 700, 600));
     }
 
 

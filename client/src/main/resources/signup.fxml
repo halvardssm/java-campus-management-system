@@ -5,22 +5,26 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Text?>
 <?import java.net.URL?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <BorderPane fx:controller="nl.tudelft.oopp.group39.controllers.SignupController" xmlns:fx="http://javafx.com/fxml">
     <top>
-        <HBox styleClass="bar" spacing="10">
+        <HBox fx:id="topbar" styleClass="bar" spacing="10">
             <padding><Insets top="15" right="12" bottom="15" left="15"/></padding>
-            <Text id="title" text="Some Name"/>
+            <Button onAction="#toggleSidebar" id="menubtn" alignment="CENTER">
+                <graphic>
+                    <ImageView fitHeight="28" fitWidth="28"><Image url="@menu-icon.png" /></ImageView>
+                </graphic>
+            </Button>
+            <Label id="title" text="Some name |"/>
+            <Label id="page" text="Signup"/>
+            <Region  HBox.hgrow="ALWAYS" />
+            <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
         </HBox>
     </top>
-    <!--    <left>-->
-    <!--        <VBox>-->
-    <!--            <Button id="backbtn" text="Back">-->
-    <!--                <VBox.margin>-->
-    <!--                    <Insets top="20" left="20"/>-->
-    <!--                </VBox.margin>-->
-    <!--            </Button>-->
-    <!--        </VBox>-->
-    <!--    </left>-->
+    <left>
+        <VBox fx:id="sidebar" id="sidebar"/>
+    </left>
     <center>
         <GridPane id="loginpanel" alignment="center" hgap="20" vgap="20">
             <padding><Insets top="10" right="25" bottom="10" left="25"/></padding>
@@ -53,10 +57,12 @@
             <Button styleClass="buttons" id="big" text="Sign Up" onAction="#signup"
                     GridPane.columnIndex="1" GridPane.rowIndex = "5"/>
 
+            <Text id="errorfield" fx:id="errormsg" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.columnSpan="2"/>
+
             <Text text="Already have an account?"
                   GridPane.columnIndex="0" GridPane.rowIndex="7"/>
 
-            <Button fx:id="loginbtn" styleClass="buttons" id="small" text="Log In" onAction="#switchLogin"
+            <Button fx:id="loginbtn" styleClass="buttons" id="small" text="Log In" onAction="#goToLoginScene"
                     GridPane.columnIndex="1" GridPane.rowIndex = "7"/>
 
         </GridPane>
@@ -64,10 +70,10 @@
     <bottom>
         <HBox styleClass="bar" spacing="10">
             <padding><Insets top="15" right="12" bottom="15" left="15"/></padding>
-            <Button id="backbtn" text="◀ Back"/>
+            <Button id="backbtn" text="◀ Back" onAction="#goToLoginScene"/>
         </HBox>
     </bottom>
     <stylesheets>
-        <URL value="@loginsignup.css" />
+        <URL value="@style.css" />
     </stylesheets>
 </BorderPane>

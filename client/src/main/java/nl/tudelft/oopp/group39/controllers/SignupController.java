@@ -5,17 +5,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.Region;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.regex.Pattern;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
-public class SignupController {
+public class SignupController extends MainSceneController {
     @FXML
     private TextField emailField ;
 
@@ -29,7 +27,7 @@ public class SignupController {
     private PasswordField confirmpasswordField ;
 
     @FXML
-    private Button loginbtn;
+    private Text errormsg;
 
     @FXML
     private void signup() {
@@ -37,20 +35,29 @@ public class SignupController {
         String netID = netIDField.getText();
         String password = passwordField.getText();
         String confirmpassword = confirmpasswordField.getText();
-
+        String role = getRole(email);
         if(checkEmpty(email, netID, password, confirmpassword) && isValid(email) && checkPwd(password, confirmpassword)){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Sign up");
             alert.setHeaderText(null);
-            alert.setContentText(ServerCommunication.addUser(netID, email, password));
+            alert.setContentText(ServerCommunication.addUser(netID, email, password, role));
+            ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Go to log in");
+            ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setOnAction(e -> {
+                try {
+                    goToLoginScene();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            });
             alert.showAndWait();
+
         }
 
         System.out.println(email + netID + password + confirmpassword);
     }
 
     public boolean checkEmpty(String email, String userID, String pwd, String confirm){
-        if(email.isEmpty() | userID.isEmpty()  | pwd.isEmpty() | confirm.isEmpty()){
+        if(email.isEmpty() || userID.isEmpty() || pwd.isEmpty() || confirm.isEmpty()){
             alertErr("Please fill in all the fields");
             return false;
         }
@@ -60,17 +67,7 @@ public class SignupController {
     }
 
     public void alertErr(String msg){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText(null);
-        alert.setContentText(msg);
-        alert.showAndWait();
-    }
-
-    @FXML
-    private void switchLogin(ActionEvent actionEvent) throws IOException {
-        Stage currentstage = (Stage) loginbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/login.fxml"));
-        currentstage.setScene(new Scene(root, 700, 600));
+        errormsg.setText(msg);
     }
 
     public boolean isValid(String email) {
@@ -93,6 +90,16 @@ public class SignupController {
         }
         else{
             return true;
+        }
+    }
+
+    public String getRole(String email){
+        String role = email.split("@")[1];
+        if(role.contains("student")){
+            return "student";
+        }
+        else{
+            return "staff";
         }
     }
 }
