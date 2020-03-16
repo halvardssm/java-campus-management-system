@@ -33,13 +33,13 @@ public class User implements UserDetails {
     private String email;
     private String password;
     @Lob
-    @Basic(fetch = FetchType.LAZY)
+    @Basic(fetch = FetchType.EAGER)
     @LazyGroup("lobs")
     private Blob image;
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = TABLE_NAME, fetch = FetchType.LAZY)
     private Set<Booking> bookings = new HashSet<>();
 
     public User() {
@@ -161,15 +161,15 @@ public class User implements UserDetails {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof User)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         User user = (User) o;
-        return getUsername().equals(user.getUsername())
-            && getEmail().equals(user.getEmail())
-            && getPassword().equals(user.getPassword())
+        return Objects.equals(getUsername(), user.getUsername())
+            && Objects.equals(getEmail(), user.getEmail())
+            && Objects.equals(getPassword(), user.getPassword())
             && Objects.equals(getImage(), user.getImage())
-            && getRole().equals(user.getRole())
-            && getBookings().equals(user.getBookings());
+            && getRole() == user.getRole()
+            && Objects.equals(getBookings(), user.getBookings());
     }
 }

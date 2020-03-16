@@ -48,7 +48,7 @@ public class Room {
     @ManyToMany(mappedBy = "rooms", fetch = FetchType.LAZY)
     private Set<Event> events = new HashSet<>();
 
-    @OneToMany(mappedBy = "room", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
     private Set<Booking> bookings = new HashSet<>();
 
     public Room() {

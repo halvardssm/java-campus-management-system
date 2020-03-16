@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,7 +17,6 @@ import nl.tudelft.oopp.group39.user.entities.User;
 
 @Entity
 @Table(name = Booking.TABLE_NAME)
-
 public class Booking {
     public static final String TABLE_NAME = "bookings";
 
@@ -28,11 +28,11 @@ public class Booking {
     private LocalTime startTime;
     private LocalTime endTime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = User.TABLE_NAME)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Room.TABLE_NAME)
     private Room room;
 

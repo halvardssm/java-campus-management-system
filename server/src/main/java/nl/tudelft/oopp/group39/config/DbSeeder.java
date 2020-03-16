@@ -132,8 +132,7 @@ public class DbSeeder {
         LocalTime end = LocalTime.now();
         User user = userService.readUser("admin");
 
-        Room room = new Room(1, 10, true, "test1", facilities, bookings);
-
+        Room room = roomService.listRooms().get(0);
 
         Booking b = new Booking(date, start, end, user, room);
         bookingService.createBooking(b);
