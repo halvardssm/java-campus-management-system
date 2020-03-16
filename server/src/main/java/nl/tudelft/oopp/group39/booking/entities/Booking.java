@@ -29,11 +29,11 @@ public class Booking {
     private LocalTime endTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = User.TABLE_NAME)
+    @JoinColumn(name = "user")
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = Room.TABLE_NAME)
+    @JoinColumn(name = "room")
     private Room room;
 
     public Booking() {
