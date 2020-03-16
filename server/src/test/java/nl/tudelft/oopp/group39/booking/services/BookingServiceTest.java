@@ -2,10 +2,10 @@ package nl.tudelft.oopp.group39.booking.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.booking.repositories.BookingRepository;
@@ -43,7 +43,7 @@ class BookingServiceTest {
 
     @Test
     void listBookings() {
-        List<Booking> bookings = bookingService.listBookings();
+        List<Booking> bookings = bookingService.listBookings(new HashMap<>());
 
         assertEquals(1, bookings.size());
         assertEquals(testBooking, bookings.get(0));
@@ -83,6 +83,6 @@ class BookingServiceTest {
         List<Booking> testBookings = new ArrayList<>();
         bookingService.deleteBooking(testBooking.getId());
 
-        assertEquals(testBookings, bookingService.listBookings());
+        assertEquals(testBookings, bookingService.listBookings(new HashMap<>()));
     }
 }

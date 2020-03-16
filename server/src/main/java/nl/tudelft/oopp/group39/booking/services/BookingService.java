@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.group39.booking.services;
 
 import java.util.List;
+import java.util.Map;
+import nl.tudelft.oopp.group39.booking.dao.BookingDao;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.booking.exceptions.BookingNotFoundException;
 import nl.tudelft.oopp.group39.booking.repositories.BookingRepository;
@@ -11,14 +13,17 @@ import org.springframework.stereotype.Service;
 public class BookingService {
     @Autowired
     private BookingRepository bookingRepository;
+    @Autowired
+    private BookingDao bookingDao;
 
     /**
      * List all bookings.
      *
      * @return a list of bookings {@link Booking}.
      */
-    public List<Booking> listBookings() {
-        return bookingRepository.findAll();
+    public List<Booking> listBookings(Map<String, String> params) {
+
+        return params.isEmpty() ? bookingRepository.findAll() : bookingDao.listBookings(params);
     }
 
     /**

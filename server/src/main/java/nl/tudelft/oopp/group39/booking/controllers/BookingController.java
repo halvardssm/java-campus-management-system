@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.booking.controllers;
 
+import java.util.Map;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,8 +32,8 @@ public class BookingController {
      * @return a list of bookings {@link Booking}.
      */
     @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listBookings() {
-        return RestResponse.create(bookingService.listBookings());
+    public ResponseEntity<RestResponse<Object>> listBookings(@RequestParam(required = false) Map<String, String> params) {
+        return RestResponse.create(bookingService.listBookings(params));
     }
 
     /**
