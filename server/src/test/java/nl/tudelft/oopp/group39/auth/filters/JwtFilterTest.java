@@ -1,5 +1,13 @@
 package nl.tudelft.oopp.group39.auth.filters;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
@@ -17,14 +25,6 @@ import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class JwtFilterTest {

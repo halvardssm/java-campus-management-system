@@ -1,8 +1,7 @@
 package nl.tudelft.oopp.group39.auth.entities;
 
-import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
+import org.springframework.stereotype.Component;
 
 @Component
 public class AuthResponse implements Serializable {

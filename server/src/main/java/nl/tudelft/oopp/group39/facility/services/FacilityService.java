@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.facility.services;
 
+import java.util.List;
+import java.util.Set;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.exceptions.FacilityExistsException;
 import nl.tudelft.oopp.group39.facility.exceptions.FacilityNotFoundException;
@@ -8,9 +10,6 @@ import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Set;
 
 @Service
 public class FacilityService {

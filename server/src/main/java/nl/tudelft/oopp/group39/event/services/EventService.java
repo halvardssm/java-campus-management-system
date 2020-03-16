@@ -1,12 +1,11 @@
 package nl.tudelft.oopp.group39.event.services;
 
+import java.util.List;
 import javassist.NotFoundException;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.event.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class EventService {

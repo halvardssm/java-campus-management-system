@@ -1,12 +1,11 @@
 package nl.tudelft.oopp.group39.booking.services;
 
+import java.util.List;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.booking.exceptions.BookingNotFoundException;
 import nl.tudelft.oopp.group39.booking.repositories.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class BookingService {
