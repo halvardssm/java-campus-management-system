@@ -1,25 +1,30 @@
 package nl.tudelft.oopp.group39.user.services;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
-import nl.tudelft.oopp.group39.role.entities.Role;
-import nl.tudelft.oopp.group39.role.enums.Roles;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest
 class UserServiceTest {
+    Set<Booking> bookings = new HashSet<>();
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",
         "test",
         null,
-        List.of(new Role(Roles.STUDENT))
+        Role.STUDENT,
+        bookings
     );
 
     @Autowired
@@ -46,7 +51,6 @@ class UserServiceTest {
     void createUser() {
         User user = testUser;
         user.setUsername("user2");
-
         User user2 = userService.createUser(user);
 
         assertEquals(user, user2);
@@ -55,6 +59,7 @@ class UserServiceTest {
     @Test
     void readUser() {
         User user2 = userService.readUser("test");
+
         assertEquals(testUser, user2);
     }
 
@@ -71,6 +76,17 @@ class UserServiceTest {
     void deleteUser() {
         List<User> testUsers = new ArrayList<>();
         userService.deleteUser("test");
+
         assertEquals(testUsers, userService.listUsers());
+    }
+
+    @Test
+    void mapRoleForUser() {
+        User user = testUser;
+        user.setRole(null);
+        userService.mapRoleForUser(user);
+
+        assertEquals(testUser, user);
+        assertEquals(user.getRole(), Role.STUDENT);
     }
 }

@@ -1,21 +1,10 @@
 package nl.tudelft.oopp.group39.user.controllers;
 
-import static nl.tudelft.oopp.group39.user.controllers.UserController.REST_MAPPING;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.google.gson.Gson;
-import java.util.List;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
-import nl.tudelft.oopp.group39.role.entities.Role;
-import nl.tudelft.oopp.group39.role.enums.Roles;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.repositories.UserRepository;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.junit.jupiter.api.AfterEach;
@@ -29,27 +18,36 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import static nl.tudelft.oopp.group39.user.controllers.UserController.REST_MAPPING;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
+    Set<Booking> bookings = new HashSet<>();
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",
         "test",
         null,
-        List.of(new Role(Roles.ADMIN))
+        Role.ADMIN,
+        bookings
     );
     private final Gson gson = new Gson();
 
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private JwtService jwtService;
 
@@ -65,7 +63,7 @@ class UserControllerTest {
     }
 
     @Test
-    void postUser() throws Exception {
+    void createUser() throws Exception {
         User user = testUser;
         user.setUsername("test2");
         String json = gson.toJson(user);

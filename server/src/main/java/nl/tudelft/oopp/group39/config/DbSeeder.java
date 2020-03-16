@@ -1,23 +1,23 @@
 package nl.tudelft.oopp.group39.config;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
-import nl.tudelft.oopp.group39.role.entities.Role;
-import nl.tudelft.oopp.group39.role.enums.Roles;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Seeds the database on application load.
@@ -25,13 +25,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class DbSeeder {
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
     private RoomService roomService;
     @Autowired
     private BuildingService buildingService;
     @Autowired
     private FacilityService facilityService;
+    @Autowired
+    private BookingService bookingService;
 
     /**
      * Initiates the db with all the roles.
@@ -42,24 +44,22 @@ public class DbSeeder {
         initFacilities();
         initBuildings();
         initRooms();
+        initBookings();
+        System.out.println("[SEED] Seeding completed");
     }
 
     /**
      * Initiates the database with an admin user with all authorities.
      */
     private void initUsers() {
-        List<GrantedAuthority> roles = new ArrayList<>();
-
-        for (Roles role : Roles.values()) {
-            roles.add(new Role(role));
-        }
-
+        Set<Booking> bookings = new HashSet<>();
         User user = new User(
             "admin",
             "admin@tudelft.nl",
-            userService.encryptPassword("pwd"),
+            "pwd",
             null,
-            roles
+            Role.ADMIN,
+            bookings
         );
 
         userService.createUser(user);
@@ -90,17 +90,38 @@ public class DbSeeder {
 
     private void initRooms() {
         Set<Facility> facilities = new HashSet<>();
+        Set<Booking> bookings = new HashSet<>();
 
-        roomService.createRoom(new Room(1, 10, true, "test1", facilities));
+        roomService.createRoom(new Room(1, 10, true, "test1", facilities, bookings));
 
         facilities.add(facilityService.readFacility(1));
 
-        roomService.createRoom(new Room(1, 6, true, "test2", facilities));
+        roomService.createRoom(new Room(1, 6, true, "test2", facilities, bookings));
 
         facilities.add(facilityService.readFacility(2));
 
-        roomService.createRoom(new Room(2, 15, false, "test3", facilities));
+        roomService.createRoom(new Room(2, 15, false, "test3", facilities, bookings));
 
         System.out.println("[SEED] Rooms created");
+    }
+
+    private void initBookings() {
+        Set<Facility> facilities = new HashSet<>();
+        Set<Booking> bookings = new HashSet<>();
+        LocalDate date = LocalDate.now();
+        LocalTime start = LocalTime.now();
+        LocalTime end = LocalTime.now();
+        User user = userService.readUser("admin");
+
+        Room room = new Room(1, 10, true, "test1", facilities, bookings);
+
+
+        Booking b = new Booking(date, start, end, user, room);
+        bookingService.createBooking(b);
+
+        b = new Booking(date, start, end, user, room);
+        bookingService.createBooking(b);
+
+        System.out.println("[SEED] Bookings created");
     }
 }

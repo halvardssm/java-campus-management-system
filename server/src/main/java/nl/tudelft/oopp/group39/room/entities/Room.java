@@ -1,9 +1,11 @@
 package nl.tudelft.oopp.group39.room.entities;
 
+import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -33,15 +35,19 @@ public class Room {
                 nullable = false, updatable = false)})
     private Set<Facility> facilities = new HashSet<>();
 
+    @OneToMany(mappedBy = "room")
+    private Set<Booking> bookings = new HashSet<>();
+
     public Room() {
     }
 
-    public Room(long buildingId, int capacity, boolean onlyStaff, String description, Set<Facility> facilities) {
+    public Room(long buildingId, int capacity, boolean onlyStaff, String description, Set<Facility> facilities, Set<Booking> bookings) {
         this.buildingId = buildingId;
         this.capacity = capacity;
         this.onlyStaff = onlyStaff;
         this.description = description;
         this.facilities.addAll(facilities);
+        this.bookings.addAll(bookings);
     }
 
     public long getId() {
@@ -92,6 +98,13 @@ public class Room {
         this.facilities = facilities == null ? new HashSet<>() : facilities;
     }
 
+    public Set<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(Set<Booking> bookings) {
+        this.bookings = bookings;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -101,14 +114,13 @@ public class Room {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
         Room room = (Room) o;
-
-        //return id == room.id;
-
-        boolean equals = (capacity == room.capacity) && (onlyStaff == room.onlyStaff);
-        equals = equals && (room.description.contentEquals(description));
-        equals = equals && (buildingId == room.buildingId) && (id == room.id);
-        return equals;
+        return getId() == room.getId()
+            && buildingId == room.buildingId
+            && getCapacity() == room.getCapacity()
+            && getOnlyStaff() == room.getOnlyStaff()
+            && Objects.equals(getDescription(), room.getDescription())
+            && Objects.equals(getFacilities(), room.getFacilities())
+            && Objects.equals(getBookings(), room.getBookings());
     }
 }

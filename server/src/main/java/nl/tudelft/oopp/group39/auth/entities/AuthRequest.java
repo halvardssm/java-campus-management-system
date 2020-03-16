@@ -4,14 +4,14 @@ import java.io.Serializable;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JwtRequest implements Serializable {
+public class AuthRequest implements Serializable {
     private String username;
     private String password;
 
-    public JwtRequest() {
+    public AuthRequest() {
     }
 
-    public JwtRequest(String username, String password) {
+    public AuthRequest(String username, String password) {
         this.username = username;
         this.password = password;
     }

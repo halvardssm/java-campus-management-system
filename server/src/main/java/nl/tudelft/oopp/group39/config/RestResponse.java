@@ -51,8 +51,24 @@ public class RestResponse<T> implements Serializable {
         );
     }
 
+    /**
+     * Creates a {@link ResponseEntity} with a body and error field.
+     *
+     * @param object The object to place in the body field
+     * @return The finalized ResponseEntity
+     */
     public static <T> ResponseEntity<RestResponse<T>> create(T object) {
         return create(object, null, null);
+    }
+
+    /**
+     * Creates a {@link ResponseEntity} with a body and error field.
+     *
+     * @param error The error to place in the error field
+     * @return The finalized ResponseEntity
+     */
+    public static <T> ResponseEntity<RestResponse<T>> error(String error) {
+        return create(null, error, null);
     }
 
     public Object getBody() {
