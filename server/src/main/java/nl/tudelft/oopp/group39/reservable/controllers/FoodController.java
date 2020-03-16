@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.reservable.controllers;
 
+import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.reservable.entities.Food;
 import nl.tudelft.oopp.group39.reservable.services.FoodService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,8 +31,8 @@ public class FoodController {
      * @return a list of foods {@link Food}.
      */
     @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listFoods() {
-        return RestResponse.create(foodService.listFoods());
+    public ResponseEntity<RestResponse<Object>> listFoods(@RequestParam Map<String, String> params) {
+        return RestResponse.create(foodService.listFoods(params));
     }
 
     /**

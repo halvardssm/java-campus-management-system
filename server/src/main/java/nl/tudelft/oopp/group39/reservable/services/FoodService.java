@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.group39.reservable.services;
 
 import java.util.List;
+import java.util.Map;
 import javassist.NotFoundException;
+import nl.tudelft.oopp.group39.reservable.dao.ReservableDao;
 import nl.tudelft.oopp.group39.reservable.entities.Food;
 import nl.tudelft.oopp.group39.reservable.repositories.FoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +15,19 @@ public class FoodService {
 
     @Autowired
     private FoodRepository foodRepository;
+    @Autowired
+    private ReservableDao reservableDao;
 
     /**
      * List all foods.
      *
      * @return a list of foods {@link Food}.
      */
-    public List<Food> listFoods() {
-        return foodRepository.findAll();
+    public List<Food> listFoods(Map<String, String> params) {
+
+        return params.isEmpty()
+            ? foodRepository.findAll()
+            : reservableDao.listReservables(params, Food.class);
     }
 
     /**

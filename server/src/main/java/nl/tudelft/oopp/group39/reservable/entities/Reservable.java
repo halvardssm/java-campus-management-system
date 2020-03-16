@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.reservable.entities;
 
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.building.entities.Building;
@@ -27,25 +29,8 @@ public class Reservable {
     @ManyToOne
     @JoinColumn(name = Building.MAPPED_NAME)
     private Building building;
-    @ManyToOne
-    @JoinColumn(name = Reservation.MAPPED_NAME)
-    private Reservation reservation;
-
-    public Reservable() {
-    }
-
-    /**
-     * The constructor of Reservable.
-     *
-     * @param building    the building connected
-     * @param price       the price of the item
-     * @param reservation the reservation
-     */
-    public Reservable(Building building, Double price, Reservation reservation) {
-        setBuilding(building);
-        setPrice(price);
-        setReservation(reservation);
-    }
+    @ManyToMany(mappedBy = TABLE_NAME)
+    private Set<Reservation> reservations;
 
     public Integer getId() {
         return id;
@@ -71,12 +56,28 @@ public class Reservable {
         this.price = price;
     }
 
-    public Reservation getReservation() {
-        return reservation;
+    public Reservable() {
     }
 
-    public void setReservation(Reservation reservation) {
-        this.reservation = reservation;
+    /**
+     * The constructor of Reservable.
+     *
+     * @param building     the building connected
+     * @param price        the price of the item
+     * @param reservations the reservations
+     */
+    public Reservable(Building building, Double price, Set<Reservation> reservations) {
+        setBuilding(building);
+        setPrice(price);
+        this.reservations.addAll(reservations);
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
     @Override

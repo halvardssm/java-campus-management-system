@@ -14,6 +14,9 @@ import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.event.services.EventService;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
+import nl.tudelft.oopp.group39.reservable.entities.Bike;
+import nl.tudelft.oopp.group39.reservable.enums.BikeType;
+import nl.tudelft.oopp.group39.reservable.services.BikeService;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
@@ -40,6 +43,8 @@ public class DbSeeder {
     private EventService eventService;
     @Autowired
     private BookingService bookingService;
+    @Autowired
+    private BikeService bikeService;
 
     /**
      * Initiates the db with all the roles.
@@ -136,5 +141,29 @@ public class DbSeeder {
         bookingService.createBooking(b);
 
         System.out.println("[SEED] Bookings created");
+    }
+
+    private void initBikes() {
+        Building building = buildingService.listBuildings().get(0);
+
+        Bike bike1 = new Bike(BikeType.CITY, null, building, 5.6, null);
+        Bike bike2 = new Bike(BikeType.CITY, null, building, 6.7, null);
+        Bike bike3 = new Bike(BikeType.CITY, null, building, 7.8, null);
+
+        bikeService.createBike(bike1);
+        bikeService.createBike(bike2);
+        bikeService.createBike(bike3);
+    }
+
+    private void initFoods() {
+        Building building = buildingService.listBuildings().get(0);
+
+        Bike bike1 = new Bike(BikeType.CITY, null, building, 5.6, null);
+        Bike bike2 = new Bike(BikeType.CITY, null, building, 6.7, null);
+        Bike bike3 = new Bike(BikeType.CITY, null, building, 7.8, null);
+
+        bikeService.createBike(bike1);
+        bikeService.createBike(bike2);
+        bikeService.createBike(bike3);
     }
 }

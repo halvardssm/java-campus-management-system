@@ -4,13 +4,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
@@ -30,7 +32,14 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = User.MAPPED_NAME)
     private User user;
-    @OneToMany(mappedBy = MAPPED_NAME)
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = TABLE_NAME + "_" + Reservable.TABLE_NAME,
+        joinColumns = {
+            @JoinColumn(name = MAPPED_NAME, referencedColumnName = "id",
+                nullable = false, updatable = false)},
+        inverseJoinColumns = {
+            @JoinColumn(name = Reservable.MAPPED_NAME, referencedColumnName = "id",
+                nullable = false, updatable = false)})
     private Set<Reservable> reservables;
 
     public Reservation() {

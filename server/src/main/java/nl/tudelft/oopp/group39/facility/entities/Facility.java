@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +23,7 @@ public class Facility {
 
     private String description;
 
-    @ManyToMany(mappedBy = TABLE_NAME, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = TABLE_NAME)
     private Set<Room> rooms = new HashSet<>();
 
     public Facility() {

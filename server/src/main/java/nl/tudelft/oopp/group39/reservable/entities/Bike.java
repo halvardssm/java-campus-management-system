@@ -22,21 +22,6 @@ public class Bike extends Reservable {
     @JsonFormat(pattern = Constants.FORMAT_TIME_SHORT)
     private LocalTime rentalDuration;
 
-    /**
-     * The constructor of Bike.
-     *
-     * @param building       where the bike is available.
-     * @param price          of the item
-     * @param bikeType       the bike type
-     * @param rentalDuration duration of the rent
-     * @param reservation    the reservation
-     */
-    public Bike(BikeType bikeType, LocalTime rentalDuration, Building building, Double price, Reservation reservation) {
-        super(building, price, reservation);
-        setBikeType(bikeType != null ? bikeType : BikeType.CITY);
-        setRentalDuration(rentalDuration != null ? rentalDuration : LocalTime.parse("04:00:00"));
-    }
-
     public BikeType getBikeType() {
         return bikeType;
     }
@@ -49,11 +34,32 @@ public class Bike extends Reservable {
         return rentalDuration;
     }
 
+    public void setRentalDuration(LocalTime rentalDuration) {
+        this.rentalDuration = rentalDuration;
+    }
+
     public Bike() {
     }
 
-    public void setRentalDuration(LocalTime rentalDuration) {
-        this.rentalDuration = rentalDuration;
+    /**
+     * The constructor of Bike.
+     *
+     * @param building       where the bike is available.
+     * @param price          of the item
+     * @param bikeType       the bike type
+     * @param rentalDuration duration of the rent
+     * @param reservation    the reservation
+     */
+    public Bike(
+        BikeType bikeType,
+        LocalTime rentalDuration,
+        Building building,
+        Double price,
+        Reservation reservation
+    ) {
+        super(building, price, reservation);
+        setBikeType(bikeType != null ? bikeType : BikeType.CITY);
+        setRentalDuration(rentalDuration != null ? rentalDuration : LocalTime.parse("04:00:00"));
     }
 
     @Override
