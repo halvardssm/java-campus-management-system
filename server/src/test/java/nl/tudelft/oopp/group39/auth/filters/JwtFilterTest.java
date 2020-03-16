@@ -1,10 +1,5 @@
 package nl.tudelft.oopp.group39.auth.filters;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.io.IOException;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.booking.entities.Booking;

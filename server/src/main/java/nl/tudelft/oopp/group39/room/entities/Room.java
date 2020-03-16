@@ -109,6 +109,7 @@ public class Room {
     public void setEvents(Set<Event> events) {
         this.events = events;
     }
+
     public Set<Booking> getBookings() {
         return bookings;
     }

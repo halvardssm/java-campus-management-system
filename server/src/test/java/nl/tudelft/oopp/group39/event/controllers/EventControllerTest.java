@@ -41,6 +41,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class EventControllerTest {
+    private static final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class,
+        (JsonSerializer<LocalDate>) (date, typeOfT, context)
+            -> new JsonPrimitive(date.format(DateTimeFormatter.ISO_LOCAL_DATE))).create();
+    private static Event testEvent = new Event(
+        EventTypes.EVENT,
+        LocalDate.now(ZoneId.of("Europe/Paris")),
+        LocalDate.now(ZoneId.of("Europe/Paris")).plusDays(1),
+        null
+    );
     Set<Booking> bookings = new HashSet<>();
     private final User testUser = new User(
         "test",
@@ -50,15 +59,6 @@ class EventControllerTest {
         Role.ADMIN,
         bookings
     );
-    private static Event testEvent = new Event(
-        EventTypes.EVENT,
-        LocalDate.now(ZoneId.of("Europe/Paris")),
-        LocalDate.now(ZoneId.of("Europe/Paris")).plusDays(1),
-        null
-    );
-    private static final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class,
-        (JsonSerializer<LocalDate>) (date, typeOfT, context)
-            -> new JsonPrimitive(date.format(DateTimeFormatter.ISO_LOCAL_DATE))).create();
     private String jwt;
 
 

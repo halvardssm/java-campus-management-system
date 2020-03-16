@@ -1,12 +1,13 @@
 package nl.tudelft.oopp.group39.config;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 class RestResponseTest {
     @Test

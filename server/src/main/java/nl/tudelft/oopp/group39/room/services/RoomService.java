@@ -1,10 +1,5 @@
 package nl.tudelft.oopp.group39.room.services;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
@@ -14,6 +9,12 @@ import nl.tudelft.oopp.group39.room.exceptions.RoomNotFoundException;
 import nl.tudelft.oopp.group39.room.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class RoomService {

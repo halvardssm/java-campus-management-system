@@ -1,16 +1,5 @@
 package nl.tudelft.oopp.group39.user.controllers;
 
-import static nl.tudelft.oopp.group39.user.controllers.UserController.REST_MAPPING;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.google.gson.Gson;
 import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
@@ -36,6 +25,7 @@ import java.util.Set;
 import static nl.tudelft.oopp.group39.user.controllers.UserController.REST_MAPPING;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -43,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
+    private final Gson gson = new Gson();
     Set<Booking> bookings = new HashSet<>();
     private final User testUser = new User(
         "test",
@@ -52,7 +43,6 @@ class UserControllerTest {
         Role.ADMIN,
         bookings
     );
-    private final Gson gson = new Gson();
     private String jwt;
 
     @Autowired

@@ -1,8 +1,5 @@
 package nl.tudelft.oopp.group39.building.services;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.exceptions.BuildingExistsException;
 import nl.tudelft.oopp.group39.building.exceptions.BuildingNotFoundException;
@@ -10,6 +7,10 @@ import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
 import nl.tudelft.oopp.group39.room.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class BuildingService {

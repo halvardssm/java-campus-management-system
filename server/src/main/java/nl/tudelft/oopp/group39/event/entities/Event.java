@@ -1,25 +1,15 @@
 package nl.tudelft.oopp.group39.event.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import nl.tudelft.oopp.group39.event.enums.EventTypes;
+import nl.tudelft.oopp.group39.room.entities.Room;
+import org.springframework.lang.Nullable;
+
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import nl.tudelft.oopp.group39.event.enums.EventTypes;
-import nl.tudelft.oopp.group39.room.entities.Room;
-import org.springframework.lang.Nullable;
 
 @Entity
 @Table(name = Event.TABLE_NAME)
