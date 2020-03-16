@@ -111,7 +111,7 @@ class BookingControllerTest {
             .andExpect(jsonPath("$.body[0].date", is(testBooking.getDate())))
             .andExpect(jsonPath("$.body[0].startTime", is(testBooking.getStartTime().toString())))
             .andExpect(jsonPath("$.body[0].endTime", is(testBooking.getEndTime().toString())))
-            .andExpect(jsonPath("$.body[0].room", is(testBooking.getRoom().toString())));
+            .andExpect(jsonPath("$.body[0].room", is(testBooking.getRoom())));
     }
 
     @Test
@@ -127,7 +127,7 @@ class BookingControllerTest {
             .andExpect(jsonPath("$.body[0].date", is(booking.getDate())))
             .andExpect(jsonPath("$.body[0].startTime", is(booking.getStartTime().toString())))
             .andExpect(jsonPath("$.body[0].endTime", is(booking.getEndTime().toString())))
-            .andExpect(jsonPath("$.body[0].room", is(booking.getRoom().toString())));
+            .andExpect(jsonPath("$.body[0].room", is(booking.getRoom())));
     }
 
     @Test
@@ -137,7 +137,7 @@ class BookingControllerTest {
             .andExpect(jsonPath("$.body[0].date", is(testBooking.getDate())))
             .andExpect(jsonPath("$.body[0].startTime", is(testBooking.getStartTime().toString())))
             .andExpect(jsonPath("$.body[0].endTime", is(testBooking.getEndTime().toString())))
-            .andExpect(jsonPath("$.body[0].room", is(testBooking.getRoom().toString())));
+            .andExpect(jsonPath("$.body[0].room", is(testBooking.getRoom())));
     }
 
     @Test
@@ -156,7 +156,7 @@ class BookingControllerTest {
             .andExpect(jsonPath("$.body[0].date", is(booking.getDate())))
             .andExpect(jsonPath("$.body[0].startTime", is(booking.getStartTime().toString())))
             .andExpect(jsonPath("$.body[0].endTime", is(booking.getEndTime().toString())))
-            .andExpect(jsonPath("$.body[0].room", is(booking.getRoom().toString())));
+            .andExpect(jsonPath("$.body[0].room", is(booking.getRoom())));
     }
 
     @Test
