@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -45,7 +46,6 @@ class JwtFilterTest {
 
     @BeforeEach
     void setUp() {
-        SecurityContextHolder.clearContext();
         userService.createUser(testUser);
         jwt = jwtService.encrypt(testUser);
     }
@@ -58,7 +58,7 @@ class JwtFilterTest {
 
     @Test
     void doFilterInternal() throws ServletException, IOException {
-        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/foo");
+        MockHttpServletRequest request = new MockHttpServletRequest(HttpMethod.GET.name(), "/foo");
         request.addHeader(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt);
 
         MockHttpServletResponse response = new MockHttpServletResponse();
