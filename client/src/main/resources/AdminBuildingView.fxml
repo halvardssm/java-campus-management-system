@@ -2,7 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -41,7 +42,6 @@
                   <Image url="@../../../../../../../../TuDelft/download.png" />
                </image>
             </ImageView>
-            <ListView fx:id="listView" layoutY="75.0" opacity="0.75" prefHeight="392.0" prefWidth="324.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" />
             <Text layoutX="14.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Buildings" underline="true">
                <font>
                   <Font name="System Bold" size="33.0" />
@@ -70,6 +70,12 @@
             </Text>
             <TextField fx:id="BTimes" layoutX="456.0" layoutY="321.0" prefHeight="31.0" prefWidth="216.0" />
             <TextField fx:id="BAddress" layoutX="456.0" layoutY="218.0" prefHeight="31.0" prefWidth="221.0" />
+            <TableView fx:id="BTable" layoutY="58.0" opacity="0.75" prefHeight="426.0" prefWidth="359.0">
+              <columns>
+                <TableColumn fx:id="BNameCol" prefWidth="142.0" text="Name" />
+                <TableColumn fx:id="BAddressCol" prefWidth="215.0" text="Address" />
+              </columns>
+            </TableView>
          </children>
       </AnchorPane>
    </center>
