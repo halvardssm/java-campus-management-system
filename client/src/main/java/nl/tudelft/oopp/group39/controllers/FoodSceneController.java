@@ -4,18 +4,25 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
@@ -35,6 +42,9 @@ public class FoodSceneController extends MainSceneController {
     public double totalprice = 0;
 
     public int cartItems = 0;
+
+    public List<Integer> foodCart = new ArrayList<>();
+
     @FXML
     private Label total;
 
@@ -53,69 +63,94 @@ public class FoodSceneController extends MainSceneController {
 
     public void getMenu() {
         foodmenu.getChildren().clear();
-        GridPane food = new GridPane();
-        food.getStyleClass().add("fooditem");
-        food.setVgap(20);
-        food.setHgap(20);
-        food.setPadding(new Insets(0, 0, 0, 20));
-        food.setPrefSize(300, 60);
-        food.setAlignment(Pos.CENTER_LEFT);
-        Label name = new Label("Food");
-        Label price = new Label("$2.50");
-        Button addToCart = new Button("+");
-        addToCart.setOnAction(event -> addToCart("Food", 2.50));
-        food.add(name, 0, 0);
-        food.add(price, 1, 0);
-        food.add(addToCart, 2, 0);
-        foodmenu.getChildren().add(food);
+//        String foodString = ServerCommunication.getAllFood();
+//        System.out.println(foodString);
+        String teststring = "{\"body\": [{\"id\":1, \"name\":\"voedsel\", \"price\":\"2.35\"}, {\"id\":2, \"name\":\"bitterballen\", \"price\":\"2.65\"}], \"error\": null}";
+        JsonObject body = ((JsonObject) JsonParser.parseString(teststring));
+        JsonArray foodArray = body.getAsJsonArray("body");
+
+        for (JsonElement fooditem : foodArray) {
+            String foodname = ((JsonObject) fooditem).get("name").getAsString();
+            Double price = ((JsonObject) fooditem).get("price").getAsDouble();
+            int id = ((JsonObject) fooditem).get("id").getAsInt();
+            HBox food = new HBox(20);
+            food.getStyleClass().add("fooditem");
+            food.setPadding(new Insets(0, 15, 0, 15));
+            food.setPrefSize(300, 60);
+            food.setAlignment(Pos.CENTER_LEFT);
+            Label name = new Label(foodname);
+            Label priceLabel = new Label(price.toString());
+            Button addToCart = new Button("+");
+            addToCart.setOnAction(event -> addToCart(foodname, price, id));
+            Region region = new Region();
+            HBox.setHgrow(region, Priority.ALWAYS);
+            food.getChildren().add(name);
+            food.getChildren().add(region);
+            food.getChildren().add(priceLabel);
+            food.getChildren().add(addToCart);
+            foodmenu.getChildren().add(food);
+        }
+
+        DatePicker datePicker = new DatePicker();
+        datePicker.setId("datePicker");
+        cartlist.getChildren().add(datePicker);
+        ComboBox timePicker = new ComboBox();
+        timePicker.setId("timePicker");
+        for (int i = 9; i < 20; i++) {
+            timePicker.getItems().add(i + ":00");
+        }
+        cartlist.getChildren().add(timePicker);
+
     }
 
-    public void addToCart(String name, double price) {
-        if (cartlist.lookup("#" + name) == null) {
-            GridPane fooditem = new GridPane();
-            fooditem.setHgap(20);
-            fooditem.setVgap(20);
+    public void addToCart(String name, double price, int id) {
+        if (cartlist.lookup("#" + id) == null) {
+            HBox fooditem = new HBox(10);
             Spinner<Integer> amount = new Spinner<>();
             amount.setPrefWidth(50);
-            amount.setId(name);
+            amount.setId(String.valueOf(id));
             SpinnerValueFactory<Integer> valueFactory =
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, 1);
             amount.setValueFactory(valueFactory);
             amount.valueProperty().addListener(
-                (obs, oldValue, newValue) -> updateCart(name, price)
+                (obs, oldValue, newValue) -> updateCart(id, price)
             );
             Label priceLabel = new Label("$" + price);
-            priceLabel.setId(name + "price");
+            priceLabel.setId(id + "price");
             Button delete = new Button();
             ImageView deletebtn = new ImageView(new Image("/icons/bin-icon.png"));
             deletebtn.setFitHeight(20);
             deletebtn.setFitWidth(20);
             delete.setGraphic(deletebtn);
             delete.setStyle("-fx-background-color: none");
-            delete.setOnAction(event -> deleteFromCart(name));
+            delete.setOnAction(event -> deleteFromCart(id));
             Label foodname = new Label(name);
-            fooditem.add(foodname, 0, 0);
-            fooditem.add(amount, 1, 0);
-            fooditem.add(priceLabel, 2, 0);
-            fooditem.add(delete, 3, 0);
+            Region region = new Region();
+            HBox.setHgrow(region, Priority.ALWAYS);
+            fooditem.getChildren().add(foodname);
+            fooditem.getChildren().add(region);
+            fooditem.getChildren().add(amount);
+            fooditem.getChildren().add(priceLabel);
+            fooditem.getChildren().add(delete);
             cartlist.getChildren().add(fooditem);
             cartItems++;
             totalprice += price;
             total.setText("$" + totalprice);
             checkEmptyCart();
+            foodCart.add(id);
         } else {
-            Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + name);
+            Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + id);
             Integer value = amount.getValue() + 1;
             amount.getValueFactory().setValue(value);
-            updateCart(name, price);
+            updateCart(id, price);
         }
 
     }
 
-    public void updateCart(String name, double price) {
-        Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + name);
+    public void updateCart(int id, double price) {
+        Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + id);
         Integer value = amount.getValue();
-        Label priceLabel = (Label) cartlist.lookup("#" + name + "price");
+        Label priceLabel = (Label) cartlist.lookup("#" + id + "price");
         double oldprice = Double.parseDouble(priceLabel.getText().split("\\$")[1]);
         double newprice = value * price;
         priceLabel.setText("$" + newprice);
@@ -123,13 +158,13 @@ public class FoodSceneController extends MainSceneController {
         total.setText("$" + totalprice);
     }
 
-    public void deleteFromCart(String name) {
-        Label priceLabel = (Label) cartlist.lookup("#" + name + "price");
+    public void deleteFromCart(int id) {
+        Label priceLabel = (Label) cartlist.lookup("#" + id + "price");
         double price = Double.parseDouble(priceLabel.getText().split("\\$")[1]);
         totalprice = totalprice - price;
         total.setText("$" + totalprice);
-        Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + name);
-        GridPane fooditem = (GridPane) amount.getParent();
+        Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + id);
+        HBox fooditem = (HBox) amount.getParent();
         cartlist.getChildren().remove(fooditem);
         cartItems--;
         checkEmptyCart();
@@ -140,11 +175,33 @@ public class FoodSceneController extends MainSceneController {
             cartlist.getChildren().add(emptycart);
         } else {
             cartlist.getChildren().remove(emptycart);
+
+
         }
     }
 
     public void placeOrder() {
-        // to be implemented
+        DatePicker datePicker = (DatePicker) cartlist.lookup("#datePicker");
+        LocalDate date = datePicker.getValue();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        ComboBox timePicker = (ComboBox) cartlist.lookup("#timePicker");
+        String time = timePicker.getValue().toString();
+        String dateTime = dateTimeFormatter.format(date) + " " + time;
+        System.out.println(dateTime);
+        String foods = "[";
+        for (int i = 0; i < foodCart.size(); i++) {
+            Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + foodCart.get(i));
+            int foodamount = amount.getValue();
+            if (i == foodCart.size() - 1) {
+                foods = foods + "{" + foodCart.get(i) + ":" + foodamount + "}]";
+            } else {
+                foods = foods + "{" + foodCart.get(i) + ":" + foodamount + "}, ";
+            }
+        }
+        System.out.println(foods);
+        String user = MainSceneController.username;
+        String result = ServerCommunication.orderFood(dateTime, user, foods);
+        createAlert(result);
     }
 
 }

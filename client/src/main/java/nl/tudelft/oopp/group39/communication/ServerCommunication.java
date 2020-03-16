@@ -1,17 +1,12 @@
 package nl.tudelft.oopp.group39.communication;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
 
 public class ServerCommunication {
@@ -131,17 +126,60 @@ public class ServerCommunication {
         HttpRequest(request);
     }
 
-    public static String getRooms(long buildingId){
-        //HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room?capacity=&name=&onlyStaff=&facilities=&buildingId=" + buildingId + "&building=&location=&open=&closed=")).build();
-       // HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room?buildingId=" + buildingId)).build();
-
+    public static String getRooms(long buildingId) {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room/" + buildingId)).build();
         return HttpRequest(request);
     }
 
-    public static String getAllRooms(){
+    public static String getAllRooms() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room")).build();
         return HttpRequest(request);
+    }
+
+    public static String getAllFood() {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "food")).build();
+        return HttpRequest(request);
+    }
+
+    public static String orderFood(String timeOfPickup, String user, String food) {
+        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"timeOfPickup\": \"" + timeOfPickup + "\", \"user\":\"" + user + "\", \"reservables\":\"" + food + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding).uri(URI.create(url + "reservation/")).header("Content-Type", "application/json").build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Communication with server failed";
+        }
+        if (response.statusCode() != 201) {
+            System.out.println("Status: " + response.statusCode());
+            return "Something went wrong";
+        } else {
+            return "Order is placed";
+        }
+    }
+
+    public static String getAllBikes() {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "bike")).build();
+        return HttpRequest(request);
+    }
+
+    public static String orderBike(String timeOfPickup, String user, String bike) {
+        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"timeOfPickup\": \"" + timeOfPickup + "\", \"user\":\"" + user + "\", \"reservables\":\"" + bike + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding).uri(URI.create(url + "reservation/")).header("Content-Type", "application/json").build();
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Communication with server failed";
+        }
+        if (response.statusCode() != 201) {
+            System.out.println("Status: " + response.statusCode());
+            return "Something went wrong";
+        } else {
+            return "Order is placed";
+        }
     }
 
 
@@ -163,13 +201,13 @@ public class ServerCommunication {
         return response.body();
     }
 
-    public static String addUser(String netID, String email, String password, String role){
+    public static String addUser(String netID, String email, String password, String role) {
         HttpRequest.BodyPublisher user = HttpRequest.BodyPublishers.ofString("{\"username\": \"" + netID + "\", \"email\":\"" + email + "\", \"password\":\"" + password + "\", \"roles\":\"" + List.of(role) + "\"}");
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(user)
-                .uri(URI.create("http://localhost:8080/user"))
-                .header("Content-Type", "application/json")
-                .build();
+            .POST(user)
+            .uri(URI.create("http://localhost:8080/user"))
+            .header("Content-Type", "application/json")
+            .build();
 
         HttpResponse<String> response = null;
         try {
@@ -181,20 +219,19 @@ public class ServerCommunication {
         if (response.statusCode() != 201) {
             System.out.println("Status: " + response.statusCode());
             return "Something went wrong";
-        }
-        else{
+        } else {
             return "Account created";
         }
 
     }
 
-    public static String userLogin(String username, String pwd){
+    public static String userLogin(String username, String pwd) {
         HttpRequest.BodyPublisher user = HttpRequest.BodyPublishers.ofString("{\"username\": \"" + username + "\", \"password\":\"" + pwd + "\"}");
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(user)
-                .uri(URI.create("http://localhost:8080/authenticate"))
-                .header("Content-Type", "application/json")
-                .build();
+            .POST(user)
+            .uri(URI.create("http://localhost:8080/authenticate"))
+            .header("Content-Type", "application/json")
+            .build();
 
         HttpResponse<String> response = null;
         try {
@@ -206,8 +243,7 @@ public class ServerCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             return "Something went wrong";
-        }
-        else{
+        } else {
             System.out.println(response.body());
             JsonObject body = ((JsonObject) JsonParser.parseString(response.body()));
             String jwtToken = body.getAsJsonObject("body").get("jwt").getAsString();
@@ -225,7 +261,6 @@ public class ServerCommunication {
         JsonObject body = ((JsonObject) JsonParser.parseString(user));
         System.out.println(body);
         String role = body.getAsJsonObject("body").get("role").getAsString();
-        if(role.equals("admin")) return true;
-        else return false;
+        return role.equals("admin");
     }
 }

@@ -29,6 +29,7 @@ public class Room {
     private long id;
     private long buildingId;
     private int capacity;
+    private String name;
     private boolean onlyStaff;
     private String description;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
@@ -48,9 +49,10 @@ public class Room {
     public Room() {
     }
 
-    public Room(long buildingId, int capacity, boolean onlyStaff, String description, Set<Facility> facilities, Set<Booking> bookings) {
+    public Room(long buildingId, int capacity, String name, boolean onlyStaff, String description, Set<Facility> facilities, Set<Booking> bookings) {
         this.buildingId = buildingId;
         this.capacity = capacity;
+        this.name = name;
         this.onlyStaff = onlyStaff;
         this.description = description;
         this.facilities.addAll(facilities);
@@ -63,6 +65,14 @@ public class Room {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public long getBuilding() {

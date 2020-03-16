@@ -1,22 +1,17 @@
 package nl.tudelft.oopp.group39.controllers;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import java.io.IOException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.views.UsersDisplay;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class MainSceneController {
 
@@ -92,6 +87,7 @@ public class MainSceneController {
     public void goToBikeRentalScene() throws IOException {
         BikeSceneController controller = (BikeSceneController) UsersDisplay.sceneControllerHandler("/bikeRentalView.fxml");
         controller.changeTopBtn();
+        controller.getBuildings();
     }
 
     public void goToFoodOrderScene() throws IOException {

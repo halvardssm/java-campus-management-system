@@ -31,9 +31,36 @@
         <VBox fx:id="sidebar" id="sidebar"/>
     </left>
     <center>
-        <ScrollPane fitToHeight="true" fitToWidth="true" >
-            <Label text="Rent your bike"></Label>
-        </ScrollPane>
+        <HBox spacing="20">
+            <ScrollPane fitToHeight="true" fitToWidth="true">
+                <VBox prefWidth="200" fx:id="buildinglist" spacing="20">
+                    <padding>
+                        <Insets top="15" left="30" bottom="15"/>
+                    </padding>
+                    <Label text="Select your building"/>
+                </VBox>
+            </ScrollPane>
+            <ScrollPane fitToHeight="true" fitToWidth="true">
+                <VBox prefWidth="250" fx:id="bikelist" spacing="20">
+                    <padding>
+                        <Insets top="15" bottom="15"/>
+                    </padding>
+                    <Button text="Get Bikes" onAction="#getBikes"/>
+                </VBox>
+            </ScrollPane>
+            <VBox prefWidth="300" spacing="10">
+                <padding>
+                    <Insets top="15" right="20" bottom="15" left="0"/>
+                </padding>
+                <Label id="carttitle" text="Your cart"/>
+
+                <VBox fx:id="cartlist" spacing="20">
+                    <Label fx:id="emptycart" id="emptycart" text="Cart is empty"/>
+                </VBox>
+                <Button text="Place order" onAction="#placeOrder"/>
+            </VBox>
+        </HBox>
+
     </center>
     <stylesheets>
         <URL value="@style.css" />
