@@ -33,7 +33,7 @@ public class User implements UserDetails {
     private String email;
     private String password;
     @Lob
-    @Basic(fetch = FetchType.EAGER)
+    @Basic(fetch = FetchType.LAZY)
     @LazyGroup("lobs")
     private Blob image;
     @Enumerated(EnumType.STRING)
