@@ -27,13 +27,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Table(name = User.TABLE_NAME)
 public class User implements UserDetails {
     public static final String TABLE_NAME = "users";
+    public static final String MAPPED_NAME = "user";
+    public static final String COL_USERNAME = "username";
+    public static final String COL_EMAIL = "email";
+    public static final String COL_PASSWORD = "password";
+    public static final String COL_IMAGE = "image";
+    public static final String COL_ROLE = "role";
+    public static final String COL_BOOKINGS = "bookings";
 
     @Id
     private String username;
     private String email;
     private String password;
     @Lob
-    @Basic(fetch = FetchType.LAZY)
+    @Basic(fetch = FetchType.EAGER)
     @LazyGroup("lobs")
     private Blob image;
     @Enumerated(EnumType.STRING)

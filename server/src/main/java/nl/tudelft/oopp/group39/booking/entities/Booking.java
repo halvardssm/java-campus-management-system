@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.booking.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -30,23 +31,13 @@ public class Booking {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user")
+    @JsonIgnore
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room")
+    @JsonIgnore
     private Room room;
-
-    public Booking() {
-    }
-
-    public Booking(LocalDate date, LocalTime startTime, LocalTime endTime, User user, Room room) {
-        this.date = date;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.user = user;
-        this.room = room;
-
-    }
 
     public Integer getId() {
         return id;
@@ -94,6 +85,18 @@ public class Booking {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    public Booking() {
+    }
+
+    public Booking(LocalDate date, LocalTime startTime, LocalTime endTime, User user, Room room) {
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.user = user;
+        this.room = room;
+
     }
 
     @Override
