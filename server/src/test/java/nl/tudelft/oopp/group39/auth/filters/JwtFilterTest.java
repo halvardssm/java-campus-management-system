@@ -46,14 +46,14 @@ class JwtFilterTest {
 
     @BeforeEach
     void setUp() {
-        userService.createUser(testUser);
+        userRepository.saveAndFlush(testUser);
         jwt = jwtService.encrypt(testUser);
     }
 
     @AfterEach
     void tearDown() {
         SecurityContextHolder.clearContext();
-        userService.deleteUser(testUser.getUsername());
+        userRepository.deleteAll();
     }
 
     @Test

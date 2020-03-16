@@ -11,13 +11,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 import com.google.gson.Gson;
-import java.util.HashSet;
-import java.util.Set;
 import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
-import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.repositories.UserRepository;
@@ -37,14 +33,13 @@ import org.springframework.test.web.servlet.ResultActions;
 @AutoConfigureMockMvc
 class UserControllerTest {
     private final Gson gson = new Gson();
-    Set<Booking> bookings = new HashSet<>();
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",
         "test",
         null,
         Role.ADMIN,
-        bookings
+        null
     );
     private String jwt;
 
@@ -61,9 +56,9 @@ class UserControllerTest {
 
     @BeforeEach
     void setUp() {
-        userRepository.deleteAll();
         userService.createUser(testUser);
         jwt = jwtService.encrypt(testUser);
+        testUser.setPassword("test");
     }
 
     @AfterEach
