@@ -7,6 +7,7 @@ import nl.tudelft.oopp.group39.user.entities.User;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = Booking.TABLE_NAME)
@@ -99,12 +100,12 @@ public class Booking {
             return false;
         }
         Booking booking = (Booking) o;
-        return getId() == booking.getId()
-            && getUser().equals(booking.getUser())
-            && getDate().equals(booking.getDate())
-            && getStartTime().compareTo(booking.getStartTime()) == 0
-            && getEndTime().compareTo(booking.getEndTime()) == 0
-            && getRoom().equals(booking.getRoom());
+        return Objects.equals(getId(), booking.getId())
+            && Objects.equals(getDate(), booking.getDate())
+            && Objects.equals(getStartTime(), booking.getStartTime())
+            && Objects.equals(getEndTime(), booking.getEndTime())
+            && Objects.equals(getUser(), booking.getUser())
+            && Objects.equals(getRoom(), booking.getRoom());
     }
 }
 

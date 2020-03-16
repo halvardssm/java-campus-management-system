@@ -1,10 +1,8 @@
 package nl.tudelft.oopp.group39.booking.services;
 
 import nl.tudelft.oopp.group39.booking.entities.Booking;
-import nl.tudelft.oopp.group39.facility.entities.Facility;
-import nl.tudelft.oopp.group39.room.entities.Room;
-import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
+import nl.tudelft.oopp.group39.booking.repositories.BookingRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,45 +10,36 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class BookingServiceTest {
-    Set<Facility> facilities = new HashSet<>();
-    Set<Booking> bookings = new HashSet<>();
-    private final User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.STUDENT,
-        bookings
-    );
-    private final Room testRoom = new Room(
-        1,
-        10,
-        false,
-        "This is a test description",
-        facilities,
-        bookings
-    );
     LocalDate date = LocalDate.now();
-    LocalTime start = LocalTime.now();
-    LocalTime end = LocalTime.now();
+    LocalTime start = LocalTime.of(4, 20, 42);
+    LocalTime end = LocalTime.of(6, 9, 20);
     private final Booking testBooking = new Booking(
         date,
         start,
         end,
-        testUser,
-        testRoom
+        null,
+        null
     );
 
     @Autowired
     BookingService bookingService;
+    @Autowired
+    BookingRepository bookingRepository;
+
+    @BeforeEach
+    void setUp() {
+        bookingRepository.deleteAll();
+        Booking booking = bookingRepository.saveAndFlush(testBooking);
+        testBooking.setId(booking.getId());
+
+
+    }
 
     @Test
     void listBookings() {
