@@ -1,10 +1,9 @@
 package nl.tudelft.oopp.group39.auth.services;
 
 import java.util.Date;
-import java.util.List;
-import nl.tudelft.oopp.group39.role.entities.Role;
-import nl.tudelft.oopp.group39.role.enums.Roles;
+import java.util.HashSet;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,9 @@ class JwtServiceTest {
         "test@tudelft.nl",
         "test",
         null,
-        List.of(new Role(Roles.STUDENT))
+        Role.STUDENT,
+        new HashSet<>(),
+        new HashSet<>()
     );
 
     @Autowired
@@ -63,7 +64,9 @@ class JwtServiceTest {
             "test@tudelft.nl",
             "test",
             null,
-            List.of(new Role(Roles.STUDENT))
+            Role.STUDENT,
+            new HashSet<>(),
+            new HashSet<>()
         );
         Assertions.assertFalse(jwtService.validate(jwtService.encrypt(testUser), user));
     }

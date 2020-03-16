@@ -1,13 +1,22 @@
 package nl.tudelft.oopp.group39.building.entities;
 
 
-import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 
 @Entity
 @Table(name = Building.TABLE_NAME)
 public class Building {
     public static final String TABLE_NAME = "buildings";
+    public static final String MAPPED_NAME = "building";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +31,8 @@ public class Building {
     private LocalTime open;
 
     private LocalTime closed;
+    @OneToMany(mappedBy = MAPPED_NAME)
+    private Set<Reservable> reservables = new HashSet<>();
 
     //opening times (open & closed)
 
@@ -100,6 +111,4 @@ public class Building {
         equals = equals && (building.closed == closed) && (id == building.id);
         return equals;
     }
-
-
 }

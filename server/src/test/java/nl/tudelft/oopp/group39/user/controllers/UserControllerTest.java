@@ -3,6 +3,7 @@ package nl.tudelft.oopp.group39.user.controllers;
 import static nl.tudelft.oopp.group39.user.controllers.UserController.REST_MAPPING;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -11,11 +12,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.gson.Gson;
-import java.util.List;
+import java.util.HashSet;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
-import nl.tudelft.oopp.group39.role.entities.Role;
-import nl.tudelft.oopp.group39.role.enums.Roles;
+import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.repositories.UserRepository;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.junit.jupiter.api.AfterEach;
@@ -37,26 +38,29 @@ class UserControllerTest {
         "test@tudelft.nl",
         "test",
         null,
-        List.of(new Role(Roles.ADMIN))
+        Role.ADMIN,
+        new HashSet<>(),
+        new HashSet<>()
     );
     private final Gson gson = new Gson();
+    private String jwt;
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserRepository userRepository;
-
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserController userController;
 
     @BeforeEach
     void setUp() {
         userRepository.deleteAll();
         userService.createUser(testUser);
+        jwt = jwtService.encrypt(testUser);
     }
 
     @AfterEach
@@ -65,7 +69,7 @@ class UserControllerTest {
     }
 
     @Test
-    void postUser() throws Exception {
+    void createUser() throws Exception {
         User user = testUser;
         user.setUsername("test2");
         String json = gson.toJson(user);
@@ -81,10 +85,8 @@ class UserControllerTest {
 
     @Test
     void listUsers() throws Exception {
-        String jwt = jwtService.encrypt(testUser);
-
         ResultActions resultActions = mockMvc.perform(get(REST_MAPPING)
-            .header(HttpHeaders.AUTHORIZATION, JwtService.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isArray())
             .andExpect(jsonPath("$.body", hasSize(1)))
@@ -94,11 +96,9 @@ class UserControllerTest {
 
     @Test
     void readUser() throws Exception {
-        String jwt = jwtService.encrypt(testUser);
-
         mockMvc.perform(get(REST_MAPPING + "/"
             + testUser.getUsername())
-            .header(HttpHeaders.AUTHORIZATION, JwtService.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body.username", is(testUser.getUsername())))
             .andExpect(jsonPath("$.body.email", is(testUser.getEmail())))
@@ -107,8 +107,6 @@ class UserControllerTest {
 
     @Test
     void updateUser() throws Exception {
-        String jwt = jwtService.encrypt(testUser);
-
         User user = testUser;
         user.setEmail("test@student.tudelft.nl");
         String json = gson.toJson(user);
@@ -117,7 +115,7 @@ class UserControllerTest {
             + testUser.getUsername())
             .contentType(MediaType.APPLICATION_JSON)
             .content(json)
-            .header(HttpHeaders.AUTHORIZATION, JwtService.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body.username", is(user.getUsername())))
             .andExpect(jsonPath("$.body.email", is(user.getEmail())));
@@ -125,12 +123,20 @@ class UserControllerTest {
 
     @Test
     void deleteUser() throws Exception {
-        String jwt = jwtService.encrypt(testUser);
-
         mockMvc.perform(delete(REST_MAPPING + "/"
             + testUser.getUsername())
-            .header(HttpHeaders.AUTHORIZATION, JwtService.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
+    }
+
+    @Test
+    void testError() {
+        assertEquals("User can not be null", userController.createUser(null).getBody().getError());
+
+        assertEquals("User asdf not found", userController.readUser("asdf").getBody().getError());
+
+        assertEquals("User asdf not found", userController.updateUser("asdf", null)
+            .getBody().getError());
     }
 }
