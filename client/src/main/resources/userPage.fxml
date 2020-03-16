@@ -8,27 +8,24 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.UserPageController">
    <top>
       <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
-            <Label layoutX="26.0" layoutY="17.0" prefHeight="37.0" prefWidth="118.0" text="User Page" textFill="WHITE" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="26.0" AnchorPane.rightAnchor="456.0" AnchorPane.topAnchor="17.0">
+            <Label layoutX="26.0" layoutY="17.0" prefHeight="37.0" prefWidth="118.0" text="User Page" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="0.0">
                <font>
                   <Font size="25.0" />
                </font></Label>
-            <Button layoutX="252.0" layoutY="24.0" mnemonicParsing="false" onAction="#refreshBuildings2" text="Add room in the cell" />
+            <Button layoutX="252.0" layoutY="24.0" mnemonicParsing="false" onAction="#refreshBuildings2" text="Add room in the cell" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="12.0" />
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin></AnchorPane>
    </top>
    <left>
-      <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <StackPane prefHeight="300.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" smooth="false" StackPane.alignment="TOP_LEFT">
                <StackPane.margin>
@@ -77,32 +74,19 @@
       <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <ScrollPane prefHeight="280.0" prefWidth="400.0" style="-fx-background-color: #FFFFFF;" BorderPane.alignment="CENTER">
-         <content>
-            <GridPane prefHeight="275.0" prefWidth="395.0" style="-fx-background-color: #FFFFFF;">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="396.0" minWidth="10.0" prefWidth="396.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="191.60003662109375" minWidth="0.0" prefWidth="0.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="85.20001831054688" minHeight="0.0" prefHeight="25.600006103515625" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="259.8" minHeight="0.0" prefHeight="249.6" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="244.39999999999998" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="30.0" prefWidth="267.0" text="Your Bookings:">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Label>
-                  <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
-                     <content>
-                        <FlowPane fx:id="flowPane" prefHeight="246.0" prefWidth="391.0" />
-                     </content>
-                  </ScrollPane>
-               </children>
-            </GridPane>
-         </content>
-      </ScrollPane>
+      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" minHeight="40.0" text="Your Bookings:" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <ScrollPane layoutX="137.0" layoutY="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+               <content>
+                  <FlowPane fx:id="flowPane" minHeight="-Infinity" minWidth="-Infinity" />
+               </content>
+            </ScrollPane>
+         </children>
+      </AnchorPane>
    </center>
 </BorderPane>
