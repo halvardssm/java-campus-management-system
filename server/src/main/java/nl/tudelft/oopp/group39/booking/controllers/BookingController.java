@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(BookingController.REST_MAPPING)
 public class BookingController {
@@ -24,8 +22,8 @@ public class BookingController {
      * @return a list of bookings {@link Booking}.
      */
     @GetMapping("")
-    public List<Booking> listBookings() {
-        return bookingService.listBookings();
+    public ResponseEntity<RestResponse<Object>> listBookings() {
+        return RestResponse.create(bookingService.listBookings());
     }
 
     /**
