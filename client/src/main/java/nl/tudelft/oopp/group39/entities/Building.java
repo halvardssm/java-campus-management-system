@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.group39.entities;
 
-import java.time.LocalTime;
-
 public class Building {
 
     private long id;
@@ -20,6 +18,15 @@ public class Building {
     public Building() {
     }
 
+    /**
+     * Doc. TODO Sven
+     *
+     * @param name        name
+     * @param location    location
+     * @param description description
+     * @param open        open
+     * @param closed      closed
+     */
     public Building(String name, String location, String description, String open, String closed) {
         this.name = name;
         this.location = location;

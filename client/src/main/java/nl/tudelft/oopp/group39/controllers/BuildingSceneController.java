@@ -3,13 +3,13 @@ package nl.tudelft.oopp.group39.controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
-import java.io.IOException;
 import nl.tudelft.oopp.group39.entities.Building;
 
 public class BuildingSceneController extends MainSceneController {
@@ -44,10 +44,10 @@ public class BuildingSceneController extends MainSceneController {
                 name.setText(building.getName());
 
                 String bDetails = (building.getLocation()
-                        + "\n" + building.getDescription()
-                        + "\n" + "Max. Capacity"
-                        + "\n" + "Opening times: " + building.getOpen().toString()
-                        + " - " + building.getClosed().toString());
+                    + "\n" + building.getDescription()
+                    + "\n" + "Max. Capacity"
+                    + "\n" + "Opening times: " + building.getOpen()
+                    + " - " + building.getClosed());
 
                 Label details = (Label) newBuilding.lookup("#bdetails");
                 details.setText(bDetails);

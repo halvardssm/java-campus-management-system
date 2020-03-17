@@ -92,6 +92,15 @@ public class Booking {
     public Booking() {
     }
 
+    /**
+     * Doc. TODO Chuck
+     *
+     * @param date      date
+     * @param startTime startTime
+     * @param endTime   endTime
+     * @param user      user
+     * @param room      room
+     */
     public Booking(LocalDate date, LocalTime startTime, LocalTime endTime, User user, Room room) {
         this.date = date;
         this.startTime = startTime;

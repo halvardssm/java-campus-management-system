@@ -2,7 +2,6 @@ package nl.tudelft.oopp.group39.event.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
