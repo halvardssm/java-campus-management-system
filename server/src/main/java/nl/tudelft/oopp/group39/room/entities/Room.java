@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.room.entities;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,7 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 
@@ -19,6 +22,7 @@ import nl.tudelft.oopp.group39.facility.entities.Facility;
 @Table(name = Room.TABLE_NAME)
 public class Room {
     public static final String TABLE_NAME = "rooms";
+    public static final String MAPPED_NAME = "room";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +49,9 @@ public class Room {
     @ManyToMany(mappedBy = "rooms", fetch = FetchType.LAZY)
     private Set<Event> events = new HashSet<>();
 
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
+    private Set<Booking> bookings = new HashSet<>();
+
     public Room() {
     }
 
@@ -56,13 +63,15 @@ public class Room {
         int capacity,
         boolean onlyStaff,
         String description,
-        Set<Facility> facilities
+        Set<Facility> facilities,
+        Set<Booking> bookings
     ) {
         this.buildingId = buildingId;
         this.capacity = capacity;
         this.onlyStaff = onlyStaff;
         this.description = description;
-        this.facilities.addAll(facilities);
+        this.facilities.addAll(facilities != null ? facilities : new HashSet<>());
+        this.bookings.addAll(bookings != null ? bookings : new HashSet<>());
     }
 
     public long getId() {
@@ -121,6 +130,14 @@ public class Room {
         this.events = events;
     }
 
+    public Set<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(Set<Booking> bookings) {
+        this.bookings = bookings;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -129,14 +146,13 @@ public class Room {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
         Room room = (Room) o;
-
-        //return id == room.id;
-
-        boolean equals = (capacity == room.capacity) && (onlyStaff == room.onlyStaff);
-        equals = equals && (room.description.contentEquals(description));
-        equals = equals && (buildingId == room.buildingId) && (id == room.id);
-        return equals;
+        return getId() == room.getId()
+            && buildingId == room.buildingId
+            && getCapacity() == room.getCapacity()
+            && getOnlyStaff() == room.getOnlyStaff()
+            && Objects.equals(getDescription(), room.getDescription())
+            && Objects.equals(getFacilities(), room.getFacilities())
+            && Objects.equals(getBookings(), room.getBookings());
     }
 }

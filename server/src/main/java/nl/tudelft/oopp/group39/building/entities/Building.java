@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.building.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalTime;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -22,9 +23,9 @@ public class Building {
     private String location;
 
     private String description;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm:ss")
     private LocalTime open;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm:ss")
     private LocalTime closed;
 
     //opening times (open & closed)

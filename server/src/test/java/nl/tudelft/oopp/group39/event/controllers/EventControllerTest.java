@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonPrimitive;
@@ -18,8 +19,11 @@ import com.google.gson.JsonSerializer;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.Set;
 import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.event.repositories.EventRepository;
@@ -40,22 +44,24 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 class EventControllerTest {
-    private static final User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.ADMIN
-    );
+    private static final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class,
+        (JsonSerializer<LocalDate>) (date, typeOfT, context)
+            -> new JsonPrimitive(date.format(DateTimeFormatter.ISO_LOCAL_DATE))).create();
     private static Event testEvent = new Event(
         EventTypes.EVENT,
         LocalDate.now(ZoneId.of("Europe/Paris")),
         LocalDate.now(ZoneId.of("Europe/Paris")).plusDays(1),
         null
     );
-    private static final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class,
-        (JsonSerializer<LocalDate>) (date, typeOfT, context)
-            -> new JsonPrimitive(date.format(DateTimeFormatter.ISO_LOCAL_DATE))).create();
+    Set<Booking> bookings = new HashSet<>();
+    private final User testUser = new User(
+        "test",
+        "test@tudelft.nl",
+        "test",
+        null,
+        Role.ADMIN,
+        bookings
+    );
     private String jwt;
 
 
