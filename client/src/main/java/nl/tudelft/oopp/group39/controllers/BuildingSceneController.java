@@ -5,9 +5,11 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import java.io.DataInput;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
@@ -35,15 +37,14 @@ public class BuildingSceneController extends MainSceneController {
 
             ObjectMapper mapper = new ObjectMapper();
 
-            JsonNode body = mapper.readTree(buildingString).get("body");
+            ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
 
-            JsonParser parser = body.traverse();
+            for (JsonNode buildingjs : body) {
 
-            TypeFactory typeFactory = mapper.getTypeFactory();
+                String buildings = mapper.writeValueAsString(buildingjs);
 
-            Building[] buildingArray = mapper.readValue(body, Building[].class);
+                Building building = mapper.readValue(buildings, Building.class);
 
-            for (Building building : buildingArray) {
                 newBuilding = FXMLLoader.load(getClass().getResource("/buildingCell.fxml"));
 
                 Label name = (Label) newBuilding.lookup("#bname");

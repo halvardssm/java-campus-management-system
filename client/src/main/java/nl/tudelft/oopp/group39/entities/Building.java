@@ -12,15 +12,15 @@ public class Building {
 
     private String description;
 
-    private LocalTime open;
+    private String open;
 
-    private LocalTime closed;
+    private String closed;
 
 
     public Building() {
     }
 
-    public Building(String name, String location, String description, LocalTime open, LocalTime closed) {
+    public Building(String name, String location, String description, String open, String closed) {
         this.name = name;
         this.location = location;
         this.description = description;
@@ -32,48 +32,23 @@ public class Building {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalTime getOpen() {
+    public String getOpen() {
         return open;
     }
 
-    public void setOpen(LocalTime open) {
-        this.open = open;
-    }
-
-    public LocalTime getClosed() {
+    public String getClosed() {
         return closed;
     }
-
-    public void setClosed(LocalTime closed) {
-        this.closed = closed;
-    }
-
 }
