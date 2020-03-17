@@ -32,9 +32,9 @@ public class BuildingSceneController extends MainSceneController {
 
             ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
 
-            for (JsonNode buildingjs : body) {
+            for (JsonNode buildingJson : body) {
 
-                String buildings = mapper.writeValueAsString(buildingjs);
+                String buildings = mapper.writeValueAsString(buildingJson);
 
                 Building building = mapper.readValue(buildings, Building.class);
 
@@ -43,14 +43,14 @@ public class BuildingSceneController extends MainSceneController {
                 Label name = (Label) newBuilding.lookup("#bname");
                 name.setText(building.getName());
 
-                String bDetails = (building.getLocation()
+                String newDetails = (building.getLocation()
                     + "\n" + building.getDescription()
                     + "\n" + "Max. Capacity"
                     + "\n" + "Opening times: " + building.getOpen()
                     + " - " + building.getClosed());
 
                 Label details = (Label) newBuilding.lookup("#bdetails");
-                details.setText(bDetails);
+                details.setText(newDetails);
 
                 flowPane.getChildren().add(newBuilding);
             }
