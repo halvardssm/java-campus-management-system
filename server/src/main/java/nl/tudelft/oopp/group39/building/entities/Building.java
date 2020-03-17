@@ -1,7 +1,8 @@
 package nl.tudelft.oopp.group39.building.entities;
 
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalTime;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,9 +23,9 @@ public class Building {
     private String location;
 
     private String description;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm:ss")
     private LocalTime open;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm:ss")
     private LocalTime closed;
 
     //opening times (open & closed)
@@ -32,7 +33,22 @@ public class Building {
     public Building() {
     }
 
-    public Building(String name, String location, String description, LocalTime open, LocalTime closed) {
+    /**
+     * Constructor. TODO Sven
+     *
+     * @param name        name
+     * @param location    location
+     * @param description description
+     * @param open        open
+     * @param closed      closed
+     */
+    public Building(
+        String name,
+        String location,
+        String description,
+        LocalTime open,
+        LocalTime closed
+    ) {
         this.name = name;
         this.location = location;
         this.description = description;
@@ -93,17 +109,15 @@ public class Building {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Building)) {
             return false;
         }
-
         Building building = (Building) o;
-
-        boolean equals = (building.location.contentEquals(location)) && (building.name.contentEquals(name));
-        equals = equals && (building.description.contentEquals(description)) && (building.open == open);
-        equals = equals && (building.closed == closed) && (id == building.id);
-        return equals;
+        return getId() == building.getId()
+            && Objects.equals(getName(), building.getName())
+            && Objects.equals(getLocation(), building.getLocation())
+            && Objects.equals(getDescription(), building.getDescription())
+            && Objects.equals(getOpen(), building.getOpen())
+            && Objects.equals(getClosed(), building.getClosed());
     }
-
-
 }

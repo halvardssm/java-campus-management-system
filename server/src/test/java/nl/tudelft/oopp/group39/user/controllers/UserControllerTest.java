@@ -32,14 +32,15 @@ import org.springframework.test.web.servlet.ResultActions;
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
+    private final Gson gson = new Gson();
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",
         "test",
         null,
-        Role.ADMIN
+        Role.ADMIN,
+        null
     );
-    private final Gson gson = new Gson();
     private String jwt;
 
     @Autowired
@@ -55,9 +56,9 @@ class UserControllerTest {
 
     @BeforeEach
     void setUp() {
-        userRepository.deleteAll();
         userService.createUser(testUser);
         jwt = jwtService.encrypt(testUser);
+        testUser.setPassword("test");
     }
 
     @AfterEach

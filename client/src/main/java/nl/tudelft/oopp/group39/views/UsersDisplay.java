@@ -1,14 +1,13 @@
 package nl.tudelft.oopp.group39.views;
 
+import java.io.IOException;
+import java.net.URL;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.net.URL;
 
 public class UsersDisplay extends Application {
 
@@ -19,6 +18,9 @@ public class UsersDisplay extends Application {
     private static Stage window;
     private static Parent root;
 
+    /**
+     * Doc. TODO Sven
+     */
     @FXML
     public static void sceneHandler(String name) throws IOException {
         System.out.println("Scene changing...");

@@ -1,24 +1,14 @@
 package nl.tudelft.oopp.group39.controllers;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import java.io.DataInput;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
-
 import java.io.IOException;
 import nl.tudelft.oopp.group39.entities.Building;
 
@@ -30,6 +20,9 @@ public class BuildingSceneController extends MainSceneController {
     @FXML
     private GridPane newBuilding;
 
+    /**
+     * Doc. TODO Sven
+     */
     public void refreshBuildings() {
         flowPane.getChildren().clear();
         try {
@@ -66,9 +59,12 @@ public class BuildingSceneController extends MainSceneController {
         }
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void alertAllBuildings() {
         try {
-            createAlert("Users shown.",ServerCommunication.getBuildings());
+            createAlert("Users shown.", ServerCommunication.getBuildings());
         } catch (Exception e) {
             createAlert("Error Occurred.");
         }
