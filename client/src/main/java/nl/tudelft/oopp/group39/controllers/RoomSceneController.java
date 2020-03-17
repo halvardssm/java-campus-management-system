@@ -19,6 +19,9 @@ public class RoomSceneController extends MainSceneController {
     @FXML
     public TextField updateRoomField;
 
+    /**
+     * Doc. TODO Sven
+     */
     public void newRoomButton() {
         String buildingId = roomBuildingIdField.getText();
 
@@ -29,6 +32,9 @@ public class RoomSceneController extends MainSceneController {
         createAlert(ServerCommunication.addRoom(buildingId, roomCapacity, roomDescription));
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void updateRoomButton() {
         String buildingId = roomBuildingIdField.getText();
 
@@ -47,6 +53,9 @@ public class RoomSceneController extends MainSceneController {
         createAlert(ServerCommunication.getRooms());
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void deleteRoomButton(ActionEvent actionEvent) {
         String id = updateRoomField.getText();
 

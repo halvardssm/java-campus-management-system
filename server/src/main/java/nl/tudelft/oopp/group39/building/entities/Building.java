@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.group39.building.entities;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -34,7 +33,22 @@ public class Building {
     public Building() {
     }
 
-    public Building(String name, String location, String description, LocalTime open, LocalTime closed) {
+    /**
+     * Constructor. TODO Sven
+     *
+     * @param name        name
+     * @param location    location
+     * @param description description
+     * @param open        open
+     * @param closed      closed
+     */
+    public Building(
+        String name,
+        String location,
+        String description,
+        LocalTime open,
+        LocalTime closed
+    ) {
         this.name = name;
         this.location = location;
         this.description = description;
