@@ -22,6 +22,7 @@ import nl.tudelft.oopp.group39.facility.entities.Facility;
 @Table(name = Room.TABLE_NAME)
 public class Room {
     public static final String TABLE_NAME = "rooms";
+    public static final String MAPPED_NAME = "room";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
