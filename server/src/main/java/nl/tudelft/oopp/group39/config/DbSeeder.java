@@ -124,8 +124,6 @@ public class DbSeeder {
     }
 
     private void initBookings() {
-        Set<Facility> facilities = new HashSet<>();
-        Set<Booking> bookings = new HashSet<>();
         LocalDate date = LocalDate.now();
         LocalTime start = LocalTime.now();
         LocalTime end = LocalTime.now();

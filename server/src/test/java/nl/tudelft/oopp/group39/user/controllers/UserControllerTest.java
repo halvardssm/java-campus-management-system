@@ -16,7 +16,6 @@ import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
-import nl.tudelft.oopp.group39.user.repositories.UserRepository;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +26,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -48,8 +46,6 @@ class UserControllerTest {
     @Autowired
     private JwtService jwtService;
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
     private UserService userService;
     @Autowired
     private UserController userController;
@@ -63,27 +59,32 @@ class UserControllerTest {
 
     @AfterEach
     void tearDown() {
-        userRepository.deleteAll();
+        userService.deleteUser(testUser.getUsername());
+        testUser.setPassword("test");
     }
 
     @Test
-    void createUser() throws Exception {
-        User user = testUser;
-        user.setUsername("test2");
-        String json = objectMapper.writeValueAsString(user);
+    void deleteAndCreateUser() throws Exception {
+        mockMvc.perform(delete(REST_MAPPING + "/"
+            + testUser.getUsername())
+            .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.body").doesNotExist());
+
+        String json = objectMapper.writeValueAsString(testUser);
 
         mockMvc.perform(post(REST_MAPPING)
             .contentType(MediaType.APPLICATION_JSON)
             .content(json))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.body.username", is(user.getUsername())))
-            .andExpect(jsonPath("$.body.email", is(user.getEmail())))
+            .andExpect(jsonPath("$.body.username", is(testUser.getUsername())))
+            .andExpect(jsonPath("$.body.email", is(testUser.getEmail())))
             .andExpect(jsonPath("$.body.password").exists());
     }
 
     @Test
     void listUsers() throws Exception {
-        ResultActions resultActions = mockMvc.perform(get(REST_MAPPING)
+        mockMvc.perform(get(REST_MAPPING)
             .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isArray())
@@ -117,15 +118,6 @@ class UserControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body.username", is(user.getUsername())))
             .andExpect(jsonPath("$.body.email", is(user.getEmail())));
-    }
-
-    @Test
-    void deleteUser() throws Exception {
-        mockMvc.perform(delete(REST_MAPPING + "/"
-            + testUser.getUsername())
-            .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.body").doesNotExist());
     }
 
     @Test
