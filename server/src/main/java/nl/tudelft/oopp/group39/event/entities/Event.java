@@ -56,7 +56,12 @@ public class Event {
      * @param endDate   the end date yyyy-mm-dd, nullable
      * @param rooms     the rooms
      */
-    public Event(EventTypes type, LocalDate startDate, @Nullable LocalDate endDate, Set<Room> rooms) {
+    public Event(
+        EventTypes type,
+        LocalDate startDate,
+        @Nullable LocalDate endDate,
+        Set<Room> rooms
+    ) {
         this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;

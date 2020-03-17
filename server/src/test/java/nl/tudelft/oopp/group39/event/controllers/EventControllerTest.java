@@ -166,6 +166,9 @@ class EventControllerTest {
 
         assertEquals("Event 0 not found", eventController.readEvent(0).getBody().getError());
 
-        assertEquals("Event 0 not found", eventController.updateEvent(0, null).getBody().getError());
+        assertEquals(
+            "Event 0 not found",
+            eventController.updateEvent(0, null).getBody().getError()
+        );
     }
 }

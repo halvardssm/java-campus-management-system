@@ -48,7 +48,16 @@ public class Room {
     public Room() {
     }
 
-    public Room(long buildingId, int capacity, boolean onlyStaff, String description, Set<Facility> facilities) {
+    /**
+     * Doc. TODO Sven
+     */
+    public Room(
+        long buildingId,
+        int capacity,
+        boolean onlyStaff,
+        String description,
+        Set<Facility> facilities
+    ) {
         this.buildingId = buildingId;
         this.capacity = capacity;
         this.onlyStaff = onlyStaff;
