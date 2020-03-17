@@ -2,35 +2,41 @@ package nl.tudelft.oopp.group39.reservable.dao;
 
 import java.util.List;
 import java.util.Map;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.persistence.criteria.Root;
+import nl.tudelft.oopp.group39.building.entities.Building;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ReservableDao {
-    @Autowired
-    private Session session;
+    @PersistenceContext
+    private EntityManager em;
 
     /**
-     * Filters resevables.
+     * Filters Reservables.
      *
-     * @param params request parameters
-     * @return list of reservables
+     * @param params all params
+     * @return filtered list
      */
     public <T> List<T> listReservables(Map<String, String> params, Class<T> resultClass) {
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<T> cq = cb.createQuery(resultClass);
+        CriteriaBuilder cb = em.getCriteriaBuilder();
 
-//        if(params.containsKey(Building.MAPPED_NAME)){
-//            cb.and(cq.where(el->el))
-//        }
+        CriteriaQuery<T> q = cb.createQuery(resultClass);
+        Root<T> c = q.from(resultClass);
+        q.select(c);
 
-        CriteriaQuery<T> all = cq.select(cq.from(resultClass));
+        if (params.containsKey(Building.MAPPED_NAME)) {
+            q.where(cb.equal(
+                c.get(Building.MAPPED_NAME).get(Building.COL_ID),
+                params.get(Building.MAPPED_NAME)
+            ));
+        }
 
-        TypedQuery<T> allQuery = session.createQuery(all);
-        return allQuery.getResultList();
+        TypedQuery<T> query = em.createQuery(q);
+        return query.getResultList();
     }
 }

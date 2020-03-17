@@ -4,18 +4,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.config.Constants;
-import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.user.entities.User;
 
 @Entity
@@ -32,15 +29,8 @@ public class Reservation {
     @ManyToOne
     @JoinColumn(name = User.MAPPED_NAME)
     private User user;
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name = TABLE_NAME + "_" + Reservable.TABLE_NAME,
-        joinColumns = {
-            @JoinColumn(name = MAPPED_NAME, referencedColumnName = "id",
-                nullable = false, updatable = false)},
-        inverseJoinColumns = {
-            @JoinColumn(name = Reservable.MAPPED_NAME, referencedColumnName = "id",
-                nullable = false, updatable = false)})
-    private Set<Reservable> reservables;
+    @OneToMany(mappedBy = MAPPED_NAME)
+    private Set<ReservationAmount> reservables;
 
     public Reservation() {
     }
@@ -52,7 +42,7 @@ public class Reservation {
      * @param user         the user
      * @param reservables  all items in order
      */
-    public Reservation(LocalDateTime timeOfPickup, User user, Set<Reservable> reservables) {
+    public Reservation(LocalDateTime timeOfPickup, User user, Set<ReservationAmount> reservables) {
         setTimeOfPickup(timeOfPickup);
         setUser(user);
         setReservables(reservables);
@@ -82,11 +72,11 @@ public class Reservation {
         this.user = user;
     }
 
-    public Set<Reservable> getReservables() {
+    public Set<ReservationAmount> getReservables() {
         return reservables;
     }
 
-    public void setReservables(Set<Reservable> reservables) {
+    public void setReservables(Set<ReservationAmount> reservables) {
         this.reservables = reservables;
     }
 

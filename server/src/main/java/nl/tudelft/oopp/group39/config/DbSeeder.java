@@ -15,8 +15,10 @@ import nl.tudelft.oopp.group39.event.services.EventService;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
 import nl.tudelft.oopp.group39.reservable.entities.Bike;
+import nl.tudelft.oopp.group39.reservable.entities.Food;
 import nl.tudelft.oopp.group39.reservable.enums.BikeType;
 import nl.tudelft.oopp.group39.reservable.services.BikeService;
+import nl.tudelft.oopp.group39.reservable.services.FoodService;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
@@ -45,6 +47,8 @@ public class DbSeeder {
     private BookingService bookingService;
     @Autowired
     private BikeService bikeService;
+    @Autowired
+    private FoodService foodService;
 
     /**
      * Initiates the db with all the roles.
@@ -56,7 +60,9 @@ public class DbSeeder {
         initBuildings();
         initRooms();
         initEvents();
-        initBookings();
+//        initBookings();
+        initBikes();
+        initFoods();
         System.out.println("[SEED] Seeding completed");
     }
 
@@ -153,17 +159,27 @@ public class DbSeeder {
         bikeService.createBike(bike1);
         bikeService.createBike(bike2);
         bikeService.createBike(bike3);
+
+        System.out.println("[SEED] Bikes created");
     }
 
     private void initFoods() {
         Building building = buildingService.listBuildings().get(0);
 
-        Bike bike1 = new Bike(BikeType.CITY, null, building, 5.6, null);
-        Bike bike2 = new Bike(BikeType.CITY, null, building, 6.7, null);
-        Bike bike3 = new Bike(BikeType.CITY, null, building, 7.8, null);
+        Food food1 = new Food("Stew", "A warm pot of deliciousness", building, 5.6, null);
+        Food food2 = new Food("Meatballs", "Balls of meat", building, 6.7, null);
+        Food food3 = new Food("Carrot Cake", "I mean cake, it's simply good", building, 7.8, null);
 
-        bikeService.createBike(bike1);
-        bikeService.createBike(bike2);
-        bikeService.createBike(bike3);
+        foodService.createFood(food1);
+        foodService.createFood(food2);
+        foodService.createFood(food3);
+
+        System.out.println("[SEED] Foods created");
+    }
+
+    private void initReservations() {
+
+
+        System.out.println("[SEED] Reservations created");
     }
 }

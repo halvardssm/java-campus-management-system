@@ -17,6 +17,7 @@ import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 public class Building {
     public static final String TABLE_NAME = "buildings";
     public static final String MAPPED_NAME = "building";
+    public static final String COL_ID = "id";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
