@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.room.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -47,9 +48,11 @@ public class Room {
     private Set<Facility> facilities = new HashSet<>();
 
     @ManyToMany(mappedBy = "rooms", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Event> events = new HashSet<>();
 
     @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Booking> bookings = new HashSet<>();
 
     public Room() {

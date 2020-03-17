@@ -9,7 +9,6 @@ import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
-import nl.tudelft.oopp.group39.user.repositories.UserRepository;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,13 +35,11 @@ class JwtFilterTest {
     private String jwt;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    UserRepository userRepository;
+    private JwtService jwtService;
     @Autowired
-    JwtService jwtService;
-    @Autowired
-    JwtFilter jwtFilter;
+    private JwtFilter jwtFilter;
 
     @BeforeEach
     void setUp() {

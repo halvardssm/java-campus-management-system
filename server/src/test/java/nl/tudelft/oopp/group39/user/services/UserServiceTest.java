@@ -24,7 +24,7 @@ class UserServiceTest {
     );
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @BeforeEach
     void setUp() {
@@ -58,18 +58,17 @@ class UserServiceTest {
 
     @Test
     void readUser() {
-        User user2 = userService.readUser("test");
+        User user = userService.readUser("test");
 
-        assertEquals(testUser, user2);
+        assertEquals(testUser, user);
     }
 
     @Test
     void updateUser() {
-        User user = testUser;
-        user.setEmail("test@tudelft.nl");
-        User user2 = userService.updateUser("test", user);
+        testUser.setEmail("test@tudelft.nl");
+        User user = userService.updateUser("test", testUser);
 
-        assertEquals(user, user2);
+        assertEquals(testUser, user);
     }
 
     @Test

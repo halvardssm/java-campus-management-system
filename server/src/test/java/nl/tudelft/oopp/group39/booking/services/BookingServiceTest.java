@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
-import nl.tudelft.oopp.group39.booking.repositories.BookingRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,9 +28,7 @@ class BookingServiceTest {
     );
 
     @Autowired
-    BookingService bookingService;
-    @Autowired
-    BookingRepository bookingRepository;
+    private BookingService bookingService;
 
     @BeforeEach
     void setUp() {
@@ -41,7 +38,7 @@ class BookingServiceTest {
 
     @AfterEach
     void tearDown() {
-        bookingRepository.deleteAll();
+        bookingService.deleteBooking(testBooking.getId());
     }
 
     @Test
@@ -53,12 +50,16 @@ class BookingServiceTest {
     }
 
     @Test
-    void createBooking() {
-        Booking booking = testBooking;
-        booking.setId(testBooking.getId());
-        Booking booking2 = bookingService.createBooking(booking);
+    void deleteAndCreateBooking() {
+        bookingService.deleteBooking(testBooking.getId());
 
-        assertEquals(booking, booking2);
+        assertEquals(new ArrayList<>(), bookingService.listBookings(new HashMap<>()));
+
+        Booking booking = bookingService.createBooking(testBooking);
+
+        testBooking.setId(booking.getId());
+
+        assertEquals(testBooking, booking);
     }
 
     @Test
@@ -70,22 +71,12 @@ class BookingServiceTest {
 
     @Test
     void updateBooking() {
-        Booking booking = testBooking;
-        booking.setDate(booking.getDate());
-        booking.setStartTime(booking.getStartTime());
-        booking.setEndTime(booking.getEndTime());
-        booking.setUser(booking.getUser());
-        booking.setRoom(booking.getRoom());
-        Booking booking2 = bookingService.updateBooking(booking, testBooking.getId());
+        testBooking.setDate(date.plusDays(1));
 
-        assertEquals(booking, booking2);
-    }
+        Booking booking = bookingService.updateBooking(testBooking, testBooking.getId());
 
-    @Test
-    void deleteBooking() {
-        List<Booking> testBookings = new ArrayList<>();
-        bookingService.deleteBooking(testBooking.getId());
+        assertEquals(testBooking, booking);
 
-        assertEquals(testBookings, bookingService.listBookings(new HashMap<>()));
+        testBooking.setDate(date);
     }
 }
