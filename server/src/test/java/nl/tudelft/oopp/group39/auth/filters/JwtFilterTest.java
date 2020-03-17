@@ -46,7 +46,7 @@ class JwtFilterTest {
 
     @BeforeEach
     void setUp() {
-        userRepository.saveAndFlush(testUser);
+        userRepository.save(testUser);
         jwt = jwtService.encrypt(testUser);
     }
 

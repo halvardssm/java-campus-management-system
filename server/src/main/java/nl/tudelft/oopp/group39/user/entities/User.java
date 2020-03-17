@@ -45,7 +45,6 @@ public class User implements UserDetails {
     private Blob image;
     @Enumerated(EnumType.STRING)
     private Role role;
-
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Booking> bookings = new HashSet<>();
 

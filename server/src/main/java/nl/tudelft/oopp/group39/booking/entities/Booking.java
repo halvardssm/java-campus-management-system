@@ -26,7 +26,9 @@ public class Booking {
     private Integer id;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm:ss")
     private LocalTime startTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm:ss")
     private LocalTime endTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
