@@ -55,7 +55,7 @@ public class AuthController {
         } catch (Exception e) {
             return RestResponse.create(
                 null,
-                new UnauthorizedException().getMessage(),
+                UnauthorizedException.UNAUTHORIZED,
                 HttpStatus.UNAUTHORIZED
             );
         }
