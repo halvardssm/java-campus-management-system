@@ -3,7 +3,7 @@ package nl.tudelft.oopp.group39.auth.controllers;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.tudelft.oopp.group39.auth.entities.AuthRequest;
 import nl.tudelft.oopp.group39.auth.exceptions.UnauthorizedException;
 import nl.tudelft.oopp.group39.user.entities.User;
@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest
 @AutoConfigureMockMvc
 class AuthControllerTest {
-    private final Gson gson = new Gson();
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",
@@ -50,7 +50,7 @@ class AuthControllerTest {
     @Test
     void createToken() throws Exception {
         AuthRequest request = new AuthRequest("test", "test");
-        String json = gson.toJson(request);
+        String json = objectMapper.writeValueAsString(request);
 
         mockMvc.perform(post(AuthController.REST_MAPPING)
             .contentType(MediaType.APPLICATION_JSON)
@@ -63,7 +63,7 @@ class AuthControllerTest {
     @Test
     void createTokenFailed() throws Exception {
         AuthRequest request = new AuthRequest("test2", "test");
-        String json = gson.toJson(request);
+        String json = objectMapper.writeValueAsString(request);
 
         mockMvc.perform(post(AuthController.REST_MAPPING)
             .contentType(MediaType.APPLICATION_JSON)

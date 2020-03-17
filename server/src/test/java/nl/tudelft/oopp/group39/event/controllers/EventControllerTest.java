@@ -11,14 +11,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 import nl.tudelft.oopp.group39.auth.controllers.AuthController;
@@ -44,9 +39,9 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 class EventControllerTest {
-    private static final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class,
-        (JsonSerializer<LocalDate>) (date, typeOfT, context)
-            -> new JsonPrimitive(date.format(DateTimeFormatter.ISO_LOCAL_DATE))).create();
+
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
     private static Event testEvent = new Event(
         EventTypes.EVENT,
         LocalDate.now(ZoneId.of("Europe/Paris")),
@@ -110,7 +105,7 @@ class EventControllerTest {
     void createEvent() throws Exception {
         Event event = testEvent;
         event.setType(EventTypes.HOLIDAY);
-        String json = gson.toJson(event);
+        String json = objectMapper.writeValueAsString(event);
 
         mockMvc.perform(post(REST_MAPPING)
             .contentType(MediaType.APPLICATION_JSON)
@@ -141,7 +136,7 @@ class EventControllerTest {
         event.setType(EventTypes.HOLIDAY);
         event.setStartDate(LocalDate.now(ZoneId.of("Europe/Paris")).plusDays(3));
         event.setEndDate(LocalDate.now(ZoneId.of("Europe/Paris")).plusDays(5));
-        String json = gson.toJson(event);
+        String json = objectMapper.writeValueAsString(event);
 
         mockMvc.perform(put(REST_MAPPING + "/" + testEvent.getId())
             .contentType(MediaType.APPLICATION_JSON)

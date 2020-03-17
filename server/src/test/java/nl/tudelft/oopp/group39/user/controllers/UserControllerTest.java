@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.user.entities.User;
@@ -32,7 +32,7 @@ import org.springframework.test.web.servlet.ResultActions;
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
-    private final Gson gson = new Gson();
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",
@@ -70,7 +70,7 @@ class UserControllerTest {
     void createUser() throws Exception {
         User user = testUser;
         user.setUsername("test2");
-        String json = gson.toJson(user);
+        String json = objectMapper.writeValueAsString(user);
 
         mockMvc.perform(post(REST_MAPPING)
             .contentType(MediaType.APPLICATION_JSON)
@@ -107,7 +107,7 @@ class UserControllerTest {
     void updateUser() throws Exception {
         User user = testUser;
         user.setEmail("test@student.tudelft.nl");
-        String json = gson.toJson(user);
+        String json = objectMapper.writeValueAsString(user);
 
         mockMvc.perform(put(REST_MAPPING + "/"
             + testUser.getUsername())
