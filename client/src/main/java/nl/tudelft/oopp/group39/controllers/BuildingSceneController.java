@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.group39.controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import javafx.fxml.FXML;
@@ -29,11 +28,11 @@ public class BuildingSceneController extends MainSceneController {
 
             ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
 
-            for (JsonNode buildingJson : body) {
+            buildingString = mapper.writeValueAsString(body);
 
-                String buildings = mapper.writeValueAsString(buildingJson);
+            Building[] list = mapper.readValue(buildingString, Building[].class);
 
-                Building building = mapper.readValue(buildings, Building.class);
+            for (Building building : list) {
 
                 newBuilding = FXMLLoader.load(getClass().getResource("/buildingCell.fxml"));
 
