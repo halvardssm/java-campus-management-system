@@ -1,10 +1,11 @@
 package nl.tudelft.oopp.group39.reservable.entities;
 
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.building.entities.Building;
-import nl.tudelft.oopp.group39.reservation.entities.Reservation;
+import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 
 @Entity
 @Table(name = Food.TABLE_NAME)
@@ -43,7 +44,13 @@ public class Food extends Reservable {
      * @param price       of the item
      * @param reservation the reservation
      */
-    public Food(String name, String description, Building building, Double price, Reservation reservation) {
+    public Food(
+        String name,
+        String description,
+        Building building,
+        Double price,
+        Set<ReservationAmount> reservation
+    ) {
         super(building, price, reservation);
         setName(name);
         setDescription(description);

@@ -13,7 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.config.Constants;
-import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.user.entities.User;
 
 @Entity
@@ -31,7 +30,7 @@ public class Reservation {
     @JoinColumn(name = User.MAPPED_NAME)
     private User user;
     @OneToMany(mappedBy = MAPPED_NAME)
-    private Set<Reservable> reservables;
+    private Set<ReservationAmount> reservables;
 
     public Reservation() {
     }
@@ -43,7 +42,7 @@ public class Reservation {
      * @param user         the user
      * @param reservables  all items in order
      */
-    public Reservation(LocalDateTime timeOfPickup, User user, Set<Reservable> reservables) {
+    public Reservation(LocalDateTime timeOfPickup, User user, Set<ReservationAmount> reservables) {
         setTimeOfPickup(timeOfPickup);
         setUser(user);
         setReservables(reservables);
@@ -73,11 +72,11 @@ public class Reservation {
         this.user = user;
     }
 
-    public Set<Reservable> getReservables() {
+    public Set<ReservationAmount> getReservables() {
         return reservables;
     }
 
-    public void setReservables(Set<Reservable> reservables) {
+    public void setReservables(Set<ReservationAmount> reservables) {
         this.reservables = reservables;
     }
 

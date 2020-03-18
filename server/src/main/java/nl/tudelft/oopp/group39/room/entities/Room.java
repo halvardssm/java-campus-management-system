@@ -5,7 +5,6 @@ import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,7 +31,7 @@ public class Room {
     private String name;
     private boolean onlyStaff;
     private String description;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = TABLE_NAME + "_" + Facility.TABLE_NAME,
         joinColumns = {
             @JoinColumn(name = MAPPED_NAME, referencedColumnName = "id",
@@ -41,7 +40,7 @@ public class Room {
             @JoinColumn(name = Facility.MAPPED_NAME, referencedColumnName = "id",
                 nullable = false, updatable = false)})
     private Set<Facility> facilities = new HashSet<>();
-    @ManyToMany(mappedBy = TABLE_NAME, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = TABLE_NAME)
     private Set<Event> events = new HashSet<>();
     @OneToMany(mappedBy = MAPPED_NAME)
     private Set<Booking> bookings = new HashSet<>();

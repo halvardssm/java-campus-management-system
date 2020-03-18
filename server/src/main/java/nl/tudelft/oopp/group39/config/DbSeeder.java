@@ -14,7 +14,9 @@ import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.event.services.EventService;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
+import nl.tudelft.oopp.group39.reservable.entities.Bike;
 import nl.tudelft.oopp.group39.reservable.entities.Food;
+import nl.tudelft.oopp.group39.reservable.enums.BikeType;
 import nl.tudelft.oopp.group39.reservable.services.BikeService;
 import nl.tudelft.oopp.group39.reservable.services.FoodService;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
@@ -57,10 +59,10 @@ public class DbSeeder {
         initFacilities();
         initBuildings();
         initRooms();
-        //initFoods();
         initEvents();
-        // initBookings();
-
+//        initBookings();
+        initBikes();
+        initFoods();
         System.out.println("[SEED] Seeding completed");
     }
 
@@ -147,14 +149,37 @@ public class DbSeeder {
         System.out.println("[SEED] Bookings created");
     }
 
+    private void initBikes() {
+        Building building = buildingService.listBuildings().get(0);
+
+        Bike bike1 = new Bike(BikeType.CITY, null, building, 5.6, null);
+        Bike bike2 = new Bike(BikeType.CITY, null, building, 6.7, null);
+        Bike bike3 = new Bike(BikeType.CITY, null, building, 7.8, null);
+
+        bikeService.createBike(bike1);
+        bikeService.createBike(bike2);
+        bikeService.createBike(bike3);
+
+        System.out.println("[SEED] Bikes created");
+    }
+
     private void initFoods() {
-        LocalTime open = LocalTime.now();
-        LocalTime closed = LocalTime.now();
-        Building b = new Building("test", "test", "test", open, closed);
-        Food food = new Food("voedsel", "lekker", b, 2.40, null);
-        foodService.createFood(food);
-        Food food1 = new Food("eten", "lekker", b, 1.35, null);
+        Building building = buildingService.listBuildings().get(0);
+
+        Food food1 = new Food("Stew", "A warm pot of deliciousness", building, 5.6, null);
+        Food food2 = new Food("Meatballs", "Balls of meat", building, 6.7, null);
+        Food food3 = new Food("Carrot Cake", "I mean cake, it's simply good", building, 7.8, null);
+
         foodService.createFood(food1);
+        foodService.createFood(food2);
+        foodService.createFood(food3);
+
         System.out.println("[SEED] Foods created");
+    }
+
+    private void initReservations() {
+
+
+        System.out.println("[SEED] Reservations created");
     }
 }
