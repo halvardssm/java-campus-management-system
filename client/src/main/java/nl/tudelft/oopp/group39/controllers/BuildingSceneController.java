@@ -28,8 +28,6 @@ public class BuildingSceneController extends MainSceneController {
         try {
             String buildingString = ServerCommunication.getBuildings();
 
-            ObjectMapper mapper = new ObjectMapper();
-
             ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
 
             for (JsonNode buildingJson : body) {
