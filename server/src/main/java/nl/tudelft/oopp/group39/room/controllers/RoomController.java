@@ -42,7 +42,6 @@ public class RoomController {
         @RequestParam(required = false) String open,
         @RequestParam(required = false) String closed
     ) {
-    public ResponseEntity<RestResponse<Object>> listRooms(@RequestParam(required = false) Integer capacity, @RequestParam(required = false) String name, @RequestParam(required = false) Boolean onlyStaff, @RequestParam(required = false) int[] facilities, @RequestParam(required = false) Long buildingId, @RequestParam(required = false) String building, @RequestParam(required = false) String location, @RequestParam(required = false) String open, @RequestParam(required = false) String closed) {
         capacity = capacity == null ? 0 : capacity;
         name = name == null ? "" : name;
         LocalTime nOpen = open == null ? LocalTime.MAX : LocalTime.parse(open);

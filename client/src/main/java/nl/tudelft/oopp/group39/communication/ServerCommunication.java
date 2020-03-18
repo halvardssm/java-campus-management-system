@@ -1,18 +1,15 @@
 package nl.tudelft.oopp.group39.communication;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
+import nl.tudelft.oopp.group39.models.User;
 
 public class ServerCommunication {
 
@@ -24,6 +21,8 @@ public class ServerCommunication {
     private static String room = "room/";
     private static String authenticate = "authenticate/";
     private static String facility = "facility/";
+
+    private static ObjectMapper mapper = new ObjectMapper();
 
     /**
      * Retrieves users from the server.
@@ -87,7 +86,7 @@ public class ServerCommunication {
         String urlString = url + "building?capacity=" + capacity + "&building=" + name
             + "&location=" + location + "&open=" + open + "&closed=" + closed;
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
-        return HttpRequest(request);
+        return httpRequest(request);
     }
 
     /**
@@ -183,7 +182,7 @@ public class ServerCommunication {
      */
     public static void removeRoom(String id) {
         HttpRequest request = HttpRequest.newBuilder().DELETE().uri(URI.create(url + "room/" + id)).build();
-        HttpRequest(request);
+        httpRequest(request);
     }
 
     public static String getRooms(long buildingId){
@@ -241,13 +240,13 @@ public class ServerCommunication {
 
     }
 
-    public static String userLogin(String username, String pwd){
+    public static String userLogin(String username, String pwd) throws JsonProcessingException {
         HttpRequest.BodyPublisher user = HttpRequest.BodyPublishers.ofString("{\"username\": \"" + username + "\", \"password\":\"" + pwd + "\"}");
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(user)
-                .uri(URI.create(url + authenticate))
-                .header("Content-Type", "application/json")
-                .build();
+            .POST(user)
+            .uri(URI.create(url + authenticate))
+            .header("Content-Type", "application/json")
+            .build();
 
         HttpResponse<String> response = null;
         try {
@@ -259,11 +258,10 @@ public class ServerCommunication {
         if (response.statusCode() != 200) {
             System.out.println("Status: " + response.statusCode());
             return "Something went wrong";
-        }
-        else{
+        } else {
             System.out.println(response.body());
-            JsonObject body = ((JsonObject) JsonParser.parseString(response.body()));
-            String jwtToken = body.getAsJsonObject("body").get("token").getAsString();
+            JsonNode body = mapper.readTree(response.body()).get("body");
+            String jwtToken = body.get("token").asText();
             System.out.println(jwtToken);
             MainSceneController.jwt = jwtToken;
             MainSceneController.loggedIn = true;
@@ -273,12 +271,11 @@ public class ServerCommunication {
         }
     }
 
-    public static boolean isAdmin(String username) {
+    public static boolean isAdmin(String username) throws JsonProcessingException {
         String user = getUser(username);
-        JsonObject body = ((JsonObject) JsonParser.parseString(user));
-        System.out.println(body);
-        String role = body.getAsJsonObject("body").get("role").getAsString();
-        if(role.equals("admin")) return true;
-        else return false;
+        JsonNode userjson = mapper.readTree(user).get("body");
+        String userString = mapper.writeValueAsString(userjson);
+        User u = mapper.readValue(userString, User.class);
+        return u.getRole().equals("ADMIN");
     }
 }

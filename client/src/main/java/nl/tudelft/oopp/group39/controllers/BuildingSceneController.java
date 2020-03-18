@@ -3,22 +3,18 @@ package nl.tudelft.oopp.group39.controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
-
-import java.io.IOException;
-import java.net.URL;
-import java.sql.SQLOutput;
-import java.util.ResourceBundle;
 import nl.tudelft.oopp.group39.models.Building;
 
-public class BuildingSceneController extends MainSceneController implements Initializable{
+public class BuildingSceneController extends MainSceneController implements Initializable {
 
     @FXML
     private FlowPane flowPane;
@@ -43,11 +39,12 @@ public class BuildingSceneController extends MainSceneController implements Init
                 String buildings = mapper.writeValueAsString(buildingJson);
 
                 Building building = mapper.readValue(buildings, Building.class);
+                System.out.println(building);
 
                 newBuilding = FXMLLoader.load(getClass().getResource("/buildingCell.fxml"));
-                long buildingId = ((JsonObject) building).get("id").getAsLong();
-                String buildingName = ((JsonObject) building).get("name").getAsString();
-                String address = ((JsonObject) building).get("location").getAsString();
+                long buildingId = building.getId();
+                String buildingName = building.getName();
+                String address = building.getLocation();
                 newBuilding.setOnMouseClicked(e -> {
                     try {
                         goToRoomsScene();
@@ -58,9 +55,9 @@ public class BuildingSceneController extends MainSceneController implements Init
                 });
 
                 Label name = (Label) newBuilding.lookup("#bname");
-                name.setText(building.getName());
+                name.setText(buildingName);
 
-                String newDetails = (building.getLocation()
+                String newDetails = (address
                     + "\n" + building.getDescription()
                     + "\n" + "Max. Capacity"
                     + "\n" + "Opening times: " + building.getOpen()

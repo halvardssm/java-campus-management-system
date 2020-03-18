@@ -69,7 +69,7 @@ public class Room {
     public Room() {
     }
 
-    public Room(long buildingId, String name, int capacity, boolean onlyStaff, String description, Set<Facility> facilities) {
+    public Room(long buildingId, String name, int capacity, boolean onlyStaff, String description, Set<Facility> facilities, Set<Booking> bookings) {
         this.buildingId = buildingId;
         this.name = name;
         this.capacity = capacity;
