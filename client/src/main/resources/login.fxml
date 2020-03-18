@@ -59,7 +59,8 @@
             <Button fx:id="signupbtn" styleClass="buttons" id="small" text="Sign Up" onAction="#goToSignupScene"
                     GridPane.columnIndex="1" GridPane.rowIndex = "5"/>
 
-            <Text id="errorfield" fx:id="errormsg" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.columnSpan="2"/>
+            <Label id="errorfield" fx:id="errormsg" GridPane.columnIndex="1" GridPane.rowIndex="4"
+                   GridPane.columnSpan="2"/>
 
         </GridPane>
     </center>

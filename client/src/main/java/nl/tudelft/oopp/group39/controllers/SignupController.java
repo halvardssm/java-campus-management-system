@@ -1,33 +1,31 @@
 package nl.tudelft.oopp.group39.controllers;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.Region;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.regex.Pattern;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
 public class SignupController extends MainSceneController {
     @FXML
-    private TextField emailField ;
+    private TextField emailField;
 
     @FXML
-    private TextField netIDField ;
+    private TextField netIDField;
 
     @FXML
-    private PasswordField passwordField ;
+    private PasswordField passwordField;
 
     @FXML
-    private PasswordField confirmpasswordField ;
+    private PasswordField confirmpasswordField;
 
     @FXML
-    private Text errormsg;
+    private Label errormsg;
 
     @FXML
     private void signup() {
@@ -36,7 +34,7 @@ public class SignupController extends MainSceneController {
         String password = passwordField.getText();
         String confirmpassword = confirmpasswordField.getText();
         String role = getRole(email);
-        if(checkEmpty(email, netID, password, confirmpassword) && isValid(email) && checkPwd(password, confirmpassword)){
+        if (checkEmpty(email, netID, password, confirmpassword) && isValid(email) && checkPwd(password, confirmpassword)) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Sign up");
             alert.setHeaderText(null);

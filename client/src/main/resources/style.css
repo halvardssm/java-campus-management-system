@@ -67,7 +67,7 @@
 }
 
 #errorfield {
-    -fx-fill: red;
+    -fx-text-fill: red;
 }
 
 .buildingAddress {
@@ -167,4 +167,28 @@
 
 .scroll-pane {
     -fx-background-color: transparent;
+}
+
+.buildingLink {
+    -fx-background-color: rgba(106, 123, 127, 0.18);
+}
+
+.buildingLink:hover {
+    -fx-background-color: rgba(106, 123, 127, 0.3);
+}
+
+#orderbtn {
+    -fx-pref-width: 200;
+    -fx-pref-height: 50;
+    -fx-background-color: #00A6D6;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
+}
+
+#orderbtn:hover {
+    -fx-background-color: #00607b;
+}
+
+#carttitle {
+    -fx-font-size: 18;
 }

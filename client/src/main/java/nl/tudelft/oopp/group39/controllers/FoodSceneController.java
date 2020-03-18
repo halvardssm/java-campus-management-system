@@ -39,6 +39,9 @@ public class FoodSceneController extends MainSceneController {
     @FXML
     private FlowPane foodmenu;
 
+    @FXML
+    private Button orderbtn;
+
     public double totalprice = 0;
 
     public int cartItems = 0;
@@ -48,18 +51,11 @@ public class FoodSceneController extends MainSceneController {
     @FXML
     private Label total;
 
-    public void getBuildingsList() {
-        String buildingString = ServerCommunication.getBuildings();
-        System.out.println(buildingString);
+    @FXML
+    private VBox timeselector;
 
-        JsonObject body = ((JsonObject) JsonParser.parseString(buildingString));
-        JsonArray buildingArray = body.getAsJsonArray("body");
-
-        for (JsonElement building : buildingArray) {
-            String buildingName = ((JsonObject) building).get("name").getAsString();
-            buildingsList.getItems().add(buildingName);
-        }
-    }
+    @FXML
+    private Label errorfield;
 
     public void getMenu() {
         foodmenu.getChildren().clear();
@@ -90,22 +86,12 @@ public class FoodSceneController extends MainSceneController {
             food.getChildren().add(addToCart);
             foodmenu.getChildren().add(food);
         }
-
-        DatePicker datePicker = new DatePicker();
-        datePicker.setId("datePicker");
-        cartlist.getChildren().add(datePicker);
-        ComboBox timePicker = new ComboBox();
-        timePicker.setId("timePicker");
-        for (int i = 9; i < 20; i++) {
-            timePicker.getItems().add(i + ":00");
-        }
-        cartlist.getChildren().add(timePicker);
-
     }
 
     public void addToCart(String name, double price, int id) {
         if (cartlist.lookup("#" + id) == null) {
             HBox fooditem = new HBox(10);
+            fooditem.setAlignment(Pos.CENTER_LEFT);
             Spinner<Integer> amount = new Spinner<>();
             amount.setPrefWidth(50);
             amount.setId(String.valueOf(id));
@@ -173,35 +159,54 @@ public class FoodSceneController extends MainSceneController {
     public void checkEmptyCart() {
         if (cartItems == 0) {
             cartlist.getChildren().add(emptycart);
+            timeselector.getChildren().clear();
+            orderbtn.setDisable(true);
         } else {
             cartlist.getChildren().remove(emptycart);
-
+            orderbtn.setDisable(false);
+            timeselector.getChildren().clear();
+            DatePicker datePicker = new DatePicker();
+            datePicker.setPromptText("Select delivery date");
+            datePicker.setId("datePicker");
+            timeselector.getChildren().add(datePicker);
+            ComboBox timePicker = new ComboBox();
+            timePicker.setPromptText("Select delivery time");
+            timePicker.setId("timePicker");
+            for (int i = 9; i < 20; i++) {
+                timePicker.getItems().add(i + ":00");
+            }
+            timeselector.getChildren().add(timePicker);
 
         }
     }
 
     public void placeOrder() {
-        DatePicker datePicker = (DatePicker) cartlist.lookup("#datePicker");
-        LocalDate date = datePicker.getValue();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        ComboBox timePicker = (ComboBox) cartlist.lookup("#timePicker");
-        String time = timePicker.getValue().toString();
-        String dateTime = dateTimeFormatter.format(date) + " " + time;
-        System.out.println(dateTime);
-        String foods = "[";
-        for (int i = 0; i < foodCart.size(); i++) {
-            Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + foodCart.get(i));
-            int foodamount = amount.getValue();
-            if (i == foodCart.size() - 1) {
-                foods = foods + "{" + foodCart.get(i) + ":" + foodamount + "}]";
-            } else {
-                foods = foods + "{" + foodCart.get(i) + ":" + foodamount + "}, ";
+        DatePicker datePicker = (DatePicker) timeselector.lookup("#datePicker");
+        ComboBox timePicker = (ComboBox) timeselector.lookup("#timePicker");
+        if (datePicker.getValue() == null || timePicker.getSelectionModel().isEmpty()) {
+            errorfield.setText("Please select a delivery time and date");
+        } else {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate date = datePicker.getValue();
+            String time = timePicker.getValue().toString();
+            String dateTime = dateTimeFormatter.format(date) + " " + time;
+            System.out.println(dateTime);
+            String foods = "[";
+            for (int i = 0; i < foodCart.size(); i++) {
+                Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + foodCart.get(i));
+                int foodamount = amount.getValue();
+                if (i == foodCart.size() - 1) {
+                    foods = foods + "{" + foodCart.get(i) + ":" + foodamount + "}]";
+                } else {
+                    foods = foods + "{" + foodCart.get(i) + ":" + foodamount + "}, ";
+                }
             }
+            System.out.println(foods);
+            String user = MainSceneController.username;
+            String result = ServerCommunication.orderFood(dateTime, user, foods);
+            createAlert(result);
         }
-        System.out.println(foods);
-        String user = MainSceneController.username;
-        String result = ServerCommunication.orderFood(dateTime, user, foods);
-        createAlert(result);
+
     }
 
 }

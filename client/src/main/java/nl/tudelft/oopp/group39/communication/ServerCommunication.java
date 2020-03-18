@@ -246,7 +246,7 @@ public class ServerCommunication {
         } else {
             System.out.println(response.body());
             JsonObject body = ((JsonObject) JsonParser.parseString(response.body()));
-            String jwtToken = body.getAsJsonObject("body").get("jwt").getAsString();
+            String jwtToken = body.getAsJsonObject("body").get("token").getAsString();
             System.out.println(jwtToken);
             MainSceneController.jwt = jwtToken;
             MainSceneController.loggedIn = true;

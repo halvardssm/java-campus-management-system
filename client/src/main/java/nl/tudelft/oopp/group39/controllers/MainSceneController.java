@@ -1,9 +1,14 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -29,6 +34,9 @@ public class MainSceneController {
 
     @FXML
     protected HBox topbar;
+
+    @FXML
+    protected ComboBox buildinglist;
 
     public void createAlert(String content) {
         createAlert(null, content);
@@ -87,7 +95,7 @@ public class MainSceneController {
     public void goToBikeRentalScene() throws IOException {
         BikeSceneController controller = (BikeSceneController) UsersDisplay.sceneControllerHandler("/bikeRentalView.fxml");
         controller.changeTopBtn();
-        controller.getBuildings();
+        controller.getBuildingsList();
     }
 
     public void goToFoodOrderScene() throws IOException {
@@ -102,6 +110,19 @@ public class MainSceneController {
         jwt = null;
         goToBuildingScene();
         changeTopBtn();
+    }
+
+    public void getBuildingsList() {
+        String buildingString = ServerCommunication.getBuildings();
+        System.out.println(buildingString);
+
+        JsonObject body = ((JsonObject) JsonParser.parseString(buildingString));
+        JsonArray buildingArray = body.getAsJsonArray("body");
+
+        for (JsonElement building : buildingArray) {
+            String buildingName = ((JsonObject) building).get("name").getAsString();
+            buildinglist.getItems().add(buildingName);
+        }
     }
 
 

@@ -59,16 +59,10 @@ public class RoomController {
         return RestResponse.create(service.createRoom(newRoom), null, HttpStatus.CREATED);
     }
 
-//    @GetMapping("/{id}")
-//    @ResponseBody
-//    public ResponseEntity<RestResponse<Object>> readRoom(@PathVariable int id) {
-//        return RestResponse.create(service.readRoom(id));
-//    }
-
-    @GetMapping("/{buildingId}")
+    @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> getRoomsByBuilding(long buildingId) {
-        return RestResponse.create(service.getRoomsByBuilding(buildingId));
+    public ResponseEntity<RestResponse<Object>> readRoom(@PathVariable int id) {
+        return RestResponse.create(service.readRoom(id));
     }
 
     @PutMapping("/{id}")
