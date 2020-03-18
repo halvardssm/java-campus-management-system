@@ -28,7 +28,20 @@ public class RoomController {
     @Autowired
     private RoomService service;
 
+    /**
+     * Doc. TODO Sven
+     */
     @GetMapping("")
+    public ResponseEntity<RestResponse<Object>> listRooms(
+        @RequestParam(required = false) Integer capacity,
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) Boolean onlyStaff,
+        @RequestParam(required = false) int[] facilities,
+        @RequestParam(required = false) String building,
+        @RequestParam(required = false) String location,
+        @RequestParam(required = false) String open,
+        @RequestParam(required = false) String closed
+    ) {
     public ResponseEntity<RestResponse<Object>> listRooms(@RequestParam(required = false) Integer capacity, @RequestParam(required = false) String name, @RequestParam(required = false) Boolean onlyStaff, @RequestParam(required = false) int[] facilities, @RequestParam(required = false) Long buildingId, @RequestParam(required = false) String building, @RequestParam(required = false) String location, @RequestParam(required = false) String open, @RequestParam(required = false) String closed) {
         capacity = capacity == null ? 0 : capacity;
         name = name == null ? "" : name;
@@ -36,20 +49,30 @@ public class RoomController {
         LocalTime nClosed = closed == null ? LocalTime.MIN : LocalTime.parse(closed);
         onlyStaff = onlyStaff == null ? false : onlyStaff;
         facilities = facilities == null ? new int[0] : facilities;
-        buildingId = buildingId == null ? 0 : buildingId;
         building = building == null ? "" : building;
         location = location == null ? "" : location;
+        LocalTime newOpen = open == null ? LocalTime.MAX : LocalTime.parse(open);
+        LocalTime newClosed = closed == null ? LocalTime.MIN : LocalTime.parse(closed);
         boolean allEmpty = capacity == 0
                 && name.contentEquals("")
             && !onlyStaff
             && Arrays.equals(facilities, new int[0])
-                && buildingId == 0
             && building.contentEquals("")
             && location.contentEquals("")
-            && nOpen.compareTo(LocalTime.MAX) == 0
-            && nClosed.compareTo(LocalTime.MIN) == 0;
+            && newOpen.compareTo(LocalTime.MAX) == 0
+            && newClosed.compareTo(LocalTime.MIN) == 0;
 
-        List<Room> result = allEmpty ? service.listRooms() : service.filterRooms(capacity, name, onlyStaff, facilities, buildingId, building, location, nOpen, nClosed);
+        List<Room> result = allEmpty
+            ? service.listRooms()
+            : service.filterRooms(
+            capacity,
+            onlyStaff,
+            facilities,
+            building,
+            location,
+            newOpen,
+            newClosed
+        );
         return RestResponse.create(result);
     }
 
@@ -61,10 +84,16 @@ public class RoomController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> updateRoom(@RequestBody Room updated, @PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> updateRoom(
+        @RequestBody Room updated,
+        @PathVariable int id
+    ) {
         return RestResponse.create(service.updateRoom(updated, id));
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteRoom(@PathVariable int id) {
         service.deleteRoom(id);

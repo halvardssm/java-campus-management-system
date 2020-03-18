@@ -1,5 +1,9 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import javafx.scene.control.Alert;
+import javafx.scene.layout.Region;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -20,6 +24,8 @@ import java.util.ResourceBundle;
 
 public class MainSceneController {
 
+    protected ObjectMapper mapper = new ObjectMapper();
+
     public static boolean loggedIn = false;
     public static String jwt;
     public static boolean sidebarShown = false;
@@ -39,6 +45,9 @@ public class MainSceneController {
         createAlert(null, content);
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void createAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);

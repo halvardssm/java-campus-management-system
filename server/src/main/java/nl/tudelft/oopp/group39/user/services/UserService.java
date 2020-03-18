@@ -22,7 +22,6 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-
     /**
      * List all users.
      *
@@ -82,8 +81,7 @@ public class UserService implements UserDetailsService {
     /**
      * Delete an user {@link User}.
      */
-    public void deleteUser(String id) throws UsernameNotFoundException {
-        readUser(id);
+    public void deleteUser(String id) {
         userRepository.deleteById(id);
     }
 
