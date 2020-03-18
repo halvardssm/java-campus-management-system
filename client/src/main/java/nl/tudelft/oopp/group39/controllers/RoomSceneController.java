@@ -1,9 +1,9 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
-import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -94,36 +94,36 @@ public class RoomSceneController extends MainSceneController {
         createAlert(ServerCommunication.getRooms());
     }
 
-    public void getAllRooms(){
+    public void getAllRooms() {
+        mapper.configure(
+            DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         rooms.getChildren().clear();
         try {
             String roomsString = ServerCommunication.getAllRooms();
-            System.out.println(roomsString);
+            String testString = "{\"body\":[{\"id\":1,\"capacity\":10,\"name\":\"Ampere\",\"onlyStaff\":true,\"description\":\"test1\",\"facilities\":[],\"events\":[],\"bookings\":[],\"building\":1},{\"id\":2,\"capacity\":6,\"name\":\"test2\",\"onlyStaff\":true,\"description\":\"test2\",\"facilities\":[{\"id\":1,\"description\":\"smartboard\"}],\"events\":[],\"bookings\":[],\"building\":1}],\"error\":null}";
 
-            ArrayNode body = (ArrayNode) mapper.readTree(roomsString).get("body");
+            ArrayNode body = (ArrayNode) mapper.readTree(testString).get("body");
 
             for (JsonNode roomJson : body) {
-                String roomstr = mapper.writeValueAsString(roomJson);
-
-                Room room = mapper.readValue(roomstr, Room.class);
+                String roomAsString = mapper.writeValueAsString(roomJson);
+                Room room = mapper.readValue(roomAsString, Room.class);
                 newRoom = FXMLLoader.load(getClass().getResource("/roomCell.fxml"));
 
                 Label name = (Label) newRoom.lookup("#roomname");
                 name.setText(room.getName());
-                List<String> facilitiesArray = room.getFacilities();
-                String facilities = "";
-                for (String facilty : facilitiesArray) {
-                    facilities = facilities + facilty + ", ";
-                }
-
+//                ArrayNode facilitiesArray = (ArrayNode) roomJson.get("facilities");
+//                System.out.println(facilitiesArray);
+//                List<String> facilities = new ArrayList<>();
+//                for (JsonNode facilty : facilitiesArray) {
+//                    facilities.add(facilty.get("description").asText());
+//                }
+//                room.setFacilities(facilities);
                 String bDetails = room.getDescription()
                     + "\n" + "Capacity: " + room.getCapacity()
-                    + "\n" + "Facilities: " + facilities;
+                    + "\n" + "Facilities: " + room.facilitiesToString();
 
                 Label details = (Label) newRoom.lookup("#roomdetails");
                 details.setText(bDetails);
-                System.out.println(newRoom);
-
                 rooms.getChildren().add(newRoom);
             }
         } catch (IOException e) {

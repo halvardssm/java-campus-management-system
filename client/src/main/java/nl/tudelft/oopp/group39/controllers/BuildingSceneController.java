@@ -37,12 +37,12 @@ public class BuildingSceneController extends MainSceneController implements Init
             for (JsonNode buildingJson : body) {
 
                 String buildings = mapper.writeValueAsString(buildingJson);
-
+                System.out.println(buildings);
                 Building building = mapper.readValue(buildings, Building.class);
                 System.out.println(building);
 
                 newBuilding = FXMLLoader.load(getClass().getResource("/buildingCell.fxml"));
-                long buildingId = building.getId();
+                //long buildingId = building.getId();
                 String buildingName = building.getName();
                 String address = building.getLocation();
                 newBuilding.setOnMouseClicked(e -> {

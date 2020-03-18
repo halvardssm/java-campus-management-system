@@ -9,7 +9,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
-import nl.tudelft.oopp.group39.models.User;
 
 public class ServerCommunication {
 
@@ -185,12 +184,12 @@ public class ServerCommunication {
         httpRequest(request);
     }
 
-    public static String getRooms(long buildingId){
+    public static String getRooms(long buildingId) {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + room + buildingId)).build();
         return httpRequest(request);
     }
 
-    public static String getAllRooms(){
+    public static String getAllRooms() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + room)).build();
         return httpRequest(request);
     }
@@ -215,13 +214,13 @@ public class ServerCommunication {
         return response.body();
     }
 
-    public static String addUser(String netID, String email, String password, String role){
+    public static String addUser(String netID, String email, String password, String role) {
         HttpRequest.BodyPublisher newUser = HttpRequest.BodyPublishers.ofString("{\"username\": \"" + netID + "\", \"email\":\"" + email + "\", \"password\":\"" + password + "\", \"roles\":\"" + List.of(role) + "\"}");
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(newUser)
-                .uri(URI.create(url + user))
-                .header("Content-Type", "application/json")
-                .build();
+            .POST(newUser)
+            .uri(URI.create(url + user))
+            .header("Content-Type", "application/json")
+            .build();
 
         HttpResponse<String> response = null;
         try {
@@ -233,8 +232,7 @@ public class ServerCommunication {
         if (response.statusCode() != 201) {
             System.out.println("Status: " + response.statusCode());
             return "Something went wrong";
-        }
-        else{
+        } else {
             return "Account created";
         }
 
@@ -266,7 +264,7 @@ public class ServerCommunication {
             MainSceneController.jwt = jwtToken;
             MainSceneController.loggedIn = true;
             MainSceneController.username = username;
-            //MainSceneController.isAdmin = isAdmin(username);
+            MainSceneController.isAdmin = isAdmin(username);
             return "Logged in";
         }
     }
@@ -274,8 +272,7 @@ public class ServerCommunication {
     public static boolean isAdmin(String username) throws JsonProcessingException {
         String user = getUser(username);
         JsonNode userjson = mapper.readTree(user).get("body");
-        String userString = mapper.writeValueAsString(userjson);
-        User u = mapper.readValue(userString, User.class);
-        return u.getRole().equals("ADMIN");
+        String role = userjson.get("role").asText();
+        return role.equals("ADMIN");
     }
 }

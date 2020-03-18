@@ -9,6 +9,10 @@ public class User {
     private Blob image;
     private String role;
 
+    public User() {
+
+    }
+
     public User(String username, String email, String password, Blob image, String role) {
         this.username = username;
         this.email = email;
