@@ -1,0 +1,19 @@
+#backButton {
+    -fx-background-color: none;
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-padding: 0;
+}
+
+#appName {
+    -fx-font-size: 28;
+    -fx-font-weight: bold;
+    -fx-fill: white;
+}
+
+#loginButton {
+    -fx-font-size: 22;
+    -fx-font-weight: bold;
+    -fx-fill: white;
+}

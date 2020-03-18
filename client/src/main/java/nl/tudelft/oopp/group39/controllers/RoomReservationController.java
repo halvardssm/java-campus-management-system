@@ -1,12 +1,11 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import java.time.LocalDate;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
-
 import javax.swing.text.html.ImageView;
-import java.time.LocalDate;
 
 
 public class RoomReservationController extends MainSceneController {
@@ -42,4 +41,6 @@ public class RoomReservationController extends MainSceneController {
             return false;
         }
     }
+
+
 }
