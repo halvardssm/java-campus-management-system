@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.group39.controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import javafx.fxml.FXML;
@@ -10,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.entities.Building;
+import nl.tudelft.oopp.group39.models.Building;
 
 public class BuildingSceneController extends MainSceneController {
 
