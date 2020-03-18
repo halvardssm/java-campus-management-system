@@ -25,6 +25,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.entities.Food;
 
 public class FoodSceneController extends MainSceneController {
     @FXML
@@ -46,7 +47,7 @@ public class FoodSceneController extends MainSceneController {
 
     public int cartItems = 0;
 
-    public List<Integer> foodCart = new ArrayList<>();
+    public List<Food> foodCart = new ArrayList<>();
 
     @FXML
     private Label total;
@@ -59,28 +60,36 @@ public class FoodSceneController extends MainSceneController {
 
     public void getMenu() {
         foodmenu.getChildren().clear();
-//        String foodString = ServerCommunication.getAllFood();
-//        System.out.println(foodString);
-        String teststring = "{\"body\": [{\"id\":1, \"name\":\"voedsel\", \"price\":\"2.35\"}, {\"id\":2, \"name\":\"bitterballen\", \"price\":\"2.65\"}], \"error\": null}";
-        JsonObject body = ((JsonObject) JsonParser.parseString(teststring));
+        String foodString = ServerCommunication.getAllFood();
+        System.out.println(foodString);
+        // String teststring = "{\"body\": [{\"id\":1, \"name\":\"voedsel\", \"price\":\"2.35\"}, {\"id\":2, \"name\":\"bitterballen\", \"price\":\"2.65\"}], \"error\": null}";
+        JsonObject body = ((JsonObject) JsonParser.parseString(foodString));
         JsonArray foodArray = body.getAsJsonArray("body");
 
         for (JsonElement fooditem : foodArray) {
-            String foodname = ((JsonObject) fooditem).get("name").getAsString();
-            Double price = ((JsonObject) fooditem).get("price").getAsDouble();
             int id = ((JsonObject) fooditem).get("id").getAsInt();
+            String foodname = ((JsonObject) fooditem).get("name").getAsString();
+            String fooddesc = ((JsonObject) fooditem).get("description").getAsString();
+            Double price = ((JsonObject) fooditem).get("price").getAsDouble();
+            JsonObject building = ((JsonObject) fooditem).get("building").getAsJsonObject();
+            System.out.println(building);
+            String buildingname = building.get("name").getAsString();
+            Food foodobj = new Food(id, foodname, fooddesc, price, building);
             HBox food = new HBox(20);
             food.getStyleClass().add("fooditem");
             food.setPadding(new Insets(0, 15, 0, 15));
             food.setPrefSize(300, 60);
             food.setAlignment(Pos.CENTER_LEFT);
+            VBox namedesc = new VBox();
             Label name = new Label(foodname);
+            Label desc = new Label(fooddesc);
+            namedesc.getChildren().addAll(name, desc);
             Label priceLabel = new Label(price.toString());
             Button addToCart = new Button("+");
-            addToCart.setOnAction(event -> addToCart(foodname, price, id));
+            addToCart.setOnAction(event -> addToCart(foodobj));
             Region region = new Region();
             HBox.setHgrow(region, Priority.ALWAYS);
-            food.getChildren().add(name);
+            food.getChildren().add(namedesc);
             food.getChildren().add(region);
             food.getChildren().add(priceLabel);
             food.getChildren().add(addToCart);
@@ -88,29 +97,29 @@ public class FoodSceneController extends MainSceneController {
         }
     }
 
-    public void addToCart(String name, double price, int id) {
-        if (cartlist.lookup("#" + id) == null) {
+    public void addToCart(Food food) {
+        if (cartlist.lookup("#" + food.getId()) == null) {
             HBox fooditem = new HBox(10);
             fooditem.setAlignment(Pos.CENTER_LEFT);
             Spinner<Integer> amount = new Spinner<>();
             amount.setPrefWidth(50);
-            amount.setId(String.valueOf(id));
+            amount.setId(String.valueOf(food.getId()));
             SpinnerValueFactory<Integer> valueFactory =
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, 1);
             amount.setValueFactory(valueFactory);
             amount.valueProperty().addListener(
-                (obs, oldValue, newValue) -> updateCart(id, price)
+                (obs, oldValue, newValue) -> updateCart(food)
             );
-            Label priceLabel = new Label("$" + price);
-            priceLabel.setId(id + "price");
+            Label priceLabel = new Label("$" + food.getPrice());
+            priceLabel.setId(food.getId() + "price");
             Button delete = new Button();
             ImageView deletebtn = new ImageView(new Image("/icons/bin-icon.png"));
             deletebtn.setFitHeight(20);
             deletebtn.setFitWidth(20);
             delete.setGraphic(deletebtn);
             delete.setStyle("-fx-background-color: none");
-            delete.setOnAction(event -> deleteFromCart(id));
-            Label foodname = new Label(name);
+            delete.setOnAction(event -> deleteFromCart(food.getId()));
+            Label foodname = new Label(food.getName());
             Region region = new Region();
             HBox.setHgrow(region, Priority.ALWAYS);
             fooditem.getChildren().add(foodname);
@@ -120,25 +129,25 @@ public class FoodSceneController extends MainSceneController {
             fooditem.getChildren().add(delete);
             cartlist.getChildren().add(fooditem);
             cartItems++;
-            totalprice += price;
+            totalprice += food.getPrice();
             total.setText("$" + totalprice);
             checkEmptyCart();
-            foodCart.add(id);
+            foodCart.add(food);
         } else {
-            Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + id);
+            Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + food.getId());
             Integer value = amount.getValue() + 1;
             amount.getValueFactory().setValue(value);
-            updateCart(id, price);
+            updateCart(food);
         }
 
     }
 
-    public void updateCart(int id, double price) {
-        Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + id);
+    public void updateCart(Food food) {
+        Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + food.getId());
         Integer value = amount.getValue();
-        Label priceLabel = (Label) cartlist.lookup("#" + id + "price");
+        Label priceLabel = (Label) cartlist.lookup("#" + food.getId() + "price");
         double oldprice = Double.parseDouble(priceLabel.getText().split("\\$")[1]);
-        double newprice = value * price;
+        double newprice = value * food.getPrice();
         priceLabel.setText("$" + newprice);
         totalprice = totalprice - oldprice + newprice;
         total.setText("$" + totalprice);
@@ -188,22 +197,29 @@ public class FoodSceneController extends MainSceneController {
         } else {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate date = datePicker.getValue();
-            String time = timePicker.getValue().toString();
+            String time = timePicker.getValue().toString() + ":00";
             String dateTime = dateTimeFormatter.format(date) + " " + time;
             System.out.println(dateTime);
             String foods = "[";
             for (int i = 0; i < foodCart.size(); i++) {
-                Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + foodCart.get(i));
+                Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + foodCart.get(i).getId());
                 int foodamount = amount.getValue();
+                String end;
                 if (i == foodCart.size() - 1) {
-                    foods = foods + "{" + foodCart.get(i) + ":" + foodamount + "}]";
+                    end = "}]";
                 } else {
-                    foods = foods + "{" + foodCart.get(i) + ":" + foodamount + "}, ";
+                    end = "}, ";
                 }
+                foods = foods + "{\"reservation\":null, \"reservable\":{\"id\":" + foodCart.get(i).getId()
+                    + ",\"price\":" + foodCart.get(i).getPrice()
+                    + ",\"building\":" + foodCart.get(i).getBuilding()
+                    + ",\"reservations\":[]"
+                    + "},\"amount\":" + foodamount
+                    + end;
             }
             System.out.println(foods);
-            String user = MainSceneController.username;
-            String result = ServerCommunication.orderFood(dateTime, user, foods);
+            JsonObject user = MainSceneController.user;
+            String result = ServerCommunication.orderFoodBike(dateTime, user, foods);
             createAlert(result);
         }
 

@@ -193,8 +193,8 @@ public class BikeSceneController extends MainSceneController {
                 }
             }
             System.out.println(bikes);
-            String user = MainSceneController.username;
-            String result = ServerCommunication.orderBike(dateTime, user, bikes);
+            JsonObject user = MainSceneController.user;
+            String result = ServerCommunication.orderFoodBike(dateTime, user, bikes);
             createAlert(result);
         }
     }

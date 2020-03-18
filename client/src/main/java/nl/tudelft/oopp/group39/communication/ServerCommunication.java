@@ -141,8 +141,10 @@ public class ServerCommunication {
         return HttpRequest(request);
     }
 
-    public static String orderFood(String timeOfPickup, String user, String food) {
-        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"timeOfPickup\": \"" + timeOfPickup + "\", \"user\":\"" + user + "\", \"reservables\":\"" + food + "\"}");
+    public static String orderFoodBike(String timeOfPickup, JsonObject user, String reservable) {
+        String body = "{\"timeOfPickup\": \"" + timeOfPickup + "\", \"user\":" + user + ", \"reservables\":" + reservable + "}";
+        System.out.println(body);
+        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString(body);
         HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding).uri(URI.create(url + "reservation/")).header("Content-Type", "application/json").build();
         HttpResponse<String> response = null;
         try {
@@ -162,24 +164,6 @@ public class ServerCommunication {
     public static String getAllBikes() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "bike")).build();
         return HttpRequest(request);
-    }
-
-    public static String orderBike(String timeOfPickup, String user, String bike) {
-        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString("{\"timeOfPickup\": \"" + timeOfPickup + "\", \"user\":\"" + user + "\", \"reservables\":\"" + bike + "\"}");
-        HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding).uri(URI.create(url + "reservation/")).header("Content-Type", "application/json").build();
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Communication with server failed";
-        }
-        if (response.statusCode() != 201) {
-            System.out.println("Status: " + response.statusCode());
-            return "Something went wrong";
-        } else {
-            return "Order is placed";
-        }
     }
 
 
@@ -251,6 +235,10 @@ public class ServerCommunication {
             MainSceneController.jwt = jwtToken;
             MainSceneController.loggedIn = true;
             MainSceneController.username = username;
+            JsonObject getuser = ((JsonObject) JsonParser.parseString(getUser(username)));
+            JsonObject userobj = getuser.getAsJsonObject("body");
+            System.out.println(userobj);
+            MainSceneController.user = userobj;
             //MainSceneController.isAdmin = isAdmin(username);
             return "Logged in";
         }

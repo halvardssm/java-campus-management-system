@@ -25,6 +25,7 @@ public class MainSceneController {
     public static boolean sidebarShown = false;
     public static boolean isAdmin = false;
     public static String username;
+    public static JsonObject user;
 
     @FXML
     public VBox sidebar;
