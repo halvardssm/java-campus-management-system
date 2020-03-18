@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.group39.user.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.sql.Blob;
 import java.util.Collection;
 import java.util.HashSet;
@@ -25,6 +27,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = User.TABLE_NAME)
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.StringIdGenerator.class,
+    property = User.COL_USERNAME
+)
 public class User implements UserDetails {
     public static final String TABLE_NAME = "users";
     public static final String MAPPED_NAME = "user";
@@ -45,7 +51,7 @@ public class User implements UserDetails {
     private Blob image;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
     private Set<Booking> bookings = new HashSet<>();
 
     public User() {

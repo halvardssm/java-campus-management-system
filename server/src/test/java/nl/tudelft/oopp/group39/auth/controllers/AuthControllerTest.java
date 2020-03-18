@@ -4,8 +4,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nl.tudelft.oopp.group39.auth.entities.AuthRequest;
 import nl.tudelft.oopp.group39.auth.exceptions.UnauthorizedException;
+import nl.tudelft.oopp.group39.auth.models.AuthRequest;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.services.UserService;
