@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.group39.room.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -12,18 +11,19 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import nl.tudelft.oopp.group39.room.entities.Room;
-import nl.tudelft.oopp.group39.room.repositories.RoomRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
-@Repository
+@Component
 public class RoomDao {
-    @Autowired
-    private RoomRepository roomRepository;
 
     @PersistenceContext
     private EntityManager em;
 
+    /** TODO @Cleanup.
+     *
+     * @param filters filters retrieved
+     * @return List rooms
+     */
     public List<Room> roomFilter(Map<String,Object> filters) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Room> rcq = cb.createQuery(Room.class);
@@ -32,42 +32,52 @@ public class RoomDao {
 
         Set<String> keys = filters.keySet();
 
+
+        Predicate pall = null;
+
         for (String key : keys) {
             Predicate p;
 
-            Object test = filters.get(key);
-
             switch (key) {
                 case "capacity": {
-
                     Integer cap = Integer.parseInt((String) filters.get(key));
                     p = cb.greaterThanOrEqualTo(room.get(key), cap);
                     break;
                 }
-                case "buildingId": {
-
-                    Long cap = Long.parseLong((String) filters.get(key));
-                    p = cb.greaterThanOrEqualTo(room.get(key), cap);
+                case "buildingId":
+                case "id": {
+                    Long id = Long.parseLong((String) filters.get(key));
+                    p = cb.greaterThanOrEqualTo(room.get(key), id);
                     break;
                 }
+                case "onlyStaff": {
+                    boolean staff = Boolean.parseBoolean((String) filters.get(key));
+                    p = cb.equal(room.get(key), staff);
+                    break;
+                }
+
+                //TODO
                 case "facilities":
 
+                case "bookings": {
 
-                    List<Integer> facvals = new ArrayList<>();
+                    p = cb.isNotNull(room.get(key));
 
-                    for (String val : ((String) filters.get(key)).split(",")) {
-                        facvals.add(Integer.parseInt(val));
-                    }
+                    break;
+                }
 
-
-                    continue;
+                case "description":
                 default:
                     p = cb.like(room.get(key), "%" + filters.get(key) + "%");
                     break;
             }
 
-            rcq = rcq.where(p);
+            pall = pall == null ? p : cb.and(p, pall);
+
+            rcq = rcq.where(pall);
+
         }
+
         TypedQuery<Room> query = em.createQuery(rcq);
         return query.getResultList();
     }

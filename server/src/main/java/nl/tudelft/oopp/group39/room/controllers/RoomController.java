@@ -31,9 +31,16 @@ public class RoomController {
     @Autowired
     private RoomDao roomDao;
 
+    /**TODO.
+     *
+     * @param allParams parameters.
+     * @return filtered list.
+     */
     @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listRooms(@RequestParam(required = false) Map<String, Object> allParams) {
-
+    public ResponseEntity<RestResponse<Object>> listRooms(
+        @RequestParam Map<String,
+            Object> allParams
+    ) {
         List<Room> result = roomDao.roomFilter(allParams);
         return RestResponse.create(result);
     }
@@ -52,10 +59,18 @@ public class RoomController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> updateRoom(@RequestBody Room updated, @PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> updateRoom(
+        @RequestBody Room updated,
+        @PathVariable int id
+    ) {
         return RestResponse.create(service.updateRoom(updated, id));
     }
 
+    /**TODO.
+     *
+     * @param id id
+     * @return response
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteRoom(@PathVariable int id) {
         service.deleteRoom(id);
