@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.group39.reservable.services;
 
 import java.util.List;
+import java.util.Map;
 import javassist.NotFoundException;
+import nl.tudelft.oopp.group39.reservable.dao.ReservableDao;
 import nl.tudelft.oopp.group39.reservable.entities.Bike;
 import nl.tudelft.oopp.group39.reservable.repositories.BikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +15,16 @@ public class BikeService {
 
     @Autowired
     private BikeRepository bikeRepository;
+    @Autowired
+    private ReservableDao reservableDao;
 
     /**
      * List all bikes.
      *
      * @return a list of bikes {@link Bike}.
      */
-    public List<Bike> listBikes() {
-        return bikeRepository.findAll();
+    public List<Bike> listBikes(Map<String, String> params) {
+        return reservableDao.listReservables(params, Bike.class);
     }
 
     /**

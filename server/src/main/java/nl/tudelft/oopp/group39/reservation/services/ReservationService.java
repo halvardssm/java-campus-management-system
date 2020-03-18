@@ -3,6 +3,8 @@ package nl.tudelft.oopp.group39.reservation.services;
 import java.util.List;
 import javassist.NotFoundException;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
+import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
+import nl.tudelft.oopp.group39.reservation.exceptions.CreationException;
 import nl.tudelft.oopp.group39.reservation.repositories.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,8 +47,18 @@ public class ReservationService {
      */
     public Reservation createReservation(Reservation reservation) throws IllegalArgumentException {
         Reservation createdReservation = reservationRepository.save(reservation);
-//        reservationAmountService.createReservation(new ReservationAmount());
-        return createdReservation;
+
+        try {
+            for (ReservationAmount reservationAmount : reservation.getReservationAmounts()) {
+                reservationAmountService.createReservation(reservationAmount);
+            }
+
+            return readReservation(createdReservation.getId());
+        } catch (Exception e) {
+            deleteReservation(createdReservation.getId());
+
+            throw new CreationException();
+        }
     }
 
     /**

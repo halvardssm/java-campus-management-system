@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.reservable.controllers;
 
+import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.reservable.entities.Bike;
 import nl.tudelft.oopp.group39.reservable.services.BikeService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,8 +31,10 @@ public class BikeController {
      * @return a list of bikes {@link Bike}.
      */
     @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listBikes() {
-        return RestResponse.create(bikeService.listBikes());
+    public ResponseEntity<RestResponse<Object>> listBikes(
+        @RequestParam Map<String, String> params
+    ) {
+        return RestResponse.create(bikeService.listBikes(params));
     }
 
     /**

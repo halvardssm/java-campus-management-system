@@ -194,13 +194,19 @@ public class DbSeeder {
             null
         ));
 
-        ReservationAmount reservationAmount = new ReservationAmount(
+        ReservationAmount reservationAmount1 = new ReservationAmount(
             5,
             reservation,
             foodService.listFoods(new HashMap<>()).get(0)
         );
+        ReservationAmount reservationAmount2 = new ReservationAmount(
+            1,
+            reservation,
+            bikeService.listBikes(new HashMap<>()).get(0)
+        );
 
-        reservationAmountService.createReservation(reservationAmount);
+        reservationAmountService.createReservation(reservationAmount1);
+        reservationAmountService.createReservation(reservationAmount2);
 
         System.out.println("[SEED] Reservations created");
     }
