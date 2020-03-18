@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.Region;
@@ -7,6 +8,8 @@ import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 public class MainSceneController {
+
+    protected ObjectMapper mapper = new ObjectMapper();
 
     public void createAlert(String content) {
         createAlert(null, content);
