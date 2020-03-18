@@ -44,10 +44,16 @@ public class FacilityController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> updateFacility(@RequestBody Facility updated, @PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> updateFacility(
+        @RequestBody Facility updated,
+        @PathVariable int id
+    ) {
         return RestResponse.create(service.updateFacility(updated, id));
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteFacility(@PathVariable int id) {
         service.deleteFacility(id);

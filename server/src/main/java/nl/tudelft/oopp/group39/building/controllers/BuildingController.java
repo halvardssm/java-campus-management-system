@@ -33,27 +33,55 @@ public class BuildingController {
     @Autowired
     private BuildingService buildingService;
 
+    /**
+     * List Buildings endpoint. TODO Sven
+     *
+     * @param capacity capacity
+     * @param building building
+     * @param location location
+     * @param open     open
+     * @param closed   closed
+     * @return buildings
+     */
     @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listBuildings(@RequestParam(required = false) Integer capacity, @RequestParam(required = false) String building, @RequestParam(required = false) String location, @RequestParam(required = false) String open, @RequestParam(required = false) String closed) {
+    public ResponseEntity<RestResponse<Object>> listBuildings(
+        @RequestParam(required = false) Integer capacity,
+        @RequestParam(required = false) String building,
+        @RequestParam(required = false) String location,
+        @RequestParam(required = false) String open,
+        @RequestParam(required = false) String closed
+    ) {
         capacity = capacity == null ? 0 : capacity;
-        LocalTime nOpen = open == null ? LocalTime.MIN : LocalTime.parse(open);
-        LocalTime nClosed = closed == null ? LocalTime.MAX : LocalTime.parse(closed);
+        LocalTime newOpen = open == null ? LocalTime.MIN : LocalTime.parse(open);
+        LocalTime newClosed = closed == null ? LocalTime.MAX : LocalTime.parse(closed);
         building = building == null ? "" : building;
         location = location == null ? "" : location;
         boolean allEmpty = capacity == 0
             && building.contentEquals("")
             && location.contentEquals("")
-            && nOpen.compareTo(LocalTime.MIN) == 0 //opening time is equal to 23:59
-            && nClosed.compareTo(LocalTime.MAX) == 0;
-        List<Building> result = allEmpty ? buildingService.listBuildings() : buildingService.filterBuildings(capacity, building, location, nOpen, nClosed);
+            && newOpen.compareTo(LocalTime.MIN) == 0 //opening time is equal to 23:59
+            && newClosed.compareTo(LocalTime.MAX) == 0;
+        List<Building> result = allEmpty
+            ? buildingService.listBuildings()
+            : buildingService.filterBuildings(capacity, building, location, newOpen, newClosed);
 
         return RestResponse.create(result);
     }
 
+    /**
+     * Create building. TODO Sven
+     *
+     * @param building building
+     * @return building
+     */
     @PostMapping("")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createBuilding(@RequestBody Building building) {
-        return RestResponse.create(buildingService.createBuilding(building), null, HttpStatus.CREATED);
+        return RestResponse.create(
+            buildingService.createBuilding(building),
+            null,
+            HttpStatus.CREATED
+        );
     }
 
     @GetMapping("/{id}")
@@ -64,10 +92,19 @@ public class BuildingController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> updateBuilding(@RequestBody Building updated, @PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> updateBuilding(
+        @RequestBody Building updated,
+        @PathVariable int id
+    ) {
         return RestResponse.create(buildingService.updateBuilding(id, updated));
     }
 
+    /**
+     * Delete building. TODO Sven
+     *
+     * @param id id
+     * @return nothing
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteBuilding(@PathVariable int id) {
         buildingService.deleteBuilding(id);

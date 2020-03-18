@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.auth.entities;
+package nl.tudelft.oopp.group39.auth.models;
 
 import java.io.Serializable;
 import org.springframework.stereotype.Component;
