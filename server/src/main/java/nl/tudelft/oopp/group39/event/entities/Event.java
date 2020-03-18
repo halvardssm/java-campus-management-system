@@ -31,7 +31,7 @@ import org.springframework.lang.Nullable;
 @Entity
 @Table(name = Event.TABLE_NAME)
 @JsonIdentityInfo(
-    generator = ObjectIdGenerators.IntSequenceGenerator.class,
+    generator = ObjectIdGenerators.PropertyGenerator.class,
     property = Event.COL_ID
 )
 public class Event {

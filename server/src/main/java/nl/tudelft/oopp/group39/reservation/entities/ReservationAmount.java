@@ -1,40 +1,66 @@
 package nl.tudelft.oopp.group39.reservation.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.Objects;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
+import javax.persistence.Table;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 
 @Entity
+@Table(name = ReservationAmount.TABLE_NAME)
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = ReservationAmount.COL_ID
+)
 public class ReservationAmount {
+    public static final String TABLE_NAME = Reservation.TABLE_NAME + "_" + Reservable.TABLE_NAME;
+    public static final String COL_ID = "id";
 
-    @EmbeddedId
-    ReservationAmountKey id;
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private Integer amount;
     @ManyToOne
-    @MapsId(Reservation.MAPPED_NAME)
     @JoinColumn(name = Reservation.MAPPED_NAME)
-    Reservation reservation;
-
+    private Reservation reservation;
     @ManyToOne
-    @MapsId(Reservable.MAPPED_NAME)
     @JoinColumn(name = Reservable.MAPPED_NAME)
-    Reservable reservable;
-
-    Integer amount;
+    private Reservable reservable;
 
     public ReservationAmount() {
     }
 
-    public ReservationAmountKey getId() {
+    /**
+     * Constructor for ReservationAmount.
+     *
+     * @param amount the amount of the item
+     */
+    public ReservationAmount(Integer amount, Reservation reservation, Reservable reservable) {
+        this.amount = amount;
+        this.reservation = reservation;
+        this.reservable = reservable;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(ReservationAmountKey id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
     public Reservation getReservation() {
@@ -51,14 +77,6 @@ public class ReservationAmount {
 
     public void setReservable(Reservable reservable) {
         this.reservable = reservable;
-    }
-
-    public Integer getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Integer amount) {
-        this.amount = amount;
     }
 
     @Override

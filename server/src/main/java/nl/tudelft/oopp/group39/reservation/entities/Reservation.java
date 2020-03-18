@@ -1,7 +1,10 @@
 package nl.tudelft.oopp.group39.reservation.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Entity;
@@ -17,9 +20,14 @@ import nl.tudelft.oopp.group39.user.entities.User;
 
 @Entity
 @Table(name = Reservation.TABLE_NAME)
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = Reservation.COL_ID
+)
 public class Reservation {
     public static final String TABLE_NAME = "reservations";
     public static final String MAPPED_NAME = "reservation";
+    public static final String COL_ID = "id";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +38,7 @@ public class Reservation {
     @JoinColumn(name = User.MAPPED_NAME)
     private User user;
     @OneToMany(mappedBy = MAPPED_NAME)
-    private Set<ReservationAmount> reservables;
+    private Set<ReservationAmount> reservationAmounts = new HashSet<>();
 
     public Reservation() {
     }
@@ -38,14 +46,20 @@ public class Reservation {
     /**
      * Constructor of Reservation.
      *
-     * @param timeOfPickup the time of the pickup
-     * @param user         the user
-     * @param reservables  all items in order
+     * @param timeOfPickup       the time of the pickup
+     * @param user               the user
+     * @param reservationAmounts all items in order
      */
-    public Reservation(LocalDateTime timeOfPickup, User user, Set<ReservationAmount> reservables) {
+    public Reservation(
+        LocalDateTime timeOfPickup,
+        User user,
+        Set<ReservationAmount> reservationAmounts
+    ) {
         setTimeOfPickup(timeOfPickup);
         setUser(user);
-        setReservables(reservables);
+        this.reservationAmounts.addAll(reservationAmounts != null
+                                       ? reservationAmounts
+                                       : new HashSet<>());
     }
 
     public Integer getId() {
@@ -72,12 +86,12 @@ public class Reservation {
         this.user = user;
     }
 
-    public Set<ReservationAmount> getReservables() {
-        return reservables;
+    public Set<ReservationAmount> getReservationAmounts() {
+        return reservationAmounts;
     }
 
-    public void setReservables(Set<ReservationAmount> reservables) {
-        this.reservables = reservables;
+    public void setReservationAmounts(Set<ReservationAmount> reservables) {
+        this.reservationAmounts = reservables;
     }
 
     @Override
@@ -92,6 +106,6 @@ public class Reservation {
         return Objects.equals(getId(), that.getId())
             && Objects.equals(getTimeOfPickup(), that.getTimeOfPickup())
             && Objects.equals(getUser(), that.getUser())
-            && Objects.equals(getReservables(), that.getReservables());
+            && Objects.equals(getReservationAmounts(), that.getReservationAmounts());
     }
 }

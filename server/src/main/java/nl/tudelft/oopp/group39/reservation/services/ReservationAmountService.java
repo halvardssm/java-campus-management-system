@@ -3,26 +3,25 @@ package nl.tudelft.oopp.group39.reservation.services;
 import java.util.List;
 import javassist.NotFoundException;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
-import nl.tudelft.oopp.group39.reservation.repositories.ReservationRepository;
+import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
+import nl.tudelft.oopp.group39.reservation.repositories.ReservationAmountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ReservationService {
+public class ReservationAmountService {
     public static final String EXCEPTION_RESERVATION_NOT_FOUND = "Reservation %d not found";
 
     @Autowired
-    private ReservationRepository reservationRepository;
-    @Autowired
-    private ReservationAmountService reservationAmountService;
+    private ReservationAmountRepository reservationAmountRepository;
 
     /**
      * List all reservations.
      *
      * @return a list of reservations {@link Reservation}.
      */
-    public List<Reservation> listReservations() {
-        return reservationRepository.findAll();
+    public List<ReservationAmount> listReservations() {
+        return reservationAmountRepository.findAll();
     }
 
     /**
@@ -30,8 +29,8 @@ public class ReservationService {
      *
      * @return reservation by id {@link Reservation}.
      */
-    public Reservation readReservation(Integer id) throws NotFoundException {
-        return reservationRepository.findById(id)
+    public ReservationAmount readReservation(Integer id) throws NotFoundException {
+        return reservationAmountRepository.findById(id)
             .orElseThrow(() -> new NotFoundException(String.format(
                 EXCEPTION_RESERVATION_NOT_FOUND,
                 id
@@ -43,25 +42,27 @@ public class ReservationService {
      *
      * @return the created reservation {@link Reservation}.
      */
-    public Reservation createReservation(Reservation reservation) throws IllegalArgumentException {
-        Reservation createdReservation = reservationRepository.save(reservation);
-//        reservationAmountService.createReservation(new ReservationAmount());
-        return createdReservation;
+    public ReservationAmount createReservation(ReservationAmount reservation)
+        throws IllegalArgumentException {
+        return reservationAmountRepository.save(reservation);
     }
 
     /**
      * Update an reservation.
      *
-     * @return the updated reservation {@link Reservation}.
+     * @return the updated reservation {@link ReservationAmount}.
      */
-    public Reservation updateReservation(Integer id, Reservation newReservation)
+    public ReservationAmount updateReservation(
+        Integer id,
+        ReservationAmount newReservation
+    )
         throws NotFoundException {
-        return reservationRepository.findById(id)
+        return reservationAmountRepository.findById(id)
             .map(reservation -> {
                 newReservation.setId(id);
                 reservation = newReservation;
 
-                return reservationRepository.save(reservation);
+                return reservationAmountRepository.save(reservation);
             })
             .orElseThrow(() -> new NotFoundException(String.format(
                 EXCEPTION_RESERVATION_NOT_FOUND,
@@ -70,9 +71,9 @@ public class ReservationService {
     }
 
     /**
-     * Delete an reservation {@link Reservation}.
+     * Delete an reservation {@link ReservationAmount}.
      */
     public void deleteReservation(Integer id) {
-        reservationRepository.deleteById(id);
+        reservationAmountRepository.deleteById(id);
     }
 }

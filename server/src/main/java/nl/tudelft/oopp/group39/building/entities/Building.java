@@ -19,7 +19,7 @@ import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 @Entity
 @Table(name = Building.TABLE_NAME)
 @JsonIdentityInfo(
-    generator = ObjectIdGenerators.IntSequenceGenerator.class,
+    generator = ObjectIdGenerators.PropertyGenerator.class,
     property = Building.COL_ID
 )
 public class Building {

@@ -22,7 +22,7 @@ import nl.tudelft.oopp.group39.user.entities.User;
 @Entity
 @Table(name = Booking.TABLE_NAME)
 @JsonIdentityInfo(
-    generator = ObjectIdGenerators.IntSequenceGenerator.class,
+    generator = ObjectIdGenerators.PropertyGenerator.class,
     property = Booking.COL_ID
 )
 public class Booking {

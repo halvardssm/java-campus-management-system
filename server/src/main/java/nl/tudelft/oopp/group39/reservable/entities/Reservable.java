@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.reservable.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -20,9 +21,14 @@ import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 @Entity
 @Table(name = Reservable.TABLE_NAME)
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = Reservable.COL_ID
+)
 public class Reservable {
     public static final String TABLE_NAME = "reservables";
     public static final String MAPPED_NAME = "reservable";
+    public static final String COL_ID = "id";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +37,6 @@ public class Reservable {
     @ManyToOne
     @JoinColumn(name = Building.MAPPED_NAME)
     private Building building;
-    @JsonIgnore
     @OneToMany(mappedBy = MAPPED_NAME)
     private Set<ReservationAmount> reservations = new HashSet<>();
 

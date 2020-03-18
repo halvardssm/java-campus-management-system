@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.group39.config;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,6 +21,10 @@ import nl.tudelft.oopp.group39.reservable.entities.Food;
 import nl.tudelft.oopp.group39.reservable.enums.BikeType;
 import nl.tudelft.oopp.group39.reservable.services.BikeService;
 import nl.tudelft.oopp.group39.reservable.services.FoodService;
+import nl.tudelft.oopp.group39.reservation.entities.Reservation;
+import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
+import nl.tudelft.oopp.group39.reservation.services.ReservationAmountService;
+import nl.tudelft.oopp.group39.reservation.services.ReservationService;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
 import nl.tudelft.oopp.group39.user.entities.User;
@@ -48,6 +54,10 @@ public class DbSeeder {
     private BikeService bikeService;
     @Autowired
     private FoodService foodService;
+    @Autowired
+    private ReservationService reservationService;
+    @Autowired
+    private ReservationAmountService reservationAmountService;
 
     /**
      * Initiates the db with all the roles.
@@ -62,6 +72,7 @@ public class DbSeeder {
         initEvents();
         initBikes();
         initFoods();
+        initReservations();
         System.out.println("[SEED] Seeding completed");
     }
 
@@ -177,6 +188,19 @@ public class DbSeeder {
 
     private void initReservations() {
 
+        Reservation reservation = reservationService.createReservation(new Reservation(
+            LocalDateTime.now(),
+            userService.readUser("admin"),
+            null
+        ));
+
+        ReservationAmount reservationAmount = new ReservationAmount(
+            5,
+            reservation,
+            foodService.listFoods(new HashMap<>()).get(0)
+        );
+
+        reservationAmountService.createReservation(reservationAmount);
 
         System.out.println("[SEED] Reservations created");
     }
