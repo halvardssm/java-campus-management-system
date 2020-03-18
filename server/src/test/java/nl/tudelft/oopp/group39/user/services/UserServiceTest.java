@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
-import nl.tudelft.oopp.group39.role.entities.Role;
-import nl.tudelft.oopp.group39.role.enums.Roles;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +19,22 @@ class UserServiceTest {
         "test@tudelft.nl",
         "test",
         null,
-        List.of(new Role(Roles.STUDENT))
+        Role.STUDENT,
+        null
     );
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @BeforeEach
     void setUp() {
-        for (User user : userService.listUsers()) {
-            userService.deleteUser(user.getUsername());
-        }
-
         userService.createUser(testUser);
+    }
+
+    @AfterEach
+    void tearDown() {
+        userService.deleteUser(testUser.getUsername());
+        testUser.setPassword("test");
     }
 
     @Test
@@ -43,34 +46,38 @@ class UserServiceTest {
     }
 
     @Test
-    void createUser() {
-        User user = testUser;
-        user.setUsername("user2");
+    void deleteAndCreateUser() {
+        userService.deleteUser(testUser.getUsername());
 
-        User user2 = userService.createUser(user);
+        assertEquals(new ArrayList<>(), userService.listUsers());
 
-        assertEquals(user, user2);
+        User user = userService.createUser(testUser);
+
+        assertEquals(testUser, user);
     }
 
     @Test
     void readUser() {
-        User user2 = userService.readUser("test");
-        assertEquals(testUser, user2);
+        User user = userService.readUser("test");
+
+        assertEquals(testUser, user);
     }
 
     @Test
     void updateUser() {
-        User user = testUser;
-        user.setEmail("test@tudelft.nl");
-        User user2 = userService.updateUser("test", user);
+        testUser.setEmail("test@tudelft.nl");
+        User user = userService.updateUser("test", testUser);
 
-        assertEquals(user, user2);
+        assertEquals(testUser, user);
     }
 
     @Test
-    void deleteUser() {
-        List<User> testUsers = new ArrayList<>();
-        userService.deleteUser("test");
-        assertEquals(testUsers, userService.listUsers());
+    void mapRoleForUser() {
+        User user = testUser;
+        user.setRole(null);
+        userService.mapRoleForUser(user);
+
+        assertEquals(testUser, user);
+        assertEquals(user.getRole(), Role.STUDENT);
     }
 }

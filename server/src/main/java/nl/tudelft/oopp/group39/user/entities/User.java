@@ -1,22 +1,25 @@
 package nl.tudelft.oopp.group39.user.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.sql.Blob;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import nl.tudelft.oopp.group39.role.entities.Role;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import org.hibernate.annotations.LazyGroup;
 import org.springframework.data.annotation.Transient;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,27 +27,34 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = User.TABLE_NAME)
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = User.COL_USERNAME
+)
 public class User implements UserDetails {
     public static final String TABLE_NAME = "users";
+    public static final String MAPPED_NAME = "user";
+    public static final String COL_USERNAME = "username";
+    public static final String COL_EMAIL = "email";
+    public static final String COL_PASSWORD = "password";
+    public static final String COL_IMAGE = "image";
+    public static final String COL_ROLE = "role";
+    public static final String COL_BOOKINGS = "bookings";
 
     @Id
     private String username;
     private String email;
     private String password;
     @Lob
-    @Basic(fetch = FetchType.LAZY)
+    @Basic(fetch = FetchType.EAGER)
     @LazyGroup("lobs")
     private Blob image;
-    @ManyToMany(targetEntity = Role.class, fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    @JoinTable(
-        name = "users_roles",
-        joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "username"),
-        inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
-    )
-    private List<GrantedAuthority> roles;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
+    private Set<Booking> bookings = new HashSet<>();
 
     public User() {
-        this.roles = new ArrayList<>();
     }
 
     /**
@@ -53,21 +63,24 @@ public class User implements UserDetails {
      * @param username Unique identifier as to be used in the database.
      * @param email    Email address of the user.
      * @param password Encrypted password of the user.
-     * @param roles    Roles of the user.
+     * @param role     Role of the user.
      * @param image    Image of the user.
+     * @param bookings Bookings of user.
      */
     public User(
         String username,
         String email,
         String password,
         Blob image,
-        List<GrantedAuthority> roles
+        Role role,
+        Set<Booking> bookings
     ) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.roles = roles;
+        this.role = role;
         this.image = image;
+        this.bookings.addAll(bookings != null ? bookings : new HashSet<>());
     }
 
     @Override
@@ -96,6 +109,14 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public Blob getImage() {
         return this.image;
     }
@@ -104,14 +125,19 @@ public class User implements UserDetails {
         this.image = image;
     }
 
-    @Override
-    @Transient
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles;
+    public Set<Booking> getBookings() {
+        return bookings;
     }
 
-    public void setAuthorities(List<GrantedAuthority> authorities) {
-        this.roles = authorities;
+    public void setBookings(Set<Booking> bookings) {
+        this.bookings = bookings;
+    }
+
+    @Override
+    @Transient
+    @JsonIgnore
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(getRole());
     }
 
     @Override
@@ -143,19 +169,19 @@ public class User implements UserDetails {
     }
 
     @Override
-    @Transient
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof User)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         User user = (User) o;
-        return getUsername().equals(user.getUsername())
-            && email.equals(user.email)
-            && getPassword().equals(user.getPassword())
+        return Objects.equals(getUsername(), user.getUsername())
+            && Objects.equals(getEmail(), user.getEmail())
+            && Objects.equals(getPassword(), user.getPassword())
             && Objects.equals(getImage(), user.getImage())
-            && roles.equals(user.roles);
+            && getRole() == user.getRole()
+            && Objects.equals(getBookings(), user.getBookings());
     }
 }
