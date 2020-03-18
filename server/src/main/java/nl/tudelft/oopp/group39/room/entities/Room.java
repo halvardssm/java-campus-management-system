@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.group39.room.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -21,6 +23,10 @@ import nl.tudelft.oopp.group39.facility.entities.Facility;
 
 @Entity
 @Table(name = Room.TABLE_NAME)
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.IntSequenceGenerator.class,
+    property = Room.COL_ID
+)
 public class Room {
     public static final String TABLE_NAME = "rooms";
     public static final String MAPPED_NAME = "room";

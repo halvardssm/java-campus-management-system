@@ -28,7 +28,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Table(name = User.TABLE_NAME)
 @JsonIdentityInfo(
-    generator = ObjectIdGenerators.StringIdGenerator.class,
+    generator = ObjectIdGenerators.PropertyGenerator.class,
     property = User.COL_USERNAME
 )
 public class User implements UserDetails {
