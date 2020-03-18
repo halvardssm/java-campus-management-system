@@ -1,18 +1,23 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.Region;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.views.UsersDisplay;
 
-import java.io.IOException;
-
 public class MainSceneController {
+
+    protected ObjectMapper mapper = new ObjectMapper();
 
     public void createAlert(String content) {
         createAlert(null, content);
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void createAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);

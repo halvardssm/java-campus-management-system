@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.config;
 
 import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.filters.JwtFilter;
+import nl.tudelft.oopp.group39.booking.controllers.BookingController;
 import nl.tudelft.oopp.group39.building.controllers.BuildingController;
 import nl.tudelft.oopp.group39.event.controllers.EventController;
 import nl.tudelft.oopp.group39.facility.controllers.FacilityController;
@@ -45,7 +46,8 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
                 RoomController.REST_MAPPING,
                 FacilityController.REST_MAPPING,
                 BuildingController.REST_MAPPING,
-                EventController.REST_MAPPING
+                EventController.REST_MAPPING,
+                BookingController.REST_MAPPING
             ).permitAll()
             .antMatchers("/**").permitAll()
             .antMatchers("/**/*").permitAll()

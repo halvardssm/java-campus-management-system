@@ -9,7 +9,6 @@ import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
-import nl.tudelft.oopp.group39.user.repositories.UserRepository;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -24,46 +24,38 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 @SpringBootTest
 class JwtFilterTest {
+    private final User testUser = new User(
+        "test",
+        "test@tudelft.nl",
+        "test",
+        null,
+        Role.ADMIN,
+        null
+    );
+    private String jwt;
 
     @Autowired
-    UserService userService;
-
+    private UserService userService;
     @Autowired
-    UserRepository userRepository;
-
+    private JwtService jwtService;
     @Autowired
-    JwtService jwtService;
-
-    @Autowired
-    JwtFilter jwtFilter;
+    private JwtFilter jwtFilter;
 
     @BeforeEach
     void setUp() {
-        SecurityContextHolder.clearContext();
-        userRepository.deleteAll();
+        userService.createUser(testUser);
+        jwt = jwtService.encrypt(testUser);
     }
 
     @AfterEach
     void tearDown() {
         SecurityContextHolder.clearContext();
-        userRepository.deleteAll();
+        userService.deleteUser(testUser.getUsername());
     }
 
     @Test
     void doFilterInternal() throws ServletException, IOException {
-        User testUser = new User(
-            "test",
-            "test@tudelft.nl",
-            "test",
-            null,
-            Role.STUDENT
-        );
-
-        userService.createUser(testUser);
-
-        String jwt = jwtService.encrypt(testUser);
-
-        MockHttpServletRequest request = new MockHttpServletRequest("GET", "/foo");
+        MockHttpServletRequest request = new MockHttpServletRequest(HttpMethod.GET.name(), "/foo");
         request.addHeader(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt);
 
         MockHttpServletResponse response = new MockHttpServletResponse();

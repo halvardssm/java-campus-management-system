@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.event.entities.Event;
@@ -34,6 +36,8 @@ public class DbSeeder {
     @Autowired
     private FacilityService facilityService;
     @Autowired
+    private BookingService bookingService;
+    @Autowired
     private EventService eventService;
 
     /**
@@ -45,6 +49,7 @@ public class DbSeeder {
         initFacilities();
         initBuildings();
         initRooms();
+        initBookings();
         initEvents();
         System.out.println("[SEED] Seeding completed");
     }
@@ -58,7 +63,8 @@ public class DbSeeder {
             "admin@tudelft.nl",
             "pwd",
             null,
-            Role.ADMIN
+            Role.ADMIN,
+            null
         );
 
         userService.createUser(user);
@@ -89,11 +95,20 @@ public class DbSeeder {
 
     private void initRooms() {
         Set<Facility> facilities = new HashSet<>();
-        roomService.createRoom(new Room(1, 10, true, "test1", facilities));
+        Set<Booking> bookings = new HashSet<>();
+
+        roomService.createRoom(new Room(1, 10, true, "test1", facilities, bookings));
+
+        roomService.createRoom(new Room(1, 10, true, "test1", facilities, bookings));
         facilities.add(facilityService.readFacility(1));
-        roomService.createRoom(new Room(1, 6, true, "test2", facilities));
+        roomService.createRoom(new Room(1, 6, true, "test2", facilities, bookings));
+
+        roomService.createRoom(new Room(1, 6, true, "test2", facilities, bookings));
+
         facilities.add(facilityService.readFacility(2));
-        roomService.createRoom(new Room(2, 15, false, "test3", facilities));
+        roomService.createRoom(new Room(2, 15, false, "test3", facilities, bookings));
+
+        roomService.createRoom(new Room(2, 15, false, "test3", facilities, bookings));
 
         System.out.println("[SEED] Rooms created");
     }
@@ -101,10 +116,27 @@ public class DbSeeder {
     private void initEvents() {
         LocalDate today = LocalDate.now();
         LocalDate tomorrow = today.plusDays(1);
-        Room room = new Room(1, 0, false, null, new HashSet<>());
+        Room room = new Room(1, 0, false, null, new HashSet<>(), new HashSet<>());
         HashSet<Room> rooms = new HashSet<>(List.of(room));
         eventService.createEvent(new Event(EventTypes.EVENT, today, tomorrow, rooms));
 
         System.out.println("[SEED] Events created");
+    }
+
+    private void initBookings() {
+        LocalDate date = LocalDate.now();
+        LocalTime start = LocalTime.now();
+        LocalTime end = LocalTime.now();
+        User user = userService.readUser("admin");
+
+        Room room = roomService.listRooms().get(0);
+
+        Booking b = new Booking(date, start, end, user, room);
+        bookingService.createBooking(b);
+
+        b = new Booking(date, start, end, user, room);
+        bookingService.createBooking(b);
+
+        System.out.println("[SEED] Bookings created");
     }
 }
