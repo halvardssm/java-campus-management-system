@@ -14,6 +14,11 @@ public class Building {
 
     private String closed;
 
+
+    public Building() {
+
+    }
+
     /**
      * Doc. TODO Sven
      *
@@ -24,7 +29,7 @@ public class Building {
      * @param closed      closed
      */
     public Building(
-        long id,
+        Integer id,
         String name,
         String location,
         String description,
