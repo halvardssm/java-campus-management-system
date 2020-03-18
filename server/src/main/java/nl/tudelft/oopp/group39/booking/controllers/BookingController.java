@@ -32,7 +32,9 @@ public class BookingController {
      * @return a list of bookings {@link Booking}.
      */
     @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listBookings(@RequestParam(required = false) Map<String, String> params) {
+    public ResponseEntity<RestResponse<Object>> listBookings(
+        @RequestParam Map<String, String> params
+    ) {
         return RestResponse.create(bookingService.listBookings(params));
     }
 
@@ -45,7 +47,9 @@ public class BookingController {
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createBooking(@RequestBody Booking newBooking) {
         try {
-            return RestResponse.create(bookingService.createBooking(newBooking), null, HttpStatus.CREATED);
+            return RestResponse.create(
+                bookingService.createBooking(newBooking), null, HttpStatus.CREATED
+            );
         } catch (Exception e) {
             return RestResponse.error(e.getMessage());
         }
@@ -73,7 +77,10 @@ public class BookingController {
      */
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> updateBooking(@RequestBody Booking updated, @PathVariable Integer id) {
+    public ResponseEntity<RestResponse<Object>> updateBooking(
+        @RequestBody Booking updated,
+        @PathVariable Integer id
+    ) {
         try {
             return RestResponse.create(bookingService.updateBooking(updated, id));
         } catch (Exception e) {

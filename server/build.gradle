@@ -16,17 +16,19 @@ configurations {
 }
 
 dependencies {
-    implementation 'com.google.code.gson:gson:2.8.6',
-            'org.springframework.boot:spring-boot-starter-data-jpa',
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa',
             'org.springframework.boot:spring-boot-starter-data-rest',
             'org.springframework.boot:spring-boot-starter-security',
             'org.springframework.boot:spring-boot-starter-web'
 
-    compile 'io.jsonwebtoken:jjwt-api:0.11.0'
+
+    compile 'io.jsonwebtoken:jjwt-api:0.11.0',
+            'com.fasterxml.jackson.core:jackson-core:2.10.2',
+            'com.fasterxml.jackson.core:jackson-annotations:2.10.2',
+            'com.fasterxml.jackson.core:jackson-databind:2.10.2'
 
     runtime 'io.jsonwebtoken:jjwt-impl:0.11.0',
             'io.jsonwebtoken:jjwt-jackson:0.11.0'
-//            'io.jsonwebtoken:jjwt-gson:0.11.1' bug which will be fixed in 11.1
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 

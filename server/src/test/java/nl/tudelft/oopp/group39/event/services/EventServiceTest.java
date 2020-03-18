@@ -2,7 +2,6 @@ package nl.tudelft.oopp.group39.event.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ class EventServiceTest {
 
     @AfterEach
     void tearDown() {
-        eventRepository.deleteAll();
+        eventRepository.deleteById(testEvent.getId());
         testEvent.setId(null);
     }
 
@@ -61,12 +60,16 @@ class EventServiceTest {
     }
 
     @Test
-    void createEvent() {
-        Event event = testEvent;
-        event.setType(EventTypes.HOLIDAY);
-        Event event2 = eventService.createEvent(event);
+    void deleteAndCreateEvent() {
+        eventService.deleteEvent(testEvent.getId());
 
-        assertEquals(event, event2);
+        assertEquals(new ArrayList<>(), eventService.listEvents());
+
+        Event event = eventService.createEvent(testEvent);
+
+        testEvent.setId(event.getId());
+
+        assertEquals(testEvent, event);
     }
 
     @Test
@@ -76,12 +79,5 @@ class EventServiceTest {
         Event event2 = eventService.updateEvent(testEvent.getId(), event);
 
         assertEquals(event, event2);
-    }
-
-    @Test
-    void deleteEvent() {
-        eventService.deleteEvent(testEvent.getId());
-
-        assertEquals(new ArrayList<>(), eventService.listEvents());
     }
 }

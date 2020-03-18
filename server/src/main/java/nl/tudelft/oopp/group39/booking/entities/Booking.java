@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.group39.booking.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -18,26 +20,31 @@ import nl.tudelft.oopp.group39.user.entities.User;
 
 @Entity
 @Table(name = Booking.TABLE_NAME)
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.IntSequenceGenerator.class,
+    property = Booking.COL_ID
+)
 public class Booking {
     public static final String TABLE_NAME = "bookings";
+    public static final String COL_ID = "id";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime startTime;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime endTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user")
+    @JoinColumn(name = User.MAPPED_NAME)
     @JsonIgnore
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "room")
+    @JoinColumn(name = Room.MAPPED_NAME)
     @JsonIgnore
     private Room room;
 
@@ -92,6 +99,15 @@ public class Booking {
     public Booking() {
     }
 
+    /**
+     * Doc. TODO Chuck
+     *
+     * @param date      date
+     * @param startTime startTime
+     * @param endTime   endTime
+     * @param user      user
+     * @param room      room
+     */
     public Booking(LocalDate date, LocalTime startTime, LocalTime endTime, User user, Room room) {
         this.date = date;
         this.startTime = startTime;
