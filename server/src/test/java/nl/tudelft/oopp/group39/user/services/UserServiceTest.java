@@ -20,6 +20,7 @@ class UserServiceTest {
         "test",
         null,
         Role.STUDENT,
+        null,
         null
     );
 

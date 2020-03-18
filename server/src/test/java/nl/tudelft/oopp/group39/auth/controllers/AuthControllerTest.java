@@ -31,6 +31,7 @@ class AuthControllerTest {
         "test",
         null,
         Role.ADMIN,
+        null,
         null
     );
 

@@ -16,9 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class BookingServiceTest {
-    private LocalDate date = LocalDate.now();
-    private LocalTime start = LocalTime.of(4, 20, 42);
-    private LocalTime end = LocalTime.of(6, 9, 20);
+    private final LocalDate date = LocalDate.now();
+    private final LocalTime start = LocalTime.of(4, 20, 42);
+    private final LocalTime end = LocalTime.of(6, 9, 20);
     private final Booking testBooking = new Booking(
         date,
         start,

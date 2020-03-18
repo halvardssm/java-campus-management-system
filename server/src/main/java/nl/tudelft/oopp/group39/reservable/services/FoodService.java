@@ -24,10 +24,7 @@ public class FoodService {
      * @return a list of foods {@link Food}.
      */
     public List<Food> listFoods(Map<String, String> params) {
-
-        return params.isEmpty()
-            ? foodRepository.findAll()
-            : reservableDao.listReservables(params, Food.class);
+        return reservableDao.listReservables(params, Food.class);
     }
 
     /**

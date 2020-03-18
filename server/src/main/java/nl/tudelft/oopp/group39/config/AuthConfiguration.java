@@ -6,6 +6,7 @@ import nl.tudelft.oopp.group39.booking.controllers.BookingController;
 import nl.tudelft.oopp.group39.building.controllers.BuildingController;
 import nl.tudelft.oopp.group39.event.controllers.EventController;
 import nl.tudelft.oopp.group39.facility.controllers.FacilityController;
+import nl.tudelft.oopp.group39.reservation.controllers.ReservationController;
 import nl.tudelft.oopp.group39.room.controllers.RoomController;
 import nl.tudelft.oopp.group39.user.controllers.UserController;
 import nl.tudelft.oopp.group39.user.services.UserService;
@@ -42,12 +43,13 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.POST, AuthController.REST_MAPPING).permitAll()
             .antMatchers(HttpMethod.POST, UserController.REST_MAPPING).permitAll()
             .antMatchers(// Add here at the end the methods that should be available for the guest
-                HttpMethod.GET,
-                RoomController.REST_MAPPING,
-                FacilityController.REST_MAPPING,
-                BuildingController.REST_MAPPING,
-                EventController.REST_MAPPING,
-                BookingController.REST_MAPPING
+                         HttpMethod.GET,
+                         RoomController.REST_MAPPING,
+                         FacilityController.REST_MAPPING,
+                         BuildingController.REST_MAPPING,
+                         EventController.REST_MAPPING,
+                         BookingController.REST_MAPPING,
+                         ReservationController.REST_MAPPING
             ).permitAll()
             .antMatchers("/**").permitAll()
             .antMatchers("/**/*").permitAll()

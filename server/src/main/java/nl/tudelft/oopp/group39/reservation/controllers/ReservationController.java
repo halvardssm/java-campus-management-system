@@ -39,9 +39,15 @@ public class ReservationController {
      * @return the created reservation {@link Reservation}.
      */
     @PostMapping("")
-    public ResponseEntity<RestResponse<Object>> createReservation(@RequestBody Reservation reservation) {
+    public ResponseEntity<RestResponse<Object>> createReservation(
+        @RequestBody Reservation reservation
+    ) {
         try {
-            return RestResponse.create(reservationService.createReservation(reservation), null, HttpStatus.CREATED);
+            return RestResponse.create(
+                reservationService.createReservation(reservation),
+                null,
+                HttpStatus.CREATED
+            );
         } catch (Exception e) {
             return RestResponse.error(e.getMessage());
         }
