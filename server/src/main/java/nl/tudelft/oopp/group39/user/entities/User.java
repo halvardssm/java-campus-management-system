@@ -20,7 +20,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
-import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import org.hibernate.annotations.LazyGroup;
 import org.springframework.data.annotation.Transient;
@@ -55,7 +54,7 @@ public class User implements UserDetails {
     private Role role;
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
     private Set<Booking> bookings = new HashSet<>();
-    @OneToMany(mappedBy = MAPPED_NAME)
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
     private Set<Reservation> reservations = new HashSet<>();
 
     public User() {
@@ -64,12 +63,12 @@ public class User implements UserDetails {
     /**
      * Create a new User instance.
      *
-     * @param username Unique identifier as to be used in the database.
-     * @param email    Email address of the user.
-     * @param password Encrypted password of the user.
-     * @param role     Role of the user.
-     * @param image    Image of the user.
-     * @param bookings Bookings of user.
+     * @param username     Unique identifier as to be used in the database.
+     * @param email        Email address of the user.
+     * @param password     Encrypted password of the user.
+     * @param role         Role of the user.
+     * @param image        Image of the user.
+     * @param bookings     Bookings of user.
      * @param reservations Reservations of user.
      */
     public User(
@@ -87,7 +86,7 @@ public class User implements UserDetails {
         this.role = role;
         this.image = image;
         this.bookings.addAll(bookings != null ? bookings : new HashSet<>());
-        this.reservations.addAll(reservations!=null?reservations:new HashSet<>());
+        this.reservations.addAll(reservations != null ? reservations : new HashSet<>());
     }
 
     @Override
@@ -197,7 +196,7 @@ public class User implements UserDetails {
             && Objects.equals(getPassword(), user.getPassword())
             && Objects.equals(getImage(), user.getImage())
             && getRole() == user.getRole()
-            && Objects.equals(getBookings(), user.getBookings());
-            && Objects.equals(getReservations(),user.getReservations());
+            && Objects.equals(getBookings(), user.getBookings())
+            && Objects.equals(getReservations(), user.getReservations());
     }
 }

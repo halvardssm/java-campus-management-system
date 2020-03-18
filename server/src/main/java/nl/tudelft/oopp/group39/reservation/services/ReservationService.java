@@ -29,8 +29,11 @@ public class ReservationService {
      * @return reservation by id {@link Reservation}.
      */
     public Reservation readReservation(Integer id) throws NotFoundException {
-        return reservationRepository.findById(id).orElseThrow(()
-            -> new NotFoundException(String.format(EXCEPTION_RESERVATION_NOT_FOUND, id)));
+        return reservationRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException(String.format(
+                EXCEPTION_RESERVATION_NOT_FOUND,
+                id
+            )));
     }
 
     /**
@@ -47,7 +50,8 @@ public class ReservationService {
      *
      * @return the updated reservation {@link Reservation}.
      */
-    public Reservation updateReservation(Integer id, Reservation newReservation) throws NotFoundException {
+    public Reservation updateReservation(Integer id, Reservation newReservation)
+        throws NotFoundException {
         return reservationRepository.findById(id)
             .map(reservation -> {
                 newReservation.setId(id);
@@ -55,7 +59,10 @@ public class ReservationService {
 
                 return reservationRepository.save(reservation);
             })
-            .orElseThrow(() -> new NotFoundException(String.format(EXCEPTION_RESERVATION_NOT_FOUND, id)));
+            .orElseThrow(() -> new NotFoundException(String.format(
+                EXCEPTION_RESERVATION_NOT_FOUND,
+                id
+            )));
     }
 
     /**

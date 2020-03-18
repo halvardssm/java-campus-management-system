@@ -44,11 +44,11 @@ public class Event {
     private Integer id;
     @Enumerated(EnumType.STRING)
     private EventTypes type;
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = Constants.FORMAT_DATE, shape = JsonFormat.Shape.STRING)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate startDate;
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = Constants.FORMAT_DATE, shape = JsonFormat.Shape.STRING)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate endDate;

@@ -31,7 +31,9 @@ public class FoodController {
      * @return a list of foods {@link Food}.
      */
     @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listFoods(@RequestParam Map<String, String> params) {
+    public ResponseEntity<RestResponse<Object>> listFoods(
+        @RequestParam Map<String, String> params
+    ) {
         return RestResponse.create(foodService.listFoods(params));
     }
 

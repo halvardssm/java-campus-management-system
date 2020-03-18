@@ -43,9 +43,11 @@ public class BuildingService {
                 }
             }
         }
-        return (resBuildingIds.size() > 0
+        return (
+            resBuildingIds.size() > 0
             ? buildingRepository.getAllBuildingsByIds(resBuildingIds)
-            : new ArrayList<Building>());
+            : new ArrayList<>()
+        );
     }
 
     public List<Building> listBuildings() {

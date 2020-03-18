@@ -19,7 +19,6 @@ import nl.tudelft.oopp.group39.reservable.entities.Food;
 import nl.tudelft.oopp.group39.reservable.enums.BikeType;
 import nl.tudelft.oopp.group39.reservable.services.BikeService;
 import nl.tudelft.oopp.group39.reservable.services.FoodService;
-import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
 import nl.tudelft.oopp.group39.user.entities.User;
@@ -98,9 +97,9 @@ public class DbSeeder {
     private void initBuildings() {
         LocalTime open = LocalTime.now();//.minusHours(3);
         LocalTime closed = LocalTime.now();//.plusHours(3);
-        Building b = new Building("test", "test", "test", open, closed);
+        Building b = new Building("test", "test", "test", open, closed, null);
         buildingService.createBuilding(b);
-        b = new Building("new", "new", "new", open, closed);
+        b = new Building("new", "new", "new", open, closed, null);
         buildingService.createBuilding(b);
 
         System.out.println("[SEED] Buildings created");

@@ -5,14 +5,15 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalTime;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 
 @Entity
@@ -32,9 +33,9 @@ public class Building {
     private String name;
     private String location;
     private String description;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.FORMAT_TIME)
     private LocalTime open;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.FORMAT_TIME)
     private LocalTime closed;
     @OneToMany(mappedBy = MAPPED_NAME)
     private Set<Reservable> reservables = new HashSet<>();
@@ -56,13 +57,15 @@ public class Building {
         String location,
         String description,
         LocalTime open,
-        LocalTime closed
+        LocalTime closed,
+        Set<Reservable> reservables
     ) {
         this.name = name;
         this.location = location;
         this.description = description;
         this.open = open;
         this.closed = closed;
+        this.reservables.addAll(reservables != null ? reservables : new HashSet<>());
     }
 
     public long getId() {
@@ -113,6 +116,14 @@ public class Building {
         this.closed = closed;
     }
 
+    public Set<Reservable> getReservables() {
+        return reservables;
+    }
+
+    public void setReservables(Set<Reservable> reservables) {
+        this.reservables = reservables;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -127,6 +138,7 @@ public class Building {
             && Objects.equals(getLocation(), building.getLocation())
             && Objects.equals(getDescription(), building.getDescription())
             && Objects.equals(getOpen(), building.getOpen())
-            && Objects.equals(getClosed(), building.getClosed());
+            && Objects.equals(getClosed(), building.getClosed())
+            && Objects.equals(getReservables(), building.getReservables());
     }
 }
