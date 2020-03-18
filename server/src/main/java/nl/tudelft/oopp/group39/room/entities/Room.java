@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,8 +38,10 @@ public class Room {
 
     private long buildingId;
 
-    private int capacity;
     private String name;
+
+    private int capacity;
+
     private boolean onlyStaff;
 
     private String description;
@@ -66,10 +69,10 @@ public class Room {
     public Room() {
     }
 
-    public Room(long buildingId, int capacity, String name, boolean onlyStaff, String description, Set<Facility> facilities, Set<Booking> bookings) {
+    public Room(long buildingId, String name, int capacity, boolean onlyStaff, String description, Set<Facility> facilities, Set<Booking> bookings) {
         this.buildingId = buildingId;
-        this.capacity = capacity;
         this.name = name;
+        this.capacity = capacity;
         this.onlyStaff = onlyStaff;
         this.description = description;
         this.facilities.addAll(facilities != null ? facilities : new HashSet<>());

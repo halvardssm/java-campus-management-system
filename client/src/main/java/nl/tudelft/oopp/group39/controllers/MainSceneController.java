@@ -2,10 +2,6 @@ package nl.tudelft.oopp.group39.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -21,6 +17,9 @@ import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 public class MainSceneController {
+
+    protected ObjectMapper mapper = new ObjectMapper();
+
 
     public static boolean loggedIn = false;
     public static String jwt;
@@ -39,8 +38,6 @@ public class MainSceneController {
 
     @FXML
     protected ComboBox buildinglist;
-
-    protected ObjectMapper mapper = new ObjectMapper();
 
     public void createAlert(String content) {
         createAlert(null, content);
@@ -63,7 +60,8 @@ public class MainSceneController {
     }
 
     public void goToBuildingScene() throws IOException {
-        BuildingSceneController controller = (BuildingSceneController) UsersDisplay.sceneControllerHandler("/buildingListView.fxml");
+        BuildingSceneController controller =
+            (BuildingSceneController) UsersDisplay.sceneControllerHandler("/buildingListView.fxml");
         controller.changeTopBtn();
     }
 
@@ -78,23 +76,27 @@ public class MainSceneController {
     }
 
     public void goToLoginScene() throws IOException {
-        LoginController controller = (LoginController) UsersDisplay.sceneControllerHandler("/login.fxml");
+        LoginController controller =
+            (LoginController) UsersDisplay.sceneControllerHandler("/login.fxml");
         controller.changeTopBtn();
     }
 
     public void goToSignupScene() throws IOException {
-        SignupController controller = (SignupController) UsersDisplay.sceneControllerHandler("/signup.fxml");
+        SignupController controller =
+            (SignupController) UsersDisplay.sceneControllerHandler("/signup.fxml");
         controller.changeTopBtn();
     }
 
     public void goToRoomsScene(long buildingId, String name, String address) throws IOException {
-        RoomSceneController controller = (RoomSceneController) UsersDisplay.sceneControllerHandler("/roomView.fxml");
+        RoomSceneController controller =
+            (RoomSceneController) UsersDisplay.sceneControllerHandler("/roomView.fxml");
         controller.setup(buildingId, name, address);
         controller.changeTopBtn();
     }
 
     public void goToRoomsScene() throws IOException {
-        RoomSceneController controller = (RoomSceneController) UsersDisplay.sceneControllerHandler("/roomView.fxml");
+        RoomSceneController controller =
+            (RoomSceneController) UsersDisplay.sceneControllerHandler("/roomView.fxml");
         controller.getAllRooms();
         controller.changeTopBtn();
     }
@@ -146,8 +148,8 @@ public class MainSceneController {
         System.out.println(topbar);
         System.out.println(loggedIn);
 
-        if (loggedIn){
-            MenuButton myaccount = new MenuButton(username);
+        if (loggedIn) {
+            MenuButton myaccount = new MenuButton("My Account");
             MenuItem myres = new MenuItem("My Reservations");
             MenuItem myacc = new MenuItem("My Account");
             MenuItem logout = new MenuItem("Logout");
@@ -160,23 +162,25 @@ public class MainSceneController {
                 }
             });
             myaccount.getItems().addAll(myres, myacc, logout);
+            if (isAdmin) {
+                myaccount.getItems().add(admin);
+            }
             topbar.getChildren().add(myaccount);
             topbar.getChildren().remove(topbtn);
-        }
-        else {
+        } else {
             topbtn.setText("Login");
             topbtn.setOnAction(e -> {
-                    try {
-                        goToLoginScene();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                });
+                try {
+                    goToLoginScene();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            });
         }
     }
 
     public void toggleSidebar() {
-        if(sidebarShown == false){
+        if (sidebarShown == false) {
             Hyperlink buildings = new Hyperlink("Buildings");
             buildings.getStyleClass().add("sidebar-item");
             buildings.setOnAction(event -> {
@@ -215,8 +219,7 @@ public class MainSceneController {
             });
             sidebar.getChildren().addAll(buildings, rooms, bikerental, foodorder);
             sidebarShown = true;
-        }
-        else {
+        } else {
             sidebar.getChildren().clear();
             sidebarShown = false;
         }

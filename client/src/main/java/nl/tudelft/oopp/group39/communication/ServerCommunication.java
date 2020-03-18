@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.group39.communication;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -12,6 +15,13 @@ public class ServerCommunication {
     private static HttpClient client = HttpClient.newBuilder().build();
 
     private static String url = "http://localhost:8080/";
+    private static String user = "user/";
+    private static String building = "building/";
+    private static String room = "room/";
+    private static String authenticate = "authenticate/";
+    private static String facility = "facility/";
+
+    private static ObjectMapper mapper = new ObjectMapper();
 
     /**
      * Retrieves users from the server.
@@ -24,7 +34,7 @@ public class ServerCommunication {
     }
 
     public static String getUser(String username) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "user/" + username)).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + user + username)).build();
         return httpRequest(request);
     }
 
@@ -100,7 +110,7 @@ public class ServerCommunication {
     }
 
     /**
-     * Adds a room on the server.
+     * Adds a room on the server
      *
      * @return the body of a post request to the server.
      */
@@ -115,7 +125,7 @@ public class ServerCommunication {
     }
 
     /**
-     * Updates Rooms on the server.
+     * Updates Rooms on the server
      *
      * @return the body of a put request to the server.
      */
@@ -135,7 +145,7 @@ public class ServerCommunication {
     }
 
     /**
-     * Updates buildings on the server.
+     * Updates buildings on the server
      *
      * @return the body of a post request to the server.
      */
@@ -170,18 +180,12 @@ public class ServerCommunication {
      * Doc. TODO Sven
      */
     public static void removeRoom(String id) {
-        HttpRequest request = HttpRequest.newBuilder().DELETE()
-            .uri(URI.create(url + "room/" + id)).build();
+        HttpRequest request = HttpRequest.newBuilder().DELETE().uri(URI.create(url + "room/" + id)).build();
         httpRequest(request);
     }
 
     public static String getRooms(long buildingId) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room/" + buildingId)).build();
-        return httpRequest(request);
-    }
-
-    public static String getAllRooms() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room")).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + room + buildingId)).build();
         return httpRequest(request);
     }
 
@@ -236,10 +240,10 @@ public class ServerCommunication {
     }
 
     public static String addUser(String netID, String email, String password, String role) {
-        HttpRequest.BodyPublisher user = HttpRequest.BodyPublishers.ofString("{\"username\": \"" + netID + "\", \"email\":\"" + email + "\", \"password\":\"" + password + "\", \"roles\":\"" + List.of(role) + "\"}");
+        HttpRequest.BodyPublisher newUser = HttpRequest.BodyPublishers.ofString("{\"username\": \"" + netID + "\", \"email\":\"" + email + "\", \"password\":\"" + password + "\", \"roles\":\"" + List.of(role) + "\"}");
         HttpRequest request = HttpRequest.newBuilder()
-            .POST(user)
-            .uri(URI.create("http://localhost:8080/user"))
+            .POST(newUser)
+            .uri(URI.create(url + user))
             .header("Content-Type", "application/json")
             .build();
 
@@ -259,11 +263,11 @@ public class ServerCommunication {
 
     }
 
-    public static String userLogin(String username, String pwd) {
+    public static String userLogin(String username, String pwd) throws JsonProcessingException {
         HttpRequest.BodyPublisher user = HttpRequest.BodyPublishers.ofString("{\"username\": \"" + username + "\", \"password\":\"" + pwd + "\"}");
         HttpRequest request = HttpRequest.newBuilder()
             .POST(user)
-            .uri(URI.create("http://localhost:8080/authenticate"))
+            .uri(URI.create(url + authenticate))
             .header("Content-Type", "application/json")
             .build();
 
@@ -279,26 +283,21 @@ public class ServerCommunication {
             return "Something went wrong";
         } else {
             System.out.println(response.body());
-            JsonObject body = ((JsonObject) JsonParser.parseString(response.body()));
-            String jwtToken = body.getAsJsonObject("body").get("token").getAsString();
+            JsonNode body = mapper.readTree(response.body()).get("body");
+            String jwtToken = body.get("token").asText();
             System.out.println(jwtToken);
             MainSceneController.jwt = jwtToken;
             MainSceneController.loggedIn = true;
             MainSceneController.username = username;
-            JsonObject getuser = ((JsonObject) JsonParser.parseString(getUser(username)));
-            JsonObject userobj = getuser.getAsJsonObject("body");
-            System.out.println(userobj);
-            MainSceneController.user = userobj;
-            //MainSceneController.isAdmin = isAdmin(username);
+            MainSceneController.isAdmin = isAdmin(username);
             return "Logged in";
         }
     }
 
-    public static boolean isAdmin(String username) {
+    public static boolean isAdmin(String username) throws JsonProcessingException {
         String user = getUser(username);
-        JsonObject body = ((JsonObject) JsonParser.parseString(user));
-        System.out.println(body);
-        String role = body.getAsJsonObject("body").get("role").getAsString();
-        return role.equals("admin");
+        JsonNode userjson = mapper.readTree(user).get("body");
+        String role = userjson.get("role").asText();
+        return role.equals("ADMIN");
     }
 }

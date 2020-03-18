@@ -14,7 +14,6 @@ public class Building {
 
     private String closed;
 
-
     public Building() {
 
     }
