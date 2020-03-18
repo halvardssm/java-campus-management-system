@@ -18,29 +18,29 @@ public class RoomReservationController extends MainSceneController {
     @FXML
     private Button backButton;
 
+    public static void showAlert(Alert.AlertType alertType, String title, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
     @FXML
     private void reserveRoom() {
         LocalDate localDate = date.getValue();
         if (!checkEmpty(localDate)) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle(null);
-            alert.setContentText("Reservation successful");
-            alert.showAndWait();
+            showAlert(Alert.AlertType.INFORMATION, "", "Reservation successful.");
         }
         System.out.println(localDate);
     }
 
     public boolean checkEmpty(LocalDate localDate) {
-        if (localDate == null |) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText(null);
-            alert.setContentText("Please fill in all the fields");
-            alert.showAndWait();
+        if (localDate == null ||) {
+            showAlert(Alert.AlertType.ERROR, "", "Please fill in all the fields.");
             return true;
         } else {
             return false;
         }
     }
-
-
 }

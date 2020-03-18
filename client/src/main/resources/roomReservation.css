@@ -17,3 +17,9 @@
     -fx-font-weight: bold;
     -fx-fill: white;
 }
+
+#text {
+    -fx-font-size: 12;
+    -fx-font-weight: bold;
+    -fx-fill: black;
+}
