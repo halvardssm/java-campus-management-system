@@ -55,11 +55,10 @@ public class SignupController extends MainSceneController {
     }
 
     public boolean checkEmpty(String email, String userID, String pwd, String confirm){
-        if(email.isEmpty() | userID.isEmpty()  | pwd.isEmpty() | confirm.isEmpty()){
+        if (email.isEmpty() || userID.isEmpty() || pwd.isEmpty() || confirm.isEmpty()) {
             alertErr("Please fill in all the fields");
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -91,11 +90,11 @@ public class SignupController extends MainSceneController {
         }
     }
 
-    public String getRole(String email){
-        if(email.contains("student")){
+    public String getRole(String email) {
+        String role = email.split("@")[1];
+        if (role.contains("student")) {
             return "student";
-        }
-        else{
+        } else {
             return "staff";
         }
     }

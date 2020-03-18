@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.group39.config;
 
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -42,8 +41,6 @@ public class DbSeeder {
     private BuildingService buildingService;
     @Autowired
     private FacilityService facilityService;
-    @Autowired
-    private EventService eventService;
     @Autowired
     private BookingService bookingService;
     @Autowired

@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.controllers.BuildingSceneController;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
 
 public class UsersDisplay extends Application {
@@ -19,6 +18,8 @@ public class UsersDisplay extends Application {
 
     private static Stage window;
     private static Parent root;
+    private static int width = 700;
+    private static int height = 600;
 
     /**
      * Doc. TODO Sven
@@ -27,7 +28,7 @@ public class UsersDisplay extends Application {
     public static void sceneHandler(String name) throws IOException {
         System.out.println("Scene changing...");
         root = FXMLLoader.load(UsersDisplay.class.getResource(name));
-        window.setScene(new Scene(root, 700, 600));
+        window.setScene(new Scene(root, width, height));
     }
 
     @FXML
@@ -36,7 +37,7 @@ public class UsersDisplay extends Application {
 
         FXMLLoader loader = new FXMLLoader(UsersDisplay.class.getResource(name));
         root = loader.load();
-        window.setScene(new Scene(root, 700, 600));
+        window.setScene(new Scene(root, width, height));
 
         return loader.getController();
     }
@@ -50,7 +51,7 @@ public class UsersDisplay extends Application {
         root = loader.load();
 
         window = primaryStage;
-        primaryStage.setScene(new Scene(root, 700, 600));
+        primaryStage.setScene(new Scene(root, width, height));
         primaryStage.setTitle("Campus Management");
         primaryStage.show();
     }

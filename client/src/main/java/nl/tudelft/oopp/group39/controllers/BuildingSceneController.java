@@ -1,16 +1,21 @@
 package nl.tudelft.oopp.group39.controllers;
 
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.models.Building;
 
-public class BuildingSceneController extends MainSceneController {
+public class BuildingSceneController extends MainSceneController implements Initializable {
 
     @FXML
     private FlowPane flowPane;
@@ -18,35 +23,41 @@ public class BuildingSceneController extends MainSceneController {
     @FXML
     private GridPane newBuilding;
 
-    /**
-     * Doc. TODO Sven
-     */
     public void refreshBuildings() {
+        System.out.println(flowPane);
         flowPane.getChildren().clear();
         try {
             String buildingString = ServerCommunication.getBuildings();
+            System.out.println(buildingString);
 
-            ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
+            JsonObject body = ((JsonObject) JsonParser.parseString(buildingString));
+            JsonArray buildingArray = body.getAsJsonArray("body");
 
-            buildingString = mapper.writeValueAsString(body);
-
-            Building[] list = mapper.readValue(buildingString, Building[].class);
-
-            for (Building building : list) {
-
+            for (JsonElement building : buildingArray) {
                 newBuilding = FXMLLoader.load(getClass().getResource("/buildingCell.fxml"));
+                long buildingId = ((JsonObject) building).get("id").getAsLong();
+                String buildingName = ((JsonObject) building).get("name").getAsString();
+                String address = ((JsonObject) building).get("location").getAsString();
+                newBuilding.setOnMouseClicked(e -> {
+                    try {
+                        goToRoomsScene();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+
+                });
 
                 Label name = (Label) newBuilding.lookup("#bname");
-                name.setText(building.getName());
+                name.setText(((JsonObject) building).get("name").getAsString());
 
-                String newDetails = (building.getLocation()
-                    + "\n" + building.getDescription()
+                String bDetails = ((JsonObject) building).get("location").getAsString()
+                    + "\n" + ((JsonObject) building).get("description").getAsString()
                     + "\n" + "Max. Capacity"
-                    + "\n" + "Opening times: " + building.getOpen()
-                    + " - " + building.getClosed());
+                    + "\n" + "Opening times: " + ((JsonObject) building).get("open").getAsString()
+                    + " - " + ((JsonObject) building).get("closed").getAsString();
 
                 Label details = (Label) newBuilding.lookup("#bdetails");
-                details.setText(newDetails);
+                details.setText(bDetails);
 
                 flowPane.getChildren().add(newBuilding);
             }
@@ -55,9 +66,6 @@ public class BuildingSceneController extends MainSceneController {
         }
     }
 
-    /**
-     * Doc. TODO Sven
-     */
     public void alertAllBuildings() {
         try {
             createAlert("Users shown.", ServerCommunication.getBuildings());
@@ -65,4 +73,11 @@ public class BuildingSceneController extends MainSceneController {
             createAlert("Error Occurred.");
         }
     }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        refreshBuildings();
+    }
+
+
 }

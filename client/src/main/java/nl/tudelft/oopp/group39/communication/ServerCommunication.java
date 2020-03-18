@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.group39.communication;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -27,7 +25,7 @@ public class ServerCommunication {
 
     public static String getUser(String username) {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "user/" + username)).build();
-        return HttpRequest(request);
+        return httpRequest(request);
     }
 
     /**
@@ -179,20 +177,20 @@ public class ServerCommunication {
 
     public static String getRooms(long buildingId) {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room/" + buildingId)).build();
-        return HttpRequest(request);
+        return httpRequest(request);
     }
 
     public static String getAllRooms() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room")).build();
-        return HttpRequest(request);
+        return httpRequest(request);
     }
 
     public static String getAllFood() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "food")).build();
-        return HttpRequest(request);
+        return httpRequest(request);
     }
 
-    public static String orderFoodBike(String timeOfPickup, JsonObject user, String reservable) {
+    public static String orderFoodBike(String timeOfPickup, JsonNode user, String reservable) {
         String body = "{\"timeOfPickup\": \"" + timeOfPickup + "\", \"user\":" + user + ", \"reservables\":" + reservable + "}";
         System.out.println(body);
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString(body);
@@ -214,7 +212,7 @@ public class ServerCommunication {
 
     public static String getAllBikes() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "bike")).build();
-        return HttpRequest(request);
+        return httpRequest(request);
     }
 
 
