@@ -32,7 +32,7 @@ public class UserPageController extends MainSceneController {
     public void refreshBuildings2() {
         flowPane.getChildren().clear();
         try {
-            String buildingString = ServerCommunication.getBuildings(); //ServerCommunication.getRooms();
+            String buildingString = ServerCommunication.getBookings();
 
             JsonObject body = ((JsonObject) JsonParser.parseString(buildingString));
             JsonArray buildingArray = body.getAsJsonArray("body");
@@ -43,7 +43,7 @@ public class UserPageController extends MainSceneController {
                 newRoom = FXMLLoader.load(getClass().getResource("/roomCell.fxml"));
 
                 Label name = (Label) newRoom.lookup("#rName");
-                name.setText(((JsonObject) building).get("name").getAsString());
+                name.setText(((JsonObject) building).get("id").getAsString());
 
 //                String bDetails = ((JsonObject) building).get("location").getAsString()
 //                        + "\n" + ((JsonObject) building).get("description").getAsString()
@@ -54,8 +54,38 @@ public class UserPageController extends MainSceneController {
 //                Label details = (Label) newBuilding.lookup("#bdetails");
 //                details.setText(bDetails);
 
+//                String start = ((JsonObject) building).get("open").getAsString();
+//                Label startingTime2 = (Label) newRoom.lookup("#rStartingTime");
+//                startingTime2.setText(start);
+
                 flowPane.getChildren().add(newRoom);
             }
+
+
+
+
+
+//            String bookings = ServerCommunication.getBookings();
+//            JsonObject body1 = ((JsonObject) JsonParser.parseString(bookings));
+//            JsonArray bookingsArray = body1.getAsJsonArray("body1");
+//
+//            for (JsonElement booking : bookingsArray) {
+//                newRoom = FXMLLoader.load(getClass().getResource("/roomCell.fxml"));
+//
+//                Label roomName = (Label) newRoom.lookup("#rName");
+//                roomName.setText(((JsonObject) booking).get("id").getAsString());
+//
+////                String bDetails = ((JsonObject) building).get("location").getAsString()
+////                        + "\n" + ((JsonObject) building).get("description").getAsString()
+////                        + "\n" + "Max. Capacity"
+////                        + "\n" + "Opening times: " + ((JsonObject) building).get("open").getAsString()
+////                        + " - " + ((JsonObject) building).get("closed").getAsString();
+//
+////                Label details = (Label) newBuilding.lookup("#bdetails");
+////                details.setText(bDetails);
+//
+//                flowPane.getChildren().add(newRoom);
+//            }
         } catch (IOException e) {
             createAlert("Error: Wrong IO");
         }
