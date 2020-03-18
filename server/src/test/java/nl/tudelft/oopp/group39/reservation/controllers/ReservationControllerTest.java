@@ -95,7 +95,8 @@
 //            .andExpect(jsonPath("$.body").isArray())
 //            .andExpect(jsonPath("$.body", hasSize(1)))
 //            .andExpect(jsonPath("$.body[0].type", is(testReservation.getType().name())))
-//            .andExpect(jsonPath("$.body[0].startDate", is(testReservation.getStartDate().toString())))
+//            .andExpect(jsonPath("$.body[0].startDate",
+//            is(testReservation.getStartDate().toString())))
 //            .andExpect(jsonPath("$.body[0].endDate", is(testReservation.getEndDate().toString())))
 //            .andExpect(jsonPath("$.body[0].rooms").isArray())
 //            .andExpect(jsonPath("$.body[0].rooms", hasSize(0)));
@@ -124,7 +125,8 @@
 //        mockMvc.perform(get(REST_MAPPING + "/" + testReservation.getId()))
 //            .andExpect(jsonPath("$.body").isMap())
 //            .andExpect(jsonPath("$.body.type", is(testReservation.getType().name())))
-//            .andExpect(jsonPath("$.body.startDate", is(testReservation.getStartDate().toString())))
+//            .andExpect(jsonPath("$.body.startDate",
+//            is(testReservation.getStartDate().toString())))
 //            .andExpect(jsonPath("$.body.endDate", is(testReservation.getEndDate().toString())))
 //            .andExpect(jsonPath("$.body.rooms").isArray())
 //            .andExpect(jsonPath("$.body.rooms", hasSize(0)));
@@ -165,8 +167,10 @@
 //                + "java.lang.IllegalArgumentException: Target object must not be null",
 //            reservationController.createReservation(null).getBody().getError());
 //
-//        assertEquals("Reservation 0 not found", reservationController.readReservation(0).getBody().getError());
+//        assertEquals("Reservation 0 not found",
+//        reservationController.readReservation(0).getBody().getError());
 //
-//        assertEquals("Reservation 0 not found", reservationController.updateReservation(0, null).getBody().getError());
+//        assertEquals("Reservation 0 not found",
+//        reservationController.updateReservation(0, null).getBody().getError());
 //    }
 //}

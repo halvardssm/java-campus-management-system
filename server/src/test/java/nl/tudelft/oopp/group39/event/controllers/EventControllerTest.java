@@ -40,8 +40,8 @@ class EventControllerTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final Event testEvent = new Event(
         EventTypes.EVENT,
-        LocalDate.now(ZoneId.of("Europe/Paris")),
-        LocalDate.now(ZoneId.of("Europe/Paris")).plusDays(1),
+        LocalDate.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)),
+        LocalDate.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)).plusDays(1),
         null
     );
     private final User testUser = new User(

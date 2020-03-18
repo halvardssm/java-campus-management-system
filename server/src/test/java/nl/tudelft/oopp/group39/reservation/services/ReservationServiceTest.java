@@ -72,7 +72,8 @@
 //    void updateReservation() throws NotFoundException {
 //        Reservation reservation = testReservation;
 //        reservation.setType(ReservationTypes.HOLIDAY);
-//        Reservation reservation2 = reservationService.updateReservation(testReservation.getId(), reservation);
+//        Reservation reservation2 = reservationService
+//        .updateReservation(testReservation.getId(), reservation);
 //
 //        assertEquals(reservation, reservation2);
 //    }
