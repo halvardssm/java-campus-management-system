@@ -59,18 +59,6 @@ public class RoomController {
         return RestResponse.create(service.createRoom(newRoom), null, HttpStatus.CREATED);
     }
 
-//    @GetMapping("/{id}")
-//    @ResponseBody
-//    public ResponseEntity<RestResponse<Object>> readRoom(@PathVariable int id) {
-//        return RestResponse.create(service.readRoom(id));
-//    }
-
-    @GetMapping("/{buildingId}")
-    @ResponseBody
-    public ResponseEntity<RestResponse<Object>> getRoomsByBuilding(long buildingId) {
-        return RestResponse.create(service.getRoomsByBuilding(buildingId));
-    }
-
     @PutMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> updateRoom(@RequestBody Room updated, @PathVariable int id) {
