@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.group39.room.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -19,30 +22,45 @@ import nl.tudelft.oopp.group39.facility.entities.Facility;
 
 @Entity
 @Table(name = Room.TABLE_NAME)
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.IntSequenceGenerator.class,
+    property = Room.COL_ID
+)
 public class Room {
     public static final String TABLE_NAME = "rooms";
     public static final String MAPPED_NAME = "room";
+    public static final String COL_ID = "id";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private long buildingId;
+
     private int capacity;
     private String name;
     private boolean onlyStaff;
+
     private String description;
-    @ManyToMany(cascade = CascadeType.MERGE)
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = TABLE_NAME + "_" + Facility.TABLE_NAME,
         joinColumns = {
-            @JoinColumn(name = MAPPED_NAME, referencedColumnName = "id",
-                nullable = false, updatable = false)},
+            @JoinColumn(name = TABLE_NAME, referencedColumnName = COL_ID,
+                nullable = false, updatable = false)
+        },
         inverseJoinColumns = {
-            @JoinColumn(name = Facility.MAPPED_NAME, referencedColumnName = "id",
-                nullable = false, updatable = false)})
+            @JoinColumn(name = Facility.TABLE_NAME, referencedColumnName = Facility.COL_ID,
+                nullable = false, updatable = false)
+        })
     private Set<Facility> facilities = new HashSet<>();
-    @ManyToMany(mappedBy = TABLE_NAME)
+
+    @ManyToMany(mappedBy = TABLE_NAME, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Event> events = new HashSet<>();
-    @OneToMany(mappedBy = MAPPED_NAME)
+
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Booking> bookings = new HashSet<>();
 
     public Room() {
@@ -54,8 +72,8 @@ public class Room {
         this.name = name;
         this.onlyStaff = onlyStaff;
         this.description = description;
-        this.facilities.addAll(facilities);
-        this.bookings.addAll(bookings);
+        this.facilities.addAll(facilities != null ? facilities : new HashSet<>());
+        this.bookings.addAll(bookings != null ? bookings : new HashSet<>());
     }
 
     public long getId() {
@@ -138,7 +156,6 @@ public class Room {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
         Room room = (Room) o;
         return getId() == room.getId()
             && buildingId == room.buildingId

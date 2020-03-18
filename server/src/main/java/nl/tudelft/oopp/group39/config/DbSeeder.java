@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.config;
 
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -45,6 +46,8 @@ public class DbSeeder {
     private EventService eventService;
     @Autowired
     private BookingService bookingService;
+    @Autowired
+    private EventService eventService;
     @Autowired
     private BikeService bikeService;
     @Autowired
@@ -131,14 +134,12 @@ public class DbSeeder {
     }
 
     private void initBookings() {
-        Set<Facility> facilities = new HashSet<>();
-        Set<Booking> bookings = new HashSet<>();
         LocalDate date = LocalDate.now();
         LocalTime start = LocalTime.now();
         LocalTime end = LocalTime.now();
         User user = userService.readUser("admin");
 
-        Room room = new Room(1, 10, "testest", true, "test1", facilities, bookings);
+        Room room = roomService.listRooms().get(0);
 
         Booking b = new Booking(date, start, end, user, room);
         bookingService.createBooking(b);

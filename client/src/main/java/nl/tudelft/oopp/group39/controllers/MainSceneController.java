@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -25,7 +27,6 @@ public class MainSceneController {
     public static boolean sidebarShown = false;
     public static boolean isAdmin = false;
     public static String username;
-    public static JsonObject user;
 
     @FXML
     public VBox sidebar;
@@ -39,10 +40,15 @@ public class MainSceneController {
     @FXML
     protected ComboBox buildinglist;
 
+    protected ObjectMapper mapper = new ObjectMapper();
+
     public void createAlert(String content) {
         createAlert(null, content);
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void createAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);

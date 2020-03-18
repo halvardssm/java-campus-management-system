@@ -2,6 +2,8 @@ package nl.tudelft.oopp.group39.auth.services;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.Assertions;
@@ -17,8 +19,7 @@ class JwtServiceTest {
         "test",
         null,
         Role.STUDENT,
-        new HashSet<>(),
-        new HashSet<>()
+        null
     );
 
     @Autowired
@@ -59,14 +60,14 @@ class JwtServiceTest {
 
     @Test
     void validateFalse() {
+        Set<Booking> bookings = new HashSet<>();
         User user = new User(
             "test2",
             "test@tudelft.nl",
             "test",
             null,
             Role.STUDENT,
-            new HashSet<>(),
-            new HashSet<>()
+            bookings
         );
         Assertions.assertFalse(jwtService.validate(jwtService.encrypt(testUser), user));
     }

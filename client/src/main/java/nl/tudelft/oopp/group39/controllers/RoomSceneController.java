@@ -1,9 +1,5 @@
 package nl.tudelft.oopp.group39.controllers;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,6 +48,9 @@ public class RoomSceneController extends MainSceneController {
     @FXML
     private VBox buildingInfo;
 
+    /**
+     * Doc. TODO Sven
+     */
     public void newRoomButton() {
         String buildingId = roomBuildingIdField.getText();
 
@@ -62,6 +61,9 @@ public class RoomSceneController extends MainSceneController {
         createAlert(ServerCommunication.addRoom(buildingId, roomCapacity, roomDescription));
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void updateRoomButton() {
         String buildingId = roomBuildingIdField.getText();
 
@@ -80,6 +82,9 @@ public class RoomSceneController extends MainSceneController {
         createAlert(ServerCommunication.getRooms());
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void deleteRoomButton(ActionEvent actionEvent) {
         String id = updateRoomField.getText();
 

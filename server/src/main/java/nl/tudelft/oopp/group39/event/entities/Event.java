@@ -1,6 +1,12 @@
 package nl.tudelft.oopp.group39.event.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
@@ -9,6 +15,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,34 +23,40 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import org.springframework.lang.Nullable;
 
 @Entity
 @Table(name = Event.TABLE_NAME)
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.IntSequenceGenerator.class,
+    property = Event.COL_ID
+)
 public class Event {
     public static final String TABLE_NAME = "events";
     public static final String MAPPED_NAME = "event";
+    public static final String COL_ID = "id";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Enumerated(EnumType.STRING)
     private EventTypes type;
-    @JsonFormat(pattern = Constants.FORMAT_DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate startDate;
-    @JsonFormat(pattern = Constants.FORMAT_DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate endDate;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = TABLE_NAME + "_" + Room.TABLE_NAME,
-        joinColumns = {
-            @JoinColumn(name = MAPPED_NAME, referencedColumnName = "id",
-                nullable = false, updatable = false)},
+        joinColumns = {@JoinColumn(name = TABLE_NAME, referencedColumnName = COL_ID)},
         inverseJoinColumns = {
-            @JoinColumn(name = Room.MAPPED_NAME, referencedColumnName = "id",
-                nullable = false, updatable = false)})
+            @JoinColumn(name = Room.TABLE_NAME, referencedColumnName = Room.COL_ID)
+        })
     private Set<Room> rooms = new HashSet<>();
 
     public Event() {
@@ -57,7 +70,12 @@ public class Event {
      * @param endDate   the end date yyyy-mm-dd, nullable
      * @param rooms     the rooms
      */
-    public Event(EventTypes type, LocalDate startDate, @Nullable LocalDate endDate, Set<Room> rooms) {
+    public Event(
+        EventTypes type,
+        LocalDate startDate,
+        @Nullable LocalDate endDate,
+        Set<Room> rooms
+    ) {
         this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
