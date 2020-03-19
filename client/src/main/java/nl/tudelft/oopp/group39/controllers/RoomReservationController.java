@@ -1,14 +1,21 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javax.swing.text.html.ImageView;
 
 
-public class RoomReservationController extends MainSceneController {
+public class RoomReservationController extends MainSceneController implements Initializable {
     @FXML
     private DatePicker date;
     @FXML
@@ -18,53 +25,9 @@ public class RoomReservationController extends MainSceneController {
     @FXML
     private Button backButton;
     @FXML
-    private Button timeslotButton0;
+    private ComboBox fromTime;
     @FXML
-    private Button timeslotButton1;
-    @FXML
-    private Button timeslotButton2;
-    @FXML
-    private Button timeslotButton3;
-    @FXML
-    private Button timeslotButton4;
-    @FXML
-    private Button timeslotButton5;
-    @FXML
-    private Button timeslotButton6;
-    @FXML
-    private Button timeslotButton7;
-    @FXML
-    private Button timeslotButton8;
-    @FXML
-    private Button timeslotButton9;
-    @FXML
-    private Button timeslotButton10;
-    @FXML
-    private Button timeslotButton11;
-    @FXML
-    private Button timeslotButton12;
-    @FXML
-    private Button timeslotButton13;
-    @FXML
-    private Button timeslotButton14;
-    @FXML
-    private Button timeslotButton15;
-    @FXML
-    private Button timeslotButton16;
-    @FXML
-    private Button timeslotButton17;
-    @FXML
-    private Button timeslotButton18;
-    @FXML
-    private Button timeslotButton19;
-    @FXML
-    private Button timeslotButton20;
-    @FXML
-    private Button timeslotButton21;
-    @FXML
-    private Button timeslotButton22;
-    @FXML
-    private Button timeslotButton23;
+    private ComboBox toTime;
 
     public static void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
@@ -76,27 +39,18 @@ public class RoomReservationController extends MainSceneController {
 
     @FXML
     private void reserveRoom() {
-        LocalDate localDate = date.getValue();
-        if (!checkEmpty(localDate, timeslotButton0, timeslotButton1, timeslotButton2, timeslotButton3,
-            timeslotButton4, timeslotButton5, timeslotButton6, timeslotButton7, timeslotButton8,
-            timeslotButton9, timeslotButton10, timeslotButton11, timeslotButton12, timeslotButton13,
-            timeslotButton14, timeslotButton15, timeslotButton16, timeslotButton17, timeslotButton18,
-            timeslotButton19, timeslotButton20, timeslotButton21, timeslotButton22, timeslotButton23)) {
+        LocalDate bookingDate = date.getValue();
+        LocalTime bookingStart = (LocalTime) fromTime.getValue();
+        LocalTime bookingEnd = (LocalTime) toTime.getValue();
+
+        if (!checkEmpty(bookingDate, bookingStart, bookingEnd)) {
             showAlert(Alert.AlertType.INFORMATION, "", "Reservation successful.");
         }
-        System.out.println(localDate);
+        System.out.println(bookingDate);
     }
 
-    public boolean checkEmpty(LocalDate localDate, Button button0, Button button1, Button button2, Button button3,
-                              Button button4, Button button5, Button button6, Button button7, Button button8, Button button9,
-                              Button button10, Button button11, Button button12, Button button13, Button button14, Button button15,
-                              Button button16, Button button17, Button button18, Button button19, Button button20, Button button21,
-                              Button button22, Button button23) {
-        if (localDate == null || button0 == null && button1 == null && button2 == null && button3 == null
-            && button4 == null && button5 == null && button6 == null && button7 == null && button8 == null && button9 == null
-            && button10 == null && button11 == null && button12 == null && button13 == null && button14 == null && button15 == null
-            && button16 == null && button17 == null && button18 == null && button19 == null && button20 == null && button21 == null
-            && button22 == null && button23 == null) {
+    public boolean checkEmpty(LocalDate date, LocalTime start, LocalTime end) {
+        if (date == null || start == null || end == null) {
             showAlert(Alert.AlertType.ERROR, "", "Please fill in all the fields.");
             return false;
         } else {
@@ -104,11 +58,29 @@ public class RoomReservationController extends MainSceneController {
         }
     }
 
-    public void clickTimeslot() {
+    private List<LocalTime> initiateTimeslots() {
+        List<LocalTime> times = new ArrayList<>();
+        LocalTime n = LocalTime.of(0, 0);
 
+        for (int i = 0; i < 24; i++) {
+            times.add(n);
+            LocalTime add = LocalTime.of(1, 0);
+            n = n.plusHours(add.getHour());
+        }
+        return times;
+    }
+
+    private void loadTimeslots() {
+        fromTime.getItems().addAll(initiateTimeslots());
+        toTime.getItems().addAll(initiateTimeslots());
     }
 
     public void backToRoom() {
 
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        loadTimeslots();
     }
 }

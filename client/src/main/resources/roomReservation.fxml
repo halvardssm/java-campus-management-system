@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
@@ -11,174 +12,32 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="430.0"
-            minWidth="600.0" prefHeight="480.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1"
+            minWidth="600.0"
+            prefHeight="480.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="nl.tudelft.oopp.group39.controllers.RoomReservationController">
     <right>
         <AnchorPane BorderPane.alignment="CENTER">
             <children>
-                <AnchorPane scaleX="1.2" scaleY="1.2" translateX="-30.0" translateY="30.0" AnchorPane.topAnchor="0.0">
+                <AnchorPane scaleX="1.2" scaleY="1.2" translateX="-30.0" translateY="20.0" AnchorPane.topAnchor="0.0">
                     <children>
-                        <VBox fx:id="timeslotVBox" prefWidth="193.0" translateY="50.0" AnchorPane.bottomAnchor="-80.0"
-                              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <children>
-                                <Button fx:id="timeslotButton0" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="00:00 - 00:59" translateY="10.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton1" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="01:00 - 01:59" translateX="65.0" translateY="-8.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton2" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="02:00 - 02:59" translateX="130.0" translateY="-26.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton3" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="03:00 - 03:59" translateY="-18.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton4" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="04:00 - 04:59" translateX="65.0" translateY="-36.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton5" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="05:00 - 05:59" translateX="130.0" translateY="-54.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton6" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="06:00 - 06:59" translateY="-46.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton7" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="07:00 - 07:59" translateX="65.0" translateY="-64.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton8" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="08:00 - 08:59" translateX="130.0" translateY="-82.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton9" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="09:00 - 09:59" translateY="-74.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton10" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="10:00 - 10:59" translateX="65.0" translateY="-92.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton11" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="11:00 - 11:59" translateX="130.0" translateY="-110.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton12" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="12:00 - 12:59" translateY="-102.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton13" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="13:00 - 13:59" translateX="65.0" translateY="-120.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton14" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="14:00 - 14:59" translateX="130.0" translateY="-138.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton15" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="15:00 - 15:59" translateY="-130.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton16" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="16:00 - 16:59" translateX="65.0" translateY="-148.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton17" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="17:00 - 17:59" translateX="130.0" translateY="-166.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton18" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="18:00 - 18:59" translateY="-158.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton19" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="19:00 - 19:59" translateX="65.0" translateY="-176.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton20" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="20:00 - 20:59" translateX="130.0" translateY="-194.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton21" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="21:00 - 21:59" translateY="-186.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton22" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="22:00 - 22:59" translateX="65.0" translateY="-204.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="timeslotButton23" mnemonicParsing="false" onAction="#clickTimeslot"
-                                        text="23:00 - 23:59" translateX="130.0" translateY="-222.0">
-                                    <font>
-                                        <Font size="8.0"/>
-                                    </font>
-                                </Button>
-                                <Button fx:id="reserveRoom" mnemonicParsing="false" onAction="#reserveRoom"
-                                        onMouseClicked="#reserveRoom" style="-fx-background-color: #00A6D6;"
-                                        text="Reserve Room" textFill="WHITE" translateX="60.0" translateY="-200.0">
-                                    <font>
-                                        <Font size="15.0"/>
-                                    </font>
-                                </Button>
-                            </children>
-                        </VBox>
+                        <Button fx:id="reserveRoom" mnemonicParsing="false" onAction="#reserveRoom"
+                                onMouseClicked="#reserveRoom" style="-fx-background-color: #00A6D6;" text="Reserve Room"
+                                textFill="WHITE" translateX="30.0" translateY="255.0" AnchorPane.topAnchor="0.0">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                        </Button>
+                        <ComboBox fx:id="fromTime" prefWidth="80.0" AnchorPane.leftAnchor="1.0"
+                                  AnchorPane.topAnchor="57.0"/>
                         <DatePicker fx:id="date" layoutX="-19.0" layoutY="19.0" AnchorPane.rightAnchor="10.0"/>
                         <Label id="text" stylesheets="@roomReservation.css" text="Pick a date:" translateY="22.0"
                                AnchorPane.leftAnchor="-79.0"/>
-                        <Label id="text" stylesheets="@roomReservation.css" text="Pick your timeslot(s):"
-                               translateX="-34.0" translateY="60.0" AnchorPane.leftAnchor="-100.0"/>
+                        <Label id="text" stylesheets="@roomReservation.css" text="From:" translateX="-34.0"
+                               translateY="60.0" AnchorPane.leftAnchor="-14.0"/>
+                        <ComboBox fx:id="toTime" prefWidth="80.0" AnchorPane.leftAnchor="1.0"
+                                  AnchorPane.topAnchor="96.0"/>
+                        <Label id="text" stylesheets="@roomReservation.css" text="To:" AnchorPane.leftAnchor="-33.0"
+                               AnchorPane.topAnchor="99.0"/>
                     </children>
                 </AnchorPane>
             </children>

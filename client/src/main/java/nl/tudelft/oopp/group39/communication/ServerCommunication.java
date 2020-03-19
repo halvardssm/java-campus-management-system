@@ -72,6 +72,28 @@ public class ServerCommunication {
     }
 
     /**
+     * Adds a booking on the server.
+     *
+     * @return the body of a post request to the server.
+     */
+    public static String addBooking(
+        String date,
+        String startTime,
+        String endTime,
+        String user,
+        String room
+    ) {
+        HttpRequest.BodyPublisher newBooking = HttpRequest.BodyPublishers
+            .ofString("{\"date\": \"" + date + "\", \"startTime\":\"" + startTime
+                + "\", \"endTime\":\"" + endTime + "\", \"user\":\"" + user
+                + "\", \"room\":\"" + room + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().POST(newBooking)
+            .uri(URI.create(url + "booking/"))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    /**
      * Adds a building on the server.
      *
      * @return the body of a post request to the server.
@@ -108,6 +130,29 @@ public class ServerCommunication {
     }
 
     /**
+     * Updates bookings on the server.
+     *
+     * @return the body of a put request to the server.
+     */
+    public static String updateBooking(
+        String date,
+        String startTime,
+        String endTime,
+        String user,
+        String room,
+        String id
+    ) {
+        HttpRequest.BodyPublisher newBooking = HttpRequest.BodyPublishers
+            .ofString("{\"date\": \"" + date + "\", \"startTime\":\"" + startTime
+                + "\", \"endTime\":\"" + endTime + "\", \"user\":\"" + user
+                + "\", \"room\":\"" + room + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().PUT(newBooking)
+            .uri(URI.create(url + "booking/" + id))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    /**
      * Updates Rooms on the server.
      *
      * @return the body of a put request to the server.
@@ -130,7 +175,7 @@ public class ServerCommunication {
     /**
      * Updates buildings on the server.
      *
-     * @return the body of a post request to the server.
+     * @return the body of a put request to the server.
      */
     public static String updateBuilding(
         String name,
@@ -165,6 +210,15 @@ public class ServerCommunication {
     public static void removeRoom(String id) {
         HttpRequest request = HttpRequest.newBuilder().DELETE()
             .uri(URI.create(url + "room/" + id)).build();
+        httpRequest(request);
+    }
+
+    /**
+     * Removes a booking from the server.
+     */
+    public static void removeBooking(String id) {
+        HttpRequest request = HttpRequest.newBuilder().DELETE()
+            .uri(URI.create(url + "booking/" + id)).build();
         httpRequest(request);
     }
 
