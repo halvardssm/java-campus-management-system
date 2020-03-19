@@ -29,6 +29,13 @@ public class RoomReservationController extends MainSceneController implements In
     @FXML
     private ComboBox toTime;
 
+    /**
+     * Generates an alert when called.
+     *
+     * @param alertType
+     * @param title
+     * @param content
+     */
     public static void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -37,6 +44,11 @@ public class RoomReservationController extends MainSceneController implements In
         alert.showAndWait();
     }
 
+    /**
+     * Reserves a room and shows a confirmed alert if the action was successful
+     *
+     * @return
+     */
     @FXML
     private void reserveRoom() {
         LocalDate bookingDate = date.getValue();
@@ -49,6 +61,15 @@ public class RoomReservationController extends MainSceneController implements In
         System.out.println(bookingDate);
     }
 
+    /**
+     * Checks if the date, start and end fields are empty.
+     * If that's the case, the method will generate an error message and return false.
+     *
+     * @param date
+     * @param start
+     * @param end
+     * @return true or false depending on whether or not the date, start and end fields are filled in.
+     */
     public boolean checkEmpty(LocalDate date, LocalTime start, LocalTime end) {
         if (date == null || start == null || end == null) {
             showAlert(Alert.AlertType.ERROR, "", "Please fill in all the fields.");
@@ -58,6 +79,11 @@ public class RoomReservationController extends MainSceneController implements In
         }
     }
 
+    /**
+     * Initiates the timeslots for the ComboBoxes to load
+     *
+     * @return a list with LocalTimes from 00:00 to 23:00
+     */
     private List<LocalTime> initiateTimeslots() {
         List<LocalTime> times = new ArrayList<>();
         LocalTime n = LocalTime.of(0, 0);
@@ -70,11 +96,17 @@ public class RoomReservationController extends MainSceneController implements In
         return times;
     }
 
+    /**
+     * Loads the timeslots into the ComboBoxes
+     */
     private void loadTimeslots() {
         fromTime.getItems().addAll(initiateTimeslots());
         toTime.getItems().addAll(initiateTimeslots());
     }
 
+    /**
+     * Returns the user back to the room page when clicked on.
+     */
     public void backToRoom() {
 
     }
