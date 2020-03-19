@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -7,11 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.stage.Stage;
 import javax.swing.text.html.ImageView;
 
 
@@ -24,6 +29,10 @@ public class RoomReservationController extends MainSceneController implements In
     private Button reserveButton;
     @FXML
     private Button backButton;
+    @FXML
+    private Button loginButton;
+    @FXML
+    private Button homeButton;
     @FXML
     private ComboBox fromTime;
     @FXML
@@ -109,6 +118,42 @@ public class RoomReservationController extends MainSceneController implements In
      */
     public void backToRoom() {
 
+    }
+
+    /**
+     * Switches to login page when the Login button is clicked?
+     *
+     * @throws IOException
+     */
+    @FXML
+    private void switchLogin() throws IOException {
+        Stage currentStage = (Stage) loginButton.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("/login.fxml"));
+        currentStage.setScene(new Scene(root, 700, 600));
+    }
+
+    /**
+     * Switches to the homepage when the *SomeName* button is clicked?
+     *
+     * @throws IOException
+     */
+    @FXML
+    private void switchMain() throws IOException {
+        Stage currentStage = (Stage) homeButton.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("/mainScene.fxml"));
+        currentStage.setScene(new Scene(root, 700, 600));
+    }
+
+    /**
+     * Switches to room page when the back button is clicked?
+     *
+     * @throws IOException
+     */
+    @FXML
+    private void switchRoom() throws IOException {
+        Stage currentStage = (Stage) backButton.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("/roomScene.fxml"));
+        currentStage.setScene(new Scene(root, 700, 600));
     }
 
     @Override

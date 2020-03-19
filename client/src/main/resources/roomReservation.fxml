@@ -12,15 +12,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="430.0"
-            minWidth="600.0"
-            prefHeight="480.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1"
+            minWidth="600.0" prefHeight="480.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="nl.tudelft.oopp.group39.controllers.RoomReservationController">
     <right>
         <AnchorPane BorderPane.alignment="CENTER">
             <children>
                 <AnchorPane scaleX="1.2" scaleY="1.2" translateX="-30.0" translateY="20.0" AnchorPane.topAnchor="0.0">
                     <children>
-                        <Button fx:id="reserveRoom" mnemonicParsing="false" onAction="#reserveRoom"
+                        <Button fx:id="reserveButton" mnemonicParsing="false" onAction="#reserveRoom"
                                 onMouseClicked="#reserveRoom" style="-fx-background-color: #00A6D6;" text="Reserve Room"
                                 textFill="WHITE" translateX="30.0" translateY="255.0" AnchorPane.topAnchor="0.0">
                             <font>
@@ -47,18 +46,19 @@
         <AnchorPane prefHeight="50.0" prefWidth="250.0" style="-fx-background-color: #00A6D6;"
                     BorderPane.alignment="CENTER">
             <children>
-                <Hyperlink id="appName" fx:id="home" stylesheets="@roomReservation.css" text="SomeName" textFill="WHITE"
-                           translateX="10.0">
+                <Hyperlink id="appName" fx:id="home" onAction="#switchMain" stylesheets="@roomReservation.css"
+                           text="SomeName" textFill="WHITE" translateX="10.0">
                     <font>
                         <Font size="25.0"/>
                     </font>
                 </Hyperlink>
-                <Hyperlink id="loginButton" fx:id="login" alignment="CENTER_RIGHT" stylesheets="@roomReservation.css"
-                           text="Login" textFill="WHITE" translateY="4.0" AnchorPane.rightAnchor="9.0">
+                <Button id="loginButton" fx:id="loginButton" mnemonicParsing="false" onAction="#switchLogin"
+                        style="-fx-background-color: #00A6D6;" stylesheets="@roomReservation.css" text="Login"
+                        textFill="WHITE" translateY="2.0" AnchorPane.rightAnchor="9.0">
                     <font>
                         <Font size="22.0"/>
                     </font>
-                </Hyperlink>
+                </Button>
             </children>
         </AnchorPane>
     </top>
@@ -88,7 +88,7 @@
     <bottom>
         <AnchorPane style="-fx-background-color: #00A6D6;" styleClass="bar" BorderPane.alignment="CENTER">
             <children>
-                <Button id="backButton" fx:id="backButton" mnemonicParsing="false" onAction="#backToRoom"
+                <Button id="backButton" fx:id="backButton" mnemonicParsing="false" onAction="#switchRoom"
                         stylesheets="@roomReservation.css" text="◀ Back" translateY="-2.0" AnchorPane.leftAnchor="10.0"
                         AnchorPane.topAnchor="5.0">
                     <font>
