@@ -195,10 +195,10 @@ public class ServerCommunication {
     }
 
     public static String orderFoodBike(String timeOfPickup, JsonNode user, String reservable) {
-        String body = "{\"timeOfPickup\": \"" + timeOfPickup + "\", \"user\":" + user + ", \"reservables\":" + reservable + "}";
+        String body = "{\"timeOfPickup\": \"" + timeOfPickup + "\", \"user\":" + user + ", \"reservationAmounts\":" + reservable + "}";
         System.out.println(body);
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString(body);
-        HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding).uri(URI.create(url + "reservation/")).header("Content-Type", "application/json").build();
+        HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding).uri(URI.create(url + "reservation")).header("Content-Type", "application/json").build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -216,6 +216,11 @@ public class ServerCommunication {
 
     public static String getAllBikes() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "bike")).build();
+        return httpRequest(request);
+    }
+
+    public static String getReservations() {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "reservation")).build();
         return httpRequest(request);
     }
 
@@ -289,15 +294,16 @@ public class ServerCommunication {
             MainSceneController.jwt = jwtToken;
             MainSceneController.loggedIn = true;
             MainSceneController.username = username;
-            MainSceneController.isAdmin = isAdmin(username);
+            MainSceneController.role = getRole(username);
             return "Logged in";
         }
     }
 
-    public static boolean isAdmin(String username) throws JsonProcessingException {
+    public static String getRole(String username) throws JsonProcessingException {
         String user = getUser(username);
         JsonNode userjson = mapper.readTree(user).get("body");
+        MainSceneController.user = userjson;
         String role = userjson.get("role").asText();
-        return role.equals("ADMIN");
+        return role;
     }
 }

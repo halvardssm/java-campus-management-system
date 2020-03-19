@@ -3,8 +3,7 @@ package nl.tudelft.oopp.group39.auth.controllers;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.HashSet;
-import nl.tudelft.oopp.group39.auth.entities.AuthRequest;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.tudelft.oopp.group39.auth.exceptions.UnauthorizedException;
 import nl.tudelft.oopp.group39.auth.models.AuthRequest;

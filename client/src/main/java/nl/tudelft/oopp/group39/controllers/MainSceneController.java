@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -20,12 +22,12 @@ public class MainSceneController {
 
     protected ObjectMapper mapper = new ObjectMapper();
 
-
     public static boolean loggedIn = false;
     public static String jwt;
     public static boolean sidebarShown = false;
-    public static boolean isAdmin = false;
+    public static String role;
     public static String username;
+    public static JsonNode user;
 
     @FXML
     public VBox sidebar;
@@ -121,15 +123,14 @@ public class MainSceneController {
         changeTopBtn();
     }
 
-    public void getBuildingsList() {
+    public void getBuildingsList() throws JsonProcessingException {
         String buildingString = ServerCommunication.getBuildings();
         System.out.println(buildingString);
 
-        JsonObject body = ((JsonObject) JsonParser.parseString(buildingString));
-        JsonArray buildingArray = body.getAsJsonArray("body");
+        ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
 
-        for (JsonElement building : buildingArray) {
-            String buildingName = ((JsonObject) building).get("name").getAsString();
+        for (JsonNode building : body) {
+            String buildingName = building.get("name").asText();
             buildinglist.getItems().add(buildingName);
         }
     }
@@ -149,7 +150,7 @@ public class MainSceneController {
         System.out.println(loggedIn);
 
         if (loggedIn) {
-            MenuButton myaccount = new MenuButton("My Account");
+            MenuButton myaccount = new MenuButton(username);
             MenuItem myres = new MenuItem("My Reservations");
             MenuItem myacc = new MenuItem("My Account");
             MenuItem logout = new MenuItem("Logout");
@@ -162,7 +163,7 @@ public class MainSceneController {
                 }
             });
             myaccount.getItems().addAll(myres, myacc, logout);
-            if (isAdmin) {
+            if (role.equals("ADMIN")) {
                 myaccount.getItems().add(admin);
             }
             topbar.getChildren().add(myaccount);

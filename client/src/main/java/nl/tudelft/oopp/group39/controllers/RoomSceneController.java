@@ -95,11 +95,10 @@ public class RoomSceneController extends MainSceneController {
     }
 
     public void getAllRooms() {
-        mapper.configure(
-            DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         rooms.getChildren().clear();
         try {
-            String roomsString = ServerCommunication.getAllRooms();
+            String roomsString = ServerCommunication.getRooms();
             String testString = "{\"body\":[{\"id\":1,\"capacity\":10,\"name\":\"Ampere\",\"onlyStaff\":true,\"description\":\"test1\",\"facilities\":[],\"events\":[],\"bookings\":[],\"building\":1},{\"id\":2,\"capacity\":6,\"name\":\"test2\",\"onlyStaff\":true,\"description\":\"test2\",\"facilities\":[{\"id\":1,\"description\":\"smartboard\"}],\"events\":[],\"bookings\":[],\"building\":1}],\"error\":null}";
 
             ArrayNode body = (ArrayNode) mapper.readTree(testString).get("body");

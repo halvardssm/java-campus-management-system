@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.room.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
 import java.util.Objects;
@@ -67,7 +68,7 @@ public class Room {
     public Room() {
     }
 
-    public Room(long buildingId, String name, int capacity, boolean onlyStaff, String description, Set<Facility> facilities, Set<Booking> bookings) {
+    public Room(long buildingId, int capacity, String name, boolean onlyStaff, String description, Set<Facility> facilities, Set<Booking> bookings) {
         this.buildingId = buildingId;
         this.name = name;
         this.capacity = capacity;

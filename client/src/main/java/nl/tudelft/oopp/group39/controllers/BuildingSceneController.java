@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class BuildingSceneController extends MainSceneController implements Init
     public void refreshBuildings() {
         System.out.println(flowPane);
         flowPane.getChildren().clear();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
             String buildingString = ServerCommunication.getBuildings();
             System.out.println(buildingString);

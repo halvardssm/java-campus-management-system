@@ -1,9 +1,9 @@
 package nl.tudelft.oopp.group39.controllers;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.models.Bike;
 
 public class BikeSceneController extends MainSceneController {
 
@@ -47,26 +48,27 @@ public class BikeSceneController extends MainSceneController {
 
     private int cartItems = 0;
 
-    private List<Integer> bikeIds = new ArrayList<>();
+    private List<Bike> bikes = new ArrayList<>();
 
-    public void getBikes() {
+    public void getBikes() throws JsonProcessingException {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         bikelist.getChildren().clear();
-        String teststring = "{\"body\": [{\"id\":1, \"name\":\"bike1\", \"price\":\"2.35\"}, {\"id\":2, \"name\":\"bike2\", \"price\":\"2.65\"}], \"error\": null}";
-        JsonObject body = ((JsonObject) JsonParser.parseString(teststring));
-        JsonArray bikeArray = body.getAsJsonArray("body");
-        for (JsonElement bikeElement : bikeArray) {
-            String bikename = ((JsonObject) bikeElement).get("name").getAsString();
-            Double price = ((JsonObject) bikeElement).get("price").getAsDouble();
-            int id = ((JsonObject) bikeElement).get("id").getAsInt();
+        String bikeString = ServerCommunication.getAllBikes();
+        System.out.println(bikeString);
+        //String teststring = "{\"body\": [{\"id\":1, \"name\":\"bike1\", \"price\":\"2.35\"}, {\"id\":2, \"name\":\"bike2\", \"price\":\"2.65\"}], \"error\": null}";
+        ArrayNode body = (ArrayNode) mapper.readTree(bikeString).get("body");
+        for (JsonNode bikeElement : body) {
+            String bikeAsString = mapper.writeValueAsString(bikeElement);
+            Bike bikeObj = mapper.readValue(bikeAsString, Bike.class);
             HBox bike = new HBox(20);
             bike.getStyleClass().add("fooditem");
             bike.setPadding(new Insets(0, 20, 0, 20));
             bike.setPrefSize(300, 60);
             bike.setAlignment(Pos.CENTER_LEFT);
-            Label name = new Label(bikename);
-            Label priceLabel = new Label(price.toString() + "/hour");
+            Label name = new Label(bikeObj.getBikeType());
+            Label priceLabel = new Label(bikeObj.getPrice() + "/hour");
             Button addToCart = new Button("+");
-            addToCart.setOnAction(event -> addToCart(bikename, price, id));
+            addToCart.setOnAction(event -> addToCart(bikeObj));
             Region region = new Region();
             HBox.setHgrow(region, Priority.ALWAYS);
             bike.getChildren().add(name);
@@ -77,29 +79,29 @@ public class BikeSceneController extends MainSceneController {
         }
     }
 
-    public void addToCart(String name, double price, int id) {
-        if (cartlist.lookup("#" + id) == null) {
+    public void addToCart(Bike bikeObj) {
+        if (cartlist.lookup("#" + bikeObj.getId()) == null) {
             HBox bike = new HBox(10);
             bike.setPadding(new Insets(15, 15, 15, 0));
             Spinner<Integer> amount = new Spinner<>();
             amount.setPrefWidth(50);
-            amount.setId(String.valueOf(id));
+            amount.setId(String.valueOf(bikeObj.getId()));
             SpinnerValueFactory<Integer> valueFactory =
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, 1);
             amount.setValueFactory(valueFactory);
             amount.valueProperty().addListener(
-                (obs, oldValue, newValue) -> updateCart(id, price)
+                (obs, oldValue, newValue) -> updateCart(bikeObj.getId(), bikeObj.getPrice())
             );
-            Label priceLabel = new Label("$" + price + "/hour");
-            priceLabel.setId(id + "price");
+            Label priceLabel = new Label("$" + bikeObj.getPrice() + "/hour");
+            priceLabel.setId(bikeObj.getId() + "price");
             Button delete = new Button();
             ImageView deletebtn = new ImageView(new Image("/icons/bin-icon.png"));
             deletebtn.setFitHeight(20);
             deletebtn.setFitWidth(20);
             delete.setGraphic(deletebtn);
             delete.setStyle("-fx-background-color: none");
-            delete.setOnAction(event -> deleteFromCart(id));
-            Label bikename = new Label(name);
+            delete.setOnAction(event -> deleteFromCart(bikeObj.getId()));
+            Label bikename = new Label(bikeObj.getBikeType());
             Region region = new Region();
             HBox.setHgrow(region, Priority.ALWAYS);
             bike.getChildren().add(bikename);
@@ -110,12 +112,12 @@ public class BikeSceneController extends MainSceneController {
             cartlist.getChildren().add(bike);
             cartItems++;
             checkEmptyCart();
-            bikeIds.add(id);
+            bikes.add(bikeObj);
         } else {
-            Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + id);
+            Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + bikeObj.getId());
             Integer value = amount.getValue() + 1;
             amount.getValueFactory().setValue(value);
-            updateCart(id, price);
+            updateCart(bikeObj.getId(), bikeObj.getPrice());
         }
     }
 
@@ -182,19 +184,19 @@ public class BikeSceneController extends MainSceneController {
             System.out.println(dateTime);
 
             String duration = durationPicker.getValue().toString();
-            String bikes = "[";
-            for (int i = 0; i < bikeIds.size(); i++) {
-                Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + bikeIds.get(i));
+            String bikeString = "[";
+            for (int i = 0; i < bikes.size(); i++) {
+                Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + bikes.get(i));
                 int foodamount = amount.getValue();
-                if (i == bikeIds.size() - 1) {
-                    bikes = bikes + "{" + bikeIds.get(i) + ":" + foodamount + "}]";
+                if (i == bikes.size() - 1) {
+                    bikeString += "{" + bikes.get(i) + ":" + foodamount + "}]";
                 } else {
-                    bikes = bikes + "{" + bikeIds.get(i) + ":" + foodamount + "}, ";
+                    bikeString += "{" + bikes.get(i) + ":" + foodamount + "}, ";
                 }
             }
             System.out.println(bikes);
-            JsonObject user = MainSceneController.user;
-            String result = ServerCommunication.orderFoodBike(dateTime, user, bikes);
+            JsonNode user = MainSceneController.user;
+            String result = ServerCommunication.orderFoodBike(dateTime, user, bikeString);
             createAlert(result);
         }
     }

@@ -1,15 +1,20 @@
-package nl.tudelft.oopp.group39.entities;
+package nl.tudelft.oopp.group39.models;
 
-import com.google.gson.JsonObject;
+import com.fasterxml.jackson.databind.JsonNode;
+
 
 public class Food {
-    private int id;
+    private Integer id;
     private String name;
     private String description;
     private double price;
-    private JsonObject building;
+    private JsonNode building;
 
-    public Food(int id, String name, String desc, double price, JsonObject building) {
+    public Food() {
+
+    }
+
+    public Food(Integer id, String name, String desc, double price, JsonNode building) {
         this.id = id;
         this.name = name;
         this.description = desc;
@@ -33,7 +38,11 @@ public class Food {
         return price;
     }
 
-    public JsonObject getBuilding() {
+    public JsonNode getBuilding() {
         return building;
+    }
+
+    public long getBuildingId() {
+        return this.getBuilding().get("id").asInt();
     }
 }
