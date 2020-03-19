@@ -24,7 +24,7 @@ public class RoomDao {
      * @param filters filters retrieved
      * @return List rooms
      */
-    public List<Room> roomFilter(Map<String,Object> filters) {
+    public List<Room> roomFilter(Map<String,String> filters) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Room> rcq = cb.createQuery(Room.class);
 
@@ -40,18 +40,18 @@ public class RoomDao {
 
             switch (key) {
                 case "capacity": {
-                    Integer cap = Integer.parseInt((String) filters.get(key));
+                    Integer cap = Integer.parseInt(filters.get(key));
                     p = cb.greaterThanOrEqualTo(room.get(key), cap);
                     break;
                 }
                 case "buildingId":
                 case "id": {
-                    Long id = Long.parseLong((String) filters.get(key));
+                    Long id = Long.parseLong(filters.get(key));
                     p = cb.greaterThanOrEqualTo(room.get(key), id);
                     break;
                 }
                 case "onlyStaff": {
-                    boolean staff = Boolean.parseBoolean((String) filters.get(key));
+                    boolean staff = Boolean.parseBoolean(filters.get(key));
                     p = cb.equal(room.get(key), staff);
                     break;
                 }

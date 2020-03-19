@@ -15,11 +15,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.HashSet;
-import java.util.Set;
-import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
-import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.event.services.EventService;
@@ -40,21 +37,21 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 class EventControllerTest {
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static Event testEvent = new Event(
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final Event testEvent = new Event(
         EventTypes.EVENT,
-        LocalDate.now(ZoneId.of("Europe/Paris")),
-        LocalDate.now(ZoneId.of("Europe/Paris")).plusDays(1),
+        LocalDate.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)),
+        LocalDate.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)).plusDays(1),
         null
     );
-    Set<Booking> bookings = new HashSet<>();
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",
         "test",
         null,
         Role.ADMIN,
-        bookings
+        null,
+        null
     );
     private String jwt;
 
@@ -100,7 +97,7 @@ class EventControllerTest {
     @Test
     void deleteAndCreateEvent() throws Exception {
         mockMvc.perform(delete(REST_MAPPING + "/" + testEvent.getId())
-            .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
+                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
 
@@ -109,9 +106,9 @@ class EventControllerTest {
         String json = objectMapper.writeValueAsString(testEvent);
 
         mockMvc.perform(post(REST_MAPPING)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(json)
-            .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json)
+                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.body.type", is(EventTypes.EVENT.name())))
             .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartDate().toString())))
@@ -142,9 +139,9 @@ class EventControllerTest {
         String json = objectMapper.writeValueAsString(testEvent);
 
         mockMvc.perform(put(REST_MAPPING + "/" + testEvent.getId())
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(json)
-            .header(HttpHeaders.AUTHORIZATION, AuthController.HEADER_BEARER + jwt))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json)
+                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
             .andExpect(jsonPath("$.body.type", is(EventTypes.HOLIDAY.name())))
@@ -158,9 +155,11 @@ class EventControllerTest {
 
     @Test
     void testError() {
-        assertEquals("Target object must not be null; nested exception is "
+        assertEquals(
+            "Target object must not be null; nested exception is "
                 + "java.lang.IllegalArgumentException: Target object must not be null",
-            eventController.createEvent(null).getBody().getError());
+            eventController.createEvent(null).getBody().getError()
+        );
 
         assertEquals("Event 0 not found", eventController.readEvent(0).getBody().getError());
 

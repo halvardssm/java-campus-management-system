@@ -39,7 +39,7 @@ public class RoomController {
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listRooms(
         @RequestParam Map<String,
-            Object> allParams
+            String> allParams
     ) {
         List<Room> result = roomDao.roomFilter(allParams);
         return RestResponse.create(result);
@@ -66,10 +66,8 @@ public class RoomController {
         return RestResponse.create(service.updateRoom(updated, id));
     }
 
-    /**TODO.
-     *
-     * @param id id
-     * @return response
+    /**
+     * Doc. TODO Sven
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteRoom(@PathVariable int id) {
