@@ -33,6 +33,12 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
+    /**
+     * Retrieves user from the server based on username
+     *
+     * @param username username of the user that needs to be retrieved
+     * @return the body of a get request to the server.
+     */
     public static String getUser(String username) {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + user + username)).build();
         return httpRequest(request);
@@ -184,11 +190,22 @@ public class ServerCommunication {
         httpRequest(request);
     }
 
+    /**
+     * Retrieves rooms from the server based on building id
+     *
+     * @param buildingId id of the building
+     * @return the body of a get request to the server.
+     */
     public static String getRooms(long buildingId) {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + room + buildingId)).build();
         return httpRequest(request);
     }
 
+    /**
+     * Retrieves all rooms from the server
+     *
+     * @return the body of a get request to the server.
+     */
     public static String getAllRooms() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + room)).build();
         return httpRequest(request);
@@ -214,6 +231,11 @@ public class ServerCommunication {
         return response.body();
     }
 
+    /**
+     * Creates user on the server
+     *
+     * @return the body of a post request to the server.
+     */
     public static String addUser(String netID, String email, String password, String role) {
         HttpRequest.BodyPublisher newUser = HttpRequest.BodyPublishers.ofString("{\"username\": \"" + netID + "\", \"email\":\"" + email + "\", \"password\":\"" + password + "\", \"roles\":\"" + List.of(role) + "\"}");
         HttpRequest request = HttpRequest.newBuilder()
@@ -238,6 +260,11 @@ public class ServerCommunication {
 
     }
 
+    /**
+     * User login
+     *
+     * @return the body of a post request to the server.
+     */
     public static String userLogin(String username, String pwd) throws JsonProcessingException {
         HttpRequest.BodyPublisher user = HttpRequest.BodyPublishers.ofString("{\"username\": \"" + username + "\", \"password\":\"" + pwd + "\"}");
         HttpRequest request = HttpRequest.newBuilder()
@@ -269,6 +296,11 @@ public class ServerCommunication {
         }
     }
 
+    /**
+     * Checks if user is an admin
+     *
+     * @return boolean: true if user is admin, false otherwise
+     */
     public static boolean isAdmin(String username) throws JsonProcessingException {
         String user = getUser(username);
         JsonNode userjson = mapper.readTree(user).get("body");
