@@ -31,10 +31,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class EventControllerTest {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -89,9 +91,7 @@ class EventControllerTest {
             .andExpect(jsonPath("$.body", hasSize(1)))
             .andExpect(jsonPath("$.body[0].type", is(EventTypes.EVENT.name())))
             .andExpect(jsonPath("$.body[0].startDate", is(testEvent.getStartDate().toString())))
-            .andExpect(jsonPath("$.body[0].endDate", is(testEvent.getEndDate().toString())))
-            .andExpect(jsonPath("$.body[0].rooms").isArray())
-            .andExpect(jsonPath("$.body[0].rooms", hasSize(0)));
+            .andExpect(jsonPath("$.body[0].endDate", is(testEvent.getEndDate().toString())));
     }
 
     @Test
@@ -113,8 +113,6 @@ class EventControllerTest {
             .andExpect(jsonPath("$.body.type", is(EventTypes.EVENT.name())))
             .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartDate().toString())))
             .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndDate().toString())))
-            .andExpect(jsonPath("$.body.rooms").isArray())
-            .andExpect(jsonPath("$.body.rooms", hasSize(0)))
             .andDo((event) -> {
                 String responseString = event.getResponse().getContentAsString();
                 JsonNode productNode = new ObjectMapper().readTree(responseString);
@@ -128,9 +126,7 @@ class EventControllerTest {
             .andExpect(jsonPath("$.body").isMap())
             .andExpect(jsonPath("$.body.type", is(EventTypes.EVENT.name())))
             .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartDate().toString())))
-            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndDate().toString())))
-            .andExpect(jsonPath("$.body.rooms").isArray())
-            .andExpect(jsonPath("$.body.rooms", hasSize(0)));
+            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndDate().toString())));
     }
 
     @Test
@@ -146,9 +142,7 @@ class EventControllerTest {
             .andExpect(jsonPath("$.body").isMap())
             .andExpect(jsonPath("$.body.type", is(EventTypes.HOLIDAY.name())))
             .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartDate().toString())))
-            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndDate().toString())))
-            .andExpect(jsonPath("$.body.rooms").isArray())
-            .andExpect(jsonPath("$.body.rooms", hasSize(0)));
+            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndDate().toString())));
 
         testEvent.setType(EventTypes.EVENT);
     }

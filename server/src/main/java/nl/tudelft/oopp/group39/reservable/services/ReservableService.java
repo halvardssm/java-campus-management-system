@@ -33,11 +33,10 @@ public class ReservableService {
      * @return reservable by id {@link Reservable}.
      */
     public Reservable readReservable(Integer id) throws NotFoundException {
-        return reservableRepository.findById(id).orElseThrow(()
-                                                                 -> new NotFoundException(String.format(
-            EXCEPTION_RESERVABLE_NOT_FOUND,
-            id
-        )));
+        return reservableRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException(
+                String.format(EXCEPTION_RESERVABLE_NOT_FOUND, id)
+            ));
     }
 
     /**

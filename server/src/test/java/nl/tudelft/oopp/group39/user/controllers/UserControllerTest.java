@@ -25,10 +25,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class UserControllerTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final User testUser = new User(
@@ -72,15 +74,14 @@ class UserControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
 
-        String json = objectMapper.writeValueAsString(testUser);
+        String json = "{\"username\":\"test\",\"email\":\"test@tudelft.nl\",\"password\":\"test\"}";
 
         mockMvc.perform(post(REST_MAPPING)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(json))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.body.username", is(testUser.getUsername())))
-            .andExpect(jsonPath("$.body.email", is(testUser.getEmail())))
-            .andExpect(jsonPath("$.body.password").exists());
+            .andExpect(jsonPath("$.body.email", is(testUser.getEmail())));
     }
 
     @Test
@@ -101,8 +102,7 @@ class UserControllerTest {
                             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body.username", is(testUser.getUsername())))
-            .andExpect(jsonPath("$.body.email", is(testUser.getEmail())))
-            .andExpect(jsonPath("$.body.password").exists());
+            .andExpect(jsonPath("$.body.email", is(testUser.getEmail())));
     }
 
     @Test

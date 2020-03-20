@@ -158,9 +158,9 @@ public class DbSeeder {
     private void initBikes() {
         Building building = buildingService.listBuildings().get(0);
 
-        Bike bike1 = new Bike(BikeType.CITY, null, building, 5.6, null);
-        Bike bike2 = new Bike(BikeType.CITY, null, building, 6.7, null);
-        Bike bike3 = new Bike(BikeType.CITY, null, building, 7.8, null);
+        Bike bike1 = new Bike(BikeType.CITY, building, 5.6, null);
+        Bike bike2 = new Bike(BikeType.CITY, building, 6.7, null);
+        Bike bike3 = new Bike(BikeType.CITY, building, 7.8, null);
 
         bikeService.createBike(bike1);
         bikeService.createBike(bike2);
@@ -187,6 +187,8 @@ public class DbSeeder {
 
         Reservation reservation = reservationService.createReservation(new Reservation(
             LocalDateTime.now(),
+            LocalDateTime.now().plusHours(2),
+            roomService.listRooms().get(0),
             userService.readUser("admin"),
             null
         ));

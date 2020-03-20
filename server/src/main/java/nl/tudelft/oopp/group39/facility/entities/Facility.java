@@ -3,7 +3,7 @@ package nl.tudelft.oopp.group39.facility.entities;
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
 import java.util.Objects;
@@ -23,10 +23,12 @@ import nl.tudelft.oopp.group39.room.entities.Room;
     generator = ObjectIdGenerators.IntSequenceGenerator.class,
     property = Facility.COL_ID
 )
+@JsonIgnoreProperties(allowSetters = true, value = {Facility.COL_ROOMS})
 public class Facility {
     public static final String TABLE_NAME = "facilities";
     public static final String MAPPED_NAME = "facility";
     public static final String COL_ID = "id";
+    public static final String COL_ROOMS = "rooms";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +37,6 @@ public class Facility {
     private String description;
 
     @ManyToMany(mappedBy = Facility.TABLE_NAME, fetch = FetchType.LAZY)
-    @JsonIgnore
     private Set<Room> rooms = new HashSet<>();
 
     public Facility() {

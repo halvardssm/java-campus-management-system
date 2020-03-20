@@ -5,12 +5,12 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReservationDTO {
+public class ReservationDto {
     private LocalDateTime timeOfPickup;
     private LocalDateTime timeOfDelivery;
     private String user;
     private Integer room;
-    private Set<ReservationAmountDTO> reservationAmounts;
+    private Set<ReservationAmountDto> reservationAmounts;
 
     public LocalDateTime getTimeOfPickup() {
         return timeOfPickup;
@@ -44,11 +44,11 @@ public class ReservationDTO {
         this.room = room;
     }
 
-    public Set<ReservationAmountDTO> getReservationAmounts() {
+    public Set<ReservationAmountDto> getReservationAmounts() {
         return reservationAmounts;
     }
 
-    public void setReservationAmounts(Set<ReservationAmountDTO> reservationAmounts) {
+    public void setReservationAmounts(Set<ReservationAmountDto> reservationAmounts) {
         this.reservationAmounts = reservationAmounts;
     }
 }

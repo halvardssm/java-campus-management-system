@@ -2,7 +2,7 @@ package nl.tudelft.oopp.group39.booking.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -25,10 +25,16 @@ import nl.tudelft.oopp.group39.user.entities.User;
     generator = ObjectIdGenerators.PropertyGenerator.class,
     property = Booking.COL_ID
 )
+@JsonIgnoreProperties(allowSetters = true, value = {
+    Booking.COL_USER,
+    Booking.COL_ROOM
+})
 public class Booking {
     public static final String TABLE_NAME = "bookings";
     public static final String MAPPED_NAME = "booking";
     public static final String COL_ID = "id";
+    public static final String COL_USER = "user";
+    public static final String COL_ROOM = "room";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,11 +47,9 @@ public class Booking {
     private LocalTime endTime;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = User.MAPPED_NAME)
-    @JsonIgnore
     private User user;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Room.MAPPED_NAME)
-    @JsonIgnore
     private Room room;
 
     public Integer getId() {

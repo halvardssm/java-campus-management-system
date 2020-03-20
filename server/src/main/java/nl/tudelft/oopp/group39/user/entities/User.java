@@ -4,6 +4,7 @@ import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.sql.Blob;
 import java.util.Collection;
@@ -34,6 +35,13 @@ import org.springframework.security.core.userdetails.UserDetails;
     generator = ObjectIdGenerators.PropertyGenerator.class,
     property = User.COL_USERNAME
 )
+@JsonIgnoreProperties(allowSetters = true, value = {
+    User.COL_BOOKINGS,
+    User.COL_PASSWORD,
+    User.COL_IMAGE,
+    User.COL_ROLE,
+    User.COL_RESERVATIONS
+})
 public class User implements UserDetails {
     public static final String TABLE_NAME = "users";
     public static final String MAPPED_NAME = "user";
@@ -43,26 +51,21 @@ public class User implements UserDetails {
     public static final String COL_IMAGE = "image";
     public static final String COL_ROLE = "role";
     public static final String COL_BOOKINGS = "bookings";
+    public static final String COL_RESERVATIONS = "reservations";
 
     @Id
     private String username;
-    @JsonIgnore
     private String email;
-    @JsonIgnore
     private String password;
     @Lob
     @Basic(fetch = FetchType.EAGER)
     @LazyGroup("lobs")
-    @JsonIgnore
     private Blob image;
     @Enumerated(EnumType.STRING)
-    @JsonIgnore
     private Role role;
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
-    @JsonIgnore
     private Set<Booking> bookings = new HashSet<>();
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
-    @JsonIgnore
     private Set<Reservation> reservations = new HashSet<>();
 
     public User() {

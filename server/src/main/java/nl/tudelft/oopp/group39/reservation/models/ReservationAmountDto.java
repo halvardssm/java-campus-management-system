@@ -3,7 +3,7 @@ package nl.tudelft.oopp.group39.reservation.models;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReservationAmountDTO {
+public class ReservationAmountDto {
     private Integer amount;
     private Integer reservable;
 

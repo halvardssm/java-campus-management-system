@@ -4,7 +4,7 @@ import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -37,10 +37,12 @@ import org.springframework.lang.Nullable;
     generator = ObjectIdGenerators.PropertyGenerator.class,
     property = Event.COL_ID
 )
+@JsonIgnoreProperties(allowSetters = true, value = {Event.COL_ROOMS})
 public class Event {
     public static final String TABLE_NAME = "events";
     public static final String MAPPED_NAME = "event";
     public static final String COL_ID = "id";
+    public static final String COL_ROOMS = "rooms";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,7 +63,6 @@ public class Event {
         inverseJoinColumns = {
             @JoinColumn(name = Room.TABLE_NAME, referencedColumnName = Room.COL_ID)
         })
-    @JsonIgnore
     private Set<Room> rooms = new HashSet<>();
 
     public Event() {

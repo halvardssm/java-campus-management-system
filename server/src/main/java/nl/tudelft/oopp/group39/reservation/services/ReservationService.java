@@ -7,8 +7,8 @@ import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservable.services.ReservableService;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
-import nl.tudelft.oopp.group39.reservation.models.ReservationAmountDTO;
-import nl.tudelft.oopp.group39.reservation.models.ReservationDTO;
+import nl.tudelft.oopp.group39.reservation.models.ReservationAmountDto;
+import nl.tudelft.oopp.group39.reservation.models.ReservationDto;
 import nl.tudelft.oopp.group39.reservation.repositories.ReservationRepository;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
@@ -68,7 +68,7 @@ public class ReservationService {
      *
      * @return the created reservation {@link Reservation}.
      */
-    public Reservation createReservation(ReservationDTO reservation)
+    public Reservation createReservation(ReservationDto reservation)
         throws IllegalArgumentException, NotFoundException {
         User user = userService.readUser(reservation.getUser());
         Room room = roomService.readRoom(reservation.getRoom());
@@ -82,7 +82,7 @@ public class ReservationService {
         );
         Reservation reservation2 = reservationRepository.save(reservation1);
 
-        for (ReservationAmountDTO reservationAmountDto : reservation.getReservationAmounts()) {
+        for (ReservationAmountDto reservationAmountDto : reservation.getReservationAmounts()) {
             Reservable reservable
                 = reservableService.readReservable(reservationAmountDto.getReservable());
 
