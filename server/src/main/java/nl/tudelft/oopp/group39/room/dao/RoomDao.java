@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.room.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -10,6 +11,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import org.springframework.stereotype.Component;
 
@@ -27,13 +29,11 @@ public class RoomDao {
     public List<Room> roomFilter(Map<String,String> filters) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Room> rcq = cb.createQuery(Room.class);
-
         Root<Room> room = rcq.from(Room.class);
 
         Set<String> keys = filters.keySet();
 
-
-        Predicate pall = null;
+        Predicate pall = cb.conjunction();
 
         for (String key : keys) {
             Predicate p;
@@ -56,8 +56,27 @@ public class RoomDao {
                     break;
                 }
 
-                //TODO
-                case "facilities":
+                case "facilities": {
+
+                    List<Integer> fvals = new ArrayList<>();
+
+                    for (String val: (filters.get(key)).split(",")) {
+                        fvals.add(Integer.parseInt(val));
+                    }
+
+                    CriteriaQuery<Facility> facq = cb.createQuery(Facility.class);
+                    Root<Facility> facility = facq.from(Facility.class);
+
+                    facq.select(facility.get(Room.TABLE_NAME));
+                    facq.where(facility.get(Facility.COL_ID).in(fvals));
+
+                    TypedQuery<Facility> nestq = em.createQuery(facq);
+
+                    List<Facility> test = nestq.getResultList();
+
+                    p = room.in(test);
+                    break;
+                }
 
                 case "bookings": {
 
@@ -72,11 +91,9 @@ public class RoomDao {
                     break;
             }
 
-            pall = pall == null ? p : cb.and(p, pall);
-
-            rcq = rcq.where(pall);
-
+            pall = cb.and(p, pall);
         }
+        rcq = rcq.where(pall);
 
         TypedQuery<Room> query = em.createQuery(rcq);
         return query.getResultList();
