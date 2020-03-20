@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
@@ -103,6 +104,7 @@ public class MainSceneController {
         controller.changeTopBtn();
     }
 
+
     public void goToBikeRentalScene() throws IOException {
         BikeSceneController controller = (BikeSceneController) UsersDisplay.sceneControllerHandler("/bikeRentalView.fxml");
         controller.changeTopBtn();
@@ -123,18 +125,6 @@ public class MainSceneController {
         changeTopBtn();
     }
 
-    public void getBuildingsList() throws JsonProcessingException {
-        String buildingString = ServerCommunication.getBuildings();
-        System.out.println(buildingString);
-
-        ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
-
-        for (JsonNode building : body) {
-            String buildingName = building.get("name").asText();
-            buildinglist.getItems().add(buildingName);
-        }
-    }
-
 
     public void getFacilitiesButton() {
         createAlert(null, ServerCommunication.getFacilities());
@@ -142,6 +132,19 @@ public class MainSceneController {
 
     public void getUsersButton() {
         createAlert(ServerCommunication.getUsers());
+    }
+
+    public void getBuildingsList() throws JsonProcessingException {
+        String buildingString = ServerCommunication.getBuildings();
+        System.out.println(buildingString);
+
+        ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
+
+        for (JsonNode building : body) {
+            Label buildingName = new Label(building.get("name").asText());
+            buildingName.setId(building.get("id").asText());
+            buildinglist.getItems().add(buildingName);
+        }
     }
 
     public void changeTopBtn() {
@@ -163,9 +166,9 @@ public class MainSceneController {
                 }
             });
             myaccount.getItems().addAll(myres, myacc, logout);
-            if (role.equals("ADMIN")) {
-                myaccount.getItems().add(admin);
-            }
+//            if (role.equals("ADMIN")) {
+//                myaccount.getItems().add(admin);
+//            }
             topbar.getChildren().add(myaccount);
             topbar.getChildren().remove(topbtn);
         } else {

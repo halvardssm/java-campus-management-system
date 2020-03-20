@@ -182,29 +182,36 @@ public class BikeSceneController extends MainSceneController {
         } else {
             LocalDate date = datePicker.getValue();
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
             String time = timePicker.getValue().toString();
-            String dateTime = dateTimeFormatter.format(date) + " " + time;
+            String dateTime = dateTimeFormatter.format(date) + " " + time + ":00";
             System.out.println(dateTime);
-
-            String duration = durationPicker.getValue().toString();
+            int duration = Integer.parseInt(durationPicker.getValue().toString().split(" ")[0]);
+            int start = Integer.parseInt(time.split(":")[0]);
+            int end = start + duration;
+            String endTime;
+            if (end < 10) {
+                endTime = "0" + end + ":00:00";
+            } else {
+                endTime = end + ":00:00";
+            }
+            String timeOfDelivery = dateTimeFormatter.format(date) + " " + endTime;
             String bikeString = "[";
             for (int i = 0; i < bikes.size(); i++) {
                 Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + bikes.get(i).getId());
                 int foodamount = amount.getValue();
-                String end;
+                String ending;
                 if (i == bikes.size() - 1) {
-                    end = "}]";
+                    ending = "}]";
                 } else {
-                    end = "}, ";
+                    ending = "}, ";
                 }
                 bikeString = bikeString + "{\"amount\":" + foodamount
                     + ",\"reservable\":" + bikes.get(i).getId()
-                    + end;
+                    + ending;
             }
             System.out.println(bikes);
             String username = MainSceneController.username;
-            String result = ServerCommunication.orderFoodBike(dateTime, username, bikeString);
+            String result = ServerCommunication.orderFoodBike(dateTime, timeOfDelivery, username, null, bikeString);
             createAlert(result);
         }
     }

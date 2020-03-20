@@ -26,10 +26,9 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Food;
+import nl.tudelft.oopp.group39.models.Room;
 
 public class FoodSceneController extends MainSceneController {
-    @FXML
-    private ComboBox buildingsList;
 
     @FXML
     private VBox cartlist;
@@ -49,6 +48,8 @@ public class FoodSceneController extends MainSceneController {
 
     public List<Food> foodCart = new ArrayList<>();
 
+    public List<Room> rooms = new ArrayList<>();
+
     @FXML
     private Label total;
 
@@ -58,10 +59,15 @@ public class FoodSceneController extends MainSceneController {
     @FXML
     private Label errorfield;
 
+
     public void getMenu() throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         foodmenu.getChildren().clear();
         String foodString = ServerCommunication.getAllFood();
+        Label building = (Label) buildinglist.getValue();
+        // int id = Integer.parseInt(building.getId());
+        getRoomsList();
+        System.out.println(rooms);
         System.out.println(foodString);
         // String teststring = "{\"body\": [{\"id\":1, \"name\":\"voedsel\", \"price\":\"2.35\"}, {\"id\":2, \"name\":\"bitterballen\", \"price\":\"2.65\"}], \"error\": null}";
         ArrayNode body = (ArrayNode) mapper.readTree(foodString).get("body");
@@ -88,6 +94,19 @@ public class FoodSceneController extends MainSceneController {
             food.getChildren().add(priceLabel);
             food.getChildren().add(addToCart);
             foodmenu.getChildren().add(food);
+        }
+    }
+
+    public void getRoomsList() throws JsonProcessingException {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        String roomsString = ServerCommunication.getRooms();
+        String testString = "{\"body\":[{\"id\":1,\"capacity\":10,\"name\":\"Ampere\",\"onlyStaff\":true,\"description\":\"test1\",\"facilities\":[],\"events\":[],\"bookings\":[],\"building\":1},{\"id\":2,\"capacity\":6,\"name\":\"test2\",\"onlyStaff\":true,\"description\":\"test2\",\"facilities\":[{\"id\":1,\"description\":\"smartboard\"}],\"events\":[],\"bookings\":[],\"building\":1}],\"error\":null}";
+        System.out.println(roomsString);
+        ArrayNode body = (ArrayNode) mapper.readTree(testString).get("body");
+        for (JsonNode roomJson : body) {
+            String roomAsString = mapper.writeValueAsString(roomJson);
+            Room room = mapper.readValue(roomAsString, Room.class);
+            rooms.add(room);
         }
     }
 
@@ -167,24 +186,36 @@ public class FoodSceneController extends MainSceneController {
         } else {
             cartlist.getChildren().remove(emptycart);
             orderbtn.setDisable(false);
-            timeselector.getChildren().clear();
-            DatePicker datePicker = new DatePicker();
-            datePicker.setPromptText("Select delivery date");
-            datePicker.setId("datePicker");
-            timeselector.getChildren().add(datePicker);
-            ComboBox timePicker = new ComboBox();
-            timePicker.setPromptText("Select delivery time");
-            timePicker.setId("timePicker");
-            for (int i = 9; i < 20; i++) {
-                if (i < 10) {
-                    timePicker.getItems().add("0" + i + ":00");
-                } else {
-                    timePicker.getItems().add(i + ":00");
-                }
-            }
-            timeselector.getChildren().add(timePicker);
-
+            setDeliveryDetails();
         }
+    }
+
+    public void setDeliveryDetails() {
+        timeselector.getChildren().clear();
+        DatePicker datePicker = new DatePicker();
+        datePicker.setPromptText("Select delivery date");
+        datePicker.setId("datePicker");
+        timeselector.getChildren().add(datePicker);
+        ComboBox timePicker = new ComboBox();
+        timePicker.setPromptText("Select delivery time");
+        timePicker.setId("timePicker");
+        for (int i = 9; i < 20; i++) {
+            if (i < 10) {
+                timePicker.getItems().add("0" + i + ":00");
+            } else {
+                timePicker.getItems().add(i + ":00");
+            }
+        }
+        timeselector.getChildren().add(timePicker);
+        ComboBox roomSelector = new ComboBox();
+        roomSelector.setId("roomSelector");
+        roomSelector.setPromptText("Select room");
+        for (Room room : rooms) {
+            Label roomName = new Label(room.getName());
+            roomName.setId(String.valueOf(room.getId()));
+            roomSelector.getItems().add(roomName);
+        }
+        timeselector.getChildren().add(roomSelector);
     }
 
     public void placeOrder() {
@@ -214,8 +245,11 @@ public class FoodSceneController extends MainSceneController {
                     + end;
             }
             System.out.println(foods);
+            ComboBox roomSelector = (ComboBox) timeselector.lookup("#roomSelector");
+            Label room = (Label) roomSelector.getValue();
+            int roomId = Integer.parseInt(room.getId());
             String username = MainSceneController.username;
-            String result = ServerCommunication.orderFoodBike(dateTime, username, foods);
+            String result = ServerCommunication.orderFoodBike(dateTime, null, username, roomId, foods);
             createAlert(result);
         }
 

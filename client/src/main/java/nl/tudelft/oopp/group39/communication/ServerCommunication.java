@@ -194,8 +194,12 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
-    public static String orderFoodBike(String timeOfPickup, String user, String reservable) {
-        String body = "{\"timeOfPickup\":\"" + timeOfPickup + "\",\"user\":\"" + user + "\",\"reservationAmounts\":" + reservable + "}";
+    public static String orderFoodBike(String timeOfPickup, String timeOfDelivery, String user, Integer roomId, String reservable) {
+        String body = "{\"timeOfPickup\":\"" + timeOfPickup
+            + "\",\"timeOfDelivery\":\"" + timeOfDelivery
+            + "\",\"room\":" + roomId
+            + "\",\"user\":\"" + user
+            + ",\"reservationAmounts\":" + reservable + "}";
         System.out.println(body);
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString(body);
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding).uri(URI.create(url + "reservation")).header("Content-Type", "application/json").build();
@@ -294,16 +298,17 @@ public class ServerCommunication {
             MainSceneController.jwt = jwtToken;
             MainSceneController.loggedIn = true;
             MainSceneController.username = username;
-            MainSceneController.role = getRole(username);
+            // MainSceneController.role = getRole(username);
             return "Logged in";
         }
     }
 
-    public static String getRole(String username) throws JsonProcessingException {
-        String user = getUser(username);
-        JsonNode userjson = mapper.readTree(user).get("body");
-        MainSceneController.user = userjson;
-        String role = userjson.get("role").asText();
-        return role;
-    }
+//    public static String getRole(String username) throws JsonProcessingException {
+//        String user = getUser(username);
+//        System.out.println(user);
+//        JsonNode userjson = mapper.readTree(user).get("body");
+//        MainSceneController.user = userjson;
+//        String role = userjson.get("role").asText();
+//        return role;
+//    }
 }
