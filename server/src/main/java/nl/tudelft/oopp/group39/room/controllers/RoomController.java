@@ -34,6 +34,7 @@ public class RoomController {
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listRooms(
         @RequestParam(required = false) Integer capacity,
+        @RequestParam(required = false) String name,
         @RequestParam(required = false) Boolean onlyStaff,
         @RequestParam(required = false) int[] facilities,
         @RequestParam(required = false) String building,
@@ -42,6 +43,7 @@ public class RoomController {
         @RequestParam(required = false) String closed
     ) {
         capacity = capacity == null ? 0 : capacity;
+        name = name == null ? "" : name;
         onlyStaff = onlyStaff == null ? false : onlyStaff;
         facilities = facilities == null ? new int[0] : facilities;
         building = building == null ? "" : building;
@@ -49,6 +51,7 @@ public class RoomController {
         LocalTime newOpen = open == null ? LocalTime.MAX : LocalTime.parse(open);
         LocalTime newClosed = closed == null ? LocalTime.MIN : LocalTime.parse(closed);
         boolean allEmpty = capacity == 0
+                && name.contentEquals("")
             && !onlyStaff
             && Arrays.equals(facilities, new int[0])
             && building.contentEquals("")
@@ -74,12 +77,6 @@ public class RoomController {
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createRoom(@RequestBody Room newRoom) {
         return RestResponse.create(service.createRoom(newRoom), null, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/{id}")
-    @ResponseBody
-    public ResponseEntity<RestResponse<Object>> readRoom(@PathVariable int id) {
-        return RestResponse.create(service.readRoom(id));
     }
 
     @PutMapping("/{id}")

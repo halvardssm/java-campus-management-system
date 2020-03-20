@@ -38,6 +38,8 @@ public class Room {
 
     private long buildingId;
 
+    private String name;
+
     private int capacity;
 
     private boolean onlyStaff;
@@ -68,10 +70,19 @@ public class Room {
     }
 
     /**
-     * Doc. TODO Sven
+     * Creates a room.
+     *
+     * @param buildingId  the id of the building
+     * @param name        name of the room
+     * @param capacity    capacity of the room
+     * @param onlyStaff   whether the room is only accessible to staff
+     * @param description description of the room
+     * @param facilities  set of facilities the room has
+     * @param bookings    set of bookings for the room
      */
     public Room(
         long buildingId,
+        String name,
         int capacity,
         boolean onlyStaff,
         String description,
@@ -79,6 +90,7 @@ public class Room {
         Set<Booking> bookings
     ) {
         this.buildingId = buildingId;
+        this.name = name;
         this.capacity = capacity;
         this.onlyStaff = onlyStaff;
         this.description = description;
@@ -92,6 +104,14 @@ public class Room {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public long getBuilding() {

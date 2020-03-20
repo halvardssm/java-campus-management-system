@@ -1,17 +1,20 @@
 package nl.tudelft.oopp.group39.controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Building;
 
-public class BuildingSceneController extends MainSceneController {
+public class BuildingSceneController extends MainSceneController implements Initializable {
 
     @FXML
     private FlowPane flowPane;
@@ -20,27 +23,34 @@ public class BuildingSceneController extends MainSceneController {
     private GridPane newBuilding;
 
     /**
-     * Doc. TODO Sven
+     * Retrieves buildings from the server and shows them.
      */
-    public void refreshBuildings() {
+    public void getBuildings() {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         flowPane.getChildren().clear();
         try {
             String buildingString = ServerCommunication.getBuildings();
-
+            System.out.println(buildingString);
             ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
-
-            for (JsonNode buildingJson : body) {
-
-                String buildings = mapper.writeValueAsString(buildingJson);
-
-                Building building = mapper.readValue(buildings, Building.class);
-
+            buildingString = mapper.writeValueAsString(body);
+            Building[] list = mapper.readValue(buildingString, Building[].class);
+            for (Building building : list) {
                 newBuilding = FXMLLoader.load(getClass().getResource("/buildingCell.fxml"));
+                String buildingName = building.getName();
+                String address = building.getLocation();
+                newBuilding.setOnMouseClicked(e -> {
+                    try {
+                        goToRoomsScene();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+
+                });
 
                 Label name = (Label) newBuilding.lookup("#bname");
-                name.setText(building.getName());
+                name.setText(buildingName);
 
-                String newDetails = (building.getLocation()
+                String newDetails = (address
                     + "\n" + building.getDescription()
                     + "\n" + "Max. Capacity"
                     + "\n" + "Opening times: " + building.getOpen()
@@ -66,4 +76,14 @@ public class BuildingSceneController extends MainSceneController {
             createAlert("Error Occurred.");
         }
     }
+
+    /**
+     * Retrieves the buildings when page is loaded.
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        getBuildings();
+    }
+
+
 }

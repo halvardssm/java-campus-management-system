@@ -2,7 +2,7 @@ package nl.tudelft.oopp.group39.models;
 
 public class Building {
 
-    private long id;
+    private Integer id;
 
     private String name;
 
@@ -14,6 +14,10 @@ public class Building {
 
     private String closed;
 
+    public Building() {
+
+    }
+
     /**
      * Doc. TODO Sven
      *
@@ -24,7 +28,7 @@ public class Building {
      * @param closed      closed
      */
     public Building(
-        long id,
+        Integer id,
         String name,
         String location,
         String description,
@@ -39,7 +43,7 @@ public class Building {
         this.closed = closed;
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
