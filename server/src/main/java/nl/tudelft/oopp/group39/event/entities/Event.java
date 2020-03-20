@@ -2,14 +2,9 @@ package nl.tudelft.oopp.group39.event.entities;
 
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
@@ -26,10 +21,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.room.entities.Room;
-import org.springframework.lang.Nullable;
 
 @Entity
 @Table(name = Event.TABLE_NAME)
@@ -49,13 +42,7 @@ public class Event {
     private Integer id;
     @Enumerated(EnumType.STRING)
     private EventTypes type;
-    @JsonFormat(pattern = Constants.FORMAT_DATE, shape = JsonFormat.Shape.STRING)
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate startDate;
-    @JsonFormat(pattern = Constants.FORMAT_DATE, shape = JsonFormat.Shape.STRING)
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate endDate;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = TABLE_NAME + "_" + Room.TABLE_NAME,
@@ -79,7 +66,7 @@ public class Event {
     public Event(
         EventTypes type,
         LocalDate startDate,
-        @Nullable LocalDate endDate,
+        LocalDate endDate,
         Set<Room> rooms
     ) {
         this.type = type;

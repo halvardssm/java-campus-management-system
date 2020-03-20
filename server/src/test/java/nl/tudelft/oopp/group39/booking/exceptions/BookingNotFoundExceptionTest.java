@@ -1,13 +1,10 @@
 package nl.tudelft.oopp.group39.booking.exceptions;
 
+import nl.tudelft.oopp.group39.CoreTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 
-@SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class BookingNotFoundExceptionTest {
+public class BookingNotFoundExceptionTest extends CoreTest {
     @Test
     public void notFoundTest() {
         Assertions.assertThrows(BookingNotFoundException.class, () -> {

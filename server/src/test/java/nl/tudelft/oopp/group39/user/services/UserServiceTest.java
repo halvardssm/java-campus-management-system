@@ -4,18 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+import nl.tudelft.oopp.group39.CoreTest;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 
-@SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-class UserServiceTest {
+class UserServiceTest extends CoreTest {
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",
@@ -25,9 +21,6 @@ class UserServiceTest {
         null,
         null
     );
-
-    @Autowired
-    private UserService userService;
 
     @BeforeEach
     void setUp() {

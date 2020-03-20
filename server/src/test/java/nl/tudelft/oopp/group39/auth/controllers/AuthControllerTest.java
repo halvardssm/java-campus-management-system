@@ -4,26 +4,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import nl.tudelft.oopp.group39.CoreTest;
 import nl.tudelft.oopp.group39.auth.exceptions.UnauthorizedException;
 import nl.tudelft.oopp.group39.auth.models.AuthRequest;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
-import nl.tudelft.oopp.group39.user.services.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@SpringBootTest
 @AutoConfigureMockMvc
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-class AuthControllerTest {
+class AuthControllerTest extends CoreTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final User testUser = new User(
         "test",
@@ -34,11 +28,6 @@ class AuthControllerTest {
         null,
         null
     );
-
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private UserService userService;
 
     @BeforeEach
     void setUp() {

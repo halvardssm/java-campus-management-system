@@ -2,7 +2,6 @@ package nl.tudelft.oopp.group39.reservation.entities;
 
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalDateTime;
@@ -17,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.user.entities.User;
 
@@ -35,9 +33,7 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @JsonFormat(pattern = Constants.FORMAT_DATE_TIME)
     private LocalDateTime timeOfPickup;
-    @JsonFormat(pattern = Constants.FORMAT_DATE_TIME)
     private LocalDateTime timeOfDelivery;
     @ManyToOne
     @JoinColumn(name = Room.MAPPED_NAME)

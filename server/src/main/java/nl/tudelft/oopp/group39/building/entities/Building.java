@@ -2,7 +2,6 @@ package nl.tudelft.oopp.group39.building.entities;
 
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalTime;
@@ -15,7 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 
 @Entity
@@ -35,9 +33,7 @@ public class Building {
     private String name;
     private String location;
     private String description;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.FORMAT_TIME)
     private LocalTime open;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.FORMAT_TIME)
     private LocalTime closed;
     @OneToMany(mappedBy = MAPPED_NAME) //TODO change to reservable id
     private Set<Reservable> reservables = new HashSet<>();
