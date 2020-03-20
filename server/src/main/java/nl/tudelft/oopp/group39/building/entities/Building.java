@@ -2,14 +2,15 @@ package nl.tudelft.oopp.group39.building.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import nl.tudelft.oopp.group39.room.entities.Room;
+
+import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.Set;
 
 @Entity
 @Table(name = Building.TABLE_NAME)
@@ -20,6 +21,7 @@ import javax.persistence.Table;
 public class Building {
     public static final String TABLE_NAME = "buildings";
     public static final String COL_ID = "id";
+    public static final String MAPPED_NAME = "building";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +34,10 @@ public class Building {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime closed;
 
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Room> rooms = new HashSet<>();
+
     public Building() {
     }
 
@@ -43,19 +49,22 @@ public class Building {
      * @param description description
      * @param open        open
      * @param closed      closed
+     * @param rooms       rooms
      */
     public Building(
-        String name,
-        String location,
-        String description,
-        LocalTime open,
-        LocalTime closed
+            String name,
+            String location,
+            String description,
+            LocalTime open,
+            LocalTime closed,
+            Set<Room> rooms
     ) {
         this.name = name;
         this.location = location;
         this.description = description;
         this.open = open;
         this.closed = closed;
+        this.rooms = rooms;
     }
 
     public long getId() {
@@ -104,6 +113,14 @@ public class Building {
 
     public void setClosed(LocalTime closed) {
         this.closed = closed;
+    }
+
+    public Set<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(Set<Room> rooms) {
+        this.rooms = rooms;
     }
 
     @Override
