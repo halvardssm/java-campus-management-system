@@ -176,7 +176,11 @@ public class FoodSceneController extends MainSceneController {
             timePicker.setPromptText("Select delivery time");
             timePicker.setId("timePicker");
             for (int i = 9; i < 20; i++) {
-                timePicker.getItems().add(i + ":00");
+                if (i < 10) {
+                    timePicker.getItems().add("0" + i + ":00");
+                } else {
+                    timePicker.getItems().add(i + ":00");
+                }
             }
             timeselector.getChildren().add(timePicker);
 
@@ -205,16 +209,13 @@ public class FoodSceneController extends MainSceneController {
                 } else {
                     end = "}, ";
                 }
-                foods = foods + "{\"amount\":" + foodamount + ",\"reservation\":null, \"reservable\":{\"id\":" + foodCart.get(i).getId()
-                    + ",\"price\":" + foodCart.get(i).getPrice()
-                    + ",\"building\":" + foodCart.get(i).getBuilding()
-                    + ",\"reservations\":[]"
-                    + "}"
+                foods = foods + "{\"amount\":" + foodamount
+                    + ",\"reservable\":" + foodCart.get(i).getId()
                     + end;
             }
             System.out.println(foods);
-            JsonNode user = MainSceneController.user;
-            String result = ServerCommunication.orderFoodBike(dateTime, user, foods);
+            String username = MainSceneController.username;
+            String result = ServerCommunication.orderFoodBike(dateTime, username, foods);
             createAlert(result);
         }
 

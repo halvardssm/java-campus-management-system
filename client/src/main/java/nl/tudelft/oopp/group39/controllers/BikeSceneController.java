@@ -158,7 +158,11 @@ public class BikeSceneController extends MainSceneController {
             timePicker.setId("timePicker");
             durationPicker.setId("durationPicker");
             for (int i = 9; i < 20; i++) {
-                timePicker.getItems().add(i + ":00");
+                if (i < 10) {
+                    timePicker.getItems().add("0" + i + ":00");
+                } else {
+                    timePicker.getItems().add(i + ":00");
+                }
             }
             for (int j = 1; j < 5; j++) {
                 durationPicker.getItems().add(j + " hours");
@@ -186,17 +190,21 @@ public class BikeSceneController extends MainSceneController {
             String duration = durationPicker.getValue().toString();
             String bikeString = "[";
             for (int i = 0; i < bikes.size(); i++) {
-                Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + bikes.get(i));
+                Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + bikes.get(i).getId());
                 int foodamount = amount.getValue();
+                String end;
                 if (i == bikes.size() - 1) {
-                    bikeString += "{" + bikes.get(i) + ":" + foodamount + "}]";
+                    end = "}]";
                 } else {
-                    bikeString += "{" + bikes.get(i) + ":" + foodamount + "}, ";
+                    end = "}, ";
                 }
+                bikeString = bikeString + "{\"amount\":" + foodamount
+                    + ",\"reservable\":" + bikes.get(i).getId()
+                    + end;
             }
             System.out.println(bikes);
-            JsonNode user = MainSceneController.user;
-            String result = ServerCommunication.orderFoodBike(dateTime, user, bikeString);
+            String username = MainSceneController.username;
+            String result = ServerCommunication.orderFoodBike(dateTime, username, bikeString);
             createAlert(result);
         }
     }
