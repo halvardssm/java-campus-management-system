@@ -104,7 +104,8 @@ public class DbSeeder {
         roomService.createRoom(new Room(1, "lala", 6, true, "test2", facilities, bookings));
 
         facilities.add(facilityService.readFacility(2));
-        roomService.createRoom(new Room(2, "another one", 15, false, "test3", facilities, bookings));
+        roomService.createRoom(
+            new Room(2, "another one", 15, false, "test3", facilities, bookings));
 
         System.out.println("[SEED] Rooms created");
     }

@@ -34,13 +34,14 @@ public class ServerCommunication {
     }
 
     /**
-     * Retrieves user from the server based on username
+     * Retrieves user from the server based on username.
      *
      * @param username username of the user that needs to be retrieved
      * @return the body of a get request to the server.
      */
     public static String getUser(String username) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + user + username)).build();
+        HttpRequest request =
+            HttpRequest.newBuilder().GET().uri(URI.create(url + user + username)).build();
         return httpRequest(request);
     }
 
@@ -62,6 +63,20 @@ public class ServerCommunication {
      */
     public static String getRooms() {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room")).build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Retrieves rooms from the server based on building id.
+     *
+     * @param buildingId id of the building
+     * @return the body of a get request to the server.
+     */
+    public static String getRooms(long buildingId) {
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create(url + room + buildingId))
+            .build();
         return httpRequest(request);
     }
 
@@ -95,7 +110,7 @@ public class ServerCommunication {
     }
 
     /**
-     * Adds a building on the server
+     * Adds a building on the server.
      *
      * @return the body of a post request to the server.
      */
@@ -116,7 +131,7 @@ public class ServerCommunication {
     }
 
     /**
-     * Adds a room on the server
+     * Adds a room on the server.
      *
      * @return the body of a post request to the server.
      */
@@ -131,7 +146,7 @@ public class ServerCommunication {
     }
 
     /**
-     * Updates Rooms on the server
+     * Updates Rooms on the server.
      *
      * @return the body of a put request to the server.
      */
@@ -151,7 +166,7 @@ public class ServerCommunication {
     }
 
     /**
-     * Updates buildings on the server
+     * Updates buildings on the server.
      *
      * @return the body of a post request to the server.
      */
@@ -186,23 +201,15 @@ public class ServerCommunication {
      * Doc. TODO Sven
      */
     public static void removeRoom(String id) {
-        HttpRequest request = HttpRequest.newBuilder().DELETE().uri(URI.create(url + "room/" + id)).build();
+        HttpRequest request = HttpRequest.newBuilder()
+            .DELETE()
+            .uri(URI.create(url + "room/" + id))
+            .build();
         httpRequest(request);
     }
 
     /**
-     * Retrieves rooms from the server based on building id
-     *
-     * @param buildingId id of the building
-     * @return the body of a get request to the server.
-     */
-    public static String getRooms(long buildingId) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + room + buildingId)).build();
-        return httpRequest(request);
-    }
-
-    /**
-     * Retrieves all rooms from the server
+     * Retrieves all rooms from the server.
      *
      * @return the body of a get request to the server.
      */
@@ -218,7 +225,7 @@ public class ServerCommunication {
      * @return the body of a get request to the server.
      */
     public static String httpRequest(HttpRequest req) {
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
         try {
             response = client.send(req, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -232,19 +239,23 @@ public class ServerCommunication {
     }
 
     /**
-     * Creates user on the server
+     * Creates user on the server.
      *
      * @return the body of a post request to the server.
      */
     public static String addUser(String netID, String email, String password, String role) {
-        HttpRequest.BodyPublisher newUser = HttpRequest.BodyPublishers.ofString("{\"username\": \"" + netID + "\", \"email\":\"" + email + "\", \"password\":\"" + password + "\", \"roles\":\"" + List.of(role) + "\"}");
+        HttpRequest.BodyPublisher newUser = HttpRequest.BodyPublishers
+            .ofString("{\"username\": \"" + netID
+                + "\", \"email\":\"" + email
+                + "\", \"password\":\"" + password
+                + "\", \"roles\":\"" + List.of(role) + "\"}");
         HttpRequest request = HttpRequest.newBuilder()
             .POST(newUser)
             .uri(URI.create(url + user))
             .header("Content-Type", "application/json")
             .build();
 
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -261,19 +272,21 @@ public class ServerCommunication {
     }
 
     /**
-     * User login
+     * User login.
      *
      * @return the body of a post request to the server.
      */
     public static String userLogin(String username, String pwd) throws JsonProcessingException {
-        HttpRequest.BodyPublisher user = HttpRequest.BodyPublishers.ofString("{\"username\": \"" + username + "\", \"password\":\"" + pwd + "\"}");
+        HttpRequest.BodyPublisher user = HttpRequest.BodyPublishers
+            .ofString("{\"username\": \"" + username
+                + "\", \"password\":\"" + pwd + "\"}");
         HttpRequest request = HttpRequest.newBuilder()
             .POST(user)
             .uri(URI.create(url + authenticate))
             .header("Content-Type", "application/json")
             .build();
 
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -297,7 +310,7 @@ public class ServerCommunication {
     }
 
     /**
-     * Checks if user is an admin
+     * Checks if user is an admin.
      *
      * @return boolean: true if user is admin, false otherwise
      */

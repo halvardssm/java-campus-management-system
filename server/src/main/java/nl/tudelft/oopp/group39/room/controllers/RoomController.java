@@ -44,8 +44,6 @@ public class RoomController {
     ) {
         capacity = capacity == null ? 0 : capacity;
         name = name == null ? "" : name;
-        LocalTime nOpen = open == null ? LocalTime.MAX : LocalTime.parse(open);
-        LocalTime nClosed = closed == null ? LocalTime.MIN : LocalTime.parse(closed);
         onlyStaff = onlyStaff == null ? false : onlyStaff;
         facilities = facilities == null ? new int[0] : facilities;
         building = building == null ? "" : building;

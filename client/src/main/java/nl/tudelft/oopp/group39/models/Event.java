@@ -11,6 +11,13 @@ public class Event {
 
     }
 
+    /**
+     * Creates an event.
+     *
+     * @param type      type of the event
+     * @param startDate start date of event
+     * @param endDate   end date of event
+     */
     public Event(
         String type,
         String startDate,

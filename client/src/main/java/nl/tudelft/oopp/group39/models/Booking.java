@@ -13,6 +13,16 @@ public class Booking {
 
     }
 
+    /**
+     * Creates a booking.
+     *
+     * @param id        booking id
+     * @param date      date of booking
+     * @param startTime start time of booking
+     * @param endTime   end time of booking
+     * @param user      user that made the booking
+     * @param room      room that is booked
+     */
     public Booking(
         Integer id,
         String date,
