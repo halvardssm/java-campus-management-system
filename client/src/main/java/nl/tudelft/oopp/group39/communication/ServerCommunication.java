@@ -195,10 +195,10 @@ public class ServerCommunication {
     }
 
     public static String orderFoodBike(String timeOfPickup, JsonNode user, String reservable) {
-        String body = "{\"timeOfPickup\": \"" + timeOfPickup + "\", \"user\":" + user + ", \"reservationAmounts\":" + reservable + "}";
+        String body = "{\"timeOfPickup\":\"" + timeOfPickup + "\",\"user\":" + user + ",\"reservationAmounts\":" + reservable + "}";
         System.out.println(body);
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString(body);
-        HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding).uri(URI.create(url + "reservation")).header("Content-Type", "application/json").build();
+        HttpRequest request = HttpRequest.newBuilder().POST(newBuilding).uri(URI.create(url + "reservation")).header("Content-Type", "application/json").build();
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
