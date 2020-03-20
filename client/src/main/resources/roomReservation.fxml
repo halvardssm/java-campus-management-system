@@ -88,7 +88,7 @@
     <bottom>
         <AnchorPane style="-fx-background-color: #00A6D6;" styleClass="bar" BorderPane.alignment="CENTER">
             <children>
-                <Button id="backButton" fx:id="backButton" mnemonicParsing="false" onAction="#switchRoom"
+                <Button id="backButton" fx:id="backButton" mnemonicParsing="false" onAction="#backToRoom"
                         stylesheets="@roomReservation.css" text="◀ Back" translateY="-2.0" AnchorPane.leftAnchor="10.0"
                         AnchorPane.topAnchor="5.0">
                     <font>

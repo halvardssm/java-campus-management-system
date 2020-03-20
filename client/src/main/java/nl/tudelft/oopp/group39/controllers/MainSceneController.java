@@ -109,13 +109,13 @@ public class MainSceneController {
 
     /**
      * Doc. TODO Sven
-     */
+     *//*
     public void goToRoomsScene(long buildingId, String name, String address) throws IOException {
         RoomSceneController controller =
             (RoomSceneController) UsersDisplay.sceneControllerHandler("/roomView.fxml");
         controller.setup(buildingId, name, address);
         controller.changeTopBtn();
-    }
+    } */
 
     /**
      * Doc. TODO Sven

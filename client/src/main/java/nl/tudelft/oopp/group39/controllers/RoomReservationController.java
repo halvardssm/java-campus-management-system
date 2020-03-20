@@ -139,12 +139,6 @@ public class RoomReservationController extends MainSceneController implements In
         toTime.getItems().addAll(initiateTimeslots());
     }
 
-    /**
-     * Returns the user back to the room page when clicked on.
-     */
-    public void backToRoom() {
-
-    }
 
     /**
      * Switches to login page when the Login button is clicked?
@@ -171,14 +165,14 @@ public class RoomReservationController extends MainSceneController implements In
     }
 
     /**
-     * Switches to room page when the back button is clicked?
+     * Returns the user back to the room page when the back button is clicked
      *
      * @throws IOException
      */
     @FXML
-    private void switchRoom() throws IOException {
+    private void backToRoom() throws IOException {
         Stage currentStage = (Stage) backButton.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/roomScene.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/roomScene.fxml")); //should be room page but I don't this there is one?
         currentStage.setScene(new Scene(root, 700, 600));
     }
 
