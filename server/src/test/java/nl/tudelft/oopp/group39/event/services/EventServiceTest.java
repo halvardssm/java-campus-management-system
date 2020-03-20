@@ -13,9 +13,7 @@ import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
-@AutoConfigureMockMvc
 class EventServiceTest extends CoreTest {
     private static final Event testEvent = new Event(
         EventTypes.EVENT,

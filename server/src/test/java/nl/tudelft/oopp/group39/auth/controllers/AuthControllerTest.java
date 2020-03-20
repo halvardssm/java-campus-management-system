@@ -4,7 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nl.tudelft.oopp.group39.CoreTest;
+import nl.tudelft.oopp.group39.CoreControllerTest;
 import nl.tudelft.oopp.group39.auth.exceptions.UnauthorizedException;
 import nl.tudelft.oopp.group39.auth.models.AuthRequest;
 import nl.tudelft.oopp.group39.user.entities.User;
@@ -12,12 +12,11 @@ import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@AutoConfigureMockMvc
-class AuthControllerTest extends CoreTest {
+class AuthControllerTest extends CoreControllerTest {
+
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final User testUser = new User(
         "test",
