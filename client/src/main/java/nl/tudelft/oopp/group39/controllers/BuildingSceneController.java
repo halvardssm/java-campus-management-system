@@ -36,12 +36,15 @@ public class BuildingSceneController extends MainSceneController implements Init
 
             ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
 
-            for (JsonNode buildingJson : body) {
+            buildingString = mapper.writeValueAsString(body);
 
                 String buildings = mapper.writeValueAsString(buildingJson);
                 System.out.println(buildings);
                 Building building = mapper.readValue(buildings, Building.class);
                 System.out.println(building);
+            Building[] list = mapper.readValue(buildingString, Building[].class);
+
+            for (Building building : list) {
 
                 newBuilding = FXMLLoader.load(getClass().getResource("/buildingCell.fxml"));
                 //long buildingId = building.getId();
