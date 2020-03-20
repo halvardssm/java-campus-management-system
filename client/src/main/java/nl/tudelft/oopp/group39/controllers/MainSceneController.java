@@ -42,6 +42,10 @@ public class MainSceneController {
         UsersDisplay.sceneHandler("/buildingModifyScene.fxml");
     }
 
+    public void goToReservationPage() throws IOException {
+        UsersDisplay.sceneHandler("/roomReservation.fxml");
+    }
+
 
     public void getFacilitiesButton() {
         createAlert(null, ServerCommunication.getFacilities());
