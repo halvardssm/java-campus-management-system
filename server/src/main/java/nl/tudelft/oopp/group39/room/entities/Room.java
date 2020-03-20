@@ -69,7 +69,26 @@ public class Room {
     public Room() {
     }
 
-    public Room(long buildingId, String name, int capacity, boolean onlyStaff, String description, Set<Facility> facilities, Set<Booking> bookings) {
+    /**
+     * Creates a room.
+     *
+     * @param buildingId  the id of the building
+     * @param name        name of the room
+     * @param capacity    capacity of the room
+     * @param onlyStaff   whether the room is only accessible to staff
+     * @param description description of the room
+     * @param facilities  set of facilities the room has
+     * @param bookings    set of bookings for the room
+     */
+    public Room(
+        long buildingId,
+        String name,
+        int capacity,
+        boolean onlyStaff,
+        String description,
+        Set<Facility> facilities,
+        Set<Booking> bookings
+    ) {
         this.buildingId = buildingId;
         this.name = name;
         this.capacity = capacity;
@@ -87,9 +106,13 @@ public class Room {
         this.id = id;
     }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public long getBuilding() {
         return buildingId;

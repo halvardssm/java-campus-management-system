@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
@@ -23,9 +24,10 @@ public class BuildingSceneController extends MainSceneController implements Init
     private GridPane newBuilding;
 
     /**
-     * Doc. TODO Sven
+     * Retrieves buildings from the server and shows them.
      */
-    public void refreshBuildings() {
+    public void getBuildings() {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         System.out.println(flowPane);
         flowPane.getChildren().clear();
         try {
@@ -84,9 +86,12 @@ public class BuildingSceneController extends MainSceneController implements Init
         }
     }
 
+    /**
+     * Retrieves the buildings when page is loaded.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        refreshBuildings();
+        getBuildings();
     }
 
 

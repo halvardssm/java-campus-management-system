@@ -1,42 +1,44 @@
 package nl.tudelft.oopp.group39.controllers;
 
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.Region;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.regex.Pattern;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
 public class SignupController extends MainSceneController {
     @FXML
-    private TextField emailField ;
+    private TextField emailField;
 
     @FXML
-    private TextField netIDField ;
+    private TextField netIdField;
 
     @FXML
-    private PasswordField passwordField ;
+    private PasswordField passwordField;
 
     @FXML
-    private PasswordField confirmpasswordField ;
+    private PasswordField confirmpasswordField;
 
     @FXML
     private Text errormsg;
 
-    @FXML
-    private void signup() {
+    /**
+     * User signup.
+     */
+    public void signup() {
         String email = emailField.getText();
-        String netID = netIDField.getText();
+        String netID = netIdField.getText();
         String password = passwordField.getText();
         String confirmpassword = confirmpasswordField.getText();
         String role = getRole(email);
-        if(checkEmpty(email, netID, password, confirmpassword) && isValid(email) && checkPwd(password, confirmpassword)){
+        if (checkEmpty(email, netID, password, confirmpassword)
+            && isValid(email)
+            && checkPwd(password, confirmpassword)) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Sign up");
             alert.setHeaderText(null);
@@ -56,49 +58,79 @@ public class SignupController extends MainSceneController {
         System.out.println(email + netID + password + confirmpassword);
     }
 
-    public boolean checkEmpty(String email, String userID, String pwd, String confirm){
-        if(email.isEmpty() || userID.isEmpty() || pwd.isEmpty() || confirm.isEmpty()){
+    /**
+     * Checks if signup fields aren't empty.
+     *
+     * @param email   email String
+     * @param userID  userId String
+     * @param pwd     password String
+     * @param confirm confirm password String
+     * @return boolean: true if fields aren't empty, false otherwise
+     */
+    public boolean checkEmpty(String email, String userID, String pwd, String confirm) {
+        if (email.isEmpty() || userID.isEmpty() || pwd.isEmpty() || confirm.isEmpty()) {
             alertErr("Please fill in all the fields");
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
 
-    public void alertErr(String msg){
+    /**
+     * Sets the error text if there is something wrong in the sigup fields.
+     *
+     * @param msg String message that will be set in the error text
+     */
+    public void alertErr(String msg) {
         errormsg.setText(msg);
     }
 
+    /**
+     * Checks if the email is a valid tu delft email address.
+     *
+     * @param email email that needs to be checked.
+     * @return boolean: true if email is valid, false otherwise
+     */
     public boolean isValid(String email) {
-        String emailRegex = "[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+)*@(student.)?tudelft.nl$";
-
+        String emailRegex =
+            "[a-zA-Z0-9_!#$%&’*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!"
+                + "#$%&’*+/=?`{|}~^-]+)*@(student.)?tudelft.nl$";
         Pattern pat = Pattern.compile(emailRegex);
-        if (email == null || pat.matcher(email).matches() == false){
+        if (email == null || !pat.matcher(email).matches()) {
             alertErr("Please provide a valid tudelft email address");
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
 
-    public boolean checkPwd(String pwd, String confirm){
-        if(!pwd.equals(confirm)){
+    /**
+     * Checks if password and confirm password are the same.
+     *
+     * @param pwd     password String
+     * @param confirm confirm password String
+     * @return boolean: true if they match, false otherwise
+     */
+    public boolean checkPwd(String pwd, String confirm) {
+        if (!pwd.equals(confirm)) {
             alertErr("Passwords must be the same");
             return false;
-        }
-        else{
+        } else {
             return true;
         }
     }
 
-    public String getRole(String email){
+    /**
+     * Gets the role of the user.
+     *
+     * @param email email of the user
+     * @return role String
+     */
+    public String getRole(String email) {
         String role = email.split("@")[1];
-        if(role.contains("student")){
+        if (role.contains("student")) {
             return "student";
-        }
-        else{
+        } else {
             return "staff";
         }
     }

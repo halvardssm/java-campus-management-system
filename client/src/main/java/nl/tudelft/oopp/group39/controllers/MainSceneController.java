@@ -34,6 +34,9 @@ public class MainSceneController {
     @FXML
     protected HBox topbar;
 
+    /**
+     * Doc. TODO Sven
+     */
     public void createAlert(String content) {
         createAlert(null, content);
     }
@@ -49,39 +52,60 @@ public class MainSceneController {
         alert.showAndWait();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void goToMainScene() throws IOException {
         UsersDisplay.sceneHandler("/mainScene.fxml");
         changeTopBtn();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void goToBuildingScene() throws IOException {
         BuildingSceneController controller =
             (BuildingSceneController) UsersDisplay.sceneControllerHandler("/buildingListView.fxml");
         controller.changeTopBtn();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void goToRoomScene() throws IOException {
         UsersDisplay.sceneHandler("/roomScene.fxml");
         changeTopBtn();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void goToAddBuilding() throws IOException {
         UsersDisplay.sceneHandler("/buildingModifyScene.fxml");
         changeTopBtn();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void goToLoginScene() throws IOException {
         LoginController controller =
             (LoginController) UsersDisplay.sceneControllerHandler("/login.fxml");
         controller.changeTopBtn();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void goToSignupScene() throws IOException {
         SignupController controller =
             (SignupController) UsersDisplay.sceneControllerHandler("/signup.fxml");
         controller.changeTopBtn();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void goToRoomsScene(long buildingId, String name, String address) throws IOException {
         RoomSceneController controller =
             (RoomSceneController) UsersDisplay.sceneControllerHandler("/roomView.fxml");
@@ -89,6 +113,9 @@ public class MainSceneController {
         controller.changeTopBtn();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void goToRoomsScene() throws IOException {
         RoomSceneController controller =
             (RoomSceneController) UsersDisplay.sceneControllerHandler("/roomView.fxml");
@@ -96,7 +123,9 @@ public class MainSceneController {
         controller.changeTopBtn();
     }
 
-
+    /**
+     * Logs the user out.
+     */
     public void logout() throws IOException {
         loggedIn = false;
         jwt = null;
@@ -104,22 +133,30 @@ public class MainSceneController {
         changeTopBtn();
     }
 
-
+    /**
+     * Doc. TODO Sven
+     */
     public void getFacilitiesButton() {
         createAlert(null, ServerCommunication.getFacilities());
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void getUsersButton() {
         createAlert(ServerCommunication.getUsers());
     }
 
+    /**
+     * Changes the login button when logged in.
+     */
     public void changeTopBtn() {
         System.out.println(topbtn);
         System.out.println(topbar);
         System.out.println(loggedIn);
 
         if (loggedIn) {
-            MenuButton myaccount = new MenuButton("My Account");
+            MenuButton myaccount = new MenuButton(username);
             MenuItem myres = new MenuItem("My Reservations");
             MenuItem myacc = new MenuItem("My Account");
             MenuItem logout = new MenuItem("Logout");
@@ -149,8 +186,11 @@ public class MainSceneController {
         }
     }
 
+    /**
+     * Toggles the sidebar.
+     */
     public void toggleSidebar() {
-        if (sidebarShown == false) {
+        if (!sidebarShown) {
             Hyperlink buildings = new Hyperlink("Buildings");
             buildings.getStyleClass().add("sidebar-item");
             buildings.setOnAction(event -> {
