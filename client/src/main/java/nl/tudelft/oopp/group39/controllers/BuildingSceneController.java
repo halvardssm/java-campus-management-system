@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.group39.controllers;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
@@ -28,26 +27,15 @@ public class BuildingSceneController extends MainSceneController implements Init
      */
     public void getBuildings() {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        System.out.println(flowPane);
         flowPane.getChildren().clear();
         try {
             String buildingString = ServerCommunication.getBuildings();
             System.out.println(buildingString);
-
             ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
-
             buildingString = mapper.writeValueAsString(body);
-
-                String buildings = mapper.writeValueAsString(buildingJson);
-                System.out.println(buildings);
-                Building building = mapper.readValue(buildings, Building.class);
-                System.out.println(building);
             Building[] list = mapper.readValue(buildingString, Building[].class);
-
             for (Building building : list) {
-
                 newBuilding = FXMLLoader.load(getClass().getResource("/buildingCell.fxml"));
-                //long buildingId = building.getId();
                 String buildingName = building.getName();
                 String address = building.getLocation();
                 newBuilding.setOnMouseClicked(e -> {
