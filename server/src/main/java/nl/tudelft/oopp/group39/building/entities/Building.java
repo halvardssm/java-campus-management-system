@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.building.entities;
 
+import static nl.tudelft.oopp.group39.config.Utils.initSet;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -65,7 +67,7 @@ public class Building {
         this.description = description;
         this.open = open;
         this.closed = closed;
-        this.reservables.addAll(reservables != null ? reservables : new HashSet<>());
+        this.reservables.addAll(initSet(reservables));
     }
 
     public long getId() {

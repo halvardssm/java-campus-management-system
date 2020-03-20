@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.reservation.controllers;
 
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
+import nl.tudelft.oopp.group39.reservation.models.ReservationDTO;
 import nl.tudelft.oopp.group39.reservation.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,7 @@ public class ReservationController {
      */
     @PostMapping("")
     public ResponseEntity<RestResponse<Object>> createReservation(
-        @RequestBody Reservation reservation
+        @RequestBody ReservationDTO reservation
     ) {
         try {
             return RestResponse.create(

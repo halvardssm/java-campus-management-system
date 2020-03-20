@@ -1,11 +1,19 @@
 package nl.tudelft.oopp.group39.reservation.services;
 
+import java.util.HashSet;
 import java.util.List;
 import javassist.NotFoundException;
+import nl.tudelft.oopp.group39.reservable.entities.Reservable;
+import nl.tudelft.oopp.group39.reservable.services.ReservableService;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
-import nl.tudelft.oopp.group39.reservation.exceptions.CreationException;
+import nl.tudelft.oopp.group39.reservation.models.ReservationAmountDTO;
+import nl.tudelft.oopp.group39.reservation.models.ReservationDTO;
 import nl.tudelft.oopp.group39.reservation.repositories.ReservationRepository;
+import nl.tudelft.oopp.group39.room.entities.Room;
+import nl.tudelft.oopp.group39.room.services.RoomService;
+import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +25,12 @@ public class ReservationService {
     private ReservationRepository reservationRepository;
     @Autowired
     private ReservationAmountService reservationAmountService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ReservableService reservableService;
+    @Autowired
+    private RoomService roomService;
 
     /**
      * List all reservations.
@@ -46,19 +60,42 @@ public class ReservationService {
      * @return the created reservation {@link Reservation}.
      */
     public Reservation createReservation(Reservation reservation) throws IllegalArgumentException {
-        Reservation createdReservation = reservationRepository.save(reservation);
+        return reservationRepository.save(reservation);
+    }
 
-        try {
-            for (ReservationAmount reservationAmount : reservation.getReservationAmounts()) {
-                reservationAmountService.createReservation(reservationAmount);
-            }
+    /**
+     * Create an reservation.
+     *
+     * @return the created reservation {@link Reservation}.
+     */
+    public Reservation createReservation(ReservationDTO reservation)
+        throws IllegalArgumentException, NotFoundException {
+        User user = userService.readUser(reservation.getUser());
+        Room room = roomService.readRoom(reservation.getRoom());
 
-            return readReservation(createdReservation.getId());
-        } catch (Exception e) {
-            deleteReservation(createdReservation.getId());
+        Reservation reservation1 = new Reservation(
+            reservation.getTimeOfPickup(),
+            reservation.getTimeOfDelivery(),
+            room,
+            user,
+            new HashSet<>()
+        );
+        Reservation reservation2 = reservationRepository.save(reservation1);
 
-            throw new CreationException();
+        for (ReservationAmountDTO reservationAmountDto : reservation.getReservationAmounts()) {
+            Reservable reservable
+                = reservableService.readReservable(reservationAmountDto.getReservable());
+
+            ReservationAmount reservationAmount = new ReservationAmount(
+                reservationAmountDto.getAmount(),
+                reservation2,
+                reservable
+            );
+
+            reservationAmountService.createReservation(reservationAmount);
         }
+
+        return readReservation(reservation2.getId());
     }
 
     /**

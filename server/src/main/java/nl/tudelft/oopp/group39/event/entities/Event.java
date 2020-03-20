@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.event.entities;
 
+import static nl.tudelft.oopp.group39.config.Utils.initSet;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -82,7 +84,7 @@ public class Event {
         this.type = type;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.rooms.addAll(rooms != null ? rooms : new HashSet<>());
+        this.rooms.addAll(initSet(rooms));
     }
 
     public Integer getId() {

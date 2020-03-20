@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.reservable.entities;
 
+import static nl.tudelft.oopp.group39.config.Utils.initSet;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -76,7 +78,7 @@ public class Reservable {
     public Reservable(Building building, Double price, Set<ReservationAmount> reservations) {
         setBuilding(building);
         setPrice(price);
-        this.reservations.addAll(reservations != null ? reservations : new HashSet<>());
+        this.reservations.addAll(initSet(reservations));
     }
 
     public Set<ReservationAmount> getReservations() {

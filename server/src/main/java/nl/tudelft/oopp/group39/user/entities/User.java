@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.user.entities;
 
+import static nl.tudelft.oopp.group39.config.Utils.initSet;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -44,13 +46,17 @@ public class User implements UserDetails {
 
     @Id
     private String username;
+    @JsonIgnore
     private String email;
+    @JsonIgnore
     private String password;
     @Lob
     @Basic(fetch = FetchType.EAGER)
     @LazyGroup("lobs")
+    @JsonIgnore
     private Blob image;
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
     private Role role;
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
     @JsonIgnore
@@ -87,8 +93,8 @@ public class User implements UserDetails {
         this.password = password;
         this.role = role;
         this.image = image;
-        this.bookings.addAll(bookings != null ? bookings : new HashSet<>());
-        this.reservations.addAll(reservations != null ? reservations : new HashSet<>());
+        this.bookings.addAll(initSet(bookings));
+        this.reservations.addAll(initSet(reservations));
     }
 
     @Override

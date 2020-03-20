@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.reservation.entities;
 
+import static nl.tudelft.oopp.group39.config.Utils.initSet;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -16,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.config.Constants;
+import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.user.entities.User;
 
 @Entity
@@ -34,6 +37,11 @@ public class Reservation {
     private Integer id;
     @JsonFormat(pattern = Constants.FORMAT_DATE_TIME)
     private LocalDateTime timeOfPickup;
+    @JsonFormat(pattern = Constants.FORMAT_DATE_TIME)
+    private LocalDateTime timeOfDelivery;
+    @ManyToOne
+    @JoinColumn(name = Room.MAPPED_NAME)
+    private Room room;
     @ManyToOne
     @JoinColumn(name = User.MAPPED_NAME) //TODO change to id
     private User user;
@@ -47,19 +55,23 @@ public class Reservation {
      * Constructor of Reservation.
      *
      * @param timeOfPickup       the time of the pickup
+     * @param timeOfDelivery     the time of the delivery (null for food)
+     * @param room               the room
      * @param user               the user
      * @param reservationAmounts all items in order
      */
     public Reservation(
         LocalDateTime timeOfPickup,
+        LocalDateTime timeOfDelivery,
+        Room room,
         User user,
         Set<ReservationAmount> reservationAmounts
     ) {
         setTimeOfPickup(timeOfPickup);
+        setTimeOfDelivery(timeOfDelivery);
+        setRoom(room);
         setUser(user);
-        this.reservationAmounts.addAll(reservationAmounts != null
-                                       ? reservationAmounts
-                                       : new HashSet<>());
+        this.reservationAmounts.addAll(initSet(reservationAmounts));
     }
 
     public Integer getId() {
@@ -76,6 +88,22 @@ public class Reservation {
 
     public void setTimeOfPickup(LocalDateTime timeOfPickup) {
         this.timeOfPickup = timeOfPickup;
+    }
+
+    public LocalDateTime getTimeOfDelivery() {
+        return timeOfDelivery;
+    }
+
+    public void setTimeOfDelivery(LocalDateTime timeOfDelivery) {
+        this.timeOfDelivery = timeOfDelivery;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
     public User getUser() {

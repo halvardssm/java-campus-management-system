@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.facility.entities;
 
+import static nl.tudelft.oopp.group39.config.Utils.initSet;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -41,7 +43,7 @@ public class Facility {
 
     public Facility(String description, Set<Room> rooms) {
         this.description = description;
-        this.rooms.addAll(rooms);
+        this.rooms.addAll(initSet(rooms));
     }
 
     public long getId() {
