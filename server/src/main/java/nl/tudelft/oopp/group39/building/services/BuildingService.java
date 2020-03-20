@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.group39.building.services;
 
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.exceptions.BuildingExistsException;
 import nl.tudelft.oopp.group39.building.exceptions.BuildingNotFoundException;
@@ -8,10 +11,6 @@ import nl.tudelft.oopp.group39.room.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 public class BuildingService {
     @Autowired
@@ -19,8 +18,22 @@ public class BuildingService {
     @Autowired
     private BuildingRepository buildingRepository;
 
-    public List<Building> filterBuildings(int capacity, String building, String location, LocalTime open, LocalTime closed) {
-        int[] buildingIds = buildingRepository.filterBuildingsOnLocationAndNameAndTime(building, location, open, closed);
+    /**
+     * Doc. TODO Sven
+     */
+    public List<Building> filterBuildings(
+        int capacity,
+        String building,
+        String location,
+        LocalTime open,
+        LocalTime closed
+    ) {
+        int[] buildingIds = buildingRepository.filterBuildingsOnLocationAndNameAndTime(
+            building,
+            location,
+            open,
+            closed
+        );
         List<Long> resBuildingIds = new ArrayList<>();
         for (int buildingId : buildingIds) {
             if (roomRepository.getRoomsByBuildingId(buildingId).size() > 0) {
@@ -30,7 +43,9 @@ public class BuildingService {
                 }
             }
         }
-        return (resBuildingIds.size() > 0 ? buildingRepository.getAllBuildingsByIds(resBuildingIds) : new ArrayList<Building>());
+        return (resBuildingIds.size() > 0
+            ? buildingRepository.getAllBuildingsByIds(resBuildingIds)
+            : new ArrayList<Building>());
     }
 
     public List<Building> listBuildings() {
@@ -38,9 +53,13 @@ public class BuildingService {
     }
 
     public Building readBuilding(long id) throws BuildingNotFoundException {
-        return buildingRepository.findById(id).orElseThrow(() -> new BuildingNotFoundException((int) id));
+        return buildingRepository.findById(id)
+            .orElseThrow(() -> new BuildingNotFoundException((int) id));
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public Building deleteBuilding(long id) throws BuildingNotFoundException {
         try {
             Building rf = readBuilding(id);
@@ -52,6 +71,9 @@ public class BuildingService {
         }
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public Building createBuilding(Building newBuilding) {
         try {
             Building building = readBuilding((int) newBuilding.getId());
@@ -63,13 +85,16 @@ public class BuildingService {
         }
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public Building updateBuilding(int id, Building newBuilding) throws BuildingNotFoundException {
         return buildingRepository.findById((long) id)
-                .map(building -> {
-                    newBuilding.setId(id);
-                    building = newBuilding;
-                    return buildingRepository.save(building);
-                }).orElseThrow(() -> new BuildingNotFoundException(id));
+            .map(building -> {
+                newBuilding.setId(id);
+                building = newBuilding;
+                return buildingRepository.save(building);
+            }).orElseThrow(() -> new BuildingNotFoundException(id));
     }
 
 }

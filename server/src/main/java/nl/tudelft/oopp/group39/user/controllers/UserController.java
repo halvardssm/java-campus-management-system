@@ -34,43 +34,55 @@ public class UserController {
     }
 
     /**
-     * POST Endpoint to retrieve an user.
+     * POST Endpoint to create user.
      *
      * @return the created user {@link User}.
      */
     @PostMapping("")
     public ResponseEntity<RestResponse<Object>> createUser(@RequestBody User user) {
-        return RestResponse.create(service.createUser(user), null, HttpStatus.CREATED);
+        try {
+            return RestResponse.create(service.createUser(user), null, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return RestResponse.error(e.getMessage());
+        }
     }
 
     /**
-     * GET Endpoint to retrieve an user.
+     * GET Endpoint to retrieve user.
      *
      * @return the requested user {@link User}.
      */
     @GetMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> readUser(@PathVariable String id) {
-        return RestResponse.create(service.readUser(id));
+        try {
+            return RestResponse.create(service.readUser(id));
+        } catch (Exception e) {
+            return RestResponse.error(e.getMessage());
+        }
     }
 
     /**
-     * PUT Endpoint to update an user.
+     * PUT Endpoint to update user.
      *
      * @return the updated user {@link User}.
      */
     @PutMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> updateUser(
-        @RequestBody User user,
-        @PathVariable String id
+        @PathVariable String id,
+        @RequestBody User user
     ) {
-        return RestResponse.create(service.updateUser(id, user));
+        try {
+            return RestResponse.create(service.updateUser(id, user));
+        } catch (Exception e) {
+            return RestResponse.error(e.getMessage());
+        }
     }
 
     /**
-     * DELETE Endpoint to delete am user.
+     * DELETE Endpoint to delete user.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteEmployee(@PathVariable String id) {
+    public ResponseEntity<RestResponse<Object>> deleteUser(@PathVariable String id) {
         service.deleteUser(id);
 
         return RestResponse.create(null, null, HttpStatus.OK);
