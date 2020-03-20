@@ -37,7 +37,7 @@ public class Building {
     private LocalTime open;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.FORMAT_TIME)
     private LocalTime closed;
-    @OneToMany(mappedBy = MAPPED_NAME)
+    @OneToMany(mappedBy = MAPPED_NAME) //TODO change to reservable id
     private Set<Reservable> reservables = new HashSet<>();
 
     public Building() {

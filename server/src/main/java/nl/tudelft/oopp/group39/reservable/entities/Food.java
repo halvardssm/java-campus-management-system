@@ -12,6 +12,8 @@ import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 public class Food extends Reservable {
     public static final String TABLE_NAME = "foods";
     public static final String MAPPED_NAME = "food";
+    public static final String COL_NAME = "name";
+    public static final String COL_DESCRIPTION = "description";
 
     private String name;
     private String description;

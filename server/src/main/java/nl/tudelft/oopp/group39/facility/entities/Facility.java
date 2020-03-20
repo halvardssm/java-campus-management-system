@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.facility.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
 import java.util.Objects;
@@ -32,6 +33,7 @@ public class Facility {
     private String description;
 
     @ManyToMany(mappedBy = Facility.TABLE_NAME, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Room> rooms = new HashSet<>();
 
     public Facility() {

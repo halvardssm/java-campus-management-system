@@ -17,6 +17,11 @@ import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 @Table(name = Bike.TABLE_NAME)
 public class Bike extends Reservable {
     public static final String TABLE_NAME = "bikes";
+    public static final String MAPPED_NAME = "bike";
+    public static final String COL_BIKE_TYPE = "bikeType";
+    public static final String COL_RENTAL_DURATION = "rentalDuration";
+
+    public static final LocalTime STANDARD_RENTAL_TIME = LocalTime.parse("04:00:00");
 
     @Enumerated(EnumType.STRING)
     private BikeType bikeType;
@@ -60,7 +65,7 @@ public class Bike extends Reservable {
     ) {
         super(building, price, reservations);
         setBikeType(bikeType != null ? bikeType : BikeType.CITY);
-        setRentalDuration(rentalDuration != null ? rentalDuration : LocalTime.parse("04:00:00"));
+        setRentalDuration(rentalDuration != null ? rentalDuration : STANDARD_RENTAL_TIME);
     }
 
     @Override

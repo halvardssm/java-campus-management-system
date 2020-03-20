@@ -35,7 +35,7 @@ public class Reservation {
     @JsonFormat(pattern = Constants.FORMAT_DATE_TIME)
     private LocalDateTime timeOfPickup;
     @ManyToOne
-    @JoinColumn(name = User.MAPPED_NAME)
+    @JoinColumn(name = User.MAPPED_NAME) //TODO change to id
     private User user;
     @OneToMany(mappedBy = MAPPED_NAME)
     private Set<ReservationAmount> reservationAmounts = new HashSet<>();

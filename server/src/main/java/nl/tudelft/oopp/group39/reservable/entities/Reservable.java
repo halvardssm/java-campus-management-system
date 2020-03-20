@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.reservable.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
 import java.util.Objects;
@@ -35,9 +36,10 @@ public class Reservable {
     private Integer id;
     private Double price;
     @ManyToOne
-    @JoinColumn(name = Building.MAPPED_NAME)
+    @JoinColumn(name = Building.MAPPED_NAME) //TODO Change to id
     private Building building;
     @OneToMany(mappedBy = MAPPED_NAME)
+    @JsonIgnore
     private Set<ReservationAmount> reservations = new HashSet<>();
 
     public Integer getId() {

@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.event.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -58,6 +59,7 @@ public class Event {
         inverseJoinColumns = {
             @JoinColumn(name = Room.TABLE_NAME, referencedColumnName = Room.COL_ID)
         })
+    @JsonIgnore
     private Set<Room> rooms = new HashSet<>();
 
     public Event() {
