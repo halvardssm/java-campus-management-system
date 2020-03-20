@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import static java.time.temporal.ChronoUnit.HOURS;
+
+
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -64,10 +67,33 @@ public class RoomReservationController extends MainSceneController implements In
         LocalTime bookingStart = (LocalTime) fromTime.getValue();
         LocalTime bookingEnd = (LocalTime) toTime.getValue();
 
-        if (!checkEmpty(bookingDate, bookingStart, bookingEnd)) {
+        if (!checkEmpty(bookingDate, bookingStart, bookingEnd) && !checkTime(bookingStart, bookingEnd)) {
             showAlert(Alert.AlertType.INFORMATION, "", "Reservation successful.");
         }
         System.out.println(bookingDate);
+    }
+
+    /**
+     * Checks whether or not the chosen times meet the requirements (at most 4 hours)
+     *
+     * @param start
+     * @param end
+     * @return
+     */
+    public boolean checkTime(LocalTime start, LocalTime end) {
+        LocalTime reservation = end.minusHours(start.getHour());
+        //LocalTime add = LocalTime.of(4, 0);
+        LocalTime maxReservation = end.minusHours(4);
+        //LocalTime zero = LocalTime.of(0,0);
+        //Integer timeDifference = reservation.minusHours(maxReservation.getHour()).compareTo(zero);
+        //Integer timeDifference2 = reservation.minusHours(maxReser)
+        Integer timeDifference = Math.toIntExact(HOURS.between(reservation, maxReservation));
+        if (timeDifference > 4 || timeDifference < -4) {
+            showAlert(Alert.AlertType.ERROR, "", "Please make sure that the duration of the reservation is at most 3 hours.");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
