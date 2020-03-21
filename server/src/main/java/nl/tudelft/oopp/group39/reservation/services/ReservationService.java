@@ -71,15 +71,20 @@ public class ReservationService {
     public Reservation createReservation(ReservationDto reservation)
         throws IllegalArgumentException, NotFoundException {
         User user = userService.readUser(reservation.getUser());
-        Room room = roomService.readRoom(reservation.getRoom());
 
         Reservation reservation1 = new Reservation(
             reservation.getTimeOfPickup(),
             reservation.getTimeOfDelivery(),
-            room,
+            null,
             user,
             new HashSet<>()
         );
+
+        if (reservation.getRoom() != null) {
+            Room room = roomService.readRoom(reservation.getRoom());
+            reservation1.setRoom(room);
+        }
+
         Reservation reservation2 = reservationRepository.save(reservation1);
 
         for (ReservationAmountDto reservationAmountDto : reservation.getReservationAmounts()) {
