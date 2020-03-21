@@ -1,72 +1,69 @@
 package nl.tudelft.oopp.group39.communication;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
+import nl.tudelft.oopp.group39.models.User;
 
 public class ServerCommunication {
 
     private static HttpClient client = HttpClient.newBuilder().build();
 
     private static String url = "http://localhost:8080/";
-    private static String user = "user/";
-    private static String building = "building/";
-    private static String room = "room/";
-    private static String authenticate = "authenticate/";
-    private static String facility = "facility/";
+    public static String user = "user/";
+    public static String building = "building/";
+    public static String room = "room/";
+    public static String authenticate = "authenticate/";
+    public static String facility = "facility/";
+    public static String reservation = "reservation/";
+    public static String food = "food/";
+    public static String bike = "bike/";
 
     private static ObjectMapper mapper = new ObjectMapper();
 
     /**
-     * Retrieves users from the server.
+     * Retrieves all Objects of type type.
      *
+     * @param type the type of objects we want to retrieve
      * @return the body of a get request to the server.
      */
-    public static String getUsers() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "user")).build();
-        return httpRequest(request);
-    }
-
-    public static String getUser(String username) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + user + username)).build();
+    public static String get(String type) {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + type)).build();
         return httpRequest(request);
     }
 
     /**
-     * Retrieves buildings from the server.
+     * Retrieves user from the server based on username.
      *
+     * @param username username of the user that needs to be retrieved
      * @return the body of a get request to the server.
      */
-    public static String getBuildings() {
+    public static User getUser(String username) throws JsonProcessingException {
+        HttpRequest request =
+            HttpRequest.newBuilder().GET().uri(URI.create(url + user + username)).build();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        JsonNode userJson = mapper.readTree(httpRequest(request)).get("body");
+        String userAsString = mapper.writeValueAsString(userJson);
+        return mapper.readValue(userAsString, User.class);
+    }
+
+    /**
+     * Retrieves rooms from the server based on building id.
+     *
+     * @param buildingId id of the building
+     * @return the body of a get request to the server.
+     */
+    public static String getRooms(long buildingId) {
         HttpRequest request = HttpRequest.newBuilder()
-            .GET().uri(URI.create(url + "building")).build();
-        return httpRequest(request);
-    }
-
-    /**
-     * Retrieves rooms from the server.
-     *
-     * @return the body of a get request to the server.
-     */
-    public static String getRooms() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room")).build();
-        return httpRequest(request);
-    }
-
-    /**
-     * Retrieves facilities from the server.
-     *
-     * @return the body of a get request to the server.
-     */
-    public static String getFacilities() {
-        HttpRequest request = HttpRequest.newBuilder().GET()
-            .uri(URI.create(url + "facility")).build();
+            .GET()
+            .uri(URI.create(url + room + buildingId))
+            .build();
         return httpRequest(request);
     }
 
@@ -110,7 +107,7 @@ public class ServerCommunication {
     }
 
     /**
-     * Adds a room on the server
+     * Adds a room on the server.
      *
      * @return the body of a post request to the server.
      */
@@ -125,7 +122,7 @@ public class ServerCommunication {
     }
 
     /**
-     * Updates Rooms on the server
+     * Updates Rooms on the server.
      *
      * @return the body of a put request to the server.
      */
@@ -145,7 +142,7 @@ public class ServerCommunication {
     }
 
     /**
-     * Updates buildings on the server
+     * Updates buildings on the server.
      *
      * @return the body of a post request to the server.
      */
@@ -180,20 +177,23 @@ public class ServerCommunication {
      * Doc. TODO Sven
      */
     public static void removeRoom(String id) {
-        HttpRequest request = HttpRequest.newBuilder().DELETE().uri(URI.create(url + "room/" + id)).build();
+        HttpRequest request = HttpRequest.newBuilder()
+            .DELETE()
+            .uri(URI.create(url + "room/" + id))
+            .build();
         httpRequest(request);
     }
 
-    public static String getRooms(long buildingId) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + room + buildingId)).build();
-        return httpRequest(request);
-    }
-
-    public static String getAllFood() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "food")).build();
-        return httpRequest(request);
-    }
-
+    /**
+     * Creates a reservation.
+     *
+     * @param timeOfPickup   date and time of receiving the order
+     * @param timeOfDelivery date and time of returning the bike
+     * @param user           netid of user making the order
+     * @param roomId         id of the room the food needs to be delivered to
+     * @param reservable     list of reservables
+     * @return @return the body of a post request to the server.
+     */
     public static String orderFoodBike(String timeOfPickup, String timeOfDelivery, String user, Integer roomId, String reservable) {
         String timeofDeliv;
         if (timeOfDelivery == null) {
@@ -224,24 +224,13 @@ public class ServerCommunication {
         }
     }
 
-    public static String getAllBikes() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "bike")).build();
-        return httpRequest(request);
-    }
-
-    public static String getReservations() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "reservation")).build();
-        return httpRequest(request);
-    }
-
-
     /**
      * Doc. TODO Sven
      *
      * @return the body of a get request to the server.
      */
     public static String httpRequest(HttpRequest req) {
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
         try {
             response = client.send(req, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -254,15 +243,22 @@ public class ServerCommunication {
         return response.body();
     }
 
-    public static String addUser(String netID, String email, String password, String role) {
-        HttpRequest.BodyPublisher newUser = HttpRequest.BodyPublishers.ofString("{\"username\": \"" + netID + "\", \"email\":\"" + email + "\", \"password\":\"" + password + "\", \"roles\":\"" + List.of(role) + "\"}");
+    /**
+     * Creates user on the server.
+     *
+     * @return the body of a post request to the server.
+     */
+    public static String addUser(User newUser) throws JsonProcessingException {
+        String userJson = mapper.writeValueAsString(newUser);
+        HttpRequest.BodyPublisher signup = HttpRequest.BodyPublishers
+            .ofString(userJson);
         HttpRequest request = HttpRequest.newBuilder()
-            .POST(newUser)
+            .POST(signup)
             .uri(URI.create(url + user))
             .header("Content-Type", "application/json")
             .build();
 
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -278,15 +274,22 @@ public class ServerCommunication {
 
     }
 
+    /**
+     * User login.
+     *
+     * @return the body of a post request to the server.
+     */
     public static String userLogin(String username, String pwd) throws JsonProcessingException {
-        HttpRequest.BodyPublisher user = HttpRequest.BodyPublishers.ofString("{\"username\": \"" + username + "\", \"password\":\"" + pwd + "\"}");
+        HttpRequest.BodyPublisher user = HttpRequest.BodyPublishers
+            .ofString("{\"username\": \"" + username
+                + "\", \"password\":\"" + pwd + "\"}");
         HttpRequest request = HttpRequest.newBuilder()
             .POST(user)
             .uri(URI.create(url + authenticate))
             .header("Content-Type", "application/json")
             .build();
 
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -303,18 +306,9 @@ public class ServerCommunication {
             System.out.println(jwtToken);
             MainSceneController.jwt = jwtToken;
             MainSceneController.loggedIn = true;
-            MainSceneController.username = username;
-            // MainSceneController.role = getRole(username);
+            MainSceneController.user = getUser(username);
             return "Logged in";
         }
     }
 
-//    public static String getRole(String username) throws JsonProcessingException {
-//        String user = getUser(username);
-//        System.out.println(user);
-//        JsonNode userjson = mapper.readTree(user).get("body");
-//        MainSceneController.user = userjson;
-//        String role = userjson.get("role").asText();
-//        return role;
-//    }
 }

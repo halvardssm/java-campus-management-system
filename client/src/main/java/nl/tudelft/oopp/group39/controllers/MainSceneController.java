@@ -1,22 +1,18 @@
 package nl.tudelft.oopp.group39.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.models.User;
 import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 public class MainSceneController {
@@ -26,9 +22,7 @@ public class MainSceneController {
     public static boolean loggedIn = false;
     public static String jwt;
     public static boolean sidebarShown = false;
-    public static String role;
-    public static String username;
-    public static JsonNode user;
+    public static User user;
 
     @FXML
     public VBox sidebar;
@@ -39,9 +33,9 @@ public class MainSceneController {
     @FXML
     protected HBox topbar;
 
-    @FXML
-    protected ComboBox buildinglist;
-
+    /**
+     * Doc. TODO Sven
+     */
     public void createAlert(String content) {
         createAlert(null, content);
     }
@@ -51,45 +45,67 @@ public class MainSceneController {
      */
     public void createAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.setTitle(title);
         alert.setContentText(content);
         alert.showAndWait();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void goToMainScene() throws IOException {
         UsersDisplay.sceneHandler("/mainScene.fxml");
         changeTopBtn();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void goToBuildingScene() throws IOException {
         BuildingSceneController controller =
             (BuildingSceneController) UsersDisplay.sceneControllerHandler("/buildingListView.fxml");
         controller.changeTopBtn();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void goToRoomScene() throws IOException {
         UsersDisplay.sceneHandler("/roomScene.fxml");
         changeTopBtn();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void goToAddBuilding() throws IOException {
         UsersDisplay.sceneHandler("/buildingModifyScene.fxml");
         changeTopBtn();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void goToLoginScene() throws IOException {
         LoginController controller =
             (LoginController) UsersDisplay.sceneControllerHandler("/login.fxml");
         controller.changeTopBtn();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void goToSignupScene() throws IOException {
         SignupController controller =
             (SignupController) UsersDisplay.sceneControllerHandler("/signup.fxml");
         controller.changeTopBtn();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void goToRoomsScene(long buildingId, String name, String address) throws IOException {
         RoomSceneController controller =
             (RoomSceneController) UsersDisplay.sceneControllerHandler("/roomView.fxml");
@@ -97,6 +113,9 @@ public class MainSceneController {
         controller.changeTopBtn();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void goToRoomsScene() throws IOException {
         RoomSceneController controller =
             (RoomSceneController) UsersDisplay.sceneControllerHandler("/roomView.fxml");
@@ -106,18 +125,20 @@ public class MainSceneController {
 
 
     public void goToBikeRentalScene() throws IOException {
-        BikeSceneController controller = (BikeSceneController) UsersDisplay.sceneControllerHandler("/bikeRentalView.fxml");
+        FoodAndBikeSceneController controller = (FoodAndBikeSceneController) UsersDisplay.sceneControllerHandler("/bikeAndFoodView.fxml");
         controller.changeTopBtn();
-        controller.getBuildingsList();
+        controller.setup("bike");
     }
 
     public void goToFoodOrderScene() throws IOException {
-        FoodSceneController controller = (FoodSceneController) UsersDisplay.sceneControllerHandler("/foodOrderView.fxml");
+        FoodAndBikeSceneController controller = (FoodAndBikeSceneController) UsersDisplay.sceneControllerHandler("/bikeAndFoodView.fxml");
         controller.changeTopBtn();
-        controller.getBuildingsList();
+        controller.setup("food");
     }
 
-
+    /**
+     * Logs the user out.
+     */
     public void logout() throws IOException {
         loggedIn = false;
         jwt = null;
@@ -125,35 +146,30 @@ public class MainSceneController {
         changeTopBtn();
     }
 
-
+    /**
+     * Doc. TODO Sven
+     */
     public void getFacilitiesButton() {
-        createAlert(null, ServerCommunication.getFacilities());
+        createAlert(null, ServerCommunication.get(ServerCommunication.facility));
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void getUsersButton() {
-        createAlert(ServerCommunication.getUsers());
+        createAlert(ServerCommunication.get(ServerCommunication.user));
     }
 
-    public void getBuildingsList() throws JsonProcessingException {
-        String buildingString = ServerCommunication.getBuildings();
-        System.out.println(buildingString);
-
-        ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
-
-        for (JsonNode building : body) {
-            Label buildingName = new Label(building.get("name").asText());
-            buildingName.setId(building.get("id").asText());
-            buildinglist.getItems().add(buildingName);
-        }
-    }
-
+    /**
+     * Changes the login button when logged in.
+     */
     public void changeTopBtn() {
         System.out.println(topbtn);
         System.out.println(topbar);
         System.out.println(loggedIn);
 
         if (loggedIn) {
-            MenuButton myaccount = new MenuButton(username);
+            MenuButton myaccount = new MenuButton(user.getUsername());
             MenuItem myres = new MenuItem("My Reservations");
             MenuItem myacc = new MenuItem("My Account");
             MenuItem logout = new MenuItem("Logout");
@@ -166,9 +182,9 @@ public class MainSceneController {
                 }
             });
             myaccount.getItems().addAll(myres, myacc, logout);
-//            if (role.equals("ADMIN")) {
-//                myaccount.getItems().add(admin);
-//            }
+            if (user.getRole().equals("ADMIN")) {
+                myaccount.getItems().add(admin);
+            }
             topbar.getChildren().add(myaccount);
             topbar.getChildren().remove(topbtn);
         } else {
@@ -183,8 +199,11 @@ public class MainSceneController {
         }
     }
 
+    /**
+     * Toggles the sidebar.
+     */
     public void toggleSidebar() {
-        if (sidebarShown == false) {
+        if (!sidebarShown) {
             Hyperlink buildings = new Hyperlink("Buildings");
             buildings.getStyleClass().add("sidebar-item");
             buildings.setOnAction(event -> {

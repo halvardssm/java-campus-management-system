@@ -13,6 +13,15 @@ public class User {
 
     }
 
+    /**
+     * Creates a user.
+     *
+     * @param username netid/username of the user
+     * @param email    email of the user
+     * @param password password of the user
+     * @param image    image of the user
+     * @param role     role of the user
+     */
     public User(String username, String email, String password, Blob image, String role) {
         this.username = username;
         this.email = email;
