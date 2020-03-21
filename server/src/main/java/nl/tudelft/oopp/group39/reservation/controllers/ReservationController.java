@@ -50,7 +50,7 @@ public class ReservationController {
                 HttpStatus.CREATED
             );
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 
@@ -64,7 +64,7 @@ public class ReservationController {
         try {
             return RestResponse.create(reservationService.readReservation(id));
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 
@@ -81,7 +81,7 @@ public class ReservationController {
         try {
             return RestResponse.create(reservationService.updateReservation(id, reservation));
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 

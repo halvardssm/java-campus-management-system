@@ -12,6 +12,32 @@ public class ReservationDto {
     private Integer room;
     private Set<ReservationAmountDto> reservationAmounts;
 
+    public ReservationDto() {
+    }
+
+    /**
+     * Constructor for the ReservationDto.
+     *
+     * @param timeOfPickup       the time of pickup
+     * @param timeOfDelivery     the time of delivery, nullable
+     * @param user               the username connected
+     * @param room               the room id connected
+     * @param reservationAmounts set of {@link ReservationAmountDto}
+     */
+    public ReservationDto(
+        LocalDateTime timeOfPickup,
+        LocalDateTime timeOfDelivery,
+        String user,
+        Integer room,
+        Set<ReservationAmountDto> reservationAmounts
+    ) {
+        this.timeOfPickup = timeOfPickup;
+        this.timeOfDelivery = timeOfDelivery;
+        this.user = user;
+        this.room = room;
+        this.reservationAmounts = reservationAmounts;
+    }
+
     public LocalDateTime getTimeOfPickup() {
         return timeOfPickup;
     }

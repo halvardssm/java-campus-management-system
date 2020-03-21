@@ -47,7 +47,7 @@ public class FoodController {
         try {
             return RestResponse.create(foodService.createFood(food), null, HttpStatus.CREATED);
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 
@@ -61,7 +61,7 @@ public class FoodController {
         try {
             return RestResponse.create(foodService.readFood(id));
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 
@@ -78,7 +78,7 @@ public class FoodController {
         try {
             return RestResponse.create(foodService.updateFood(id, food));
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 

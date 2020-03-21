@@ -47,7 +47,7 @@ public class BikeController {
         try {
             return RestResponse.create(bikeService.createBike(bike), null, HttpStatus.CREATED);
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 
@@ -61,7 +61,7 @@ public class BikeController {
         try {
             return RestResponse.create(bikeService.readBike(id));
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 
@@ -78,7 +78,7 @@ public class BikeController {
         try {
             return RestResponse.create(bikeService.updateBike(id, bike));
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 

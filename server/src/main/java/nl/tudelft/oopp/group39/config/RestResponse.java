@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.config;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Objects;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,8 +68,12 @@ public class RestResponse<T> implements Serializable {
      * @param error The error to place in the error field
      * @return The finalized ResponseEntity
      */
-    public static <T> ResponseEntity<RestResponse<T>> error(String error) {
-        return create(null, error, null);
+    public static <T> ResponseEntity<RestResponse<T>> error(Exception error) {
+        String message = !error.getMessage().isEmpty()
+                         ? error.getMessage()
+                         : Arrays.toString(error.getStackTrace());
+
+        return create(null, message, null);
     }
 
     public Object getBody() {
