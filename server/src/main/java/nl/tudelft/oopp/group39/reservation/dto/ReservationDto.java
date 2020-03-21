@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.reservation.models;
+package nl.tudelft.oopp.group39.reservation.dto;
 
 import java.time.LocalDateTime;
 import java.util.Set;

@@ -5,8 +5,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.tudelft.oopp.group39.CoreControllerTest;
+import nl.tudelft.oopp.group39.auth.dto.AuthRequestDto;
 import nl.tudelft.oopp.group39.auth.exceptions.UnauthorizedException;
-import nl.tudelft.oopp.group39.auth.models.AuthRequest;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
@@ -40,12 +40,12 @@ class AuthControllerTest extends CoreControllerTest {
 
     @Test
     void createToken() throws Exception {
-        AuthRequest request = new AuthRequest("test", "test");
+        AuthRequestDto request = new AuthRequestDto("test", "test");
         String json = objectMapper.writeValueAsString(request);
 
         mockMvc.perform(post(AuthController.REST_MAPPING)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json))
             .andExpect(status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.body.token").exists())
             .andExpect(MockMvcResultMatchers.jsonPath("$.body.token").isNotEmpty());
@@ -53,15 +53,15 @@ class AuthControllerTest extends CoreControllerTest {
 
     @Test
     void createTokenFailed() throws Exception {
-        AuthRequest request = new AuthRequest("test2", "test");
+        AuthRequestDto request = new AuthRequestDto("test2", "test");
         String json = objectMapper.writeValueAsString(request);
 
         mockMvc.perform(post(AuthController.REST_MAPPING)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json))
             .andExpect(status().isUnauthorized())
             .andExpect(MockMvcResultMatchers.jsonPath("$.error").exists())
             .andExpect(MockMvcResultMatchers.jsonPath("$.error")
-                .value(UnauthorizedException.UNAUTHORIZED));
+                           .value(UnauthorizedException.UNAUTHORIZED));
     }
 }
