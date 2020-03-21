@@ -195,11 +195,17 @@ public class ServerCommunication {
     }
 
     public static String orderFoodBike(String timeOfPickup, String timeOfDelivery, String user, Integer roomId, String reservable) {
+        String timeofDeliv;
+        if (timeOfDelivery == null) {
+            timeofDeliv = null;
+        } else {
+            timeofDeliv = "\"" + timeOfDelivery + "\"";
+        }
         String body = "{\"timeOfPickup\":\"" + timeOfPickup
-            + "\",\"timeOfDelivery\":\"" + timeOfDelivery
-            + "\",\"room\":" + roomId
-            + "\",\"user\":\"" + user
-            + ",\"reservationAmounts\":" + reservable + "}";
+            + "\",\"timeOfDelivery\":" + timeofDeliv
+            + ",\"room\":" + roomId
+            + ",\"user\":\"" + user
+            + "\",\"reservationAmounts\":" + reservable + "}";
         System.out.println(body);
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString(body);
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding).uri(URI.create(url + "reservation")).header("Content-Type", "application/json").build();

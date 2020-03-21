@@ -184,7 +184,6 @@ public class BikeSceneController extends MainSceneController {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             String time = timePicker.getValue().toString();
             String dateTime = dateTimeFormatter.format(date) + " " + time + ":00";
-            System.out.println(dateTime);
             int duration = Integer.parseInt(durationPicker.getValue().toString().split(" ")[0]);
             int start = Integer.parseInt(time.split(":")[0]);
             int end = start + duration;

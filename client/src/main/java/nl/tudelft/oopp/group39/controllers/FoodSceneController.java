@@ -69,7 +69,6 @@ public class FoodSceneController extends MainSceneController {
         getRoomsList();
         System.out.println(rooms);
         System.out.println(foodString);
-        // String teststring = "{\"body\": [{\"id\":1, \"name\":\"voedsel\", \"price\":\"2.35\"}, {\"id\":2, \"name\":\"bitterballen\", \"price\":\"2.65\"}], \"error\": null}";
         ArrayNode body = (ArrayNode) mapper.readTree(foodString).get("body");
 
         for (JsonNode fooditem : body) {
