@@ -25,11 +25,11 @@ public class BuildingSceneController extends MainSceneController implements Init
     /**
      * Retrieves buildings from the server and shows them.
      */
-    public void getBuildings() {
+    public void showBuildings() {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         flowPane.getChildren().clear();
         try {
-            String buildingString = ServerCommunication.getBuildings();
+            String buildingString = ServerCommunication.get(ServerCommunication.building);
             System.out.println(buildingString);
             ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
             buildingString = mapper.writeValueAsString(body);
@@ -38,6 +38,7 @@ public class BuildingSceneController extends MainSceneController implements Init
                 newBuilding = FXMLLoader.load(getClass().getResource("/buildingCell.fxml"));
                 String buildingName = building.getName();
                 String address = building.getLocation();
+                String desc = building.getDescription();
                 newBuilding.setOnMouseClicked(e -> {
                     try {
                         goToRoomsScene();
@@ -51,7 +52,7 @@ public class BuildingSceneController extends MainSceneController implements Init
                 name.setText(buildingName);
 
                 String newDetails = (address
-                    + "\n" + building.getDescription()
+                    + "\n" + desc
                     + "\n" + "Max. Capacity"
                     + "\n" + "Opening times: " + building.getOpen()
                     + " - " + building.getClosed());
@@ -71,7 +72,7 @@ public class BuildingSceneController extends MainSceneController implements Init
      */
     public void alertAllBuildings() {
         try {
-            createAlert("Users shown.", ServerCommunication.getBuildings());
+            createAlert("Users shown.", ServerCommunication.get(ServerCommunication.building));
         } catch (Exception e) {
             createAlert("Error Occurred.");
         }
@@ -82,7 +83,7 @@ public class BuildingSceneController extends MainSceneController implements Init
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        getBuildings();
+        showBuildings();
     }
 
 

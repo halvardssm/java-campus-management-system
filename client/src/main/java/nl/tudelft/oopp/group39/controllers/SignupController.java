@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 import java.util.regex.Pattern;
 import javafx.fxml.FXML;
@@ -10,6 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.models.User;
 
 public class SignupController extends MainSceneController {
     @FXML
@@ -30,19 +32,20 @@ public class SignupController extends MainSceneController {
     /**
      * User signup.
      */
-    public void signup() {
+    public void signup() throws JsonProcessingException {
         String email = emailField.getText();
         String netID = netIdField.getText();
         String password = passwordField.getText();
         String confirmpassword = confirmpasswordField.getText();
         String role = getRole(email);
+        User user = new User(netID, email, password, null, role);
         if (checkEmpty(email, netID, password, confirmpassword)
             && isValid(email)
             && checkPwd(password, confirmpassword)) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Sign up");
             alert.setHeaderText(null);
-            alert.setContentText(ServerCommunication.addUser(netID, email, password, role));
+            alert.setContentText(ServerCommunication.addUser(user));
             ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setText("Go to log in");
             ((Button) alert.getDialogPane().lookupButton(ButtonType.OK)).setOnAction(e -> {
                 try {
@@ -112,11 +115,11 @@ public class SignupController extends MainSceneController {
      * @return boolean: true if they match, false otherwise
      */
     public boolean checkPwd(String pwd, String confirm) {
-        if (!pwd.equals(confirm)) {
-            alertErr("Passwords must be the same");
-            return false;
-        } else {
+        if (pwd.equals(confirm)) {
             return true;
+        } else {
+            errormsg.setText("Passwords must be the same");
+            return false;
         }
     }
 
@@ -129,9 +132,9 @@ public class SignupController extends MainSceneController {
     public String getRole(String email) {
         String role = email.split("@")[1];
         if (role.contains("student")) {
-            return "student";
+            return "STUDENT";
         } else {
-            return "staff";
+            return "STAFF";
         }
     }
 }

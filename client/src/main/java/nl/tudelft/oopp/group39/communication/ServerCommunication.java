@@ -1,35 +1,37 @@
 package nl.tudelft.oopp.group39.communication;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
+import nl.tudelft.oopp.group39.models.User;
 
 public class ServerCommunication {
 
     private static HttpClient client = HttpClient.newBuilder().build();
 
     private static String url = "http://localhost:8080/";
-    private static String user = "user/";
-    private static String building = "building/";
-    private static String room = "room/";
-    private static String authenticate = "authenticate/";
-    private static String facility = "facility/";
+    public static String user = "user/";
+    public static String building = "building/";
+    public static String room = "room/";
+    public static String authenticate = "authenticate/";
+    public static String facility = "facility/";
 
     private static ObjectMapper mapper = new ObjectMapper();
 
     /**
-     * Retrieves users from the server.
+     * Retrieves all Objects of type type.
      *
+     * @param type the type of objects we want to retrieve
      * @return the body of a get request to the server.
      */
-    public static String getUsers() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "user")).build();
+    public static String get(String type) {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + type)).build();
         return httpRequest(request);
     }
 
@@ -39,31 +41,13 @@ public class ServerCommunication {
      * @param username username of the user that needs to be retrieved
      * @return the body of a get request to the server.
      */
-    public static String getUser(String username) {
+    public static User getUser(String username) throws JsonProcessingException {
         HttpRequest request =
             HttpRequest.newBuilder().GET().uri(URI.create(url + user + username)).build();
-        return httpRequest(request);
-    }
-
-    /**
-     * Retrieves buildings from the server.
-     *
-     * @return the body of a get request to the server.
-     */
-    public static String getBuildings() {
-        HttpRequest request = HttpRequest.newBuilder()
-            .GET().uri(URI.create(url + "building")).build();
-        return httpRequest(request);
-    }
-
-    /**
-     * Retrieves rooms from the server.
-     *
-     * @return the body of a get request to the server.
-     */
-    public static String getRooms() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room")).build();
-        return httpRequest(request);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        JsonNode userJson = mapper.readTree(httpRequest(request)).get("body");
+        String userAsString = mapper.writeValueAsString(userJson);
+        return mapper.readValue(userAsString, User.class);
     }
 
     /**
@@ -77,17 +61,6 @@ public class ServerCommunication {
             .GET()
             .uri(URI.create(url + room + buildingId))
             .build();
-        return httpRequest(request);
-    }
-
-    /**
-     * Retrieves facilities from the server.
-     *
-     * @return the body of a get request to the server.
-     */
-    public static String getFacilities() {
-        HttpRequest request = HttpRequest.newBuilder().GET()
-            .uri(URI.create(url + "facility")).build();
         return httpRequest(request);
     }
 
@@ -209,17 +182,6 @@ public class ServerCommunication {
     }
 
     /**
-     * Retrieves all rooms from the server.
-     *
-     * @return the body of a get request to the server.
-     */
-    public static String getAllRooms() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + room)).build();
-        return httpRequest(request);
-    }
-
-
-    /**
      * Doc. TODO Sven
      *
      * @return the body of a get request to the server.
@@ -243,14 +205,12 @@ public class ServerCommunication {
      *
      * @return the body of a post request to the server.
      */
-    public static String addUser(String netID, String email, String password, String role) {
-        HttpRequest.BodyPublisher newUser = HttpRequest.BodyPublishers
-            .ofString("{\"username\": \"" + netID
-                + "\", \"email\":\"" + email
-                + "\", \"password\":\"" + password
-                + "\", \"roles\":\"" + List.of(role) + "\"}");
+    public static String addUser(User newUser) throws JsonProcessingException {
+        String userJson = mapper.writeValueAsString(newUser);
+        HttpRequest.BodyPublisher signup = HttpRequest.BodyPublishers
+            .ofString(userJson);
         HttpRequest request = HttpRequest.newBuilder()
-            .POST(newUser)
+            .POST(signup)
             .uri(URI.create(url + user))
             .header("Content-Type", "application/json")
             .build();
@@ -303,21 +263,9 @@ public class ServerCommunication {
             System.out.println(jwtToken);
             MainSceneController.jwt = jwtToken;
             MainSceneController.loggedIn = true;
-            MainSceneController.username = username;
-            MainSceneController.isAdmin = isAdmin(username);
+            MainSceneController.user = getUser(username);
             return "Logged in";
         }
     }
 
-    /**
-     * Checks if user is an admin.
-     *
-     * @return boolean: true if user is admin, false otherwise
-     */
-    public static boolean isAdmin(String username) throws JsonProcessingException {
-        String user = getUser(username);
-        JsonNode userjson = mapper.readTree(user).get("body");
-        String role = userjson.get("role").asText();
-        return role.equals("ADMIN");
-    }
 }
