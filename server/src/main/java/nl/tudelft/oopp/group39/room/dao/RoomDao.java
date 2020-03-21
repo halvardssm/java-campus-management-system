@@ -47,7 +47,6 @@ public class RoomDao {
                     p = cb.greaterThanOrEqualTo(room.get(key), cap);
                     break;
                 }
-                case "buildingId":
                 case "id": {
                     Long id = Long.parseLong(filters.get(key));
                     p = cb.greaterThanOrEqualTo(room.get(key), id);
@@ -56,6 +55,16 @@ public class RoomDao {
                 case "onlyStaff": {
                     boolean staff = Boolean.parseBoolean(filters.get(key));
                     p = cb.equal(room.get(key), staff);
+                    break;
+                }
+                case "buildingId": {
+                    List<Integer> bvals = new ArrayList<>();
+
+                    for (String val: (filters.get(key)).split(",")) {
+                        bvals.add(Integer.parseInt(val));
+                    }
+
+                    p = room.get(key).in(bvals);
                     break;
                 }
 
