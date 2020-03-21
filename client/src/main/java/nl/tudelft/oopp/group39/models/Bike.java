@@ -2,36 +2,19 @@ package nl.tudelft.oopp.group39.models;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class Bike {
+public class Bike extends Reservable {
 
-    private Integer id;
-    private double price;
-    private JsonNode building;
     private String bikeType;
     private String rentalDuration;
 
     public Bike() {
-
+        super();
     }
 
     public Bike(Integer id, double price, JsonNode building, String bikeType, String rentalDuration) {
-        this.id = id;
-        this.price = price;
-        this.building = building;
+        super(id, price, building);
         this.bikeType = bikeType;
         this.rentalDuration = rentalDuration;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public JsonNode getBuilding() {
-        return building;
     }
 
     public String getBikeType() {

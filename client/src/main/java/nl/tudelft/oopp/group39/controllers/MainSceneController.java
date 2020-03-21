@@ -1,16 +1,12 @@
 package nl.tudelft.oopp.group39.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
@@ -39,8 +35,7 @@ public class MainSceneController {
     @FXML
     protected HBox topbar;
 
-    @FXML
-    protected ComboBox buildinglist;
+
 
     public void createAlert(String content) {
         createAlert(null, content);
@@ -106,15 +101,15 @@ public class MainSceneController {
 
 
     public void goToBikeRentalScene() throws IOException {
-        BikeSceneController controller = (BikeSceneController) UsersDisplay.sceneControllerHandler("/bikeRentalView.fxml");
+        FoodAndBikeSceneController controller = (FoodAndBikeSceneController) UsersDisplay.sceneControllerHandler("/bikeAndFoodView.fxml");
         controller.changeTopBtn();
-        controller.getBuildingsList();
+        controller.setup("bike");
     }
 
     public void goToFoodOrderScene() throws IOException {
-        FoodSceneController controller = (FoodSceneController) UsersDisplay.sceneControllerHandler("/foodOrderView.fxml");
+        FoodAndBikeSceneController controller = (FoodAndBikeSceneController) UsersDisplay.sceneControllerHandler("/bikeAndFoodView.fxml");
         controller.changeTopBtn();
-        controller.getBuildingsList();
+        controller.setup("food");
     }
 
 
@@ -134,18 +129,7 @@ public class MainSceneController {
         createAlert(ServerCommunication.getUsers());
     }
 
-    public void getBuildingsList() throws JsonProcessingException {
-        String buildingString = ServerCommunication.getBuildings();
-        System.out.println(buildingString);
 
-        ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
-
-        for (JsonNode building : body) {
-            Label buildingName = new Label(building.get("name").asText());
-            buildingName.setId(building.get("id").asText());
-            buildinglist.getItems().add(buildingName);
-        }
-    }
 
     public void changeTopBtn() {
         System.out.println(topbtn);
