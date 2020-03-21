@@ -134,6 +134,8 @@ public class Reservation {
         Reservation that = (Reservation) o;
         return Objects.equals(getId(), that.getId())
             && Objects.equals(getTimeOfPickup(), that.getTimeOfPickup())
+            && Objects.equals(getTimeOfDelivery(), that.getTimeOfDelivery())
+            && Objects.equals(getRoom(), that.getRoom())
             && Objects.equals(getUser(), that.getUser())
             && Objects.equals(getReservationAmounts(), that.getReservationAmounts());
     }

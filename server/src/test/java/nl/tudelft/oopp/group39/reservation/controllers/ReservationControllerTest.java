@@ -3,6 +3,7 @@ package nl.tudelft.oopp.group39.reservation.controllers;
 import static nl.tudelft.oopp.group39.reservation.controllers.ReservationController.REST_MAPPING;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -25,7 +26,6 @@ import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -86,10 +86,6 @@ class ReservationControllerTest extends CoreControllerTest {
         ReservationAmount reservationAmount
             = reservationAmountService.createReservation(testReservationAmount);
         testReservationAmount.setId(reservationAmount.getId());
-    }
-
-    @AfterEach
-    void tearDown() {
     }
 
     @Test
@@ -195,5 +191,23 @@ class ReservationControllerTest extends CoreControllerTest {
                 is(testReservationDto.getTimeOfDelivery()
                        .format(Constants.FORMATTER_DATE_TIME))
             ));
+    }
+
+    @Test
+    void testError() {
+        assertEquals(
+            "java.lang.NullPointerException",
+            reservationController.createReservation(null).getBody().getError()
+        );
+
+        assertEquals(
+            "Reservation 0 not found",
+            reservationController.readReservation(0).getBody().getError()
+        );
+
+        assertEquals(
+            "Reservation 0 not found",
+            reservationController.updateReservation(0, null).getBody().getError()
+        );
     }
 }
