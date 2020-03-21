@@ -33,6 +33,8 @@ public class Reservable {
     public static final String TABLE_NAME = "reservables";
     public static final String MAPPED_NAME = "reservable";
     public static final String COL_ID = "id";
+    public static final String COL_PRICE = "price";
+    public static final String COL_BUILDING = "building";
     public static final String COL_RESERVATIONS = "reservations";
 
     @Id

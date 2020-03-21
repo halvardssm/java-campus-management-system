@@ -18,6 +18,10 @@ import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.event.controllers.EventController;
 import nl.tudelft.oopp.group39.event.repositories.EventRepository;
 import nl.tudelft.oopp.group39.event.services.EventService;
+import nl.tudelft.oopp.group39.reservable.controllers.BikeController;
+import nl.tudelft.oopp.group39.reservable.controllers.FoodController;
+import nl.tudelft.oopp.group39.reservable.services.BikeService;
+import nl.tudelft.oopp.group39.reservable.services.FoodService;
 import nl.tudelft.oopp.group39.reservable.services.ReservableService;
 import nl.tudelft.oopp.group39.reservation.controllers.ReservationController;
 import nl.tudelft.oopp.group39.reservation.repositories.ReservationRepository;
@@ -78,4 +82,12 @@ public class CoreTest {
     protected ReservationAmountService reservationAmountService;
     @Autowired
     protected ReservableService reservableService;
+    @Autowired
+    protected BikeService bikeService;
+    @Autowired
+    protected FoodService foodService;
+    @Autowired
+    protected BikeController bikeController;
+    @Autowired
+    protected FoodController foodController;
 }

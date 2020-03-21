@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.group39.reservable.entities;
 
-import java.time.LocalTime;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,8 +15,6 @@ public class Bike extends Reservable {
     public static final String TABLE_NAME = "bikes";
     public static final String MAPPED_NAME = "bike";
     public static final String COL_BIKE_TYPE = "bikeType";
-
-    public static final LocalTime STANDARD_RENTAL_TIME = LocalTime.parse("04:00:00");
 
     @Enumerated(EnumType.STRING)
     private BikeType bikeType;
