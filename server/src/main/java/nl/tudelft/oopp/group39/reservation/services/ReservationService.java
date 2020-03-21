@@ -108,12 +108,12 @@ public class ReservationService {
      *
      * @return the updated reservation {@link Reservation}.
      */
-    public Reservation updateReservation(Integer id, Reservation newReservation)
+    public Reservation updateReservation(Integer id, ReservationDto newReservation)
         throws NotFoundException {
         return reservationRepository.findById(id)
             .map(reservation -> {
-                newReservation.setId(id);
-                reservation = newReservation;
+                reservation.setTimeOfPickup(newReservation.getTimeOfPickup());
+                reservation.setTimeOfDelivery(newReservation.getTimeOfDelivery());
 
                 return reservationRepository.save(reservation);
             })
@@ -127,6 +127,8 @@ public class ReservationService {
      * Delete an reservation {@link Reservation}.
      */
     public void deleteReservation(Integer id) {
+        reservationAmountService.deleteReservationAmountsByReservationId(id);
+
         reservationRepository.deleteById(id);
     }
 }

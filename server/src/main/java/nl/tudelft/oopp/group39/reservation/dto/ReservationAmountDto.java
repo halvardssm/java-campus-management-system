@@ -7,6 +7,14 @@ public class ReservationAmountDto {
     private Integer amount;
     private Integer reservable;
 
+    public ReservationAmountDto() {
+    }
+
+    public ReservationAmountDto(Integer amount, Integer reservable) {
+        this.amount = amount;
+        this.reservable = reservable;
+    }
+
     public Integer getAmount() {
         return amount;
     }

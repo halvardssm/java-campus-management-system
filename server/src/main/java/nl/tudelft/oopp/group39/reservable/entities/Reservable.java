@@ -69,6 +69,9 @@ public class Reservable {
         this.price = price;
     }
 
+    public Reservable() {
+    }
+
     /**
      * The constructor of Reservable.
      *
@@ -84,9 +87,6 @@ public class Reservable {
 
     public Set<ReservationAmount> getReservations() {
         return reservations;
-    }
-
-    public Reservable() {
     }
 
     public void setReservations(Set<ReservationAmount> reservations) {

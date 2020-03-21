@@ -38,7 +38,7 @@ public class BikeController {
     }
 
     /**
-     * POST Endpoint to retrieve an bike.
+     * POST Endpoint to retrieve a bike.
      *
      * @return the created bike {@link Bike}.
      */
@@ -83,7 +83,7 @@ public class BikeController {
     }
 
     /**
-     * DELETE Endpoint to delete am bike.
+     * DELETE Endpoint to delete a bike.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteBike(@PathVariable Integer id) {

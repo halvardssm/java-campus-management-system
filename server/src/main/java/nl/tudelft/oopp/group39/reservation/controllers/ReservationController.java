@@ -76,7 +76,7 @@ public class ReservationController {
     @PutMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> updateReservation(
         @PathVariable Integer id,
-        @RequestBody Reservation reservation
+        @RequestBody ReservationDto reservation
     ) {
         try {
             return RestResponse.create(reservationService.updateReservation(id, reservation));

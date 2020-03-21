@@ -29,6 +29,11 @@ public class Reservation {
     public static final String TABLE_NAME = "reservations";
     public static final String MAPPED_NAME = "reservation";
     public static final String COL_ID = "id";
+    public static final String COL_TIME_OF_PICKUP = "timeOfPickup";
+    public static final String COL_TIME_OF_DELIVERY = "timeOfDelivery";
+    public static final String COL_ROOM = "room";
+    public static final String COL_USER = "user";
+    public static final String COL_RESERVATION_AMOUNTS = "reservationAmounts";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

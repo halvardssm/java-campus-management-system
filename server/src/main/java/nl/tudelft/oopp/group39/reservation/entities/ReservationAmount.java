@@ -21,6 +21,9 @@ import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 public class ReservationAmount {
     public static final String TABLE_NAME = Reservation.TABLE_NAME + "_" + Reservable.TABLE_NAME;
     public static final String COL_ID = "id";
+    public static final String COL_AMOUNT = "amount";
+    public static final String COL_RESERVATION = "reservation";
+    public static final String COL_RESERVABLE = "reservable";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
