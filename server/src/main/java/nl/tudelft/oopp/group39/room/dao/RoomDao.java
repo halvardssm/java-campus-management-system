@@ -11,7 +11,10 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
+import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import org.springframework.stereotype.Component;
 
@@ -57,7 +60,6 @@ public class RoomDao {
                 }
 
                 case "facilities": {
-
                     List<Integer> fvals = new ArrayList<>();
 
                     for (String val: (filters.get(key)).split(",")) {
@@ -79,8 +81,21 @@ public class RoomDao {
                 }
 
                 case "bookings": {
+                    List<Integer> bvals = new ArrayList<>();
 
-                    p = cb.isNotNull(room.get(key));
+                    for (String val: (filters.get(key)).split(",")) {
+                        bvals.add(Integer.parseInt(val));
+                    }
+
+                    CriteriaQuery<Booking> bocq = cb.createQuery(Booking.class);
+                    Root<Booking> booking = bocq.from(Booking.class);
+
+                    bocq.select(booking.get(Room.MAPPED_NAME));
+                    bocq.where(booking.get(Booking.COL_ID).in(bvals));
+
+                    TypedQuery<Booking> nestq = em.createQuery(bocq);
+
+                    p = room.in(nestq.getResultList());
 
                     break;
                 }

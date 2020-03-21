@@ -37,14 +37,13 @@ public class BuildingController {
     @Autowired
     private BuildingDao buildingDao;
 
-    /**
-     * TODO Sven
+    /** TODO Sven.
      */
     @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listBuildings(@RequestParam Map<String, String> params) {
-
+    public ResponseEntity<RestResponse<Object>> listBuildings(
+        @RequestParam Map<String, String> params
+    ) {
         List<Building> result = buildingDao.buildingFilter(params);
-
         return RestResponse.create(result);
     }
 
