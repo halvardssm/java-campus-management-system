@@ -35,7 +35,7 @@ class FoodControllerTest extends CoreControllerTest {
         null,
         null
     );
-    private final Food testFood = new Food("Food", "Piece of yummy food", null, 5.6, null);
+    private final Food testFood = new Food("Food", "Piece of yummy food", 5.6, null, null);
     private String jwt;
 
     @BeforeEach

@@ -55,7 +55,7 @@ class ReservationControllerTest extends CoreControllerTest {
         null,
         null
     );
-    private final Reservable testReservable = new Reservable(null, 5.4, null);
+    private final Reservable testReservable = new Reservable(5.4, null, null);
     private final ReservationAmountDto testReservationAmountDto = new ReservationAmountDto(3, null);
     private final ReservationDto testReservationDto = new ReservationDto(
         LocalDateTime.now(ZoneId.of("Europe/Paris")),

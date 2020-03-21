@@ -33,18 +33,17 @@ public class Bike extends Reservable {
     /**
      * The constructor of Bike.
      *
-     * @param building       where the bike is available.
-     * @param price          of the item
-     * @param bikeType       the bike type
-     * @param reservations   the reservation
+     * @param bikeType     the bike type
+     * @param price        of the item
+     * @param building     where the bike is available.
+     * @param reservations the reservation
      */
     public Bike(
         BikeType bikeType,
-        Building building,
-        Double price,
+        Double price, Building building,
         Set<ReservationAmount> reservations
     ) {
-        super(building, price, reservations);
+        super(price, building, reservations);
         setBikeType(bikeType != null ? bikeType : BikeType.CITY);
     }
 

@@ -42,18 +42,17 @@ public class Food extends Reservable {
      *
      * @param name        of the item
      * @param description of the item
-     * @param building    where the item is available
      * @param price       of the item
+     * @param building    where the item is available
      * @param reservation the reservation
      */
     public Food(
         String name,
         String description,
-        Building building,
-        Double price,
+        Double price, Building building,
         Set<ReservationAmount> reservation
     ) {
-        super(building, price, reservation);
+        super(price, building, reservation);
         setName(name);
         setDescription(description);
     }

@@ -158,9 +158,9 @@ public class DbSeeder {
     private void initBikes() {
         Building building = buildingService.listBuildings().get(0);
 
-        Bike bike1 = new Bike(BikeType.CITY, building, 5.6, null);
-        Bike bike2 = new Bike(BikeType.CITY, building, 6.7, null);
-        Bike bike3 = new Bike(BikeType.CITY, building, 7.8, null);
+        Bike bike1 = new Bike(BikeType.CITY, 5.6, building, null);
+        Bike bike2 = new Bike(BikeType.CITY, 6.7, building, null);
+        Bike bike3 = new Bike(BikeType.CITY, 7.8, building, null);
 
         bikeService.createBike(bike1);
         bikeService.createBike(bike2);
@@ -172,9 +172,9 @@ public class DbSeeder {
     private void initFoods() {
         Building building = buildingService.listBuildings().get(0);
 
-        Food food1 = new Food("Stew", "A warm pot of deliciousness", building, 5.6, null);
-        Food food2 = new Food("Meatballs", "Balls of meat", building, 6.7, null);
-        Food food3 = new Food("Carrot Cake", "I mean cake, it's simply good", building, 7.8, null);
+        Food food1 = new Food("Stew", "A warm pot of deliciousness", 5.6, building, null);
+        Food food2 = new Food("Meatballs", "Balls of meat", 6.7, building, null);
+        Food food3 = new Food("Carrot Cake", "I mean cake, it's simply good", 7.8, building, null);
 
         foodService.createFood(food1);
         foodService.createFood(food2);

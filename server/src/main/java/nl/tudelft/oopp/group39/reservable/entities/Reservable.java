@@ -77,11 +77,15 @@ public class Reservable {
     /**
      * The constructor of Reservable.
      *
-     * @param building     the building connected
      * @param price        the price of the item
+     * @param building     the building connected
      * @param reservations the reservations
      */
-    public Reservable(Building building, Double price, Set<ReservationAmount> reservations) {
+    public Reservable(
+        Double price,
+        Building building,
+        Set<ReservationAmount> reservations
+    ) {
         setBuilding(building);
         setPrice(price);
         this.reservations.addAll(initSet(reservations));
