@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.group39.controllers;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
@@ -30,7 +29,7 @@ public class BuildingSceneController extends MainSceneController implements Init
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         flowPane.getChildren().clear();
         try {
-            String buildingString = ServerCommunication.getBuildings();
+            String buildingString = ServerCommunication.get(ServerCommunication.building);
             System.out.println(buildingString);
             ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
             buildingString = mapper.writeValueAsString(body);
@@ -73,7 +72,7 @@ public class BuildingSceneController extends MainSceneController implements Init
      */
     public void alertAllBuildings() {
         try {
-            createAlert("Users shown.", ServerCommunication.getBuildings());
+            createAlert("Users shown.", ServerCommunication.get(ServerCommunication.building));
         } catch (Exception e) {
             createAlert("Error Occurred.");
         }

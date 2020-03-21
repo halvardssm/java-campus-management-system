@@ -21,6 +21,9 @@ public class ServerCommunication {
     public static String room = "room/";
     public static String authenticate = "authenticate/";
     public static String facility = "facility/";
+    public static String reservation = "reservation/";
+    public static String food = "food/";
+    public static String bike = "bike/";
 
     private static ObjectMapper mapper = new ObjectMapper();
 
@@ -181,6 +184,16 @@ public class ServerCommunication {
         httpRequest(request);
     }
 
+    /**
+     * Creates a reservation.
+     *
+     * @param timeOfPickup   date and time of receiving the order
+     * @param timeOfDelivery date and time of returning the bike
+     * @param user           netid of user making the order
+     * @param roomId         id of the room the food needs to be delivered to
+     * @param reservable     list of reservables
+     * @return @return the body of a post request to the server.
+     */
     public static String orderFoodBike(String timeOfPickup, String timeOfDelivery, String user, Integer roomId, String reservable) {
         String timeofDeliv;
         if (timeOfDelivery == null) {
@@ -210,17 +223,6 @@ public class ServerCommunication {
             return "Order is placed";
         }
     }
-
-    public static String getAllBikes() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "bike")).build();
-        return httpRequest(request);
-    }
-
-    public static String getReservations() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "reservation")).build();
-        return httpRequest(request);
-    }
-
 
     /**
      * Doc. TODO Sven
@@ -309,12 +311,4 @@ public class ServerCommunication {
         }
     }
 
-//    public static String getRole(String username) throws JsonProcessingException {
-//        String user = getUser(username);
-//        System.out.println(user);
-//        JsonNode userjson = mapper.readTree(user).get("body");
-//        MainSceneController.user = userjson;
-//        String role = userjson.get("role").asText();
-//        return role;
-//    }
 }

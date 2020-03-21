@@ -88,7 +88,7 @@ public class RoomSceneController extends MainSceneController {
      * Doc. TODO Sven
      */
     public void getRoomsButton() {
-        createAlert(ServerCommunication.getRooms());
+        createAlert(ServerCommunication.get(ServerCommunication.room));
     }
 
     /**
@@ -101,7 +101,7 @@ public class RoomSceneController extends MainSceneController {
 
         ServerCommunication.removeRoom(id);
 
-        createAlert(ServerCommunication.getRooms());
+        createAlert(ServerCommunication.get(ServerCommunication.room));
     }
 
     /**

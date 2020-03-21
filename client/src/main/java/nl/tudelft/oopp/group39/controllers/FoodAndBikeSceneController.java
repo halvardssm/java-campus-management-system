@@ -89,7 +89,7 @@ public class FoodAndBikeSceneController extends MainSceneController {
     }
 
     public void getBuildingsList() throws JsonProcessingException {
-        String buildingString = ServerCommunication.getBuildings();
+        String buildingString = ServerCommunication.get(ServerCommunication.building);
         System.out.println(buildingString);
 
         ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
@@ -152,11 +152,11 @@ public class FoodAndBikeSceneController extends MainSceneController {
     }
 
     public void getBikes() throws JsonProcessingException {
-        showItems(ServerCommunication.getAllBikes());
+        showItems(ServerCommunication.get(ServerCommunication.bike));
     }
 
     public void getMenu() throws JsonProcessingException {
-        showItems(ServerCommunication.getAllFood());
+        showItems(ServerCommunication.get(ServerCommunication.food));
     }
 
     public void addToCart(String name, Reservable reservable) {
@@ -297,7 +297,7 @@ public class FoodAndBikeSceneController extends MainSceneController {
 
     public void getRoomsList() throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String roomsString = ServerCommunication.getRooms();
+        String roomsString = ServerCommunication.get(ServerCommunication.room);
         String testString = "{\"body\":[{\"id\":1,\"capacity\":10,\"name\":\"Ampere\",\"onlyStaff\":true,\"description\":\"test1\",\"facilities\":[],\"events\":[],\"bookings\":[],\"building\":1},{\"id\":2,\"capacity\":6,\"name\":\"test2\",\"onlyStaff\":true,\"description\":\"test2\",\"facilities\":[{\"id\":1,\"description\":\"smartboard\"}],\"events\":[],\"bookings\":[],\"building\":1}],\"error\":null}";
         System.out.println(roomsString);
         ArrayNode body = (ArrayNode) mapper.readTree(testString).get("body");
@@ -380,7 +380,7 @@ public class FoodAndBikeSceneController extends MainSceneController {
             orderString.append("{\"amount\":").append(amountInt).append(",\"reservable\":").append(cart.get(i).getId()).append(ending);
         }
         System.out.println(orderString);
-        String username = MainSceneController.username;
+        String username = MainSceneController.user.getUsername();
         String result = ServerCommunication.orderFoodBike(timeOfPickup, timeOfDelivery, username, roomId, orderString.toString());
         createAlert(result);
     }

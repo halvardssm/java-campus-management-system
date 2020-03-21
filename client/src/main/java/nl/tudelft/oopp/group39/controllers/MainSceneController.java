@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.group39.controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import javafx.fxml.FXML;
@@ -151,14 +150,14 @@ public class MainSceneController {
      * Doc. TODO Sven
      */
     public void getFacilitiesButton() {
-        createAlert(null, ServerCommunication.getFacilities());
+        createAlert(null, ServerCommunication.get(ServerCommunication.facility));
     }
 
     /**
      * Doc. TODO Sven
      */
     public void getUsersButton() {
-        createAlert(ServerCommunication.getUsers());
+        createAlert(ServerCommunication.get(ServerCommunication.user));
     }
 
     /**
