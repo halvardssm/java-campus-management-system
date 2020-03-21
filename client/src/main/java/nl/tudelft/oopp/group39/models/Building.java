@@ -2,7 +2,7 @@ package nl.tudelft.oopp.group39.models;
 
 public class Building {
 
-    private long id;
+    private Integer id;
 
     private String name;
 
@@ -43,7 +43,7 @@ public class Building {
         this.closed = closed;
     }
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 

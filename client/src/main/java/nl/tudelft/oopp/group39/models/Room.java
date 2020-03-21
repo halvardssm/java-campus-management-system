@@ -9,31 +9,51 @@ public class Room {
     private boolean onlyStaff;
     private String description;
     private ArrayNode facilities;
-    //    private Set<Event> events = new HashSet<>();
-//    private Set<Booking> bookings = new HashSet<>();
+    private ArrayNode events;
+    private ArrayNode bookings;
     private long building;
 
     public Room() {
 
     }
 
-    public Room(int capacity, String name, boolean onlyStaff, String description, long buildingId, ArrayNode facilities) {
+    /**
+     * Creates a room.
+     *
+     * @param capacity    capacity of the room
+     * @param name        name of the room
+     * @param onlyStaff   whether the room is only accessible to staff
+     * @param buildingId  the id of the building
+     * @param description description of the room
+     * @param facilities  ArrayNode of facilities the room has
+     * @param events      ArrayNode of events for the room
+     * @param bookings    ArrayNode of bookings for the room
+     */
+    public Room(
+        int capacity,
+        String name,
+        boolean onlyStaff,
+        String description,
+        long buildingId,
+        ArrayNode facilities,
+        ArrayNode events,
+        ArrayNode bookings
+    ) {
         this.building = buildingId;
         this.name = name;
         this.capacity = capacity;
         this.onlyStaff = onlyStaff;
         this.description = description;
         this.facilities = facilities;
-//        this.facilities.addAll(facilities != null ? facilities : new HashSet<>());
-//        this.events.addAll(events != null ? events : new HashSet<>());
-//        this.bookings.addAll(bookings != null ? bookings : new HashSet<>());
+        this.events = events;
+        this.bookings = bookings;
     }
 
     public long getId() {
         return id;
     }
 
-    public long getBuildingId() {
+    public long getBuilding() {
         return building;
     }
 
@@ -57,28 +77,33 @@ public class Room {
         return facilities;
     }
 
-    public void setFacilities(ArrayNode facilities) {
-        this.facilities = facilities;
+    public ArrayNode getEvents() {
+        return events;
     }
 
+    public ArrayNode getBookings() {
+        return bookings;
+    }
+
+    /**
+     * Returns a string representation of the facilities.
+     *
+     * @return String of facilities
+     */
     public String facilitiesToString() {
         if (facilities.size() == 0) {
             return "none";
         } else {
-            String result = "";
+            StringBuilder result = new StringBuilder();
             for (int i = 0; i < facilities.size(); i++) {
                 if (i == facilities.size() - 1) {
-                    result += facilities.get(i).get("description").asText();
+                    result.append(facilities.get(i).get("description").asText());
                 } else {
-                    result += facilities.get(i).get("description").asText() + ", ";
+                    result.append(facilities.get(i).get("description").asText()).append(", ");
                 }
             }
-            return result;
+            return result.toString();
         }
     }
-//
-//    public Set<Booking> getBookings() {
-//        return bookings;
-//    }
 
 }

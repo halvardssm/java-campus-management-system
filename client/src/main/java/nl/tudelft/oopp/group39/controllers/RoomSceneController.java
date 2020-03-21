@@ -20,12 +20,6 @@ public class RoomSceneController extends MainSceneController {
 
     public long buildingId;
 
-    public void setup(long buildingId, String name, String address){
-        this.buildingId = buildingId;
-        setBuildingDetails(name, address);
-        //getRooms(buildingId);
-    }
-
     @FXML
     public TextField roomBuildingIdField;
 
@@ -46,6 +40,19 @@ public class RoomSceneController extends MainSceneController {
 
     @FXML
     private VBox buildingInfo;
+
+    /**
+     * Sets up the page to show rooms for selected building.
+     *
+     * @param buildingId id of the selected building
+     * @param name       name of the selected building
+     * @param address    of the selected building
+     */
+    public void setup(long buildingId, String name, String address) {
+        this.buildingId = buildingId;
+        setBuildingDetails(name, address);
+        //getRooms(buildingId);
+    }
 
     /**
      * Doc. TODO Sven
@@ -77,6 +84,9 @@ public class RoomSceneController extends MainSceneController {
         createAlert(ServerCommunication.updateRoom(buildingId, roomCap, roomDesc, roomID));
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void getRoomsButton() {
         createAlert(ServerCommunication.getRooms());
     }
@@ -94,14 +104,17 @@ public class RoomSceneController extends MainSceneController {
         createAlert(ServerCommunication.getRooms());
     }
 
-    public void getAllRooms() {
+    /**
+     * Shows the rooms.
+     *
+     * @param json json string that holds the rooms that needs to be parsed
+     */
+    public void showRooms(String json) {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         rooms.getChildren().clear();
         try {
-            String roomsString = ServerCommunication.getRooms();
-            String testString = "{\"body\":[{\"id\":1,\"capacity\":10,\"name\":\"Ampere\",\"onlyStaff\":true,\"description\":\"test1\",\"facilities\":[],\"events\":[],\"bookings\":[],\"building\":1},{\"id\":2,\"capacity\":6,\"name\":\"test2\",\"onlyStaff\":true,\"description\":\"test2\",\"facilities\":[{\"id\":1,\"description\":\"smartboard\"}],\"events\":[],\"bookings\":[],\"building\":1}],\"error\":null}";
 
-            ArrayNode body = (ArrayNode) mapper.readTree(testString).get("body");
+            ArrayNode body = (ArrayNode) mapper.readTree(json).get("body");
 
             for (JsonNode roomJson : body) {
                 String roomAsString = mapper.writeValueAsString(roomJson);
@@ -110,21 +123,12 @@ public class RoomSceneController extends MainSceneController {
 
                 Label name = (Label) newRoom.lookup("#roomname");
                 name.setText(room.getName());
-//                ArrayNode facilitiesArray = (ArrayNode) roomJson.get("facilities");
-//                System.out.println(facilitiesArray);
-//                List<String> facilities = new ArrayList<>();
-//                for (JsonNode facilty : facilitiesArray) {
-//                    facilities.add(facilty.get("description").asText());
-//                }
-//                room.setFacilities(facilities);
-                String bDetails = room.getDescription()
+                String roomDetails = room.getDescription()
                     + "\n" + "Capacity: " + room.getCapacity()
                     + "\n" + "Facilities: " + room.facilitiesToString();
 
                 Label details = (Label) newRoom.lookup("#roomdetails");
-                details.setText(bDetails);
-                System.out.println(newRoom);
-
+                details.setText(roomDetails);
                 rooms.getChildren().add(newRoom);
             }
         } catch (IOException e) {
@@ -132,35 +136,36 @@ public class RoomSceneController extends MainSceneController {
         }
     }
 
-//    public void getRooms(long buildingId){
-//        rooms.getChildren().clear();
-//        try {
-//            String roomsString = ServerCommunication.getRooms(buildingId);
-//            System.out.println(roomsString);
-//
-//            JsonObject body = ((JsonObject) JsonParser.parseString(roomsString));
-//            JsonArray roomArray = body.getAsJsonArray("body");
-//
-//            for (JsonElement room : roomArray) {
-//                newRoom = FXMLLoader.load(getClass().getResource("/roomCell.fxml"));
-//
-//                Label name = (Label) newRoom.lookup("#roomname");
-//                name.setText(((JsonObject) room).get("name").getAsString());
-//
-//                String bDetails = ((JsonObject) room).get("description").getAsString()
-//                        + "\n" + "Capacity: " + ((JsonObject) room).get("capacity").getAsInt()
-//                        + "\n" + "Facilities: " + ((JsonObject) room).get("facilities").getAsString();
-//
-//                Label details = (Label) newRoom.lookup("#roomdetails");
-//                details.setText(bDetails);
-//
-//                rooms.getChildren().add(newRoom);
-//            }
-//        } catch (IOException e) {
-//            createAlert("Error: Wrong IO");
-//        }
-//    }
+    /**
+     * Gets rooms for a selected building.
+     *
+     * @param buildingId id of the selected building
+     */
+    public void getRooms(long buildingId) {
+        String roomString = ServerCommunication.getRooms(buildingId);
+        showRooms(roomString);
+    }
 
+    /**
+     * Gets all rooms.
+     */
+    public void getAllRooms() {
+        String roomsString = ServerCommunication.get(ServerCommunication.room);
+        String testString = "{\"body\":[{\"id\":1,\"capacity\":10,\"name\":\"Ampere\","
+            + "\"onlyStaff\":true,\"description\":\"test1\",\"facilities\":[],\"events\":[],"
+            + "\"bookings\":[],\"building\":1},{\"id\":2,\"capacity\":6,\"name\":\"test2\","
+            + "\"onlyStaff\":true,\"description\":\"test2\",\"facilities\":[{\"id\":1,"
+            + "\"description\":\"smartboard\"}],\"events\":[],\"bookings\":[],"
+            + "\"building\":1}],\"error\":null}";
+        showRooms(testString);
+    }
+
+    /**
+     * Sets the building details in the header of the page.
+     *
+     * @param name    name of the building
+     * @param address address of the building
+     */
     public void setBuildingDetails(String name, String address) {
         buildingInfo.setPadding(new Insets(15, 15, 15, 15));
         Label buildingName = new Label(name);

@@ -5,25 +5,27 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
 public class LoginController extends MainSceneController {
     @FXML
-    private TextField usernameField ;
+    private TextField usernameField;
 
     @FXML
-    private PasswordField passwordField ;
+    private PasswordField passwordField;
 
     @FXML
     private Label errormsg;
 
-
-    @FXML
-    private void login() throws IOException {
+    /**
+     * Logs the user in.
+     */
+    public void login() throws IOException {
         String user = usernameField.getText();
         String password = passwordField.getText();
-        if(!checkEmpty(user, password)){
-            if(ServerCommunication.userLogin(user, password).equals("Logged in")){
+        if (!checkEmpty(user, password)) {
+            if (ServerCommunication.userLogin(user, password).equals("Logged in")) {
                 changeTopBtn();
                 goToBuildingScene();
             }
@@ -32,7 +34,13 @@ public class LoginController extends MainSceneController {
         System.out.println(user + password);
     }
 
-    public boolean checkEmpty(String user, String pwd){
+    /**
+     * Check if username and password fields aren't empty.
+     *
+     * @param user username String
+     * @param pwd  password String
+     */
+    public boolean checkEmpty(String user, String pwd) {
         if (user.isEmpty() || pwd.isEmpty()) {
             errormsg.setText("Please fill in all the fields");
             return true;
