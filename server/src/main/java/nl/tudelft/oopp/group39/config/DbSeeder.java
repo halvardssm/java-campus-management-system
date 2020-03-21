@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.group39.config;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +16,15 @@ import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.event.services.EventService;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
+import nl.tudelft.oopp.group39.reservable.entities.Bike;
+import nl.tudelft.oopp.group39.reservable.entities.Food;
+import nl.tudelft.oopp.group39.reservable.enums.BikeType;
+import nl.tudelft.oopp.group39.reservable.services.BikeService;
+import nl.tudelft.oopp.group39.reservable.services.FoodService;
+import nl.tudelft.oopp.group39.reservation.entities.Reservation;
+import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
+import nl.tudelft.oopp.group39.reservation.services.ReservationAmountService;
+import nl.tudelft.oopp.group39.reservation.services.ReservationService;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
 import nl.tudelft.oopp.group39.user.entities.User;
@@ -39,6 +50,14 @@ public class DbSeeder {
     private BookingService bookingService;
     @Autowired
     private EventService eventService;
+    @Autowired
+    private BikeService bikeService;
+    @Autowired
+    private FoodService foodService;
+    @Autowired
+    private ReservationService reservationService;
+    @Autowired
+    private ReservationAmountService reservationAmountService;
 
     /**
      * Initiates the db with all the roles.
@@ -51,6 +70,9 @@ public class DbSeeder {
         initRooms();
         initBookings();
         initEvents();
+        initBikes();
+        initFoods();
+        initReservations();
         System.out.println("[SEED] Seeding completed");
     }
 
@@ -64,6 +86,7 @@ public class DbSeeder {
             "pwd",
             null,
             Role.ADMIN,
+            null,
             null
         );
 
@@ -85,9 +108,9 @@ public class DbSeeder {
     private void initBuildings() {
         LocalTime open = LocalTime.now();//.minusHours(3);
         LocalTime closed = LocalTime.now();//.plusHours(3);
-        Building b = new Building("test", "test", "test", open, closed);
+        Building b = new Building("test", "test", "test", open, closed, null);
         buildingService.createBuilding(b);
-        b = new Building("new", "new", "new", open, closed);
+        b = new Building("new", "new", "new", open, closed, null);
         buildingService.createBuilding(b);
 
         System.out.println("[SEED] Buildings created");
@@ -96,18 +119,13 @@ public class DbSeeder {
     private void initRooms() {
         Set<Facility> facilities = new HashSet<>();
         Set<Booking> bookings = new HashSet<>();
-
         roomService.createRoom(new Room(1, 10, true, "test1", facilities, bookings));
-
         roomService.createRoom(new Room(1, 10, true, "test1", facilities, bookings));
         facilities.add(facilityService.readFacility(1));
         roomService.createRoom(new Room(1, 6, true, "test2", facilities, bookings));
-
         roomService.createRoom(new Room(1, 6, true, "test2", facilities, bookings));
-
         facilities.add(facilityService.readFacility(2));
         roomService.createRoom(new Room(2, 15, false, "test3", facilities, bookings));
-
         roomService.createRoom(new Room(2, 15, false, "test3", facilities, bookings));
 
         System.out.println("[SEED] Rooms created");
@@ -138,5 +156,58 @@ public class DbSeeder {
         bookingService.createBooking(b);
 
         System.out.println("[SEED] Bookings created");
+    }
+
+    private void initBikes() {
+        Building building = buildingService.listBuildings().get(0);
+
+        Bike bike1 = new Bike(BikeType.CITY, null, building, 5.6, null);
+        Bike bike2 = new Bike(BikeType.CITY, null, building, 6.7, null);
+        Bike bike3 = new Bike(BikeType.CITY, null, building, 7.8, null);
+
+        bikeService.createBike(bike1);
+        bikeService.createBike(bike2);
+        bikeService.createBike(bike3);
+
+        System.out.println("[SEED] Bikes created");
+    }
+
+    private void initFoods() {
+        Building building = buildingService.listBuildings().get(0);
+
+        Food food1 = new Food("Stew", "A warm pot of deliciousness", building, 5.6, null);
+        Food food2 = new Food("Meatballs", "Balls of meat", building, 6.7, null);
+        Food food3 = new Food("Carrot Cake", "I mean cake, it's simply good", building, 7.8, null);
+
+        foodService.createFood(food1);
+        foodService.createFood(food2);
+        foodService.createFood(food3);
+
+        System.out.println("[SEED] Foods created");
+    }
+
+    private void initReservations() {
+
+        Reservation reservation = reservationService.createReservation(new Reservation(
+            LocalDateTime.now(),
+            userService.readUser("admin"),
+            null
+        ));
+
+        ReservationAmount reservationAmount1 = new ReservationAmount(
+            5,
+            reservation,
+            foodService.listFoods(new HashMap<>()).get(0)
+        );
+        ReservationAmount reservationAmount2 = new ReservationAmount(
+            1,
+            reservation,
+            bikeService.listBikes(new HashMap<>()).get(0)
+        );
+
+        reservationAmountService.createReservation(reservationAmount1);
+        reservationAmountService.createReservation(reservationAmount2);
+
+        System.out.println("[SEED] Reservations created");
     }
 }

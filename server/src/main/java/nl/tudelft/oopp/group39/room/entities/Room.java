@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.group39.room.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
 import java.util.Objects;
@@ -24,7 +23,7 @@ import nl.tudelft.oopp.group39.facility.entities.Facility;
 @Entity
 @Table(name = Room.TABLE_NAME)
 @JsonIdentityInfo(
-    generator = ObjectIdGenerators.IntSequenceGenerator.class,
+    generator = ObjectIdGenerators.PropertyGenerator.class,
     property = Room.COL_ID
 )
 public class Room {
@@ -35,15 +34,10 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private long buildingId;
-
     private int capacity;
-
     private boolean onlyStaff;
-
     private String description;
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = TABLE_NAME + "_" + Facility.TABLE_NAME,
         joinColumns = {
@@ -57,11 +51,9 @@ public class Room {
     private Set<Facility> facilities = new HashSet<>();
 
     @ManyToMany(mappedBy = TABLE_NAME, fetch = FetchType.LAZY)
-    @JsonIgnore
     private Set<Event> events = new HashSet<>();
 
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
-    @JsonIgnore
     private Set<Booking> bookings = new HashSet<>();
 
     public Room() {
