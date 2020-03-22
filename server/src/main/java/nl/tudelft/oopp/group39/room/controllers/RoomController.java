@@ -1,9 +1,9 @@
 package nl.tudelft.oopp.group39.room.controllers;
 
-import java.time.LocalTime;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.room.dao.RoomDao;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,48 +28,19 @@ public class RoomController {
     @Autowired
     private RoomService service;
 
-    /**
-     * Doc. TODO Sven
+    @Autowired
+    private RoomDao roomDao;
+
+    /**TODO.
+     *
+     * @param allParams parameters.
+     * @return filtered list.
      */
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listRooms(
-        @RequestParam(required = false) Integer capacity,
-        @RequestParam(required = false) String name,
-        @RequestParam(required = false) Boolean onlyStaff,
-        @RequestParam(required = false) int[] facilities,
-        @RequestParam(required = false) String building,
-        @RequestParam(required = false) String location,
-        @RequestParam(required = false) String open,
-        @RequestParam(required = false) String closed
+        @RequestParam Map<String, String> allParams
     ) {
-        capacity = capacity == null ? 0 : capacity;
-        name = name == null ? "" : name;
-        onlyStaff = onlyStaff == null ? false : onlyStaff;
-        facilities = facilities == null ? new int[0] : facilities;
-        building = building == null ? "" : building;
-        location = location == null ? "" : location;
-        LocalTime newOpen = open == null ? LocalTime.MAX : LocalTime.parse(open);
-        LocalTime newClosed = closed == null ? LocalTime.MIN : LocalTime.parse(closed);
-        boolean allEmpty = capacity == 0
-                && name.contentEquals("")
-            && !onlyStaff
-            && Arrays.equals(facilities, new int[0])
-            && building.contentEquals("")
-            && location.contentEquals("")
-            && newOpen.compareTo(LocalTime.MAX) == 0
-            && newClosed.compareTo(LocalTime.MIN) == 0;
-
-        List<Room> result = allEmpty
-            ? service.listRooms()
-            : service.filterRooms(
-            capacity,
-            onlyStaff,
-            facilities,
-            building,
-            location,
-            newOpen,
-            newClosed
-        );
+        List<Room> result = roomDao.roomFilter(allParams);
         return RestResponse.create(result);
     }
 

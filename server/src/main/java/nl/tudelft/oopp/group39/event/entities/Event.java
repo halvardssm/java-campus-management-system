@@ -23,6 +23,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import org.springframework.lang.Nullable;
@@ -30,7 +31,7 @@ import org.springframework.lang.Nullable;
 @Entity
 @Table(name = Event.TABLE_NAME)
 @JsonIdentityInfo(
-    generator = ObjectIdGenerators.IntSequenceGenerator.class,
+    generator = ObjectIdGenerators.PropertyGenerator.class,
     property = Event.COL_ID
 )
 public class Event {
@@ -43,11 +44,11 @@ public class Event {
     private Integer id;
     @Enumerated(EnumType.STRING)
     private EventTypes type;
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = Constants.FORMAT_DATE, shape = JsonFormat.Shape.STRING)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate startDate;
-    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = Constants.FORMAT_DATE, shape = JsonFormat.Shape.STRING)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate endDate;
