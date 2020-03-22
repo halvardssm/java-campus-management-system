@@ -24,7 +24,7 @@ import nl.tudelft.oopp.group39.facility.entities.Facility;
 @Entity
 @Table(name = Room.TABLE_NAME)
 @JsonIdentityInfo(
-    generator = ObjectIdGenerators.IntSequenceGenerator.class,
+    generator = ObjectIdGenerators.PropertyGenerator.class,
     property = Room.COL_ID
 )
 public class Room {
@@ -59,11 +59,9 @@ public class Room {
     private Set<Facility> facilities = new HashSet<>();
 
     @ManyToMany(mappedBy = TABLE_NAME, fetch = FetchType.LAZY)
-    @JsonIgnore
     private Set<Event> events = new HashSet<>();
 
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
-    @JsonIgnore
     private Set<Booking> bookings = new HashSet<>();
 
     public Room() {
