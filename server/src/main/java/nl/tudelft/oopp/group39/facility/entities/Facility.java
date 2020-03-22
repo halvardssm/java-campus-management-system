@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.group39.facility.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
 import java.util.Objects;
@@ -17,7 +19,7 @@ import nl.tudelft.oopp.group39.room.entities.Room;
 @Entity
 @Table(name = Facility.TABLE_NAME)
 @JsonIdentityInfo(
-    generator = ObjectIdGenerators.IntSequenceGenerator.class,
+    generator = ObjectIdGenerators.None.class,
     property = Facility.COL_ID
 )
 public class Facility {
@@ -29,9 +31,11 @@ public class Facility {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private String description;
 
     @ManyToMany(mappedBy = Facility.TABLE_NAME, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Room> rooms = new HashSet<>();
 
     public Facility() {
