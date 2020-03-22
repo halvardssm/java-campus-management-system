@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.controllers.BuildingSceneController;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
 
 public class UsersDisplay extends Application {
@@ -27,11 +26,16 @@ public class UsersDisplay extends Application {
      */
     @FXML
     public static void sceneHandler(String name) throws IOException {
-        System.out.println("Scene changing...");
-        root = FXMLLoader.load(UsersDisplay.class.getResource(name));
-        window.setScene(new Scene(root, width, height));
+        sceneControllerHandler(name);
     }
 
+    /**
+     * Changes scenes and returns controller of the new scene.
+     *
+     * @param name name of the scene we want
+     * @return controller of the new scene
+     * @throws IOException if there is something wrong
+     */
     @FXML
     public static MainSceneController sceneControllerHandler(String name) throws IOException {
         System.out.println("Scene changing...");

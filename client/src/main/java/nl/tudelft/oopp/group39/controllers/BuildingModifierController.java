@@ -32,7 +32,7 @@ public class BuildingModifierController extends MainSceneController {
     private TextField updateBuildingField;
 
     public void getBuildingsButton() {
-        createAlert(ServerCommunication.getBuildings());
+        createAlert(ServerCommunication.get(ServerCommunication.building));
     }
 
     /**
