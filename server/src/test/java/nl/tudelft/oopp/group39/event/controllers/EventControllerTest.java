@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import nl.tudelft.oopp.group39.CoreControllerTest;
+import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.event.enums.EventTypes;
@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-class EventControllerTest extends CoreControllerTest {
+class EventControllerTest extends AbstractControllerTest {
     private final Event testEvent = new Event(
         EventTypes.EVENT,
         LocalDate.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)),

@@ -1,10 +1,10 @@
 package nl.tudelft.oopp.group39.auth.exceptions;
 
-import nl.tudelft.oopp.group39.CoreTest;
+import nl.tudelft.oopp.group39.AbstractTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class UnauthorizedExceptionTest extends CoreTest {
+class UnauthorizedExceptionTest extends AbstractTest {
 
     @Test
     public void exceptionTest() {

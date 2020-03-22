@@ -1,13 +1,13 @@
 package nl.tudelft.oopp.group39.auth.services;
 
 import java.util.Date;
-import nl.tudelft.oopp.group39.CoreTest;
+import nl.tudelft.oopp.group39.AbstractTest;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class JwtServiceTest extends CoreTest {
+class JwtServiceTest extends AbstractTest {
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",

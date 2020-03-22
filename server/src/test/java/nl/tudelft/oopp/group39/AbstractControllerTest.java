@@ -5,7 +5,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.test.web.servlet.MockMvc;
 
 @AutoConfigureMockMvc
-public class CoreControllerTest extends CoreTest {
+public abstract class AbstractControllerTest extends AbstractTest {
     @Autowired
     protected MockMvc mockMvc;
 }

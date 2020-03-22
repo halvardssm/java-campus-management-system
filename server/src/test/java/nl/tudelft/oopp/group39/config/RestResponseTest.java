@@ -3,13 +3,13 @@ package nl.tudelft.oopp.group39.config;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import nl.tudelft.oopp.group39.CoreTest;
+import nl.tudelft.oopp.group39.AbstractTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-class RestResponseTest extends CoreTest {
+class RestResponseTest extends AbstractTest {
     @Test
     void constructorBody() {
         RestResponse<?> response = new RestResponse<>(new ArrayList<>());

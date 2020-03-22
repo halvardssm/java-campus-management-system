@@ -7,14 +7,14 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import javassist.NotFoundException;
-import nl.tudelft.oopp.group39.CoreTest;
+import nl.tudelft.oopp.group39.AbstractTest;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationDto;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ReservationServiceTest extends CoreTest {
+class ReservationServiceTest extends AbstractTest {
     private final Reservation testReservation = new Reservation(
         LocalDateTime.now(ZoneId.of("Europe/Paris")),
         LocalDateTime.now(ZoneId.of("Europe/Paris")).plusHours(2),

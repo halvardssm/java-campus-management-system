@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import nl.tudelft.oopp.group39.CoreControllerTest;
+import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-class UserControllerTest extends CoreControllerTest {
+class UserControllerTest extends AbstractControllerTest {
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",

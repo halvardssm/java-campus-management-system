@@ -7,13 +7,13 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import nl.tudelft.oopp.group39.CoreTest;
+import nl.tudelft.oopp.group39.AbstractTest;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class BookingServiceTest extends CoreTest {
+class BookingServiceTest extends AbstractTest {
     private final LocalDate date = LocalDate.now();
     private final LocalTime start = LocalTime.of(4, 20, 42);
     private final LocalTime end = LocalTime.of(6, 9, 20);

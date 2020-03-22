@@ -7,14 +7,14 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import javassist.NotFoundException;
-import nl.tudelft.oopp.group39.CoreTest;
+import nl.tudelft.oopp.group39.AbstractTest;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class EventServiceTest extends CoreTest {
+class EventServiceTest extends AbstractTest {
     private static final Event testEvent = new Event(
         EventTypes.EVENT,
         LocalDate.now(ZoneId.of("Europe/Paris")),

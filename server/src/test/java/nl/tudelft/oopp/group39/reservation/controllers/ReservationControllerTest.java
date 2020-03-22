@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.List;
-import nl.tudelft.oopp.group39.CoreControllerTest;
+import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
@@ -33,7 +33,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-class ReservationControllerTest extends CoreControllerTest {
+class ReservationControllerTest extends AbstractControllerTest {
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",

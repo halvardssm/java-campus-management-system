@@ -35,7 +35,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class CoreTest {
+public abstract class AbstractTest {
     protected final ObjectMapper objectMapper = new ObjectMapper()
         .registerModule(new JavaTimeModule())
         .setTimeZone(TimeZone.getTimeZone(Constants.DEFAULT_TIMEZONE))
