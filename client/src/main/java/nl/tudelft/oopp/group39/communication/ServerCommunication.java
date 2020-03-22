@@ -153,7 +153,21 @@ public class ServerCommunication {
         HttpRequest request = HttpRequest.newBuilder().POST(newBooking)
             .uri(URI.create(url + "booking/"))
             .header("Content-Type", "application/json").build();
-        return httpRequest(request);
+        // return httpRequest(request);
+
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Communication with server failed";
+        }
+        if (response.statusCode() != 201) {
+            System.out.println("Status: " + response.statusCode());
+            return "Something went wrong";
+        } else {
+            return "Booking created";
+        }
     }
 
     /**
