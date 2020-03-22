@@ -3,6 +3,7 @@ package nl.tudelft.oopp.group39.room.entities;
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
 import java.util.Objects;
@@ -66,12 +67,20 @@ public class Room {
     }
 
     /**
-     * Doc. TODO Sven
+     * Creates a room.
+     *
+     * @param buildingId  the id of the building
+     * @param name        name of the room
+     * @param capacity    capacity of the room
+     * @param onlyStaff   whether the room is only accessible to staff
+     * @param description description of the room
+     * @param facilities  set of facilities the room has
+     * @param bookings    set of bookings for the room
      */
     public Room(
         long buildingId,
-        int capacity,
         String name,
+        int capacity,
         boolean onlyStaff,
         String description,
         Set<Facility> facilities,

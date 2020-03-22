@@ -123,15 +123,24 @@ public class MainSceneController {
         controller.changeTopBtn();
     }
 
-
+    /**
+     * Doc. TODO Sven
+     */
     public void goToBikeRentalScene() throws IOException {
-        FoodAndBikeSceneController controller = (FoodAndBikeSceneController) UsersDisplay.sceneControllerHandler("/bikeAndFoodView.fxml");
+        FoodAndBikeSceneController controller =
+            (FoodAndBikeSceneController) UsersDisplay
+                .sceneControllerHandler("/bikeAndFoodView.fxml");
         controller.changeTopBtn();
         controller.setup("bike");
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void goToFoodOrderScene() throws IOException {
-        FoodAndBikeSceneController controller = (FoodAndBikeSceneController) UsersDisplay.sceneControllerHandler("/bikeAndFoodView.fxml");
+        FoodAndBikeSceneController controller =
+            (FoodAndBikeSceneController) UsersDisplay
+                .sceneControllerHandler("/bikeAndFoodView.fxml");
         controller.changeTopBtn();
         controller.setup("food");
     }

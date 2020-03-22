@@ -49,8 +49,6 @@ public class FoodAndBikeSceneController extends MainSceneController {
     @FXML
     private Button orderbtn;
     @FXML
-    private Button getBtn;
-    @FXML
     private Label total;
     @FXML
     private Label titleLabel;
@@ -60,53 +58,76 @@ public class FoodAndBikeSceneController extends MainSceneController {
     private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 
+    /**
+     * Sets up the page for food or bike.
+     *
+     * @param type can be bike or food
+     * @throws JsonProcessingException when there is a parsing exception
+     */
     public void setup(String type) throws JsonProcessingException {
         this.type = type;
         getBuildingsList();
         if (type.equals("bike")) {
             titleLabel.setText("BIKE RENTAL");
-            getBtn.setText("Get bikes");
-            getBtn.setOnAction(event -> {
+            orderbtn.setOnAction(event -> placeBikeOrder());
+        } else {
+            titleLabel.setText("FOOD ORDER");
+            orderbtn.setOnAction(event -> placeFoodOrder());
+        }
+    }
+
+    /**
+     * Gets the list of buildings and shows them in a combobox.
+     *
+     * @throws JsonProcessingException when there is a parsing exception
+     */
+    public void getBuildingsList() throws JsonProcessingException {
+        String buildingString = ServerCommunication.get(ServerCommunication.building);
+        System.out.println(buildingString);
+        ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
+        for (JsonNode building : body) {
+            Label buildingName = new Label(building.get("name").asText());
+            buildingName.getStyleClass().add("buildingList");
+            buildingName.setId(building.get("id").asText());
+            buildinglist.getItems().add(buildingName);
+        }
+        buildinglist.setOnAction(event -> {
+            if (type.equals("bike")) {
                 try {
                     getBikes();
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
-            });
-            orderbtn.setOnAction(event -> placeBikeOrder());
-        } else {
-            titleLabel.setText("FOOD ORDER");
-            getBtn.setText("Get Menu");
-            getBtn.setOnAction(event -> {
+            } else {
                 try {
                     getMenu();
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
-            });
-            orderbtn.setOnAction(event -> placeFoodOrder());
-        }
+            }
+        });
     }
 
-    public void getBuildingsList() throws JsonProcessingException {
-        String buildingString = ServerCommunication.get(ServerCommunication.building);
-        System.out.println(buildingString);
-
-        ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
-
-        for (JsonNode building : body) {
-            Label buildingName = new Label(building.get("name").asText());
-            buildingName.setId(building.get("id").asText());
-            buildinglist.getItems().add(buildingName);
-        }
-    }
-
+    /**
+     * Shows the food or bike items.
+     *
+     * @param json String that contains the items in json
+     * @throws JsonProcessingException when there is a parsing exception
+     */
     public void showItems(String json) throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         itemlist.getChildren().clear();
-        Label building = buildinglist.getValue();
-        // int id = Integer.parseInt(building.getId());
-        getRoomsList();
+        cartlist.getChildren().clear();
+        timeselector.getChildren().clear();
+        rooms.clear();
+        totalprice = 0.00;
+        total.setText("0.00");
+        if (type.equals("food")) {
+            Label building = buildinglist.getValue();
+            long id = Integer.parseInt(building.getId());
+            getRoomsList(id);
+        }
+
         System.out.println(rooms);
         System.out.println(json);
         ArrayNode body = (ArrayNode) mapper.readTree(json).get("body");
@@ -125,6 +146,14 @@ public class FoodAndBikeSceneController extends MainSceneController {
         }
     }
 
+    /**
+     * Creates an item HBox.
+     *
+     * @param name        name of the item
+     * @param description description of the item
+     * @param reservable  the reservable to be shown in the box
+     * @return HBox of the item
+     */
     public HBox createItemBox(String name, String description, Reservable reservable) {
         HBox item = new HBox(20);
         item.getStyleClass().add("fooditem");
@@ -139,11 +168,11 @@ public class FoodAndBikeSceneController extends MainSceneController {
             Label desc = new Label(description);
             namedesc.getChildren().add(desc);
         }
-        Label priceLabel = getPriceLabel(reservable);
         Button addToCart = new Button("+");
         addToCart.setOnAction(event -> addToCart(name, reservable));
         Region region = new Region();
         HBox.setHgrow(region, Priority.ALWAYS);
+        Label priceLabel = getPriceLabel(reservable);
         item.getChildren().add(namedesc);
         item.getChildren().add(region);
         item.getChildren().add(priceLabel);
@@ -151,14 +180,31 @@ public class FoodAndBikeSceneController extends MainSceneController {
         return item;
     }
 
+    /**
+     * Retrieves all bikes.
+     *
+     * @throws JsonProcessingException when there is a parsing exception
+     */
     public void getBikes() throws JsonProcessingException {
         showItems(ServerCommunication.get(ServerCommunication.bike));
+
     }
 
+    /**
+     * Retrieves food menu.
+     *
+     * @throws JsonProcessingException when there is a parsing exception
+     */
     public void getMenu() throws JsonProcessingException {
         showItems(ServerCommunication.get(ServerCommunication.food));
     }
 
+    /**
+     * Adds item to cart.
+     *
+     * @param name       name of the item
+     * @param reservable the reservable to be added to the cart
+     */
     public void addToCart(String name, Reservable reservable) {
         if (cartlist.lookup("#" + reservable.getId()) == null) {
             HBox fooditem = new HBox(10);
@@ -204,6 +250,11 @@ public class FoodAndBikeSceneController extends MainSceneController {
 
     }
 
+    /**
+     * Updates the cart details of a reservable.
+     *
+     * @param reservable the reservable of which the cart details need to be updated
+     */
     public void updateCart(Reservable reservable) {
         Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + reservable.getId());
         Integer value = amount.getValue();
@@ -222,6 +273,11 @@ public class FoodAndBikeSceneController extends MainSceneController {
         totalprice = totalprice - oldprice + newprice;
     }
 
+    /**
+     * Deletes an item from the cart.
+     *
+     * @param id of the item that needs to be deleted
+     */
     public void deleteFromCart(int id) {
         Label priceLabel = (Label) cartlist.lookup("#" + id + "price");
         double price = Double.parseDouble(priceLabel.getText().split("\\$")[1]);
@@ -234,6 +290,9 @@ public class FoodAndBikeSceneController extends MainSceneController {
         checkEmptyCart();
     }
 
+    /**
+     * Checks if the cart is empty.
+     */
     public void checkEmptyCart() {
         if (cartItems == 0) {
             cartlist.getChildren().add(emptycart);
@@ -246,6 +305,9 @@ public class FoodAndBikeSceneController extends MainSceneController {
         }
     }
 
+    /**
+     * Creates the interface for the user to select delivery time, date and room or duration.
+     */
     public void setDeliveryDetails() {
         timeselector.getChildren().clear();
         DatePicker datePicker = new DatePicker();
@@ -294,13 +356,17 @@ public class FoodAndBikeSceneController extends MainSceneController {
         }
     }
 
-
-    public void getRoomsList() throws JsonProcessingException {
+    /**
+     * Gets a list of the rooms filtered on building id and shows them in a combobox.
+     *
+     * @param id of the selected building
+     * @throws JsonProcessingException when there is a parsing exception
+     */
+    public void getRoomsList(long id) throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String roomsString = ServerCommunication.get(ServerCommunication.room);
-        String testString = "{\"body\":[{\"id\":1,\"capacity\":10,\"name\":\"Ampere\",\"onlyStaff\":true,\"description\":\"test1\",\"facilities\":[],\"events\":[],\"bookings\":[],\"building\":1},{\"id\":2,\"capacity\":6,\"name\":\"test2\",\"onlyStaff\":true,\"description\":\"test2\",\"facilities\":[{\"id\":1,\"description\":\"smartboard\"}],\"events\":[],\"bookings\":[],\"building\":1}],\"error\":null}";
+        String roomsString = ServerCommunication.getRooms(id);
         System.out.println(roomsString);
-        ArrayNode body = (ArrayNode) mapper.readTree(testString).get("body");
+        ArrayNode body = (ArrayNode) mapper.readTree(roomsString).get("body");
         for (JsonNode roomJson : body) {
             String roomAsString = mapper.writeValueAsString(roomJson);
             Room room = mapper.readValue(roomAsString, Room.class);
@@ -308,6 +374,12 @@ public class FoodAndBikeSceneController extends MainSceneController {
         }
     }
 
+    /**
+     * Retrieves the price label of given reservable.
+     *
+     * @param reservable of which the price label is needed
+     * @return Label containing the price in correct format
+     */
     public Label getPriceLabel(Reservable reservable) {
         Label priceLabel;
         if (type.equals("bike")) {
@@ -318,13 +390,32 @@ public class FoodAndBikeSceneController extends MainSceneController {
         return priceLabel;
     }
 
+    /**
+     * Retrieves the time of pickup.
+     *
+     * @param datePicker in which the date is selected by the user
+     * @param timePicker in which the time is selected by the user
+     * @return String containing the time of pickup
+     */
     public String getTimeOfPickup(DatePicker datePicker, ComboBox<String> timePicker) {
         LocalDate date = datePicker.getValue();
         String time = timePicker.getValue();
         return dateTimeFormatter.format(date) + " " + time + ":00";
     }
 
-    public String getTimeOfDelivery(DatePicker datePicker, ComboBox<String> timePicker, ComboBox<String> durationPicker) {
+    /**
+     * Retrieves the time of delivery for the bikes.
+     *
+     * @param datePicker     in which the date is selected by the user
+     * @param timePicker     in which the time is selected by the user
+     * @param durationPicker in which the duration is selected by the user
+     * @return String containing the time of delivery
+     */
+    public String getTimeOfDelivery(
+        DatePicker datePicker,
+        ComboBox<String> timePicker,
+        ComboBox<String> durationPicker
+    ) {
         String time = timePicker.getValue();
         LocalDate date = datePicker.getValue();
         int duration = Integer.parseInt(durationPicker.getValue().split(" ")[0]);
@@ -339,11 +430,17 @@ public class FoodAndBikeSceneController extends MainSceneController {
         return dateTimeFormatter.format(date) + " " + endTime;
     }
 
+    /**
+     * Places a bike order.
+     */
     public void placeBikeOrder() {
         DatePicker datePicker = (DatePicker) timeselector.lookup("#datePicker");
         ComboBox<String> timePicker = (ComboBox<String>) timeselector.lookup("#timePicker");
         ComboBox<String> durationPicker = (ComboBox<String>) timeselector.lookup("#durationPicker");
-        if (datePicker.getValue() == null || timePicker.getSelectionModel().isEmpty() || durationPicker.getSelectionModel().isEmpty()) {
+        if (datePicker.getValue() == null
+            || timePicker.getSelectionModel().isEmpty()
+            || durationPicker.getSelectionModel().isEmpty()
+        ) {
             errorfield.setText("Please select a date, time and duration");
         } else {
             String timeOfPickup = getTimeOfPickup(datePicker, timePicker);
@@ -352,36 +449,65 @@ public class FoodAndBikeSceneController extends MainSceneController {
         }
     }
 
+    /**
+     * Places a food order.
+     */
     public void placeFoodOrder() {
         DatePicker datePicker = (DatePicker) timeselector.lookup("#datePicker");
-        ComboBox timePicker = (ComboBox) timeselector.lookup("#timePicker");
-        ComboBox roomSelector = (ComboBox) timeselector.lookup("#roomSelector");
-        if (datePicker.getValue() == null || timePicker.getSelectionModel().isEmpty() || roomSelector.getSelectionModel().isEmpty()) {
+        ComboBox<String> timePicker = (ComboBox<String>) timeselector.lookup("#timePicker");
+        ComboBox<Label> roomSelector = (ComboBox<Label>) timeselector.lookup("#roomSelector");
+        if (datePicker.getValue() == null
+            || timePicker.getSelectionModel().isEmpty()
+            || roomSelector.getSelectionModel().isEmpty()
+        ) {
             errorfield.setText("Please select a delivery time, date and room");
         } else {
             String timeOfPickup = getTimeOfPickup(datePicker, timePicker);
-            Label room = (Label) roomSelector.getValue();
+            Label room = roomSelector.getValue();
             int roomId = Integer.parseInt(room.getId());
             placeOrder(timeOfPickup, null, roomId);
         }
     }
 
+    /**
+     * Places an order.
+     *
+     * @param timeOfPickup   time of which the food or bike is picked up/delivered
+     * @param timeOfDelivery time of which the bike will be returned
+     * @param roomId         room the food needs to be delivered to
+     */
     public void placeOrder(String timeOfPickup, String timeOfDelivery, Integer roomId) {
-        StringBuilder orderString = new StringBuilder("[");
-        for (int i = 0; i < cart.size(); i++) {
-            Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + cart.get(i).getId());
-            int amountInt = amount.getValue();
-            String ending;
-            if (i == cart.size() - 1) {
-                ending = "}]";
-            } else {
-                ending = "}, ";
+        if (loggedIn) {
+            StringBuilder orderString = new StringBuilder("[");
+            for (int i = 0; i < cart.size(); i++) {
+                Spinner<Integer> amount =
+                    (Spinner<Integer>) cartlist.lookup("#" + cart.get(i).getId());
+                int amountInt = amount.getValue();
+                String ending;
+                if (i == cart.size() - 1) {
+                    ending = "}]";
+                } else {
+                    ending = "}, ";
+                }
+                orderString
+                    .append("{\"amount\":")
+                    .append(amountInt).append(",\"reservable\":")
+                    .append(cart.get(i).getId())
+                    .append(ending);
             }
-            orderString.append("{\"amount\":").append(amountInt).append(",\"reservable\":").append(cart.get(i).getId()).append(ending);
+            System.out.println(orderString);
+            String username = MainSceneController.user.getUsername();
+            String result = ServerCommunication
+                .orderFoodBike(
+                    timeOfPickup,
+                    timeOfDelivery,
+                    username,
+                    roomId,
+                    orderString.toString());
+            createAlert(result);
+        } else {
+            createAlert("Please log in to place an order");
         }
-        System.out.println(orderString);
-        String username = MainSceneController.user.getUsername();
-        String result = ServerCommunication.orderFoodBike(timeOfPickup, timeOfDelivery, username, roomId, orderString.toString());
-        createAlert(result);
+
     }
 }

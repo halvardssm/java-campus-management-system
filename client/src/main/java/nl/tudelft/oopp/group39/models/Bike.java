@@ -11,7 +11,22 @@ public class Bike extends Reservable {
         super();
     }
 
-    public Bike(Integer id, double price, JsonNode building, String bikeType, String rentalDuration) {
+    /**
+     * Creates a bike.
+     *
+     * @param id             of the bike
+     * @param price          of the bike per hour
+     * @param building       where the bike is available
+     * @param bikeType       type of the bike
+     * @param rentalDuration for how long the bike can be rented
+     */
+    public Bike(
+        Integer id,
+        double price,
+        JsonNode building,
+        String bikeType,
+        String rentalDuration
+    ) {
         super(id, price, building);
         this.bikeType = bikeType;
         this.rentalDuration = rentalDuration;

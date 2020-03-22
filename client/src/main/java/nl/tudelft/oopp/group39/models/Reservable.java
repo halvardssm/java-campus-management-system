@@ -11,6 +11,13 @@ public class Reservable {
 
     }
 
+    /**
+     * Creates a reservable.
+     *
+     * @param id       of the reservable
+     * @param price    of the reservable
+     * @param building where the reservable is available
+     */
     public Reservable(Integer id, double price, JsonNode building) {
         this.id = id;
         this.price = price;

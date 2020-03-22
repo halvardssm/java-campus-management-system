@@ -62,7 +62,7 @@ public class ServerCommunication {
     public static String getRooms(long buildingId) {
         HttpRequest request = HttpRequest.newBuilder()
             .GET()
-            .uri(URI.create(url + room + buildingId))
+            .uri(URI.create(url + "room?buildingId=" + buildingId))
             .build();
         return httpRequest(request);
     }
@@ -194,7 +194,13 @@ public class ServerCommunication {
      * @param reservable     list of reservables
      * @return @return the body of a post request to the server.
      */
-    public static String orderFoodBike(String timeOfPickup, String timeOfDelivery, String user, Integer roomId, String reservable) {
+    public static String orderFoodBike(
+        String timeOfPickup,
+        String timeOfDelivery,
+        String user,
+        Integer roomId,
+        String reservable
+    ) {
         String timeofDeliv;
         if (timeOfDelivery == null) {
             timeofDeliv = null;
@@ -208,8 +214,13 @@ public class ServerCommunication {
             + "\",\"reservationAmounts\":" + reservable + "}";
         System.out.println(body);
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString(body);
-        HttpRequest request = HttpRequest.newBuilder().POST(newBuilding).uri(URI.create(url + "reservation")).header("Content-Type", "application/json").build();
-        HttpResponse<String> response = null;
+        HttpRequest request =
+            HttpRequest.newBuilder()
+                .POST(newBuilding)
+                .uri(URI.create(url + "reservation"))
+                .header("Content-Type", "application/json")
+                .build();
+        HttpResponse<String> response;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {

@@ -192,3 +192,11 @@
 #carttitle {
     -fx-font-size: 18;
 }
+
+.buildingList {
+    -fx-text-fill: black;
+}
+
+.buildingList:focused {
+    -fx-text-fill: black;
+}
