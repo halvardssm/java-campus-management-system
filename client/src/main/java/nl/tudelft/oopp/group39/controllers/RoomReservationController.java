@@ -2,7 +2,6 @@ package nl.tudelft.oopp.group39.controllers;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
@@ -33,9 +32,9 @@ public class RoomReservationController extends MainSceneController {
     @FXML
     private Button homeButton;
     @FXML
-    private ComboBox<LocalTime> fromTime;
+    private ComboBox<String> fromTime;
     @FXML
-    private ComboBox<LocalTime> toTime;
+    private ComboBox<String> toTime;
     @FXML
     private Label roomName;
     @FXML
@@ -83,8 +82,8 @@ public class RoomReservationController extends MainSceneController {
     @FXML
     private void reserveRoom(Room room) throws IOException {
         LocalDate bookingDate = date.getValue();
-        LocalTime bookingStart = fromTime.getValue();
-        LocalTime bookingEnd = toTime.getValue();
+        String bookingStart = fromTime.getValue();
+        String bookingEnd = toTime.getValue();
 
         if (checkEmpty(bookingDate, bookingStart, bookingEnd)) {
             if (checkTime(bookingStart, bookingEnd)) {
@@ -126,8 +125,8 @@ public class RoomReservationController extends MainSceneController {
      * @param end
      * @return
      */
-    public boolean checkTime(LocalTime start, LocalTime end) {
-        int timeDifference = (end.getHour() - start.getHour());
+    public boolean checkTime(String start, String end) {
+        int timeDifference = (Integer.parseInt(end.split(":")[0]) - Integer.parseInt(start.split(":")[0]));
         if (timeDifference > 4) {
             showAlert(Alert.AlertType.ERROR, "", "Please make sure that the duration of the reservation is at most 4 hours.");
             return false;
@@ -154,7 +153,7 @@ public class RoomReservationController extends MainSceneController {
      * @param end
      * @return true or false depending on whether or not the date, start and end fields are filled in.
      */
-    public boolean checkEmpty(LocalDate date, LocalTime start, LocalTime end) {
+    public boolean checkEmpty(LocalDate date, String start, String end) {
         if (date == null || start == null || end == null) {
             showAlert(Alert.AlertType.ERROR, "", "Please fill in all the fields.");
             return false;
