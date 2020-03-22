@@ -96,10 +96,12 @@ public class Room {
         } else {
             StringBuilder result = new StringBuilder();
             for (int i = 0; i < facilities.size(); i++) {
-                if (i == facilities.size() - 1) {
-                    result.append(facilities.get(i).get("description").asText());
-                } else {
-                    result.append(facilities.get(i).get("description").asText()).append(", ");
+                if (facilities.get(i).toString().contains("description")) {
+                    if (i == facilities.size() - 1) {
+                        result.append(facilities.get(i).get("description").asText());
+                    } else {
+                        result.append(facilities.get(i).get("description").asText()).append(", ");
+                    }
                 }
             }
             return result.toString();
