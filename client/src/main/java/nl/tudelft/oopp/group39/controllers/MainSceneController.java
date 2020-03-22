@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.models.Room;
 import nl.tudelft.oopp.group39.models.User;
 import nl.tudelft.oopp.group39.views.UsersDisplay;
 
@@ -23,6 +24,7 @@ public class MainSceneController {
     public static String jwt;
     public static boolean sidebarShown = false;
     public static User user;
+    public static Room room;
 
     @FXML
     public VBox sidebar;

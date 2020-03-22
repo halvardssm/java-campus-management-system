@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.communication;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
@@ -8,6 +9,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
+import nl.tudelft.oopp.group39.models.Room;
 import nl.tudelft.oopp.group39.models.User;
 
 public class ServerCommunication {
@@ -40,16 +42,15 @@ public class ServerCommunication {
      *
      * @param username username of the user that needs to be retrieved
      * @return the body of a get request to the server.
-     *
+     */
     public static User getUser(String username) throws JsonProcessingException {
-    HttpRequest request =
-    HttpRequest.newBuilder().GET().uri(URI.create(url + user + username)).build();
-    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    JsonNode userJson = mapper.readTree(httpRequest(request)).get("body");
-    String userAsString = mapper.writeValueAsString(userJson);
-    return mapper.readValue(userAsString, User.class);
-    return httpRequest(request);
-    } */
+        HttpRequest request =
+            HttpRequest.newBuilder().GET().uri(URI.create(url + user + username)).build();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        JsonNode userJson = mapper.readTree(httpRequest(request)).get("body");
+        String userAsString = mapper.writeValueAsString(userJson);
+        return mapper.readValue(userAsString, User.class);
+    }
 
     /**
      * Retrieves bookings from the server.
@@ -103,12 +104,15 @@ public class ServerCommunication {
      * @param roomId id of the room
      * @return the body of a get request to the server.
      */
-    public static String getRoom(long roomId) {
+    public static Room getRoom(long roomId) throws JsonProcessingException {
         HttpRequest request = HttpRequest.newBuilder()
             .GET()
             .uri(URI.create(url + room + roomId))
             .build();
-        return httpRequest(request);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        JsonNode roomJson = mapper.readTree(httpRequest(request)).get("body");
+        String roomAsString = mapper.writeValueAsString(roomJson);
+        return mapper.readValue(roomAsString, Room.class);
     }
 
 
@@ -386,7 +390,7 @@ public class ServerCommunication {
             System.out.println(jwtToken);
             MainSceneController.jwt = jwtToken;
             MainSceneController.loggedIn = true;
-            //       MainSceneController.user = getUser(username);
+            MainSceneController.user = getUser(username);
             return "Logged in";
         }
     }

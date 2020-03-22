@@ -131,6 +131,14 @@ public class RoomSceneController extends MainSceneController {
                 details.setText(roomDetails);
                 rooms.getChildren().add(newRoom);
             }
+            newRoom.setOnMouseClicked(e -> {
+                try {
+                    goToReservation();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
+            });
         } catch (IOException e) {
             createAlert("Error: Wrong IO");
         }
@@ -175,4 +183,8 @@ public class RoomSceneController extends MainSceneController {
         buildingInfo.getChildren().addAll(buildingName, buildingAddress);
     }
 
+    public void goToReservation() throws IOException {
+
+        goToRoomReservationScene();
+    }
 }

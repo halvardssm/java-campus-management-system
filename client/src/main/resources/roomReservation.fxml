@@ -66,25 +66,22 @@
         </AnchorPane>
     </top>
     <left>
-        <VBox BorderPane.alignment="CENTER">
+        <VBox fx:id="roomInfo" BorderPane.alignment="CENTER">
             <children>
-                <ImageView fx:id="roomImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true"
+                <ImageView fx:id="roomImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
+                           preserveRatio="true"
                            scaleX="1.1" scaleY="1.1" translateX="25.0" translateY="20.0">
                     <image>
                         <Image url="@testimage.jpg"/>
                     </image>
                 </ImageView>
-                <Label fx:id="roomName" scaleX="1.1" scaleY="1.1" text="Room Name" translateX="30.0" translateY="30.0">
+                <Label fx:id="roomDetails" scaleX="1.1" scaleY="1.1" text="Description:&#10;Capacity:&#10;Facilities:"
+                       translateX="31.0" translateY="55.0"/>
+                <Label fx:id="roomName" scaleX="1.1" scaleY="1.1" text="Room Name" translateX="30.0" translateY="-20.0">
                     <font>
                         <Font size="15.0"/>
                     </font>
                 </Label>
-                <Label fx:id="roomAddress" scaleX="1.1" scaleY="1.1" text="Address:" translateX="31.0"
-                       translateY="30.0"/>
-                <Label fx:id="roomCapacity" scaleX="1.1" scaleY="1.1" text="Capacity:" translateX="31.0"
-                       translateY="28.0"/>
-                <Label fx:id="roomFacilities" scaleX="1.1" scaleY="1.1" text="Facilities:" translateX="31.0"
-                       translateY="26.0"/>
             </children>
         </VBox>
     </left>
