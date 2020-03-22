@@ -3,10 +3,10 @@ package nl.tudelft.oopp.group39.reservation.entities;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import nl.tudelft.oopp.group39.CoreTest;
+import nl.tudelft.oopp.group39.AbstractTest;
 import org.junit.jupiter.api.Test;
 
-class ReservationAmountTest extends CoreTest {
+class ReservationAmountTest extends AbstractTest {
 
     @Test
     void testEquals() {

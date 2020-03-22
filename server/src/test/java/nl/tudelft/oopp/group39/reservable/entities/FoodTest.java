@@ -3,10 +3,10 @@ package nl.tudelft.oopp.group39.reservable.entities;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import nl.tudelft.oopp.group39.CoreTest;
+import nl.tudelft.oopp.group39.AbstractTest;
 import org.junit.jupiter.api.Test;
 
-class FoodTest extends CoreTest {
+class FoodTest extends AbstractTest {
 
     @Test
     void testEquals() {

@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.time.LocalDateTime;
-import nl.tudelft.oopp.group39.CoreTest;
+import nl.tudelft.oopp.group39.AbstractTest;
 import org.junit.jupiter.api.Test;
 
-class ReservationTest extends CoreTest {
+class ReservationTest extends AbstractTest {
 
     @Test
     void testEquals() {

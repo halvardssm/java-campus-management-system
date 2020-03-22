@@ -5,13 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.HashMap;
 import java.util.List;
 import javassist.NotFoundException;
-import nl.tudelft.oopp.group39.CoreTest;
+import nl.tudelft.oopp.group39.AbstractTest;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ReservableServiceTest extends CoreTest {
+class ReservableServiceTest extends AbstractTest {
     private final Reservable testReservable = new Reservable(5.6, null, null);
 
     @BeforeEach
