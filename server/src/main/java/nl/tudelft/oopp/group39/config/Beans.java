@@ -29,7 +29,8 @@ public class Beans {
             .timeZone(Constants.DEFAULT_TIMEZONE)
             .indentOutput(true)
             .featuresToDisable(
-                SerializationFeature.WRITE_DATES_AS_TIMESTAMPS
+                SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
+                SerializationFeature.FAIL_ON_EMPTY_BEANS
             )
             .serializers(
                 new LocalDateSerializer(Constants.FORMATTER_DATE),
