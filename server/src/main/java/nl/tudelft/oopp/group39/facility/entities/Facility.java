@@ -23,7 +23,7 @@ import nl.tudelft.oopp.group39.room.entities.Room;
 @Entity
 @Table(name = Facility.TABLE_NAME)
 @JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class,
+    generator = ObjectIdGenerators.None.class,
     property = Facility.COL_ID
 )
 @JsonIgnoreProperties(allowSetters = true, value = {Facility.COL_ROOMS})
