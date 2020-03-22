@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.controllers;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
@@ -82,8 +83,8 @@ public class RoomReservationController extends MainSceneController {
     @FXML
     private void reserveRoom(Room room) throws IOException {
         LocalDate bookingDate = date.getValue();
-        String bookingStart = fromTime.getValue();
-        String bookingEnd = toTime.getValue();
+        String bookingStart = fromTime.getValue() + ":00";
+        String bookingEnd = toTime.getValue() + ":00";
 
         if (checkEmpty(bookingDate, bookingStart, bookingEnd)) {
             if (checkTime(bookingStart, bookingEnd)) {
@@ -95,18 +96,14 @@ public class RoomReservationController extends MainSceneController {
                     goToLoginScene();
                     return;
                 }
-                String dateString = "" + date;
-                String fromTimeString = "" + fromTime;
-                String toTimeString = "" + toTime;
+                String dateString = date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 long roomId = room.getId();
                 String roomIdString = "" + roomId;
                 String username = MainSceneController.user.getUsername();
-                User user = ServerCommunication.getUser(username);
-                ServerCommunication.addBooking(dateString, fromTimeString, toTimeString, username, roomIdString);
-                //Room room = ServerCommunication.getRoom();
-                //
+                ServerCommunication.addBooking(dateString, bookingStart, bookingEnd, username, roomIdString);
+
                 showAlert(Alert.AlertType.INFORMATION, "", "Reservation successful.");
-                System.out.println(dateString + fromTimeString + toTimeString + username + roomIdString);
+                System.out.println(dateString + bookingStart + bookingEnd + username + roomIdString);
 
                 System.out.println(bookingDate);
                 System.out.println(bookingStart + "\n" + bookingEnd);
@@ -189,6 +186,7 @@ public class RoomReservationController extends MainSceneController {
         }
         return times;
     }
+
 
     /**
      * Loads the room into the VBox containing the room information.
