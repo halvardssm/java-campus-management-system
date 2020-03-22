@@ -2,42 +2,30 @@ package nl.tudelft.oopp.group39.reservation.entities;
 
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.config.AbstractEntity;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.user.entities.User;
 
 @Entity
 @Table(name = Reservation.TABLE_NAME)
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class,
-    property = Reservation.COL_ID
-)
-public class Reservation {
+public class Reservation extends AbstractEntity {
     public static final String TABLE_NAME = "reservations";
     public static final String MAPPED_NAME = "reservation";
-    public static final String COL_ID = "id";
     public static final String COL_TIME_OF_PICKUP = "timeOfPickup";
     public static final String COL_TIME_OF_DELIVERY = "timeOfDelivery";
     public static final String COL_ROOM = "room";
     public static final String COL_USER = "user";
     public static final String COL_RESERVATION_AMOUNTS = "reservationAmounts";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
     private LocalDateTime timeOfPickup;
     private LocalDateTime timeOfDelivery;
     @ManyToOne
@@ -73,14 +61,6 @@ public class Reservation {
         setRoom(room);
         setUser(user);
         this.reservationAmounts.addAll(initSet(reservationAmounts));
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public LocalDateTime getTimeOfPickup() {

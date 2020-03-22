@@ -2,9 +2,7 @@ package nl.tudelft.oopp.group39.event.entities;
 
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
@@ -14,32 +12,22 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.config.AbstractEntity;
 import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.room.entities.Room;
 
 @Entity
 @Table(name = Event.TABLE_NAME)
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class,
-    property = Event.COL_ID
-)
 @JsonIgnoreProperties(allowSetters = true, value = {Event.COL_ROOMS})
-public class Event {
+public class Event extends AbstractEntity {
     public static final String TABLE_NAME = "events";
     public static final String MAPPED_NAME = "event";
-    public static final String COL_ID = "id";
     public static final String COL_ROOMS = "rooms";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
     @Enumerated(EnumType.STRING)
     private EventTypes type;
     private LocalDate startDate;
@@ -73,14 +61,6 @@ public class Event {
         this.startDate = startDate;
         this.endDate = endDate;
         this.rooms.addAll(initSet(rooms));
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public LocalDate getStartDate() {
