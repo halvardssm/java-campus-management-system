@@ -185,6 +185,34 @@ public class ServerCommunication {
     }
 
     /**
+     * Retrieves bikes filtered on building id.
+     *
+     * @param buildingId the id of the selected building
+     * @return the body of a get request to the server.
+     */
+    public static String getBikes(int buildingId) {
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create(url + "bike?building=" + buildingId))
+            .build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Retrieves food filtered on building id.
+     *
+     * @param buildingId the id of the selected building
+     * @return the body of a post request to the server.
+     */
+    public static String getFood(int buildingId) {
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create(url + "food?building=" + buildingId))
+            .build();
+        return httpRequest(request);
+    }
+
+    /**
      * Creates a reservation.
      *
      * @param timeOfPickup   date and time of receiving the order

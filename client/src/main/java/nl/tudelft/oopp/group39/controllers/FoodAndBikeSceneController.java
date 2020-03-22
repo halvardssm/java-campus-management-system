@@ -94,13 +94,13 @@ public class FoodAndBikeSceneController extends MainSceneController {
         buildinglist.setOnAction(event -> {
             if (type.equals("bike")) {
                 try {
-                    getBikes();
+                    getBikes(Integer.parseInt(buildinglist.getValue().getId()));
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
             } else {
                 try {
-                    getMenu();
+                    getMenu(Integer.parseInt(buildinglist.getValue().getId()));
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
@@ -127,22 +127,23 @@ public class FoodAndBikeSceneController extends MainSceneController {
             long id = Integer.parseInt(building.getId());
             getRoomsList(id);
         }
-
-        System.out.println(rooms);
         System.out.println(json);
         ArrayNode body = (ArrayNode) mapper.readTree(json).get("body");
         for (JsonNode itemNode : body) {
             String itemAsString = mapper.writeValueAsString(itemNode);
-            Reservable reservable;
-            HBox item;
-            if (type.equals("bike")) {
-                Bike bike = mapper.readValue(itemAsString, Bike.class);
-                item = createItemBox(bike.getBikeType(), null, bike);
+            if (itemAsString.contains("id")) {
+                HBox item;
+                if (type.equals("bike")) {
+                    Bike bike = mapper.readValue(itemAsString, Bike.class);
+                    item = createItemBox(bike.getBikeType(), null, bike);
+                } else {
+                    Food food = mapper.readValue(itemAsString, Food.class);
+                    item = createItemBox(food.getName(), food.getDescription(), food);
+                }
+                itemlist.getChildren().add(item);
             } else {
-                Food food = mapper.readValue(itemAsString, Food.class);
-                item = createItemBox(food.getName(), food.getDescription(), food);
+                break;
             }
-            itemlist.getChildren().add(item);
         }
     }
 
@@ -191,12 +192,32 @@ public class FoodAndBikeSceneController extends MainSceneController {
     }
 
     /**
+     * Retrieves bikes filtered on building id.
+     *
+     * @param buildingId the id of the selected building
+     * @throws JsonProcessingException when there is a parsing exception
+     */
+    public void getBikes(int buildingId) throws JsonProcessingException {
+        showItems(ServerCommunication.getBikes(buildingId));
+    }
+
+    /**
      * Retrieves food menu.
      *
      * @throws JsonProcessingException when there is a parsing exception
      */
     public void getMenu() throws JsonProcessingException {
         showItems(ServerCommunication.get(ServerCommunication.food));
+    }
+
+    /**
+     * Retrieves menu filtered on building id.
+     *
+     * @param buildingId the id of the selected building
+     * @throws JsonProcessingException when there is a parsing exception
+     */
+    public void getMenu(int buildingId) throws JsonProcessingException {
+        showItems(ServerCommunication.getFood(buildingId));
     }
 
     /**
