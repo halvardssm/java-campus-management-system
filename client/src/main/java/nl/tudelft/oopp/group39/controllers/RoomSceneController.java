@@ -14,11 +14,12 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.models.Room;
 
 public class RoomSceneController extends MainSceneController {
 
-    public long buildingId;
+    private Building building;
 
     @FXML
     public TextField roomBuildingIdField;
@@ -44,14 +45,12 @@ public class RoomSceneController extends MainSceneController {
     /**
      * Sets up the page to show rooms for selected building.
      *
-     * @param buildingId id of the selected building
-     * @param name       name of the selected building
-     * @param address    of the selected building
+     * @param building where the rooms are located
      */
-    public void setup(long buildingId, String name, String address) {
-        this.buildingId = buildingId;
-        setBuildingDetails(name, address);
-        getRooms(buildingId);
+    public void setup(Building building) {
+        this.building = building;
+        setBuildingDetails(building.getName(), building.getDescription());
+        getRooms(building.getId());
     }
 
     /**
@@ -123,7 +122,7 @@ public class RoomSceneController extends MainSceneController {
                 newRoom = FXMLLoader.load(getClass().getResource("/roomCell.fxml"));
                 newRoom.setOnMouseClicked(e -> {
                     try {
-                        goToReservationScene(room);
+                        goToReservationScene(room, building);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }

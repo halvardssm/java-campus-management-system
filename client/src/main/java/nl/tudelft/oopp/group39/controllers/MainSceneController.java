@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.models.Room;
 import nl.tudelft.oopp.group39.models.User;
 import nl.tudelft.oopp.group39.views.UsersDisplay;
@@ -108,10 +109,10 @@ public class MainSceneController {
     /**
      * Doc. TODO Sven
      */
-    public void goToRoomsScene(long buildingId, String name, String address) throws IOException {
+    public void goToRoomsScene(Building building) throws IOException {
         RoomSceneController controller =
             (RoomSceneController) UsersDisplay.sceneControllerHandler("/roomView.fxml");
-        controller.setup(buildingId, name, address);
+        controller.setup(building);
         controller.changeTopBtn();
     }
 
@@ -125,9 +126,9 @@ public class MainSceneController {
         controller.changeTopBtn();
     }
 
-    public void goToReservationScene(Room room) throws IOException {
+    public void goToReservationScene(Room room, Building building) throws IOException {
         RoomReservationController controller = (RoomReservationController) UsersDisplay.sceneControllerHandler("/roomReservation.fxml");
-        controller.setup(room);
+        controller.setup(room, building);
     }
 
     /**

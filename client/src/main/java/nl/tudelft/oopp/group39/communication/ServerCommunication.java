@@ -288,6 +288,11 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
+    public static String getBookings(int roomId, String date) {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "booking?room=" + roomId)).build();
+        return httpRequest(request);
+    }
+
     /**
      * Retrieves all rooms from the server.
      *

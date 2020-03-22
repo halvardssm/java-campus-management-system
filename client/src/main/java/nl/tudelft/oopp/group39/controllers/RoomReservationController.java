@@ -6,18 +6,15 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javax.swing.text.html.ImageView;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.models.Room;
 import nl.tudelft.oopp.group39.models.User;
 
@@ -46,7 +43,12 @@ public class RoomReservationController extends MainSceneController {
     @FXML
     private VBox roomInfo;
 
-    public void setup(Room room) {
+    private Building building;
+    private Room room;
+
+    public void setup(Room room, Building building) {
+        this.building = building;
+        this.room = room;
         loadTimeslots();
         loadRoom(room);
         reserveButton.setOnAction(event -> {
@@ -153,14 +155,25 @@ public class RoomReservationController extends MainSceneController {
      *
      * @return a list with LocalTimes from 00:00 to 23:00
      */
-    private List<LocalTime> initiateTimeslots() {
-        List<LocalTime> times = new ArrayList<>();
-        LocalTime n = LocalTime.of(0, 0);
+    private List<String> initiateTimeslots() {
+        String bookings = ServerCommunication.getBookings((int) room.getId(), "2020-03-22");
+        int bookedStart = 13;
+        int bookedEnd = 15;
+        System.out.println(bookings);
+        List<String> times = new ArrayList<>();
+        int open = Integer.parseInt(building.getOpen().split(":")[0]);
+        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
 
-        for (int i = 0; i < 24; i++) {
-            times.add(n);
-            LocalTime add = LocalTime.of(1, 0);
-            n = n.plusHours(add.getHour());
+        for (int i = open; i < closed; i++) {
+            if (i < bookedStart || i >= bookedEnd) {
+                String time;
+                if (i < 10) {
+                    time = "0" + i + ":00";
+                } else {
+                    time = i + ":00";
+                }
+                times.add(time);
+            }
         }
         return times;
     }
@@ -221,9 +234,7 @@ public class RoomReservationController extends MainSceneController {
      */
     @FXML
     private void backToRoom() throws IOException {
-        Stage currentStage = (Stage) backButton.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/roomView.fxml")); //should be room page but I don't this there is one?
-        currentStage.setScene(new Scene(root, 700, 600));
+        goToRoomsScene(building);
     }
 
 }

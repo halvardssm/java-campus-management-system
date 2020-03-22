@@ -106,8 +106,8 @@ public class DbSeeder {
     }
 
     private void initBuildings() {
-        LocalTime open = LocalTime.now();//.minusHours(3);
-        LocalTime closed = LocalTime.now();//.plusHours(3);
+        LocalTime open = LocalTime.of(9, 0);//.minusHours(3);
+        LocalTime closed = LocalTime.of(20, 0);//.plusHours(3);
         Building b = new Building("test", "test", "test", open, closed, null);
         buildingService.createBuilding(b);
         b = new Building("new", "new", "new", open, closed, null);
@@ -145,16 +145,13 @@ public class DbSeeder {
 
     private void initBookings() {
         LocalDate date = LocalDate.now();
-        LocalTime start = LocalTime.now();
-        LocalTime end = LocalTime.now();
+        LocalTime start = LocalTime.of(13, 0);
+        LocalTime end = LocalTime.of(15, 0);
         User user = userService.readUser("admin");
 
         Room room = roomService.listRooms().get(0);
 
         Booking b = new Booking(date, start, end, user, room);
-        bookingService.createBooking(b);
-
-        b = new Booking(date, start, end, user, room);
         bookingService.createBooking(b);
 
         System.out.println("[SEED] Bookings created");

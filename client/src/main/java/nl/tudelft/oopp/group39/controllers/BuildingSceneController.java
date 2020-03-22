@@ -42,7 +42,7 @@ public class BuildingSceneController extends MainSceneController implements Init
                 String desc = building.getDescription();
                 newBuilding.setOnMouseClicked(e -> {
                     try {
-                        goToRoomsScene(buildingId, buildingName, address);
+                        goToRoomsScene(building);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
