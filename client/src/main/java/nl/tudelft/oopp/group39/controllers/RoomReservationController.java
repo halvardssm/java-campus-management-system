@@ -33,9 +33,9 @@ public class RoomReservationController extends MainSceneController {
     @FXML
     private Button homeButton;
     @FXML
-    private ComboBox fromTime;
+    private ComboBox<LocalTime> fromTime;
     @FXML
-    private ComboBox toTime;
+    private ComboBox<LocalTime> toTime;
     @FXML
     private Label roomName;
     @FXML
@@ -83,19 +83,32 @@ public class RoomReservationController extends MainSceneController {
     @FXML
     private void reserveRoom(Room room) throws IOException {
         LocalDate bookingDate = date.getValue();
-        LocalTime bookingStart = (LocalTime) fromTime.getValue();
-        LocalTime bookingEnd = (LocalTime) toTime.getValue();
+        LocalTime bookingStart = fromTime.getValue();
+        LocalTime bookingEnd = toTime.getValue();
 
         if (checkEmpty(bookingDate, bookingStart, bookingEnd)) {
             if (checkTime(bookingStart, bookingEnd)) {
+                try {
+                    String username = MainSceneController.user.getUsername();
+                    User user = ServerCommunication.getUser(username);
+                } catch (Exception e) {
+                    showAlert(Alert.AlertType.ERROR, "", "Please log in if you want to reserve a room.");
+                    goToLoginScene();
+                    return;
+                }
+                String dateString = "" + date;
+                String fromTimeString = "" + fromTime;
+                String toTimeString = "" + toTime;
+                long roomId = room.getId();
+                String roomIdString = "" + roomId;
                 String username = MainSceneController.user.getUsername();
                 User user = ServerCommunication.getUser(username);
-                long roomId = room.getId();
-                //Room room = ServerCommunication.getRoom(roomId);
-                //ServerCommunication.addBooking(date, fromTime, toTime, user, )
+                ServerCommunication.addBooking(dateString, fromTimeString, toTimeString, username, roomIdString);
                 //Room room = ServerCommunication.getRoom();
                 //
                 showAlert(Alert.AlertType.INFORMATION, "", "Reservation successful.");
+                System.out.println(dateString + fromTimeString + toTimeString + username + roomIdString);
+
                 System.out.println(bookingDate);
                 System.out.println(bookingStart + "\n" + bookingEnd);
                 backToRoom();
@@ -236,5 +249,6 @@ public class RoomReservationController extends MainSceneController {
     private void backToRoom() throws IOException {
         goToRoomsScene(building);
     }
+
 
 }
