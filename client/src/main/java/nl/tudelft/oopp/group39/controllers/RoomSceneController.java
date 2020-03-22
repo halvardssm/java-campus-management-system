@@ -121,7 +121,14 @@ public class RoomSceneController extends MainSceneController {
                 String roomAsString = mapper.writeValueAsString(roomJson);
                 Room room = mapper.readValue(roomAsString, Room.class);
                 newRoom = FXMLLoader.load(getClass().getResource("/roomCell.fxml"));
+                newRoom.setOnMouseClicked(e -> {
+                    try {
+                        goToReservationScene(room);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
 
+                });
                 Label name = (Label) newRoom.lookup("#roomname");
                 name.setText(room.getName());
                 String roomDetails = room.getDescription()
@@ -132,14 +139,6 @@ public class RoomSceneController extends MainSceneController {
                 details.setText(roomDetails);
                 rooms.getChildren().add(newRoom);
             }
-            newRoom.setOnMouseClicked(e -> {
-                try {
-                    goToReservation();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-
-            });
         } catch (IOException e) {
             createAlert("Error: Wrong IO");
         }
@@ -178,8 +177,4 @@ public class RoomSceneController extends MainSceneController {
         buildingInfo.getChildren().addAll(buildingName, buildingAddress);
     }
 
-    public void goToReservation() throws IOException {
-
-        goToRoomReservationScene();
-    }
 }

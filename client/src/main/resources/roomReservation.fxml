@@ -19,8 +19,8 @@
             <children>
                 <AnchorPane scaleX="1.2" scaleY="1.2" translateX="-30.0" translateY="20.0" AnchorPane.topAnchor="0.0">
                     <children>
-                        <Button fx:id="reserveButton" mnemonicParsing="false" onAction="#reserveRoom"
-                                onMouseClicked="#reserveRoom" style="-fx-background-color: #00A6D6;" text="Reserve Room"
+                        <Button fx:id="reserveButton" mnemonicParsing="false" style="-fx-background-color: #00A6D6;"
+                                text="Reserve Room"
                                 textFill="WHITE" translateX="30.0" translateY="255.0" AnchorPane.topAnchor="0.0">
                             <font>
                                 <Font size="18.0"/>

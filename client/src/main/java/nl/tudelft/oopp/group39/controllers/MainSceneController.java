@@ -24,7 +24,6 @@ public class MainSceneController {
     public static String jwt;
     public static boolean sidebarShown = false;
     public static User user;
-    public static Room room;
 
     @FXML
     public VBox sidebar;
@@ -95,9 +94,6 @@ public class MainSceneController {
             (LoginController) UsersDisplay.sceneControllerHandler("/login.fxml");
         controller.changeTopBtn();
     }
-    public void goToReservationPage() throws IOException {
-        UsersDisplay.sceneHandler("/roomReservation.fxml");
-    }
 
 
     /**
@@ -111,13 +107,13 @@ public class MainSceneController {
 
     /**
      * Doc. TODO Sven
-     *//*
+     */
     public void goToRoomsScene(long buildingId, String name, String address) throws IOException {
         RoomSceneController controller =
             (RoomSceneController) UsersDisplay.sceneControllerHandler("/roomView.fxml");
         controller.setup(buildingId, name, address);
         controller.changeTopBtn();
-    } */
+    }
 
     /**
      * Doc. TODO Sven
@@ -127,6 +123,11 @@ public class MainSceneController {
             (RoomSceneController) UsersDisplay.sceneControllerHandler("/roomView.fxml");
         controller.getAllRooms();
         controller.changeTopBtn();
+    }
+
+    public void goToReservationScene(Room room) throws IOException {
+        RoomReservationController controller = (RoomReservationController) UsersDisplay.sceneControllerHandler("/roomReservation.fxml");
+        controller.setup(room);
     }
 
     /**
