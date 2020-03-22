@@ -36,12 +36,13 @@ public class BuildingSceneController extends MainSceneController implements Init
             Building[] list = mapper.readValue(buildingString, Building[].class);
             for (Building building : list) {
                 newBuilding = FXMLLoader.load(getClass().getResource("/buildingCell.fxml"));
+                long buildingId = building.getId();
                 String buildingName = building.getName();
                 String address = building.getLocation();
                 String desc = building.getDescription();
                 newBuilding.setOnMouseClicked(e -> {
                     try {
-                        goToRoomsScene();
+                        goToRoomsScene(buildingId, buildingName, address);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }

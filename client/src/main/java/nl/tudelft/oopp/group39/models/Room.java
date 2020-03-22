@@ -91,7 +91,7 @@ public class Room {
      * @return String of facilities
      */
     public String facilitiesToString() {
-        if (facilities.size() == 0) {
+        if (facilities.size() == 0 || facilities == null) {
             return "none";
         } else {
             StringBuilder result = new StringBuilder();

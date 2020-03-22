@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.group39.config;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +16,15 @@ import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.event.services.EventService;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
+import nl.tudelft.oopp.group39.reservable.entities.Bike;
+import nl.tudelft.oopp.group39.reservable.entities.Food;
+import nl.tudelft.oopp.group39.reservable.enums.BikeType;
+import nl.tudelft.oopp.group39.reservable.services.BikeService;
+import nl.tudelft.oopp.group39.reservable.services.FoodService;
+import nl.tudelft.oopp.group39.reservation.entities.Reservation;
+import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
+import nl.tudelft.oopp.group39.reservation.services.ReservationAmountService;
+import nl.tudelft.oopp.group39.reservation.services.ReservationService;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
 import nl.tudelft.oopp.group39.user.entities.User;

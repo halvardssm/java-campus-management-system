@@ -51,7 +51,7 @@ public class RoomSceneController extends MainSceneController {
     public void setup(long buildingId, String name, String address) {
         this.buildingId = buildingId;
         setBuildingDetails(name, address);
-        //getRooms(buildingId);
+        getRooms(buildingId);
     }
 
     /**
@@ -110,6 +110,7 @@ public class RoomSceneController extends MainSceneController {
      * @param json json string that holds the rooms that needs to be parsed
      */
     public void showRooms(String json) {
+        System.out.println(json);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         rooms.getChildren().clear();
         try {
@@ -151,13 +152,7 @@ public class RoomSceneController extends MainSceneController {
      */
     public void getAllRooms() {
         String roomsString = ServerCommunication.get(ServerCommunication.room);
-        String testString = "{\"body\":[{\"id\":1,\"capacity\":10,\"name\":\"Ampere\","
-            + "\"onlyStaff\":true,\"description\":\"test1\",\"facilities\":[],\"events\":[],"
-            + "\"bookings\":[],\"building\":1},{\"id\":2,\"capacity\":6,\"name\":\"test2\","
-            + "\"onlyStaff\":true,\"description\":\"test2\",\"facilities\":[{\"id\":1,"
-            + "\"description\":\"smartboard\"}],\"events\":[],\"bookings\":[],"
-            + "\"building\":1}],\"error\":null}";
-        showRooms(testString);
+        showRooms(roomsString);
     }
 
     /**
