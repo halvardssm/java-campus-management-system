@@ -7,8 +7,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
+import nl.tudelft.oopp.group39.models.User;
 
 public class ServerCommunication {
 
@@ -20,6 +20,7 @@ public class ServerCommunication {
     public static String room = "room/";
     public static String authenticate = "authenticate/";
     public static String facility = "facility/";
+    public static String booking = "booking/";
 
     private static ObjectMapper mapper = new ObjectMapper();
 
@@ -39,16 +40,16 @@ public class ServerCommunication {
      *
      * @param username username of the user that needs to be retrieved
      * @return the body of a get request to the server.
-     */
+     *
     public static User getUser(String username) throws JsonProcessingException {
-        HttpRequest request =
-            HttpRequest.newBuilder().GET().uri(URI.create(url + user + username)).build();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        JsonNode userJson = mapper.readTree(httpRequest(request)).get("body");
-        String userAsString = mapper.writeValueAsString(userJson);
-        return mapper.readValue(userAsString, User.class);
-        return httpRequest(request);
-    }
+    HttpRequest request =
+    HttpRequest.newBuilder().GET().uri(URI.create(url + user + username)).build();
+    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    JsonNode userJson = mapper.readTree(httpRequest(request)).get("body");
+    String userAsString = mapper.writeValueAsString(userJson);
+    return mapper.readValue(userAsString, User.class);
+    return httpRequest(request);
+    } */
 
     /**
      * Retrieves bookings from the server.
@@ -259,6 +260,16 @@ public class ServerCommunication {
     }
 
     /**
+     * Retrieves all bookings from the server.
+     *
+     * @return the body of a get request to the server.
+     */
+    public static String getAllBookings() {
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + booking)).build();
+        return httpRequest(request);
+    }
+
+    /**
      * Retrieves all rooms from the server.
      *
      * @return the body of a get request to the server.
@@ -360,7 +371,7 @@ public class ServerCommunication {
             System.out.println(jwtToken);
             MainSceneController.jwt = jwtToken;
             MainSceneController.loggedIn = true;
-            MainSceneController.user = getUser(username);
+            //       MainSceneController.user = getUser(username);
             return "Logged in";
         }
     }
