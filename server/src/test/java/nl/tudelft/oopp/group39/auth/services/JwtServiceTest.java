@@ -15,7 +15,9 @@ class JwtServiceTest {
         "test@tudelft.nl",
         "test",
         null,
-        Role.STUDENT
+        Role.STUDENT,
+        null,
+        null
     );
 
     @Autowired
@@ -61,7 +63,9 @@ class JwtServiceTest {
             "test@tudelft.nl",
             "test",
             null,
-            Role.STUDENT
+            Role.STUDENT,
+            null,
+            null
         );
         Assertions.assertFalse(jwtService.validate(jwtService.encrypt(testUser), user));
     }

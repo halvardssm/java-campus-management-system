@@ -1,43 +1,71 @@
 package nl.tudelft.oopp.group39.building.entities;
 
-
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.config.Constants;
+import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 
 @Entity
 @Table(name = Building.TABLE_NAME)
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = Building.COL_ID
+)
 public class Building {
     public static final String TABLE_NAME = "buildings";
+    public static final String MAPPED_NAME = "building";
+    public static final String COL_ID = "id";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private String name;
-
     private String location;
-
     private String description;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.FORMAT_TIME)
     private LocalTime open;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.FORMAT_TIME)
     private LocalTime closed;
-
-    //opening times (open & closed)
+    @OneToMany(mappedBy = MAPPED_NAME)
+    private Set<Reservable> reservables = new HashSet<>();
 
     public Building() {
     }
 
-    public Building(String name, String location, String description, LocalTime open, LocalTime closed) {
+    /**
+     * Constructor. TODO Sven
+     *
+     * @param name        name
+     * @param location    location
+     * @param description description
+     * @param open        open
+     * @param closed      closed
+     */
+    public Building(
+        String name,
+        String location,
+        String description,
+        LocalTime open,
+        LocalTime closed,
+        Set<Reservable> reservables
+    ) {
         this.name = name;
         this.location = location;
         this.description = description;
         this.open = open;
         this.closed = closed;
+        this.reservables.addAll(reservables != null ? reservables : new HashSet<>());
     }
 
     public long getId() {
@@ -88,22 +116,29 @@ public class Building {
         this.closed = closed;
     }
 
+    public Set<Reservable> getReservables() {
+        return reservables;
+    }
+
+    public void setReservables(Set<Reservable> reservables) {
+        this.reservables = reservables;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Building)) {
             return false;
         }
-
         Building building = (Building) o;
-
-        boolean equals = (building.location.contentEquals(location)) && (building.name.contentEquals(name));
-        equals = equals && (building.description.contentEquals(description)) && (building.open == open);
-        equals = equals && (building.closed == closed) && (id == building.id);
-        return equals;
+        return getId() == building.getId()
+            && Objects.equals(getName(), building.getName())
+            && Objects.equals(getLocation(), building.getLocation())
+            && Objects.equals(getDescription(), building.getDescription())
+            && Objects.equals(getOpen(), building.getOpen())
+            && Objects.equals(getClosed(), building.getClosed())
+            && Objects.equals(getReservables(), building.getReservables());
     }
-
-
 }

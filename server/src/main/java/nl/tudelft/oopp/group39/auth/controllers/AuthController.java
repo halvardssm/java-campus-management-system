@@ -1,8 +1,8 @@
 package nl.tudelft.oopp.group39.auth.controllers;
 
-import nl.tudelft.oopp.group39.auth.entities.AuthRequest;
-import nl.tudelft.oopp.group39.auth.entities.AuthResponse;
 import nl.tudelft.oopp.group39.auth.exceptions.UnauthorizedException;
+import nl.tudelft.oopp.group39.auth.models.AuthRequest;
+import nl.tudelft.oopp.group39.auth.models.AuthResponse;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.user.entities.User;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
     public static final String REST_MAPPING = "/authenticate";
-    public static final String HEADER_BEARER = "Bearer ";
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -55,7 +54,7 @@ public class AuthController {
         } catch (Exception e) {
             return RestResponse.create(
                 null,
-                new UnauthorizedException().getMessage(),
+                UnauthorizedException.UNAUTHORIZED,
                 HttpStatus.UNAUTHORIZED
             );
         }

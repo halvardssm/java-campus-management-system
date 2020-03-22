@@ -1,6 +1,9 @@
 package nl.tudelft.oopp.group39.room.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -11,52 +14,68 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 
 @Entity
 @Table(name = Room.TABLE_NAME)
+@JsonIdentityInfo(
+    generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = Room.COL_ID
+)
 public class Room {
     public static final String TABLE_NAME = "rooms";
+    public static final String MAPPED_NAME = "room";
+    public static final String COL_ID = "id";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private long buildingId;
-
-    private String name;
-
     private int capacity;
-
     private boolean onlyStaff;
-
     private String description;
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinTable(name = "rooms_facilities",
+    @JoinTable(name = TABLE_NAME + "_" + Facility.TABLE_NAME,
         joinColumns = {
-            @JoinColumn(name = "room_id", referencedColumnName = "id",
-                nullable = false, updatable = false)},
+            @JoinColumn(name = TABLE_NAME, referencedColumnName = COL_ID,
+                nullable = false, updatable = false)
+        },
         inverseJoinColumns = {
-            @JoinColumn(name = "facility_id", referencedColumnName = "id",
-                nullable = false, updatable = false)})
+            @JoinColumn(name = Facility.TABLE_NAME, referencedColumnName = Facility.COL_ID,
+                nullable = false, updatable = false)
+        })
     private Set<Facility> facilities = new HashSet<>();
 
-    @ManyToMany(mappedBy = "rooms", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = TABLE_NAME, fetch = FetchType.LAZY)
     private Set<Event> events = new HashSet<>();
+
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
+    private Set<Booking> bookings = new HashSet<>();
 
     public Room() {
     }
 
-    public Room(long buildingId, String name, int capacity, boolean onlyStaff, String description, Set<Facility> facilities) {
+    /**
+     * Doc. TODO Sven
+     */
+    public Room(
+        long buildingId,
+        int capacity,
+        boolean onlyStaff,
+        String description,
+        Set<Facility> facilities,
+        Set<Booking> bookings
+    ) {
         this.buildingId = buildingId;
-        this.name = name;
         this.capacity = capacity;
         this.onlyStaff = onlyStaff;
         this.description = description;
-        this.facilities.addAll(facilities);
+        this.facilities.addAll(facilities != null ? facilities : new HashSet<>());
+        this.bookings.addAll(bookings != null ? bookings : new HashSet<>());
     }
 
     public long getId() {
@@ -66,10 +85,6 @@ public class Room {
     public void setId(long id) {
         this.id = id;
     }
-
-    public String getName() { return name; }
-
-    public void setName(String name) { this.name = name; }
 
     public long getBuilding() {
         return buildingId;
@@ -119,6 +134,14 @@ public class Room {
         this.events = events;
     }
 
+    public Set<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(Set<Booking> bookings) {
+        this.bookings = bookings;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -127,14 +150,13 @@ public class Room {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
         Room room = (Room) o;
-
-        //return id == room.id;
-
-        boolean equals = (capacity == room.capacity) && (onlyStaff == room.onlyStaff);
-        equals = equals && (room.description.contentEquals(description));
-        equals = equals && (buildingId == room.buildingId) && (id == room.id);
-        return equals;
+        return getId() == room.getId()
+            && buildingId == room.buildingId
+            && getCapacity() == room.getCapacity()
+            && getOnlyStaff() == room.getOnlyStaff()
+            && Objects.equals(getDescription(), room.getDescription())
+            && Objects.equals(getFacilities(), room.getFacilities())
+            && Objects.equals(getBookings(), room.getBookings());
     }
 }
