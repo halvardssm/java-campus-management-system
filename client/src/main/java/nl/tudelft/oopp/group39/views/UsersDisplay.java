@@ -26,9 +26,7 @@ public class UsersDisplay extends Application {
      */
     @FXML
     public static void sceneHandler(String name) throws IOException {
-        System.out.println("Scene changing...");
-        root = FXMLLoader.load(UsersDisplay.class.getResource(name));
-        window.setScene(new Scene(root, width, height));
+        sceneControllerHandler(name);
     }
 
     /**

@@ -88,7 +88,7 @@ public class RoomSceneController extends MainSceneController {
      * Doc. TODO Sven
      */
     public void getRoomsButton() {
-        createAlert(ServerCommunication.getRooms());
+        createAlert(ServerCommunication.get(ServerCommunication.room));
     }
 
     /**
@@ -101,7 +101,7 @@ public class RoomSceneController extends MainSceneController {
 
         ServerCommunication.removeRoom(id);
 
-        createAlert(ServerCommunication.getRooms());
+        createAlert(ServerCommunication.get(ServerCommunication.room));
     }
 
     /**
@@ -150,7 +150,7 @@ public class RoomSceneController extends MainSceneController {
      * Gets all rooms.
      */
     public void getAllRooms() {
-        String roomsString = ServerCommunication.getAllRooms();
+        String roomsString = ServerCommunication.get(ServerCommunication.room);
         String testString = "{\"body\":[{\"id\":1,\"capacity\":10,\"name\":\"Ampere\","
             + "\"onlyStaff\":true,\"description\":\"test1\",\"facilities\":[],\"events\":[],"
             + "\"bookings\":[],\"building\":1},{\"id\":2,\"capacity\":6,\"name\":\"test2\","

@@ -12,18 +12,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.models.User;
 import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 public class MainSceneController {
 
     protected ObjectMapper mapper = new ObjectMapper();
 
-
     public static boolean loggedIn = false;
     public static String jwt;
     public static boolean sidebarShown = false;
-    public static boolean isAdmin = false;
-    public static String username;
+    public static User user;
 
     @FXML
     public VBox sidebar;
@@ -46,6 +45,7 @@ public class MainSceneController {
      */
     public void createAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
         alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.setTitle(title);
         alert.setContentText(content);
@@ -141,14 +141,14 @@ public class MainSceneController {
      * Doc. TODO Sven
      */
     public void getFacilitiesButton() {
-        createAlert(null, ServerCommunication.getFacilities());
+        createAlert(null, ServerCommunication.get(ServerCommunication.facility));
     }
 
     /**
      * Doc. TODO Sven
      */
     public void getUsersButton() {
-        createAlert(ServerCommunication.getUsers());
+        createAlert(ServerCommunication.get(ServerCommunication.user));
     }
 
     /**
@@ -160,7 +160,7 @@ public class MainSceneController {
         System.out.println(loggedIn);
 
         if (loggedIn) {
-            MenuButton myaccount = new MenuButton(username);
+            MenuButton myaccount = new MenuButton(user.getUsername());
             MenuItem myres = new MenuItem("My Reservations");
             MenuItem myacc = new MenuItem("My Account");
             MenuItem logout = new MenuItem("Logout");
@@ -173,7 +173,7 @@ public class MainSceneController {
                 }
             });
             myaccount.getItems().addAll(myres, myacc, logout);
-            if (isAdmin) {
+            if (user.getRole().equals("ADMIN")) {
                 myaccount.getItems().add(admin);
             }
             topbar.getChildren().add(myaccount);
