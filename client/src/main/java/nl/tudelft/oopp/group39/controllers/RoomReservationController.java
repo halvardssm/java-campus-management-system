@@ -59,16 +59,21 @@ public class RoomReservationController extends MainSceneController implements In
      * @return
      */
     @FXML
-    private void reserveRoom() {
+    private void reserveRoom() throws IOException {
         LocalDate bookingDate = date.getValue();
         LocalTime bookingStart = (LocalTime) fromTime.getValue();
         LocalTime bookingEnd = (LocalTime) toTime.getValue();
 
         if (checkEmpty(bookingDate, bookingStart, bookingEnd)) {
             if (checkTime(bookingStart, bookingEnd)) {
+                //  User username = ServerCommunication.getUser();
+                //ServerCommunication.addBooking(date, fromTime, toTime, )
+                //Room room = ServerCommunication.getRoom();
+                //
                 showAlert(Alert.AlertType.INFORMATION, "", "Reservation successful.");
                 System.out.println(bookingDate);
                 System.out.println(bookingStart + "\n" + bookingEnd);
+                backToRoom();
             }
         } else {
             showAlert(Alert.AlertType.INFORMATION, "", "Reservation failed.");
@@ -95,7 +100,7 @@ public class RoomReservationController extends MainSceneController implements In
             } else {
                 showAlert(Alert.AlertType.ERROR, "", "You cannot reserve past midnight!");
                 return false;
-                //return true;
+                //return true; for now you cant i guess
             }
         } else {
             return true;
@@ -147,27 +152,23 @@ public class RoomReservationController extends MainSceneController implements In
 
 
     /**
-     * Switches to login page when the Login button is clicked?
+     * Switches to login page when the Login button is clicked
      *
      * @throws IOException
      */
     @FXML
     private void switchLogin() throws IOException {
-        Stage currentStage = (Stage) loginButton.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/login.fxml"));
-        currentStage.setScene(new Scene(root, 700, 600));
+        goToLoginScene();
     }
 
     /**
-     * Switches to the homepage when the *SomeName* button is clicked?
+     * Switches to the homepage when the *SomeName* button is clicked
      *
      * @throws IOException
      */
     @FXML
     private void switchMain() throws IOException {
-        Stage currentStage = (Stage) homeButton.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/mainScene.fxml"));
-        currentStage.setScene(new Scene(root, 700, 600));
+        goToMainScene();
     }
 
     /**

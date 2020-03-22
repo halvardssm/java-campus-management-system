@@ -98,6 +98,21 @@ public class ServerCommunication {
     }
 
     /**
+     * Retrieves the room from the server based on the room id.
+     *
+     * @param roomId id of the room
+     * @return the body of a get request to the server.
+     */
+    public static String getRoom(long roomId) {
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create(url + room + roomId))
+            .build();
+        return httpRequest(request);
+    }
+
+
+    /**
      * Retrieves filtered list of buildings from the server.
      *
      * @return the body of a get request to the server.
