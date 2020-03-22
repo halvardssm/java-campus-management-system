@@ -37,6 +37,8 @@
                                   AnchorPane.topAnchor="96.0"/>
                         <Label id="text" stylesheets="@roomReservation.css" text="To:" AnchorPane.leftAnchor="-33.0"
                                AnchorPane.topAnchor="99.0"/>
+                        <Label id="text" stylesheets="@roomReservation.css"
+                               text="Maximum Reservation Time:&#10; 4 Hours" AnchorPane.topAnchor="135.0"/>
                     </children>
                 </AnchorPane>
             </children>
