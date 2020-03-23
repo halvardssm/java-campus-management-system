@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
@@ -19,6 +20,7 @@ import nl.tudelft.oopp.group39.models.Room;
 public class RoomSceneController extends MainSceneController {
 
     public long buildingId;
+    private boolean filterBarShown = false;
 
     @FXML
     public TextField roomBuildingIdField;
@@ -40,6 +42,10 @@ public class RoomSceneController extends MainSceneController {
 
     @FXML
     private VBox buildingInfo;
+
+    @FXML
+    private VBox filterBar;
+
 
     /**
      * Sets up the page to show rooms for selected building.
@@ -168,6 +174,52 @@ public class RoomSceneController extends MainSceneController {
         Label buildingAddress = new Label(address);
         buildingAddress.getStyleClass().add("buildingAddress");
         buildingInfo.getChildren().addAll(buildingName, buildingAddress);
+    }
+
+    public void toggleFilterBar() {
+        if (!filterBarShown) {
+            Hyperlink buildings = new Hyperlink("Buildings");
+            buildings.getStyleClass().add("sidebar-item");
+            buildings.setOnAction(event -> {
+                try {
+                    goToBuildingScene();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            Hyperlink rooms = new Hyperlink("Rooms");
+            rooms.getStyleClass().add("sidebar-item");
+            rooms.setOnAction(event -> {
+                try {
+                    goToRoomsScene();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            Hyperlink bikerental = new Hyperlink("Bike rental");
+            bikerental.getStyleClass().add("sidebar-item");
+            bikerental.setOnAction(event -> {
+                try {
+                    goToBikeRentalScene();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            Hyperlink foodorder = new Hyperlink("Order food");
+            foodorder.getStyleClass().add("sidebar-item");
+            foodorder.setOnAction(event -> {
+                try {
+                    goToFoodOrderScene();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            sidebar.getChildren().addAll(buildings, rooms, bikerental, foodorder);
+            filterBarShown = true;
+        } else {
+            sidebar.getChildren().clear();
+            filterBarShown = false;
+        }
     }
 
 }

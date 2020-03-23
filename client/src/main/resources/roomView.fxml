@@ -33,18 +33,19 @@
     </left>
     <center>
         <VBox>
-            <VBox fx:id="buildingInfo" alignment="CENTER" >
-<!--                <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>-->
-<!--                <Label id="buildingName" fx:id="buildingName" />-->
-<!--                <Label id="buildingAddress" fx:id="buildingAddress" />-->
-            </VBox>
-            <ScrollPane fitToHeight="true" fitToWidth="true" >
-                <FlowPane alignment="TOP_CENTER" fx:id="rooms" hgap="20.0" vgap="20.0"/><padding><Insets top="30" right="20" bottom="30" left="20"/></padding>
+            <VBox fx:id="buildingInfo" alignment="CENTER"/>
+            <ScrollPane fitToHeight="true" fitToWidth="true">
+                <FlowPane alignment="TOP_CENTER" fx:id="rooms" hgap="20.0" vgap="20.0"/>
+                <padding>
+                    <Insets right="20" bottom="10" left="20"/>
+                </padding>
             </ScrollPane>
         </VBox>
-
     </center>
+    <right>
+        <VBox fx:id="filterBar" id="filterBar"/>
+    </right>
     <stylesheets>
-        <URL value="@style.css" />
+        <URL value="@style.css"/>
     </stylesheets>
 </BorderPane>

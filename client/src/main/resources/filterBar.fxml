@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      xmlns="http://javafx.com/javafx"
+      fx:controller="nl.tudelft.oopp.group39.controllers.RoomSceneController">
+    <Label text="Capacity: "/>
+    <ComboBox fx:id="capSelector"/>
+    <Label text="Facilities:"/>
+
+</VBox>
