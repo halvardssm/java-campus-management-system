@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.booking.dao;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
@@ -31,17 +32,24 @@ public class BookingDao {
         Root<Booking> c = q.from(Booking.class);
         q.select(c);
 
-        if (params.containsKey(User.MAPPED_NAME)) {
+        if (params.containsKey(Booking.COL_USER)) {
             q.where(cb.equal(
-                c.get(User.MAPPED_NAME).get(User.COL_USERNAME),
-                params.get(User.MAPPED_NAME)
+                c.get(Booking.COL_USER).get(User.COL_USERNAME),
+                params.get(Booking.COL_USER)
             ));
         }
 
-        if (params.containsKey(Room.MAPPED_NAME)) {
+        if (params.containsKey(Booking.COL_ROOM)) {
             q.where(cb.equal(
-                c.get(Room.MAPPED_NAME).get(Room.MAPPED_NAME),
-                params.get(Room.MAPPED_NAME)
+                c.get(Booking.COL_ROOM).get(Room.COL_ID),
+                params.get(Booking.COL_ROOM)
+            ));
+        }
+
+        if (params.containsKey(Booking.COL_DATE)) {
+            q.where(cb.equal(
+                c.get(Booking.COL_DATE),
+                LocalDate.parse(params.get(Booking.COL_DATE))
             ));
         }
 
