@@ -91,6 +91,17 @@ public class DbSeeder {
         );
 
         userService.createUser(user);
+
+        User user2 = new User(
+            "student",
+            "student@student.tudelft.nl",
+            "student123",
+            null,
+            Role.STUDENT,
+            null,
+            null
+        );
+        userService.createUser(user2);
         System.out.println("[SEED] Admin user created");
     }
 
@@ -106,12 +117,28 @@ public class DbSeeder {
     }
 
     private void initBuildings() {
-        LocalTime open = LocalTime.now();//.minusHours(3);
-        LocalTime closed = LocalTime.now();//.plusHours(3);
+        LocalTime open = LocalTime.of(9, 0);//.minusHours(3);
+        LocalTime closed = LocalTime.of(20, 0);//.plusHours(3);
         Building b = new Building("test", "test", "test", open, closed, null);
         buildingService.createBuilding(b);
         b = new Building("new", "new", "new", open, closed, null);
         buildingService.createBuilding(b);
+
+        Building b2 = new Building("EEMCS",
+            "Mekelweg 4",
+            "Faculty of Electrical Engineering, Maths and Computer Science",
+            LocalTime.of(7, 0),
+            LocalTime.of(18, 0),
+            null);
+        buildingService.createBuilding(b2);
+
+        Building b3 = new Building("Drebbelweg",
+            "Drebbelweg 5",
+            "Drebbelweg",
+            LocalTime.of(6, 0),
+            LocalTime.of(17, 30),
+            null);
+        buildingService.createBuilding(b3);
 
         System.out.println("[SEED] Buildings created");
     }
@@ -129,6 +156,28 @@ public class DbSeeder {
         roomService.createRoom(
             new Room(2, "another one", 15, false, "test3", facilities, bookings));
 
+        roomService.createRoom(new Room(
+            3,
+            "Lecture Hall Ampere",
+            50,
+            false,
+            "Lecture hall in EEMCS",
+            facilities,
+            bookings));
+
+        Set<Facility> facilities2 = new HashSet<>();
+        facilities2.add(facilityService.readFacility(2));
+        facilities2.add(facilityService.readFacility(3));
+        roomService.createRoom(new Room(
+            4,
+            "Projectruimte 8",
+            8,
+            false,
+            "Project Room 8",
+            facilities2,
+            bookings));
+
+
         System.out.println("[SEED] Rooms created");
     }
 
@@ -144,17 +193,21 @@ public class DbSeeder {
 
     private void initBookings() {
         LocalDate date = LocalDate.now();
-        LocalTime start = LocalTime.now();
-        LocalTime end = LocalTime.now();
+        LocalTime start = LocalTime.of(13, 0);
+        LocalTime end = LocalTime.of(15, 0);
         User user = userService.readUser("admin");
 
-        Room room = roomService.listRooms().get(0);
+        List<Room> rooms = roomService.listRooms();
 
-        Booking b = new Booking(date, start, end, user, room);
-        bookingService.createBooking(b);
+        Booking b1 = new Booking(date, start, end, user, rooms.get(0));
+        bookingService.createBooking(b1);
+        Booking b2 = new Booking(date, start, end, user, rooms.get(1));
+        bookingService.createBooking(b2);
 
-        b = new Booking(date, start, end, user, room);
-        bookingService.createBooking(b);
+        Booking b3 = new Booking(date.plusDays(1), start, end, user, rooms.get(0));
+        bookingService.createBooking(b3);
+        Booking b4 = new Booking(date.plusDays(1), start, end, user, rooms.get(1));
+        bookingService.createBooking(b4);
 
         System.out.println("[SEED] Bookings created");
     }

@@ -285,13 +285,15 @@ public class FoodAndBikeSceneController extends MainSceneController {
         if (type.equals("bike")) {
             oldprice = Double.parseDouble(priceLabel.getText().split("\\$")[1].split("/")[0]);
             priceLabel.setText("$" + newprice + "/hour");
+            totalprice = totalprice - oldprice + newprice;
             total.setText("$" + totalprice + "/hour");
         } else {
             oldprice = Double.parseDouble(priceLabel.getText().split("\\$")[1]);
             priceLabel.setText("$" + newprice);
+            totalprice = totalprice - oldprice + newprice;
             total.setText("$" + totalprice);
         }
-        totalprice = totalprice - oldprice + newprice;
+
     }
 
     /**
