@@ -138,6 +138,7 @@ public class MainSceneController {
             (RoomReservationController) UsersDisplay.sceneControllerHandler(
                 "/roomReservation.fxml");
         controller.setup(room, building);
+        controller.changeTopBtn();
     }
 
     /**

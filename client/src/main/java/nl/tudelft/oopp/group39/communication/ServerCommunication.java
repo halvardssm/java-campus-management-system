@@ -54,23 +54,14 @@ public class ServerCommunication {
     }
 
     /**
-     * Retrieves buildings from the server.
+     * Retrieves building filtered on id.
      *
+     * @param id of wanted building
      * @return the body of a get request to the server.
      */
-    public static String getBuildings() {
+    public static String getBuilding(long id) {
         HttpRequest request = HttpRequest.newBuilder()
-            .GET().uri(URI.create(url + "building")).build();
-        return httpRequest(request);
-    }
-
-    /**
-     * Retrieves rooms from the server.
-     *
-     * @return the body of a get request to the server.
-     */
-    public static String getRooms() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "room")).build();
+            .GET().uri(URI.create(url + building + id)).build();
         return httpRequest(request);
     }
 
@@ -314,16 +305,6 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
-    /**
-     * Retrieves bookings from the server.
-     *
-     * @return the body of a get request to the server.
-     */
-    public static String getBookings() {
-        HttpRequest request = HttpRequest.newBuilder()
-            .GET().uri(URI.create(url + "booking")).build();
-        return httpRequest(request);
-    }
 
     /**
      * Retrieves all bookings from the server.
@@ -339,16 +320,6 @@ public class ServerCommunication {
         HttpRequest request = HttpRequest.newBuilder()
             .GET().uri(URI.create(url + "booking?room="
                 + roomId + "&date=" + date)).build();
-        return httpRequest(request);
-    }
-
-    /**
-     * Retrieves all rooms from the server.
-     *
-     * @return the body of a get request to the server.
-     */
-    public static String getAllRooms() {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + room)).build();
         return httpRequest(request);
     }
 

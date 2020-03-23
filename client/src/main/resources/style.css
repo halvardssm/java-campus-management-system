@@ -200,3 +200,35 @@
 .buildingList:focused {
     -fx-text-fill: black;
 }
+
+#backButton {
+    -fx-background-color: none;
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+    -fx-padding: 0;
+}
+
+#text {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-fill: black;
+}
+
+#roomRName {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+}
+
+#roomRDetails {
+    -fx-font-size: 14;
+}
+
+#reserveButton {
+    -fx-background-color: #00A6D6;
+    -fx-text-fill: white;
+    -fx-font-size: 18;
+}
+
+#reserveButton:hover {
+    -fx-background-color: #00607b;
+}

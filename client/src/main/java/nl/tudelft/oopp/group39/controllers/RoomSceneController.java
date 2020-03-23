@@ -130,7 +130,7 @@ public class RoomSceneController extends MainSceneController {
                 newRoom = FXMLLoader.load(getClass().getResource("/roomCell.fxml"));
                 newRoom.setOnMouseClicked(e -> {
                     try {
-                        goToReservationScene(room, building);
+                        goToReservationScene(room, room.getBuildingObject());
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }

@@ -45,6 +45,8 @@ public class RoomReservationController extends MainSceneController {
     private Label roomDetails;
     @FXML
     private VBox roomInfo;
+    @FXML
+    private Label titleLabel;
 
     private Building building;
     private Room room;
@@ -73,6 +75,7 @@ public class RoomReservationController extends MainSceneController {
     public void setup(Room room, Building building) throws JsonProcessingException {
         this.building = building;
         this.room = room;
+        titleLabel.setText(room.getName());
         loadTimeslots();
         loadRoom(room);
         reserveButton.setOnAction(event -> {
@@ -191,7 +194,6 @@ public class RoomReservationController extends MainSceneController {
         ArrayNode body = (ArrayNode) mapper.readTree(bookings).get("body");
         String bookingString = mapper.writeValueAsString(body);
         Booking[] bookingsList = mapper.readValue(bookingString, Booking[].class);
-        System.out.println(bookingsList);
         List<Integer> bookedTimes = new ArrayList<>();
         for (Booking booking : bookingsList) {
             int startTime = Integer.parseInt(booking.getStartTime().split(":")[0]);
@@ -252,40 +254,45 @@ public class RoomReservationController extends MainSceneController {
         List<Integer> bookedTimes = getBookedTimes(date);
         toTime.getItems().clear();
         int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        List<Integer> times = new ArrayList<>();
         for (int i = timeAsInt + 1; i < timeAsInt + 5; i++) {
             if (bookedTimes.size() != 0) {
+                int smallest = bookedTimes.get(0);
+                int biggest = bookedTimes.get(1);
                 for (int j = 0; j < bookedTimes.size(); j = j + 2) {
-                    if (i <= bookedTimes.get(j) && i <= closed) {
-                        String timeSlot;
-                        if (i < 10) {
-                            timeSlot = "0" + i + ":00";
-                        } else {
-                            timeSlot = i + ":00";
-                        }
-                        toTime.getItems().add(timeSlot);
-                        break;
-                    } else if (i > bookedTimes.get(j + 1) && i <= closed) {
-                        String timeSlot;
-                        if (i < 10) {
-                            timeSlot = "0" + i + ":00";
-                        } else {
-                            timeSlot = i + ":00";
-                        }
-                        toTime.getItems().add(timeSlot);
-                        break;
+                    if (bookedTimes.get(j) < smallest) {
+                        smallest = bookedTimes.get(j);
                     }
-                    break;
+                    if (bookedTimes.get(j + 1) > biggest) {
+                        biggest = bookedTimes.get(j + 1);
+                    }
+                }
+                if (i <= smallest && i <= closed) {
+                    times.add(i);
+                } else if (i > biggest && i <= closed) {
+                    times.add(i);
                 }
             } else {
-                String timeSlot;
-                if (i < closed) {
-                    if (i < 10) {
-                        timeSlot = "0" + i + ":00";
-                    } else {
-                        timeSlot = i + ":00";
-                    }
-                    toTime.getItems().add(timeSlot);
+                if (i <= closed) {
+                    times.add(i);
                 }
+            }
+        }
+        for (int t = timeAsInt + 2; t < timeAsInt + 5; t++) {
+            if (!times.contains(t - 1)) {
+                Integer remove = t;
+                times.remove(remove);
+            }
+        }
+        for (int i : times) {
+            String timeSlot;
+            if (i <= closed) {
+                if (i < 10) {
+                    timeSlot = "0" + i + ":00";
+                } else {
+                    timeSlot = i + ":00";
+                }
+                toTime.getItems().add(timeSlot);
             }
         }
     }
@@ -300,20 +307,16 @@ public class RoomReservationController extends MainSceneController {
      * Loads the room into the VBox containing the room information.
      */
     private void loadRoom(Room room) {
-        String roomName = room.getName();
+        String name = room.getName();
         String roomDescription = room.getDescription();
         int roomCapacity = room.getCapacity();
         String roomFacilities = room.facilitiesToString();
 
-        Label name = (Label) roomInfo.lookup("#roomName");
-        name.setText(roomName);
+        roomName.setText(name);
 
-        Label details = (Label) roomInfo.lookup("#roomDetails");
-        details.setText(roomDescription
+        roomDetails.setText(roomDescription
             + "\n" + "Capacity: " + roomCapacity
             + "\n" + "Facilities: " + roomFacilities);
-        System.out.println(details);
-
     }
 
     /**
