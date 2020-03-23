@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.group39.booking.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -23,7 +22,6 @@ import nl.tudelft.oopp.group39.user.entities.User;
 public class Booking extends AbstractEntity {
     public static final String TABLE_NAME = "bookings";
     public static final String MAPPED_NAME = "booking";
-    public static final String COL_ID = "id";
     public static final String COL_DATE = "date";
     public static final String COL_USER = "user";
     public static final String COL_ROOM = "room";
@@ -36,16 +34,7 @@ public class Booking extends AbstractEntity {
     private User user;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Room.MAPPED_NAME)
-    @JsonIgnore
     private Room room;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public LocalDate getDate() {
         return date;
