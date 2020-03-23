@@ -31,7 +31,7 @@ public class LoginController extends MainSceneController {
             }
         }
         System.out.println(loggedIn);
-        System.out.println(user + password);
+        System.out.println(MainSceneController.user.getBookings());
     }
 
     /**
