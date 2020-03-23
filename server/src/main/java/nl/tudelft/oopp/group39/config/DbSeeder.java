@@ -91,6 +91,17 @@ public class DbSeeder {
         );
 
         userService.createUser(user);
+
+        User user2 = new User(
+            "student",
+            "student@student.tudelft.nl",
+            "student123",
+            null,
+            Role.STUDENT,
+            null,
+            null
+        );
+        userService.createUser(user2);
         System.out.println("[SEED] Admin user created");
     }
 
@@ -113,6 +124,22 @@ public class DbSeeder {
         b = new Building("new", "new", "new", open, closed, null);
         buildingService.createBuilding(b);
 
+        Building b2 = new Building("EEMCS",
+            "Mekelweg 4",
+            "Faculty of Electrical Engineering, Maths and Computer Science",
+            LocalTime.of(7, 0),
+            LocalTime.of(18, 0),
+            null);
+        buildingService.createBuilding(b2);
+
+        Building b3 = new Building("Drebbelweg",
+            "Drebbelweg 5",
+            "Drebbelweg",
+            LocalTime.of(6, 0),
+            LocalTime.of(17, 30),
+            null);
+        buildingService.createBuilding(b3);
+
         System.out.println("[SEED] Buildings created");
     }
 
@@ -128,6 +155,28 @@ public class DbSeeder {
         facilities.add(facilityService.readFacility(2));
         roomService.createRoom(
             new Room(2, "another one", 15, false, "test3", facilities, bookings));
+
+        roomService.createRoom(new Room(
+            3,
+            "Lecture Hall Ampere",
+            50,
+            false,
+            "Lecture hall in EEMCS",
+            facilities,
+            bookings));
+
+        Set<Facility> facilities2 = new HashSet<>();
+        facilities2.add(facilityService.readFacility(2));
+        facilities2.add(facilityService.readFacility(3));
+        roomService.createRoom(new Room(
+            4,
+            "Projectruimte 8",
+            8,
+            false,
+            "Project Room 8",
+            facilities2,
+            bookings));
+
 
         System.out.println("[SEED] Rooms created");
     }
