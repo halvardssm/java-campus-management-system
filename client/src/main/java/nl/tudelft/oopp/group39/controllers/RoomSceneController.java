@@ -80,7 +80,9 @@ public class RoomSceneController extends MainSceneController {
 
         roomID = roomID.contentEquals("") ? "1" : roomID;
 
-        createAlert(ServerCommunication.updateRoom(buildingId, roomCap, roomDesc, roomID));
+        String roomReservations = updateRoomField.getText();
+
+        createAlert(ServerCommunication.updateRoom(buildingId, roomCap, roomDesc, roomID, roomReservations));
     }
 
     /**

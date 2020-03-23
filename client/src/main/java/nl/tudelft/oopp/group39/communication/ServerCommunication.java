@@ -238,11 +238,12 @@ public class ServerCommunication {
         String buildingId,
         String roomCapacity,
         String roomDescription,
-        String id
+        String id,
+        String bookings
     ) {
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers
             .ofString("{\"buildingId\": \"" + buildingId + "\", \"capacity\":\""
-                + roomCapacity + "\", \"description\":\"" + roomDescription + "\"}");
+                + roomCapacity + "\", \"description\":\"" + roomDescription + "\", \"bookings\":\"" + bookings + "\"}");
         HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding)
             .uri(URI.create(url + "room/" + id))
             .header("Content-Type", "application/json").build();
@@ -268,6 +269,26 @@ public class ServerCommunication {
                 + "\", \"closed\":\"" + closed + "\"}");
         HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding)
             .uri(URI.create(url + "building/" + id))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Updates the user on the server.
+     *
+     * @return the body of a post request to the server.
+     */
+    public static String updateUser(
+        String username,
+        String email,
+        String password,
+        String bookings
+    ) {
+        HttpRequest.BodyPublisher newUser = HttpRequest.BodyPublishers
+            .ofString("{\"username\": \"" + username + "\", \"email\":\"" + email
+                + "\", \"password\":\"" + password + "\", \"bookings\":\"" + bookings + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().PUT(newUser)
+            .uri(URI.create(url + "user/" + username))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }

@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -102,6 +103,15 @@ public class RoomReservationController extends MainSceneController {
                 String username = MainSceneController.user.getUsername();
                 ServerCommunication.addBooking(dateString, bookingStart, bookingEnd, username, roomIdString);
 
+                ArrayNode roomReservations = room.getBookings();
+                System.out.println(roomReservations);
+                //ServerCommunication.updateRoom(room.getBuilding(), room.getCapacity(), room.getDescription(), room.getId(), roomReservations);
+
+                ArrayNode userReservations = user.getBookings();
+                System.out.println(userReservations);
+                //userReservations.add(dateString, bookingStart, bookingEnd, username, roomIdString);
+                //ServerCommunication.updateUser(username, user.getEmail(), user.getPassword(), roomReservations);
+                //showAlert(Alert.AlertType.INFORMATION, "", ServerCommunication.addBooking(dateString, bookingStart, bookingEnd, username, roomIdString));
                 showAlert(Alert.AlertType.INFORMATION, "", "Reservation successful.");
                 System.out.println(dateString + bookingStart + bookingEnd + username + roomIdString);
 
@@ -134,7 +144,6 @@ public class RoomReservationController extends MainSceneController {
             } else {
                 showAlert(Alert.AlertType.ERROR, "", "You cannot reserve past midnight!");
                 return false;
-                //return true; for now you cant i guess
             }
         } else {
             return true;
