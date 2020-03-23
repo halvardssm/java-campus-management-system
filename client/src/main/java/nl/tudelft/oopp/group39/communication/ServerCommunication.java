@@ -21,6 +21,9 @@ public class ServerCommunication {
     public static String room = "room/";
     public static String authenticate = "authenticate/";
     public static String facility = "facility/";
+    public static String reservation = "reservation/";
+    public static String food = "food/";
+    public static String bike = "bike/";
 
     private static ObjectMapper mapper = new ObjectMapper();
 
@@ -179,6 +182,85 @@ public class ServerCommunication {
             .uri(URI.create(url + "room/" + id))
             .build();
         httpRequest(request);
+    }
+
+    /**
+     * Retrieves bikes filtered on building id.
+     *
+     * @param buildingId the id of the selected building
+     * @return the body of a get request to the server.
+     */
+    public static String getBikes(int buildingId) {
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create(url + "bike?building=" + buildingId))
+            .build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Retrieves food filtered on building id.
+     *
+     * @param buildingId the id of the selected building
+     * @return the body of a post request to the server.
+     */
+    public static String getFood(int buildingId) {
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create(url + "food?building=" + buildingId))
+            .build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Creates a reservation.
+     *
+     * @param timeOfPickup   date and time of receiving the order
+     * @param timeOfDelivery date and time of returning the bike
+     * @param user           netid of user making the order
+     * @param roomId         id of the room the food needs to be delivered to
+     * @param reservable     list of reservables
+     * @return @return the body of a post request to the server.
+     */
+    public static String orderFoodBike(
+        String timeOfPickup,
+        String timeOfDelivery,
+        String user,
+        Integer roomId,
+        String reservable
+    ) {
+        String timeofDeliv;
+        if (timeOfDelivery == null) {
+            timeofDeliv = null;
+        } else {
+            timeofDeliv = "\"" + timeOfDelivery + "\"";
+        }
+        String body = "{\"timeOfPickup\":\"" + timeOfPickup
+            + "\",\"timeOfDelivery\":" + timeofDeliv
+            + ",\"room\":" + roomId
+            + ",\"user\":\"" + user
+            + "\",\"reservationAmounts\":" + reservable + "}";
+        System.out.println(body);
+        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString(body);
+        HttpRequest request =
+            HttpRequest.newBuilder()
+                .POST(newBuilding)
+                .uri(URI.create(url + "reservation"))
+                .header("Content-Type", "application/json")
+                .build();
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Communication with server failed";
+        }
+        if (response.statusCode() != 201) {
+            System.out.println("Status: " + response.statusCode());
+            return "Something went wrong";
+        } else {
+            return "Order is placed";
+        }
     }
 
     /**

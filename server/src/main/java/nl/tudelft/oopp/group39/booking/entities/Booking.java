@@ -1,60 +1,39 @@
 package nl.tudelft.oopp.group39.booking.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import nl.tudelft.oopp.group39.config.Constants;
+import nl.tudelft.oopp.group39.config.AbstractEntity;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.user.entities.User;
 
 @Entity
 @Table(name = Booking.TABLE_NAME)
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class,
-    property = Booking.COL_ID
-)
-public class Booking {
+@JsonIgnoreProperties(allowSetters = true, value = {
+    Booking.COL_USER,
+    Booking.COL_ROOM
+})
+public class Booking extends AbstractEntity {
     public static final String TABLE_NAME = "bookings";
     public static final String MAPPED_NAME = "booking";
-    public static final String COL_ID = "id";
+    public static final String COL_USER = "user";
+    public static final String COL_ROOM = "room";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.FORMAT_DATE)
     private LocalDate date;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.FORMAT_TIME)
     private LocalTime startTime;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.FORMAT_TIME)
     private LocalTime endTime;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = User.MAPPED_NAME)
-    @JsonIgnore
     private User user;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Room.MAPPED_NAME)
-    @JsonIgnore
     private Room room;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public LocalDate getDate() {
         return date;

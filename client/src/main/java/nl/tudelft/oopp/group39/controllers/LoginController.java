@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.controllers;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -15,7 +16,7 @@ public class LoginController extends MainSceneController {
     private PasswordField passwordField;
 
     @FXML
-    private Text errormsg;
+    private Label errormsg;
 
     /**
      * Logs the user in.

@@ -124,6 +124,28 @@ public class MainSceneController {
     }
 
     /**
+     * Doc. TODO Sven
+     */
+    public void goToBikeRentalScene() throws IOException {
+        FoodAndBikeSceneController controller =
+            (FoodAndBikeSceneController) UsersDisplay
+                .sceneControllerHandler("/bikeAndFoodView.fxml");
+        controller.changeTopBtn();
+        controller.setup("bike");
+    }
+
+    /**
+     * Doc. TODO Sven
+     */
+    public void goToFoodOrderScene() throws IOException {
+        FoodAndBikeSceneController controller =
+            (FoodAndBikeSceneController) UsersDisplay
+                .sceneControllerHandler("/bikeAndFoodView.fxml");
+        controller.changeTopBtn();
+        controller.setup("food");
+    }
+
+    /**
      * Logs the user out.
      */
     public void logout() throws IOException {
@@ -211,7 +233,23 @@ public class MainSceneController {
             });
             Hyperlink bikerental = new Hyperlink("Bike rental");
             bikerental.getStyleClass().add("sidebar-item");
-            sidebar.getChildren().addAll(buildings, rooms, bikerental);
+            bikerental.setOnAction(event -> {
+                try {
+                    goToBikeRentalScene();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            Hyperlink foodorder = new Hyperlink("Order food");
+            foodorder.getStyleClass().add("sidebar-item");
+            foodorder.setOnAction(event -> {
+                try {
+                    goToFoodOrderScene();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            sidebar.getChildren().addAll(buildings, rooms, bikerental, foodorder);
             sidebarShown = true;
         } else {
             sidebar.getChildren().clear();

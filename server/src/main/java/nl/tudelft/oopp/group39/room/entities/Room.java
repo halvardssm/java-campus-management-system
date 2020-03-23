@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.room.entities;
 
+import static nl.tudelft.oopp.group39.config.Utils.initSet;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -20,6 +22,7 @@ import javax.persistence.Table;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
+import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 
 @Entity
 @Table(name = Room.TABLE_NAME)
@@ -35,17 +38,11 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
     private long buildingId;
-
     private String name;
-
     private int capacity;
-
     private boolean onlyStaff;
-
     private String description;
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = TABLE_NAME + "_" + Facility.TABLE_NAME,
         joinColumns = {
@@ -63,6 +60,8 @@ public class Room {
 
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
     private Set<Booking> bookings = new HashSet<>();
+    @OneToMany(mappedBy = MAPPED_NAME)
+    private Set<Reservation> reservations = new HashSet<>();
 
     public Room() {
     }
@@ -92,8 +91,8 @@ public class Room {
         this.capacity = capacity;
         this.onlyStaff = onlyStaff;
         this.description = description;
-        this.facilities.addAll(facilities != null ? facilities : new HashSet<>());
-        this.bookings.addAll(bookings != null ? bookings : new HashSet<>());
+        this.facilities.addAll(initSet(facilities));
+        this.bookings.addAll(initSet(bookings));
     }
 
     public long getId() {
@@ -168,6 +167,14 @@ public class Room {
         this.bookings = bookings;
     }
 
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -181,8 +188,10 @@ public class Room {
             && buildingId == room.buildingId
             && getCapacity() == room.getCapacity()
             && getOnlyStaff() == room.getOnlyStaff()
+            && Objects.equals(getName(), room.getName())
             && Objects.equals(getDescription(), room.getDescription())
             && Objects.equals(getFacilities(), room.getFacilities())
-            && Objects.equals(getBookings(), room.getBookings());
+            && Objects.equals(getBookings(), room.getBookings())
+            && Objects.equals(getReservations(), room.getReservations());
     }
 }

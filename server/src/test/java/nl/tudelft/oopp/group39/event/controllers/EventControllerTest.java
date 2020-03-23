@@ -15,29 +15,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import nl.tudelft.oopp.group39.auth.services.JwtService;
+import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.event.enums.EventTypes;
-import nl.tudelft.oopp.group39.event.services.EventService;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
-import nl.tudelft.oopp.group39.user.services.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class EventControllerTest {
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
+class EventControllerTest extends AbstractControllerTest {
     private final Event testEvent = new Event(
         EventTypes.EVENT,
         LocalDate.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)),
@@ -54,18 +44,6 @@ class EventControllerTest {
         null
     );
     private String jwt;
-
-
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private JwtService jwtService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private EventService eventService;
-    @Autowired
-    private EventController eventController;
 
     @BeforeEach
     void setUp() {
@@ -89,9 +67,7 @@ class EventControllerTest {
             .andExpect(jsonPath("$.body", hasSize(1)))
             .andExpect(jsonPath("$.body[0].type", is(EventTypes.EVENT.name())))
             .andExpect(jsonPath("$.body[0].startDate", is(testEvent.getStartDate().toString())))
-            .andExpect(jsonPath("$.body[0].endDate", is(testEvent.getEndDate().toString())))
-            .andExpect(jsonPath("$.body[0].rooms").isArray())
-            .andExpect(jsonPath("$.body[0].rooms", hasSize(0)));
+            .andExpect(jsonPath("$.body[0].endDate", is(testEvent.getEndDate().toString())));
     }
 
     @Test
@@ -113,8 +89,6 @@ class EventControllerTest {
             .andExpect(jsonPath("$.body.type", is(EventTypes.EVENT.name())))
             .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartDate().toString())))
             .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndDate().toString())))
-            .andExpect(jsonPath("$.body.rooms").isArray())
-            .andExpect(jsonPath("$.body.rooms", hasSize(0)))
             .andDo((event) -> {
                 String responseString = event.getResponse().getContentAsString();
                 JsonNode productNode = new ObjectMapper().readTree(responseString);
@@ -128,9 +102,7 @@ class EventControllerTest {
             .andExpect(jsonPath("$.body").isMap())
             .andExpect(jsonPath("$.body.type", is(EventTypes.EVENT.name())))
             .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartDate().toString())))
-            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndDate().toString())))
-            .andExpect(jsonPath("$.body.rooms").isArray())
-            .andExpect(jsonPath("$.body.rooms", hasSize(0)));
+            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndDate().toString())));
     }
 
     @Test
@@ -146,9 +118,7 @@ class EventControllerTest {
             .andExpect(jsonPath("$.body").isMap())
             .andExpect(jsonPath("$.body.type", is(EventTypes.HOLIDAY.name())))
             .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartDate().toString())))
-            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndDate().toString())))
-            .andExpect(jsonPath("$.body.rooms").isArray())
-            .andExpect(jsonPath("$.body.rooms", hasSize(0)));
+            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndDate().toString())));
 
         testEvent.setType(EventTypes.EVENT);
     }
