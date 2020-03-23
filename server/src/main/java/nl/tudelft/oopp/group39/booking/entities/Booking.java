@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.booking.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -35,6 +36,7 @@ public class Booking extends AbstractEntity {
     private User user;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Room.MAPPED_NAME)
+    @JsonIgnore
     private Room room;
 
     public Integer getId() {
