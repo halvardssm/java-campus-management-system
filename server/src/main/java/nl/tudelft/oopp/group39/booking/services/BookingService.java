@@ -69,7 +69,7 @@ public class BookingService {
             room
         );
 
-        return bookingRepository.save(booking);
+        return createBooking(booking);
     }
 
     /**
@@ -100,16 +100,15 @@ public class BookingService {
         User user = userService.readUser(newBooking.getUser());
         Room room = roomService.readRoom(newBooking.getRoom());
 
-        return bookingRepository.findById(id)
-            .map(booking -> {
-                booking.setDate(newBooking.getDate());
-                booking.setStartTime(newBooking.getStartTime());
-                booking.setEndTime(newBooking.getEndTime());
-                booking.setUser(user);
-                booking.setRoom(room);
-                return bookingRepository.save(booking);
-            })
-            .orElseThrow(() -> new BookingNotFoundException(id));
+        Booking booking = new Booking(
+            newBooking.getDate(),
+            newBooking.getStartTime(),
+            newBooking.getEndTime(),
+            user,
+            room
+        );
+
+        return updateBooking(booking, id);
     }
 
     /**
