@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.booking.controllers;
 
 import java.util.Map;
+import nl.tudelft.oopp.group39.booking.dto.BookingDto;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
@@ -45,13 +46,13 @@ public class BookingController {
      */
     @PostMapping("")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> createBooking(@RequestBody Booking newBooking) {
+    public ResponseEntity<RestResponse<Object>> createBooking(@RequestBody BookingDto newBooking) {
         try {
             return RestResponse.create(
                 bookingService.createBooking(newBooking), null, HttpStatus.CREATED
             );
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 
@@ -66,7 +67,7 @@ public class BookingController {
         try {
             return RestResponse.create(bookingService.readBooking(id));
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 
@@ -78,13 +79,13 @@ public class BookingController {
     @PutMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> updateBooking(
-        @RequestBody Booking updated,
+        @RequestBody BookingDto updated,
         @PathVariable Integer id
     ) {
         try {
             return RestResponse.create(bookingService.updateBooking(updated, id));
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 
