@@ -82,7 +82,13 @@ public class RoomSceneController extends MainSceneController {
 
         String roomReservations = updateRoomField.getText();
 
-        createAlert(ServerCommunication.updateRoom(buildingId, roomCap, roomDesc, roomID, roomReservations));
+        createAlert(ServerCommunication.updateRoom(
+            buildingId,
+            roomCap,
+            roomDesc,
+            roomID,
+            roomReservations
+        ));
     }
 
     /**

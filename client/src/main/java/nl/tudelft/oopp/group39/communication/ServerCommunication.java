@@ -14,9 +14,6 @@ import nl.tudelft.oopp.group39.models.User;
 
 public class ServerCommunication {
 
-    private static HttpClient client = HttpClient.newBuilder().build();
-
-    private static String url = "http://localhost:8080/";
     public static String user = "user/";
     public static String building = "building/";
     public static String room = "room/";
@@ -26,7 +23,8 @@ public class ServerCommunication {
     public static String reservation = "reservation/";
     public static String food = "food/";
     public static String bike = "bike/";
-
+    private static HttpClient client = HttpClient.newBuilder().build();
+    private static String url = "http://localhost:8080/";
     private static ObjectMapper mapper = new ObjectMapper();
 
     /**
@@ -53,17 +51,6 @@ public class ServerCommunication {
         JsonNode userJson = mapper.readTree(httpRequest(request)).get("body");
         String userAsString = mapper.writeValueAsString(userJson);
         return mapper.readValue(userAsString, User.class);
-    }
-
-    /**
-     * Retrieves bookings from the server.
-     *
-     * @return the body of a get request to the server.
-     */
-    public static String getBookings() {
-        HttpRequest request = HttpRequest.newBuilder()
-            .GET().uri(URI.create(url + "booking")).build();
-        return httpRequest(request);
     }
 
     /**
@@ -246,7 +233,8 @@ public class ServerCommunication {
     ) {
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers
             .ofString("{\"buildingId\": \"" + buildingId + "\", \"capacity\":\""
-                + roomCapacity + "\", \"description\":\"" + roomDescription + "\", \"bookings\":\"" + bookings + "\"}");
+                + roomCapacity + "\", \"description\":\"" + roomDescription
+                + "\", \"bookings\":\"" + bookings + "\"}");
         HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding)
             .uri(URI.create(url + "room/" + id))
             .header("Content-Type", "application/json").build();
@@ -326,8 +314,28 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
+    /**
+     * Retrieves bookings from the server.
+     *
+     * @return the body of a get request to the server.
+     */
+    public static String getBookings() {
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET().uri(URI.create(url + "booking")).build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Retrieves all bookings from the server.
+     *
+     * @param roomId the ID of the room
+     * @param date   the chosen date where you want to get the bookings from
+     * @return returns an HTTP request
+     */
     public static String getBookings(int roomId, String date) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "booking?date=" + date)).build();
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET().uri(URI.create(url + "booking?roomId="
+                + roomId + "booking?date=" + date)).build();
         return httpRequest(request);
     }
 

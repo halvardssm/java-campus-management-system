@@ -126,8 +126,17 @@ public class MainSceneController {
         controller.changeTopBtn();
     }
 
+    /**
+     * Goes to reservation scene.
+     *
+     * @param room     chosen room
+     * @param building building of chosen room
+     * @throws IOException throws an IOException
+     */
     public void goToReservationScene(Room room, Building building) throws IOException {
-        RoomReservationController controller = (RoomReservationController) UsersDisplay.sceneControllerHandler("/roomReservation.fxml");
+        RoomReservationController controller =
+            (RoomReservationController) UsersDisplay.sceneControllerHandler(
+                "/roomReservation.fxml");
         controller.setup(room, building);
     }
 
