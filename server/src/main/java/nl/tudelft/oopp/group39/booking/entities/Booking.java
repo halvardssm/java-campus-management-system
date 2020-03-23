@@ -27,6 +27,9 @@ import nl.tudelft.oopp.group39.user.entities.User;
 public class Booking {
     public static final String TABLE_NAME = "bookings";
     public static final String COL_ID = "id";
+    public static final String COL_DATE = "date";
+    public static final String COL_USER = "user";
+    public static final String COL_ROOM = "room";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
