@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -19,7 +20,6 @@ import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Booking;
 import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.models.Room;
-import nl.tudelft.oopp.group39.models.User;
 
 
 public class RoomReservationController extends MainSceneController {
@@ -96,17 +96,8 @@ public class RoomReservationController extends MainSceneController {
         String bookingStart = fromTime.getValue() + ":00";
         String bookingEnd = toTime.getValue() + ":00";
 
-        if (checkEmpty(bookingDate, bookingStart, bookingEnd)) {
-            if (checkTime(bookingStart, bookingEnd)) {
-                try {
-                    String username = MainSceneController.user.getUsername();
-                    User user = ServerCommunication.getUser(username);
-                } catch (Exception e) {
-                    showAlert(Alert.AlertType.ERROR, "",
-                        "Please log in if you want to reserve a room.");
-                    goToLoginScene();
-                    return;
-                }
+        if (checkEmpty(date, fromTime, toTime)) {
+            if (loggedIn) {
                 String dateString = date.getValue()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 long roomId = room.getId();
@@ -127,39 +118,11 @@ public class RoomReservationController extends MainSceneController {
                 System.out.println(bookingDate);
                 System.out.println(bookingStart + "\n" + bookingEnd);
                 backToRoom();
-            }
-        } else {
-            showAlert(Alert.AlertType.INFORMATION, "", "Reservation failed.");
-        }
-
-    }
-
-    /**
-     * Checks whether or not the chosen times meet the requirements (at most 4 hours).
-     *
-     * @param start start time of reservation
-     * @param end   end time of reservation
-     * @return true or false and an alert depending on the time difference
-     */
-    public boolean checkTime(String start, String end) {
-        int timeDifference = (Integer.parseInt(end.split(":")[0])
-            - Integer.parseInt(start.split(":")[0]));
-        if (timeDifference > 4) {
-            showAlert(Alert.AlertType.ERROR, "",
-                "Please make sure that the duration of the reservation is at most 4 hours.");
-            return false;
-        } else if (timeDifference <= 0) {
-            if (timeDifference > -20) {
-                showAlert(Alert.AlertType.ERROR, "",
-                    "Please pick a real duration of the reservation.");
-                return false;
             } else {
                 showAlert(Alert.AlertType.ERROR, "",
-                    "You cannot reserve past midnight!");
-                return false;
+                    "Please log in if you want to reserve a room.");
+                goToLoginScene();
             }
-        } else {
-            return true;
         }
     }
 
@@ -172,8 +135,11 @@ public class RoomReservationController extends MainSceneController {
      * @param end   end time of reservation
      * @return true or false depending on whether or not the date, start and end fields are filled.
      */
-    public boolean checkEmpty(LocalDate date, String start, String end) {
-        if (date == null || start == null || end == null) {
+    public boolean checkEmpty(DatePicker date, ComboBox<String> start, ComboBox<String> end) {
+        if (date.getValue() == null
+            || start.getSelectionModel().isEmpty()
+            || end.getSelectionModel().isEmpty()
+        ) {
             showAlert(Alert.AlertType.ERROR, "", "Please fill in all the fields.");
             return false;
         } else {
@@ -323,14 +289,19 @@ public class RoomReservationController extends MainSceneController {
      * Loads the timeslots into the ComboBoxes.
      */
     private void loadTimeslots() throws JsonProcessingException {
-        fromTime.getItems()
-            .addAll(
-                initiateTimeslots(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-            );
-        toTime.getItems()
-            .addAll(
-                initiateTimeslots(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-            );
+        date.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+
+                setDisable(empty || date.compareTo(today) < 0);
+            }
+        });
+        date.setValue(LocalDate.now());
+        updateStartSlots(date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        updateEndSlots(
+            date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+            fromTime.getItems().get(0));
         date.setOnAction(event -> {
             try {
                 updateStartSlots(date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
