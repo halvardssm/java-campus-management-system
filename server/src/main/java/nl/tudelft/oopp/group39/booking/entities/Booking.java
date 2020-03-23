@@ -48,7 +48,6 @@ public class Booking {
     private User user;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Room.MAPPED_NAME)
-    @JsonIgnore
     private Room room;
 
     public Integer getId() {

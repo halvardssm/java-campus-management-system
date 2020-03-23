@@ -107,42 +107,42 @@ public class RoomReservationController extends MainSceneController {
                 System.out.println(roomReservations);
                 //ServerCommunication.updateRoom(room.getBuilding(), room.getCapacity(), room.getDescription(), room.getId(), roomReservations);
 
-                ArrayNode userReservations = user.getBookings();
-                System.out.println(userReservations);
-                String start = userReservations.toString();
-                int n = start.length();
-                String newStart = start.substring(0, n - 1);
-                System.out.println(newStart);
-                if (newStart.equals("[")) {
-                    StringBuilder bookingString = new StringBuilder();
-                    bookingString
-                        .append("{\"id\":")
-                        .append(roomIdString).append(",\"date\":")
-                        .append(dateString).append(",\"startTime\":")
-                        .append(bookingStart).append(",\"endTime\":")
-                        .append(bookingEnd)
-                        .append("}]");
-
-                    String userReservationsString = start + bookingString;
-                    ServerCommunication.updateUser(username, user.getEmail(), user.getPassword(), userReservationsString);
-                    System.out.println(userReservationsString);
-                } else {
-                    StringBuilder bookingString = new StringBuilder(", {");
-                    bookingString
-                        .append("{\"id\":")
-                        .append(roomIdString).append(",\"date\":")
-                        .append(dateString).append(",\"startTime\":")
-                        .append(bookingStart).append(",\"endTime\":")
-                        .append(bookingEnd)
-                        .append("}]");
-
-                    String userReservationsString = start + bookingString;
-                    ServerCommunication.updateUser(username, user.getEmail(), user.getPassword(), userReservationsString);
-                }
+//                ArrayNode userReservations = user.getBookings();
+//                System.out.println(userReservations);
+//                String start = userReservations.toString();
+//                int n = start.length();
+//                String newStart = start.substring(0, n - 1);
+//                System.out.println(newStart);
+//                if (newStart.equals("[")) {
+//                    StringBuilder bookingString = new StringBuilder();
+//                    bookingString
+//                        .append("{\"id\":")
+//                        .append(roomIdString).append(",\"date\":")
+//                        .append(dateString).append(",\"startTime\":")
+//                        .append(bookingStart).append(",\"endTime\":")
+//                        .append(bookingEnd)
+//                        .append("}]");
+//
+//                    String userReservationsString = start + bookingString;
+//                    ServerCommunication.updateUser(username, user.getEmail(), user.getPassword(), userReservationsString);
+//                    System.out.println(userReservationsString);
+//                } else {
+//                    StringBuilder bookingString = new StringBuilder(", {");
+//                    bookingString
+//                        .append("{\"id\":")
+//                        .append(roomIdString).append(",\"date\":")
+//                        .append(dateString).append(",\"startTime\":")
+//                        .append(bookingStart).append(",\"endTime\":")
+//                        .append(bookingEnd)
+//                        .append("}]");
+//
+//                    String userReservationsString = start + bookingString;
+//                    ServerCommunication.updateUser(username, user.getEmail(), user.getPassword(), userReservationsString);
+//                }
 
                 //showAlert(Alert.AlertType.INFORMATION, "", ServerCommunication.addBooking(dateString, bookingStart, bookingEnd, username, roomIdString));
                 showAlert(Alert.AlertType.INFORMATION, "", "Reservation successful.");
-                System.out.println(dateString + bookingStart + bookingEnd + username + roomIdString);
+//                System.out.println(dateString + bookingStart + bookingEnd + username + roomIdString);
 
                 System.out.println(bookingDate);
                 System.out.println(bookingStart + "\n" + bookingEnd);
@@ -204,6 +204,8 @@ public class RoomReservationController extends MainSceneController {
      */
     private List<String> initiateTimeslots() {
         String bookings = ServerCommunication.getBookings((int) room.getId(), "2020-03-22");
+        ArrayNode bookingsArray = room.getBookings();
+        System.out.println(bookingsArray);
         int bookedStart = 13;
         int bookedEnd = 15;
         System.out.println(bookings);

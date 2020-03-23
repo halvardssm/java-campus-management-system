@@ -324,7 +324,7 @@ public class ServerCommunication {
     }
 
     public static String getBookings(int roomId, String date) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "booking?room=" + roomId)).build();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + "booking?date=" + date)).build();
         return httpRequest(request);
     }
 

@@ -62,6 +62,7 @@ public class Room {
     private Set<Event> events = new HashSet<>();
 
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Booking> bookings = new HashSet<>();
 
     public Room() {
