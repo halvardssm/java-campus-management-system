@@ -333,9 +333,12 @@ public class ServerCommunication {
      * @return returns an HTTP request
      */
     public static String getBookings(int roomId, String date) {
+        System.out.println(roomId);
+        System.out.println(url + "booking?room="
+            + roomId + "&date=" + date);
         HttpRequest request = HttpRequest.newBuilder()
-            .GET().uri(URI.create(url + "booking?roomId="
-                + roomId + "booking?date=" + date)).build();
+            .GET().uri(URI.create(url + "booking?room="
+                + roomId + "&date=" + date)).build();
         return httpRequest(request);
     }
 
