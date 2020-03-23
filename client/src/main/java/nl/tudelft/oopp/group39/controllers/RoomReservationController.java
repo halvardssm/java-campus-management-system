@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javax.swing.text.html.ImageView;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.models.Booking;
 import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.models.Room;
 import nl.tudelft.oopp.group39.models.User;
@@ -67,7 +70,7 @@ public class RoomReservationController extends MainSceneController {
      * @param room     the room you've selected
      * @param building the building of the room you've selected
      */
-    public void setup(Room room, Building building) {
+    public void setup(Room room, Building building) throws JsonProcessingException {
         this.building = building;
         this.room = room;
         loadTimeslots();
@@ -176,31 +179,120 @@ public class RoomReservationController extends MainSceneController {
     }
 
     /**
+     * Retrieves times when room is booked filtered on date.
+     *
+     * @param date selected date
+     * @return List of integers
+     * @throws JsonProcessingException when there is something wrong with processing
+     */
+    public List<Integer> getBookedTimes(String date) throws JsonProcessingException {
+        String bookings = ServerCommunication.getBookings((int) room.getId(), date);
+        System.out.println(bookings);
+        ArrayNode body = (ArrayNode) mapper.readTree(bookings).get("body");
+        String bookingString = mapper.writeValueAsString(body);
+        Booking[] bookingsList = mapper.readValue(bookingString, Booking[].class);
+        System.out.println(bookingsList);
+        List<Integer> bookedTimes = new ArrayList<>();
+        for (Booking booking : bookingsList) {
+            int startTime = Integer.parseInt(booking.getStartTime().split(":")[0]);
+            bookedTimes.add(startTime);
+            int endTime = Integer.parseInt(booking.getEndTime().split(":")[0]);
+            bookedTimes.add(endTime);
+        }
+        System.out.println(bookedTimes);
+        return bookedTimes;
+    }
+
+    /**
      * Initiates the timeslots for the ComboBoxes to load.
      *
      * @return a list with LocalTimes from 00:00 to 23:00
      */
-    private List<String> initiateTimeslots() {
-        String bookings = ServerCommunication.getBookings((int) room.getId(), "2020-03-22");
-        int bookedStart = 13;
-        int bookedEnd = 15;
-        System.out.println(bookings);
+    private List<String> initiateTimeslots(String date) throws JsonProcessingException {
         List<String> times = new ArrayList<>();
         int open = Integer.parseInt(building.getOpen().split(":")[0]);
         int closed = Integer.parseInt(building.getClosed().split(":")[0]);
-
+        List<Integer> bookedTimes = getBookedTimes(date);
         for (int i = open; i < closed; i++) {
-            if (i < bookedStart || i >= bookedEnd) {
-                String time;
-                if (i < 10) {
-                    time = "0" + i + ":00";
-                } else {
-                    time = i + ":00";
+            String time;
+            if (i < 10) {
+                time = "0" + i + ":00";
+            } else {
+                time = i + ":00";
+            }
+            times.add(time);
+        }
+        if (bookedTimes.size() != 0) {
+            for (int j = 0; j < bookedTimes.size(); j = j + 2) {
+                for (int i = open; i < closed; i++) {
+                    if (i >= bookedTimes.get(j) && i < bookedTimes.get(j + 1)) {
+                        String time;
+                        if (i < 10) {
+                            time = "0" + i + ":00";
+                        } else {
+                            time = i + ":00";
+                        }
+                        times.remove(time);
+                    }
                 }
-                times.add(time);
             }
         }
         return times;
+    }
+
+    /**
+     * Updates the end timeslots based on selected date and from time.
+     *
+     * @param date selected date
+     * @param time selected time
+     * @throws JsonProcessingException when there is something wrong with processing
+     */
+    public void updateEndSlots(String date, String time) throws JsonProcessingException {
+        int timeAsInt = Integer.parseInt(time.split(":")[0]);
+        List<Integer> bookedTimes = getBookedTimes(date);
+        toTime.getItems().clear();
+        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        for (int i = timeAsInt + 1; i < timeAsInt + 5; i++) {
+            if (bookedTimes.size() != 0) {
+                for (int j = 0; j < bookedTimes.size(); j = j + 2) {
+                    if (i <= bookedTimes.get(j) && i <= closed) {
+                        String timeSlot;
+                        if (i < 10) {
+                            timeSlot = "0" + i + ":00";
+                        } else {
+                            timeSlot = i + ":00";
+                        }
+                        toTime.getItems().add(timeSlot);
+                        break;
+                    } else if (i > bookedTimes.get(j + 1) && i <= closed) {
+                        String timeSlot;
+                        if (i < 10) {
+                            timeSlot = "0" + i + ":00";
+                        } else {
+                            timeSlot = i + ":00";
+                        }
+                        toTime.getItems().add(timeSlot);
+                        break;
+                    }
+                    break;
+                }
+            } else {
+                String timeSlot;
+                if (i < closed) {
+                    if (i < 10) {
+                        timeSlot = "0" + i + ":00";
+                    } else {
+                        timeSlot = i + ":00";
+                    }
+                    toTime.getItems().add(timeSlot);
+                }
+            }
+        }
+    }
+
+    public void updateStartSlots(String date) throws JsonProcessingException {
+        fromTime.getItems().clear();
+        fromTime.getItems().addAll(initiateTimeslots(date));
     }
 
 
@@ -227,9 +319,33 @@ public class RoomReservationController extends MainSceneController {
     /**
      * Loads the timeslots into the ComboBoxes.
      */
-    private void loadTimeslots() {
-        fromTime.getItems().addAll(initiateTimeslots());
-        toTime.getItems().addAll(initiateTimeslots());
+    private void loadTimeslots() throws JsonProcessingException {
+        fromTime.getItems()
+            .addAll(
+                initiateTimeslots(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+            );
+        toTime.getItems()
+            .addAll(
+                initiateTimeslots(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+            );
+        date.setOnAction(event -> {
+            try {
+                updateStartSlots(date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        });
+        fromTime.setOnAction(event -> {
+            try {
+                updateEndSlots(
+                    date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                    fromTime.getValue()
+                );
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
 
@@ -256,7 +372,7 @@ public class RoomReservationController extends MainSceneController {
     /**
      * Returns the user back to the room page when the back button is clicked.
      *
-     * @throws IOException throws an IOException
+     * @throws IOException when there is an io exception
      */
     @FXML
     private void backToRoom() throws IOException {

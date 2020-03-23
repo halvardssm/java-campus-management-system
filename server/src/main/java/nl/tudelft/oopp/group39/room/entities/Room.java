@@ -3,7 +3,6 @@ package nl.tudelft.oopp.group39.room.entities;
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
 import java.util.Objects;
@@ -59,7 +58,6 @@ public class Room {
     private Set<Event> events = new HashSet<>();
 
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
-    @JsonIgnore
     private Set<Booking> bookings = new HashSet<>();
     @OneToMany(mappedBy = MAPPED_NAME)
     private Set<Reservation> reservations = new HashSet<>();
