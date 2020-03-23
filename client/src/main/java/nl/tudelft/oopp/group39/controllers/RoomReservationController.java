@@ -47,6 +47,27 @@ public class RoomReservationController extends MainSceneController {
     private Building building;
     private Room room;
 
+    /**
+     * Generates an alert when called.
+     *
+     * @param alertType the type of alert
+     * @param title     the title of the alert
+     * @param content   the content of the alert
+     */
+    public static void showAlert(Alert.AlertType alertType, String title, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    /**
+     * Sets the entire scene up, so loading the timeslots, room information and sets up the buttons.
+     *
+     * @param room     the room you've selected
+     * @param building the building of the room you've selected
+     */
     public void setup(Room room, Building building) {
         this.building = building;
         this.room = room;
@@ -62,24 +83,7 @@ public class RoomReservationController extends MainSceneController {
     }
 
     /**
-     * Generates an alert when called.
-     *
-     * @param alertType
-     * @param title
-     * @param content
-     */
-    public static void showAlert(Alert.AlertType alertType, String title, String content) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-
-    /**
-     * Reserves a room and shows a confirmed alert if the action was successful
-     *
-     * @return
+     * Reserves a room and shows a confirmed alert if the action was successful.
      */
     @FXML
     private void reserveRoom(Room room) throws IOException {
@@ -93,11 +97,13 @@ public class RoomReservationController extends MainSceneController {
                     String username = MainSceneController.user.getUsername();
                     User user = ServerCommunication.getUser(username);
                 } catch (Exception e) {
-                    showAlert(Alert.AlertType.ERROR, "", "Please log in if you want to reserve a room.");
+                    showAlert(Alert.AlertType.ERROR, "",
+                        "Please log in if you want to reserve a room.");
                     goToLoginScene();
                     return;
                 }
-                String dateString = date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                String dateString = date.getValue()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 long roomId = room.getId();
                 String roomIdString = "" + roomId;
                 String username = MainSceneController.user.getUsername();
@@ -105,7 +111,12 @@ public class RoomReservationController extends MainSceneController {
 
                 ArrayNode roomReservations = room.getBookings();
                 System.out.println(roomReservations);
-                //ServerCommunication.updateRoom(room.getBuilding(), room.getCapacity(), room.getDescription(), room.getId(), roomReservations);
+                //ServerCommunication.updateRoom(room.getBuilding(),
+                 room.getCapacity(),
+                 room.getDescription(),
+                 room.getId(),
+                 roomReservations
+                 );
 
 //                ArrayNode userReservations = user.getBookings();
 //                System.out.println(userReservations);
@@ -155,23 +166,27 @@ public class RoomReservationController extends MainSceneController {
     }
 
     /**
-     * Checks whether or not the chosen times meet the requirements (at most 4 hours)
+     * Checks whether or not the chosen times meet the requirements (at most 4 hours).
      *
-     * @param start
-     * @param end
-     * @return
+     * @param start start time of reservation
+     * @param end   end time of reservation
+     * @return true or false and an alert depending on the time difference
      */
     public boolean checkTime(String start, String end) {
-        int timeDifference = (Integer.parseInt(end.split(":")[0]) - Integer.parseInt(start.split(":")[0]));
+        int timeDifference = (Integer.parseInt(end.split(":")[0])
+            - Integer.parseInt(start.split(":")[0]));
         if (timeDifference > 4) {
-            showAlert(Alert.AlertType.ERROR, "", "Please make sure that the duration of the reservation is at most 4 hours.");
+            showAlert(Alert.AlertType.ERROR, "",
+                "Please make sure that the duration of the reservation is at most 4 hours.");
             return false;
         } else if (timeDifference <= 0) {
             if (timeDifference > -20) {
-                showAlert(Alert.AlertType.ERROR, "", "Please pick a real duration of the reservation.");
+                showAlert(Alert.AlertType.ERROR, "",
+                    "Please pick a real duration of the reservation.");
                 return false;
             } else {
-                showAlert(Alert.AlertType.ERROR, "", "You cannot reserve past midnight!");
+                showAlert(Alert.AlertType.ERROR, "",
+                    "You cannot reserve past midnight!");
                 return false;
             }
         } else {
@@ -183,10 +198,10 @@ public class RoomReservationController extends MainSceneController {
      * Checks if the date, start and end fields are empty.
      * If that's the case, the method will generate an error message and return false.
      *
-     * @param date
-     * @param start
-     * @param end
-     * @return true or false depending on whether or not the date, start and end fields are filled in.
+     * @param date  the date of the reservation
+     * @param start start time of reservation
+     * @param end   end time of reservation
+     * @return true or false depending on whether or not the date, start and end fields are filled.
      */
     public boolean checkEmpty(LocalDate date, String start, String end) {
         if (date == null || start == null || end == null) {
@@ -249,7 +264,7 @@ public class RoomReservationController extends MainSceneController {
     }
 
     /**
-     * Loads the timeslots into the ComboBoxes
+     * Loads the timeslots into the ComboBoxes.
      */
     private void loadTimeslots() {
         fromTime.getItems().addAll(initiateTimeslots());
@@ -258,9 +273,9 @@ public class RoomReservationController extends MainSceneController {
 
 
     /**
-     * Switches to login page when the Login button is clicked
+     * Switches to login page when the Login button is clicked.
      *
-     * @throws IOException
+     * @throws IOException throws an IOException
      */
     @FXML
     private void switchLogin() throws IOException {
@@ -268,19 +283,19 @@ public class RoomReservationController extends MainSceneController {
     }
 
     /**
-     * Switches to the homepage when the *SomeName* button is clicked
+     * Switches to the homepage when the *SomeName* button is clicked.
      *
-     * @throws IOException
+     * @throws IOException throws an IOException
      */
     @FXML
     private void switchMain() throws IOException {
-        goToMainScene();
+        goToBuildingScene();
     }
 
     /**
-     * Returns the user back to the room page when the back button is clicked
+     * Returns the user back to the room page when the back button is clicked.
      *
-     * @throws IOException
+     * @throws IOException throws an IOException
      */
     @FXML
     private void backToRoom() throws IOException {
