@@ -11,26 +11,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import nl.tudelft.oopp.group39.auth.services.JwtService;
+import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
-import nl.tudelft.oopp.group39.user.services.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class UserControllerTest {
-    private final ObjectMapper objectMapper = new ObjectMapper();
+class UserControllerTest extends AbstractControllerTest {
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",
@@ -41,15 +32,6 @@ class UserControllerTest {
         null
     );
     private String jwt;
-
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private JwtService jwtService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private UserController userController;
 
     @BeforeEach
     void setUp() {
@@ -72,15 +54,14 @@ class UserControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
 
-        String json = objectMapper.writeValueAsString(testUser);
+        String json = "{\"username\":\"test\",\"email\":\"test@tudelft.nl\",\"password\":\"test\"}";
 
         mockMvc.perform(post(REST_MAPPING)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(json))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.body.username", is(testUser.getUsername())))
-            .andExpect(jsonPath("$.body.email", is(testUser.getEmail())))
-            .andExpect(jsonPath("$.body.password").exists());
+            .andExpect(jsonPath("$.body.email", is(testUser.getEmail())));
     }
 
     @Test
@@ -101,8 +82,7 @@ class UserControllerTest {
                             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body.username", is(testUser.getUsername())))
-            .andExpect(jsonPath("$.body.email", is(testUser.getEmail())))
-            .andExpect(jsonPath("$.body.password").exists());
+            .andExpect(jsonPath("$.body.email", is(testUser.getEmail())));
     }
 
     @Test

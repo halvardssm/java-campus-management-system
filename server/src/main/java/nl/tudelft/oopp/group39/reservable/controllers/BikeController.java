@@ -38,7 +38,7 @@ public class BikeController {
     }
 
     /**
-     * POST Endpoint to retrieve an bike.
+     * POST Endpoint to retrieve a bike.
      *
      * @return the created bike {@link Bike}.
      */
@@ -47,7 +47,7 @@ public class BikeController {
         try {
             return RestResponse.create(bikeService.createBike(bike), null, HttpStatus.CREATED);
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 
@@ -61,7 +61,7 @@ public class BikeController {
         try {
             return RestResponse.create(bikeService.readBike(id));
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 
@@ -78,12 +78,12 @@ public class BikeController {
         try {
             return RestResponse.create(bikeService.updateBike(id, bike));
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 
     /**
-     * DELETE Endpoint to delete am bike.
+     * DELETE Endpoint to delete a bike.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteBike(@PathVariable Integer id) {

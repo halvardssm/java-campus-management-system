@@ -1,8 +1,8 @@
 package nl.tudelft.oopp.group39.auth.controllers;
 
+import nl.tudelft.oopp.group39.auth.dto.AuthRequestDto;
+import nl.tudelft.oopp.group39.auth.dto.AuthResponseDto;
 import nl.tudelft.oopp.group39.auth.exceptions.UnauthorizedException;
-import nl.tudelft.oopp.group39.auth.models.AuthRequest;
-import nl.tudelft.oopp.group39.auth.models.AuthResponse;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.user.entities.User;
@@ -42,7 +42,9 @@ public class AuthController {
      * @throws UnauthorizedException Is thrown when the username or password is incorrect
      */
     @PostMapping(REST_MAPPING)
-    public ResponseEntity<RestResponse<AuthResponse>> createToken(@RequestBody AuthRequest body)
+    public ResponseEntity<RestResponse<AuthResponseDto>> createToken(
+        @RequestBody AuthRequestDto body
+    )
         throws UnauthorizedException {
         try {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
@@ -63,6 +65,6 @@ public class AuthController {
 
         String token = jwtService.encrypt(user);
 
-        return RestResponse.create(new AuthResponse(token));
+        return RestResponse.create(new AuthResponseDto(token));
     }
 }
