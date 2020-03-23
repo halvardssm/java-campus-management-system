@@ -109,8 +109,37 @@ public class RoomReservationController extends MainSceneController {
 
                 ArrayNode userReservations = user.getBookings();
                 System.out.println(userReservations);
-                //userReservations.add(dateString, bookingStart, bookingEnd, username, roomIdString);
-                //ServerCommunication.updateUser(username, user.getEmail(), user.getPassword(), roomReservations);
+                String start = userReservations.toString();
+                int n = start.length();
+                String newStart = start.substring(0, n - 1);
+                System.out.println(newStart);
+                if (newStart.equals("[")) {
+                    StringBuilder bookingString = new StringBuilder();
+                    bookingString
+                        .append("{\"id\":")
+                        .append(roomIdString).append(",\"date\":")
+                        .append(dateString).append(",\"startTime\":")
+                        .append(bookingStart).append(",\"endTime\":")
+                        .append(bookingEnd)
+                        .append("}]");
+
+                    String userReservationsString = start + bookingString;
+                    ServerCommunication.updateUser(username, user.getEmail(), user.getPassword(), userReservationsString);
+                    System.out.println(userReservationsString);
+                } else {
+                    StringBuilder bookingString = new StringBuilder(", {");
+                    bookingString
+                        .append("{\"id\":")
+                        .append(roomIdString).append(",\"date\":")
+                        .append(dateString).append(",\"startTime\":")
+                        .append(bookingStart).append(",\"endTime\":")
+                        .append(bookingEnd)
+                        .append("}]");
+
+                    String userReservationsString = start + bookingString;
+                    ServerCommunication.updateUser(username, user.getEmail(), user.getPassword(), userReservationsString);
+                }
+
                 //showAlert(Alert.AlertType.INFORMATION, "", ServerCommunication.addBooking(dateString, bookingStart, bookingEnd, username, roomIdString));
                 showAlert(Alert.AlertType.INFORMATION, "", "Reservation successful.");
                 System.out.println(dateString + bookingStart + bookingEnd + username + roomIdString);

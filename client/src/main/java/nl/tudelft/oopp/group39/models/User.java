@@ -9,7 +9,7 @@ public class User {
     private String password;
     private Blob image;
     private String role;
-    ArrayNode bookings;
+    private ArrayNode bookings;
 
 
     public User() {
@@ -26,14 +26,13 @@ public class User {
      * @param role     role of the user
      * @param bookings bookings of the user
      */
-    public User(String username, String email, String password, Blob image, String role) {
+    public User(String username, String email, String password, Blob image, String role, ArrayNode bookings) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.image = image;
         this.role = role;
         this.bookings = bookings;
-        123123123
 
     }
 

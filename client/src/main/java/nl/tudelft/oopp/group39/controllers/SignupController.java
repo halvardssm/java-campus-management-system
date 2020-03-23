@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.util.regex.Pattern;
 import javafx.fxml.FXML;
@@ -38,7 +39,8 @@ public class SignupController extends MainSceneController {
         String password = passwordField.getText();
         String confirmpassword = confirmpasswordField.getText();
         String role = getRole(email);
-        User user = new User(netID, email, password, null, role);
+        ArrayNode bookings = user.getBookings();
+        User user = new User(netID, email, password, null, role, bookings);
         if (checkEmpty(email, netID, password, confirmpassword)
             && isValid(email)
             && checkPwd(password, confirmpassword)) {
