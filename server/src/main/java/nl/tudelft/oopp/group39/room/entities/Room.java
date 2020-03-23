@@ -24,7 +24,7 @@ import nl.tudelft.oopp.group39.facility.entities.Facility;
 @Entity
 @Table(name = Room.TABLE_NAME)
 @JsonIdentityInfo(
-    generator = ObjectIdGenerators.IntSequenceGenerator.class,
+    generator = ObjectIdGenerators.PropertyGenerator.class,
     property = Room.COL_ID
 )
 public class Room {
@@ -37,6 +37,8 @@ public class Room {
     private long id;
 
     private long buildingId;
+
+    private String name;
 
     private int capacity;
 
@@ -57,21 +59,28 @@ public class Room {
     private Set<Facility> facilities = new HashSet<>();
 
     @ManyToMany(mappedBy = TABLE_NAME, fetch = FetchType.LAZY)
-    @JsonIgnore
     private Set<Event> events = new HashSet<>();
 
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
-    @JsonIgnore
     private Set<Booking> bookings = new HashSet<>();
 
     public Room() {
     }
 
     /**
-     * Doc. TODO Sven
+     * Creates a room.
+     *
+     * @param buildingId  the id of the building
+     * @param name        name of the room
+     * @param capacity    capacity of the room
+     * @param onlyStaff   whether the room is only accessible to staff
+     * @param description description of the room
+     * @param facilities  set of facilities the room has
+     * @param bookings    set of bookings for the room
      */
     public Room(
         long buildingId,
+        String name,
         int capacity,
         boolean onlyStaff,
         String description,
@@ -79,6 +88,7 @@ public class Room {
         Set<Booking> bookings
     ) {
         this.buildingId = buildingId;
+        this.name = name;
         this.capacity = capacity;
         this.onlyStaff = onlyStaff;
         this.description = description;
@@ -92,6 +102,14 @@ public class Room {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public long getBuilding() {

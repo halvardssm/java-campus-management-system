@@ -23,7 +23,7 @@ public class BookingService {
      */
     public List<Booking> listBookings(Map<String, String> params) {
 
-        return params.isEmpty() ? bookingRepository.findAll() : bookingDao.listBookings(params);
+        return bookingDao.listBookings(params);
     }
 
     /**

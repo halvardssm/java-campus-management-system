@@ -19,8 +19,8 @@
             <children>
                 <AnchorPane scaleX="1.2" scaleY="1.2" translateX="-30.0" translateY="20.0" AnchorPane.topAnchor="0.0">
                     <children>
-                        <Button fx:id="reserveButton" mnemonicParsing="false" onAction="#reserveRoom"
-                                onMouseClicked="#reserveRoom" style="-fx-background-color: #00A6D6;" text="Reserve Room"
+                        <Button fx:id="reserveButton" mnemonicParsing="false" style="-fx-background-color: #00A6D6;"
+                                text="Reserve Room"
                                 textFill="WHITE" translateX="30.0" translateY="255.0" AnchorPane.topAnchor="0.0">
                             <font>
                                 <Font size="18.0"/>
@@ -37,6 +37,9 @@
                                   AnchorPane.topAnchor="96.0"/>
                         <Label id="text" stylesheets="@roomReservation.css" text="To:" AnchorPane.leftAnchor="-33.0"
                                AnchorPane.topAnchor="99.0"/>
+                        <Label id="text" stylesheets="@roomReservation.css"
+                               text="Maximum Reservation Time:&#10; 4 Hours" AnchorPane.leftAnchor="1.0"
+                               AnchorPane.topAnchor="135.0"/>
                     </children>
                 </AnchorPane>
             </children>
@@ -63,32 +66,29 @@
         </AnchorPane>
     </top>
     <left>
-        <VBox BorderPane.alignment="CENTER">
+        <VBox fx:id="roomInfo" BorderPane.alignment="CENTER">
             <children>
-                <ImageView fx:id="roomImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true"
+                <ImageView fx:id="roomImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
+                           preserveRatio="true"
                            scaleX="1.1" scaleY="1.1" translateX="25.0" translateY="20.0">
                     <image>
                         <Image url="@testimage.jpg"/>
                     </image>
                 </ImageView>
-                <Label fx:id="roomName" scaleX="1.1" scaleY="1.1" text="Room Name" translateX="30.0" translateY="30.0">
+                <Label fx:id="roomDetails" scaleX="1.1" scaleY="1.1" text="Description:&#10;Capacity:&#10;Facilities:"
+                       translateX="31.0" translateY="55.0"/>
+                <Label fx:id="roomName" scaleX="1.1" scaleY="1.1" text="Room Name" translateX="30.0" translateY="-20.0">
                     <font>
                         <Font size="15.0"/>
                     </font>
                 </Label>
-                <Label fx:id="roomAddress" scaleX="1.1" scaleY="1.1" text="Address:" translateX="31.0"
-                       translateY="30.0"/>
-                <Label fx:id="roomCapacity" scaleX="1.1" scaleY="1.1" text="Capacity:" translateX="31.0"
-                       translateY="28.0"/>
-                <Label fx:id="roomFacilities" scaleX="1.1" scaleY="1.1" text="Facilities:" translateX="31.0"
-                       translateY="26.0"/>
             </children>
         </VBox>
     </left>
     <bottom>
         <AnchorPane style="-fx-background-color: #00A6D6;" styleClass="bar" BorderPane.alignment="CENTER">
             <children>
-                <Button id="backButton" fx:id="backButton" mnemonicParsing="false" onAction="#switchRoom"
+                <Button id="backButton" fx:id="backButton" mnemonicParsing="false" onAction="#backToRoom"
                         stylesheets="@roomReservation.css" text="◀ Back" translateY="-2.0" AnchorPane.leftAnchor="10.0"
                         AnchorPane.topAnchor="5.0">
                     <font>

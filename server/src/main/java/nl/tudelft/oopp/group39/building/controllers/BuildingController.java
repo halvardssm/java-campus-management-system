@@ -1,7 +1,8 @@
 package nl.tudelft.oopp.group39.building.controllers;
 
-import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
+import nl.tudelft.oopp.group39.building.dao.BuildingDao;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
@@ -33,38 +34,16 @@ public class BuildingController {
     @Autowired
     private BuildingService buildingService;
 
-    /**
-     * List Buildings endpoint. TODO Sven
-     *
-     * @param capacity capacity
-     * @param building building
-     * @param location location
-     * @param open     open
-     * @param closed   closed
-     * @return buildings
+    @Autowired
+    private BuildingDao buildingDao;
+
+    /** TODO Sven.
      */
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listBuildings(
-        @RequestParam(required = false) Integer capacity,
-        @RequestParam(required = false) String building,
-        @RequestParam(required = false) String location,
-        @RequestParam(required = false) String open,
-        @RequestParam(required = false) String closed
+        @RequestParam Map<String, String> params
     ) {
-        capacity = capacity == null ? 0 : capacity;
-        LocalTime newOpen = open == null ? LocalTime.MIN : LocalTime.parse(open);
-        LocalTime newClosed = closed == null ? LocalTime.MAX : LocalTime.parse(closed);
-        building = building == null ? "" : building;
-        location = location == null ? "" : location;
-        boolean allEmpty = capacity == 0
-            && building.contentEquals("")
-            && location.contentEquals("")
-            && newOpen.compareTo(LocalTime.MIN) == 0 //opening time is equal to 23:59
-            && newClosed.compareTo(LocalTime.MAX) == 0;
-        List<Building> result = allEmpty
-            ? buildingService.listBuildings()
-            : buildingService.filterBuildings(capacity, building, location, newOpen, newClosed);
-
+        List<Building> result = buildingDao.buildingFilter(params);
         return RestResponse.create(result);
     }
 

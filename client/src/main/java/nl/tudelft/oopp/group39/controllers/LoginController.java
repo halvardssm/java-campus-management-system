@@ -1,0 +1,52 @@
+package nl.tudelft.oopp.group39.controllers;
+
+import java.io.IOException;
+import javafx.fxml.FXML;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
+import nl.tudelft.oopp.group39.communication.ServerCommunication;
+
+public class LoginController extends MainSceneController {
+    @FXML
+    private TextField usernameField;
+
+    @FXML
+    private PasswordField passwordField;
+
+    @FXML
+    private Text errormsg;
+
+    /**
+     * Logs the user in.
+     */
+    public void login() throws IOException {
+        String user = usernameField.getText();
+        String password = passwordField.getText();
+        if (!checkEmpty(user, password)) {
+            if (ServerCommunication.userLogin(user, password).equals("Logged in")) {
+                changeTopBtn();
+                goToBuildingScene();
+            }
+        }
+        System.out.println(loggedIn);
+        System.out.println(user + password);
+    }
+
+    /**
+     * Check if username and password fields aren't empty.
+     *
+     * @param user username String
+     * @param pwd  password String
+     */
+    public boolean checkEmpty(String user, String pwd) {
+        if (user.isEmpty() || pwd.isEmpty()) {
+            errormsg.setText("Please fill in all the fields");
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+}
