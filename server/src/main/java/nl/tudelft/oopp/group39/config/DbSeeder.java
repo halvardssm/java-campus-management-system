@@ -213,7 +213,7 @@ public class DbSeeder {
     }
 
     private void initBikes() {
-        Building building = buildingService.listBuildings().get(0);
+        Building building = buildingService.listBuildings(new HashMap<>()).get(0);
 
         Bike bike1 = new Bike(BikeType.CITY, 5.6, building, null);
         Bike bike2 = new Bike(BikeType.CITY, 6.7, building, null);
@@ -227,7 +227,7 @@ public class DbSeeder {
     }
 
     private void initFoods() {
-        Building building = buildingService.listBuildings().get(0);
+        Building building = buildingService.listBuildings(new HashMap<>()).get(0);
 
         Food food1 = new Food("Stew", "A warm pot of deliciousness", 5.6, building, null);
         Food food2 = new Food("Meatballs", "Balls of meat", 6.7, building, null);
