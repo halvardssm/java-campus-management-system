@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.group39.room.repositories;
 
 import java.util.List;
+
+import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,11 +21,11 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
      * The inputted onlyStaff param and the inputted id param
      */
     @Query("SELECT u FROM Room u WHERE u.capacity >= :capacity and u.onlyStaff = :onlyStaff "
-        + "and u.buildingId IN :buildingId and u.facilities IN :facilities")
+        + "and u.building IN :building and u.facilities IN :facilities")
     List<Room> filterRooms(
         @Param("capacity") int capacity,
         @Param("onlyStaff") boolean onlyStaff,
-        @Param("buildingId") List<Long> buildingId,
+        @Param("building") List<Long> building,
         @Param("facilities") List<Facility> facilities
     );
 
@@ -36,8 +38,8 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     /**
      * Returns the building id of the room that matches the inputted id param.
      */
-    @Query("SELECT u.buildingId FROM Room u WHERE u.id = :id")
-    int getAllBuildingIds(@Param("id") int id);
+    @Query("SELECT u.building FROM Room u WHERE u.id = :id")
+    Building getAllBuildingIds(@Param("id") int id);
 
     /**
      * Returns the room that matches the inputted id param.
@@ -48,14 +50,14 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     /**
      * Returns the maximum capacity of a room in a chosen building.
      */
-    @Query("SELECT MAX(u.capacity) FROM Room u WHERE u.buildingId = :id")
-    int getMaxRoomCapacityByBuildingId(@Param("id") long id);
+    @Query("SELECT MAX(u.capacity) FROM Room u WHERE u.building = :building")
+    int getMaxRoomCapacityByBuildingId(@Param("building") Building building);
 
     /**
      * Returns a list with the rooms that match the chosen building id.
      */
-    @Query("SELECT u FROM Room u WHERE u.buildingId = :id")
-    List<Room> getRoomsByBuildingId(@Param("id") long id);
+    @Query("SELECT u FROM Room u WHERE u.building = :building")
+    List<Room> getRoomsByBuildingId(@Param("building") Building building);
 
     /**
      * Returns the maximum amount of users (capacity) in a room.

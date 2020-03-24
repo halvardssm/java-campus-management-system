@@ -119,9 +119,9 @@ public class DbSeeder {
     private void initBuildings() {
         LocalTime open = LocalTime.of(9, 0);//.minusHours(3);
         LocalTime closed = LocalTime.of(20, 0);//.plusHours(3);
-        Building b = new Building("test", "test", "test", open, closed, null);
+        Building b = new Building("test", "test", "test", open, closed, null, null);
         buildingService.createBuilding(b);
-        b = new Building("new", "new", "new", open, closed, null);
+        b = new Building("new", "new", "new", open, closed, null, null);
         buildingService.createBuilding(b);
 
         Building b2 = new Building("EEMCS",
@@ -129,6 +129,7 @@ public class DbSeeder {
             "Faculty of Electrical Engineering, Maths and Computer Science",
             LocalTime.of(7, 0),
             LocalTime.of(18, 0),
+            null,
             null);
         buildingService.createBuilding(b2);
 
@@ -137,6 +138,7 @@ public class DbSeeder {
             "Drebbelweg",
             LocalTime.of(6, 0),
             LocalTime.of(17, 30),
+            null,
             null);
         buildingService.createBuilding(b3);
 
