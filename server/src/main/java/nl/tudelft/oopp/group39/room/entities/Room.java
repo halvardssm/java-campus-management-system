@@ -42,7 +42,7 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    private String name;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Building.MAPPED_NAME)
     @JsonIgnore
@@ -82,6 +82,7 @@ public class Room {
      */
     public Room(
             Building building,
+            String name,
             int capacity,
             boolean onlyStaff,
             String description,
@@ -89,6 +90,7 @@ public class Room {
             Set<Booking> bookings
     ) {
         this.building = building;
+        this.name = name;
         this.capacity = capacity;
         this.onlyStaff = onlyStaff;
         this.description = description;
@@ -102,6 +104,14 @@ public class Room {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Building getBuilding() {
@@ -171,6 +181,7 @@ public class Room {
         Room room = (Room) o;
         return getId() == room.getId()
                 && building.equals(room.building)
+                && Objects.equals(getName(), room.getName())
                 && getCapacity() == room.getCapacity()
                 && getOnlyStaff() == room.getOnlyStaff()
                 && Objects.equals(getDescription(), room.getDescription())
