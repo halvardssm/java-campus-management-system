@@ -18,18 +18,24 @@
     <top>
         <HBox fx:id="topbar" styleClass="bar" spacing="10">
             <padding>
-                <Insets top="12" right="15" bottom="8" left="15"/>
+                <Insets top="10" right="15" bottom="10" left="15"/>
             </padding>
-            <Button onAction="#toggleSidebar" id="menubtn" alignment="CENTER">
-                <graphic>
-                    <ImageView fitHeight="30" fitWidth="30">
-                        <Image url="@icons/menu-icon.png"/>
-                    </ImageView>
-                </graphic>
-            </Button>
-            <Label id="title" fx:id="titleLabel" alignment="CENTER"/>
-            <Region  HBox.hgrow="ALWAYS" />
-            <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
+            <VBox alignment="CENTER">
+                <Button onAction="#toggleSidebar" id="menubtn" alignment="CENTER">
+                    <graphic>
+                        <ImageView fitHeight="30" fitWidth="30">
+                            <Image url="@icons/menu-icon.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </VBox>
+            <VBox alignment="CENTER">
+                <Label id="title" fx:id="titleLabel" alignment="BOTTOM_CENTER"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <VBox alignment="CENTER">
+                <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
+            </VBox>
         </HBox>
     </top>
     <left>
@@ -68,7 +74,7 @@
                 <HBox>
                     <Label text="Total: "/>
                     <Region HBox.hgrow="ALWAYS"/>
-                    <Label fx:id="total" text="€0.00"/>
+                    <Label fx:id="total" text="\$0.00"/>
                 </HBox>
                 <VBox fx:id="timeselector" spacing="10"/>
                 <Label id="errorfield" fx:id="errorfield"/>

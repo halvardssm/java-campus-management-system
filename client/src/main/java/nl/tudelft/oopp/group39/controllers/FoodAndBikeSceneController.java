@@ -145,6 +145,7 @@ public class FoodAndBikeSceneController extends MainSceneController {
                 break;
             }
         }
+        checkEmptyCart();
     }
 
     /**
@@ -279,21 +280,24 @@ public class FoodAndBikeSceneController extends MainSceneController {
     public void updateCart(Reservable reservable) {
         Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + reservable.getId());
         Integer value = amount.getValue();
-        Label priceLabel = (Label) cartlist.lookup("#" + reservable.getId() + "price");
-        double newprice = value * reservable.getPrice();
-        double oldprice;
-        if (type.equals("bike")) {
-            oldprice = Double.parseDouble(priceLabel.getText().split("\\$")[1].split("/")[0]);
-            priceLabel.setText("$" + newprice + "/hour");
-            totalprice = totalprice - oldprice + newprice;
-            total.setText("$" + totalprice + "/hour");
+        if (value == 0) {
+            deleteFromCart(reservable.getId());
         } else {
-            oldprice = Double.parseDouble(priceLabel.getText().split("\\$")[1]);
-            priceLabel.setText("$" + newprice);
-            totalprice = totalprice - oldprice + newprice;
-            total.setText("$" + totalprice);
+            Label priceLabel = (Label) cartlist.lookup("#" + reservable.getId() + "price");
+            double newprice = value * reservable.getPrice();
+            double oldprice;
+            if (type.equals("bike")) {
+                oldprice = Double.parseDouble(priceLabel.getText().split("\\$")[1].split("/")[0]);
+                priceLabel.setText("$" + newprice + "/hour");
+                totalprice = totalprice - oldprice + newprice;
+                total.setText("$" + totalprice + "/hour");
+            } else {
+                oldprice = Double.parseDouble(priceLabel.getText().split("\\$")[1]);
+                priceLabel.setText("$" + newprice);
+                totalprice = totalprice - oldprice + newprice;
+                total.setText("$" + totalprice);
+            }
         }
-
     }
 
     /**
@@ -303,9 +307,15 @@ public class FoodAndBikeSceneController extends MainSceneController {
      */
     public void deleteFromCart(int id) {
         Label priceLabel = (Label) cartlist.lookup("#" + id + "price");
-        double price = Double.parseDouble(priceLabel.getText().split("\\$")[1]);
-        totalprice = totalprice - price;
-        total.setText("$" + totalprice);
+        if (type.equals("bike")) {
+            double price = Double.parseDouble(priceLabel.getText().split("\\$")[1].split("/")[0]);
+            totalprice = totalprice - price;
+            total.setText("$" + totalprice + "/hour");
+        } else {
+            double price = Double.parseDouble(priceLabel.getText().split("\\$")[1]);
+            totalprice = totalprice - price;
+            total.setText("$" + totalprice);
+        }
         Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + id);
         HBox fooditem = (HBox) amount.getParent();
         cartlist.getChildren().remove(fooditem);
@@ -321,6 +331,7 @@ public class FoodAndBikeSceneController extends MainSceneController {
             cartlist.getChildren().add(emptycart);
             timeselector.getChildren().clear();
             orderbtn.setDisable(true);
+            total.setText("$0.00");
         } else {
             cartlist.getChildren().remove(emptycart);
             orderbtn.setDisable(false);

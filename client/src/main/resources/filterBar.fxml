@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ComboBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       xmlns="http://javafx.com/javafx"
-      fx:controller="nl.tudelft.oopp.group39.controllers.RoomSceneController">
-    <Label text="Capacity: "/>
-    <ComboBox fx:id="capSelector"/>
+      fx:controller="nl.tudelft.oopp.group39.controllers.RoomSceneController" spacing="15">
+    <padding>
+        <Insets top="15" right="15" bottom="8" left="15"/>
+    </padding>
+    <Label fx:id="capacity" text="Capacity: 0"/>
+    <Slider fx:id="capacityPicker"/>
     <Label text="Facilities:"/>
-
+    <VBox fx:id="facilitiesPicker"/>
+    <Button fx:id="filterBtn" id="filterBtn" text="Filter" disable="true"/>
 </VBox>

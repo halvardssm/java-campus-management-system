@@ -2,8 +2,12 @@
     -fx-background-color: #00A6D6;
 }
 
-.hyperlink:hover{
+.hyperlink:hover {
     -fx-underline: false;
+}
+
+.hyperlink {
+    -fx-border-color: transparent;
 }
 
 .button:hover {
@@ -12,7 +16,6 @@
 
 #title {
     -fx-font-size: 22;
-    /*-fx-font-weight: bold;*/
     -fx-text-fill: white;
 }
 
@@ -169,14 +172,6 @@
     -fx-background-color: transparent;
 }
 
-.buildingLink {
-    -fx-background-color: rgba(106, 123, 127, 0.18);
-}
-
-.buildingLink:hover {
-    -fx-background-color: rgba(106, 123, 127, 0.3);
-}
-
 #orderbtn {
     -fx-pref-width: 200;
     -fx-pref-height: 50;
@@ -232,3 +227,17 @@
 #reserveButton:hover {
     -fx-background-color: #00607b;
 }
+
+#toggleFilter {
+    -fx-background-color: transparent;
+    -fx-padding: 8 10;
+}
+
+#toggleFilter:hover {
+    -fx-background-color: rgba(106, 123, 127, 0.18);
+}
+
+#filterBar {
+    -fx-background-color: rgba(106, 123, 127, 0.18);
+}
+

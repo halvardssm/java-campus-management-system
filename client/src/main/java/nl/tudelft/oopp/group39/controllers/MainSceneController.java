@@ -122,7 +122,7 @@ public class MainSceneController {
     public void goToRoomsScene() throws IOException {
         RoomSceneController controller =
             (RoomSceneController) UsersDisplay.sceneControllerHandler("/roomView.fxml");
-        controller.getAllRooms();
+        controller.setup();
         controller.changeTopBtn();
     }
 
@@ -274,5 +274,6 @@ public class MainSceneController {
             sidebarShown = false;
         }
     }
+
 
 }

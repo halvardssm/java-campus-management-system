@@ -42,7 +42,8 @@ public class UsersDisplay extends Application {
 
         FXMLLoader loader = new FXMLLoader(UsersDisplay.class.getResource(name));
         root = loader.load();
-        window.setScene(new Scene(root, width, height));
+        Scene previous = window.getScene();
+        window.setScene(new Scene(root, previous.getWidth(), previous.getHeight()));
 
         return loader.getController();
     }

@@ -79,6 +79,15 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
+    public static String getRooms(String filters) {
+        System.out.println(url + "room?" + filters);
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create(url + "room?" + filters))
+            .build();
+        return httpRequest(request);
+    }
+
     /**
      * Retrieves the room from the server based on the room id.
      *
