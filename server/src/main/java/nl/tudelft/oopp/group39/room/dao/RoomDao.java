@@ -66,7 +66,7 @@ public class RoomDao {
                     CriteriaQuery<Building> bq = cb.createQuery(Building.class);
                     Root<Building> building = bq.from(Building.class);
 
-                    bq.select(building.get(Room.TABLE_NAME));
+                    bq.select(building);
                     bq.where(building.get(Building.COL_ID).in(bvals));
 
                     TypedQuery<Building> nestq = em.createQuery(bq);
