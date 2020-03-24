@@ -67,8 +67,12 @@ public class RestResponse<T> implements Serializable {
      * @param error The error to place in the error field
      * @return The finalized ResponseEntity
      */
-    public static <T> ResponseEntity<RestResponse<T>> error(String error) {
-        return create(null, error, null);
+    public static <T> ResponseEntity<RestResponse<T>> error(Exception error) {
+        String message = (error.getMessage() != null && !error.getMessage().isEmpty())
+                         ? error.getMessage()
+                         : error.getClass().getName();
+
+        return create(null, message, null);
     }
 
     public Object getBody() {

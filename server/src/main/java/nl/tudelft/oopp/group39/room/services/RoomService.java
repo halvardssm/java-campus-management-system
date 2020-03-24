@@ -84,9 +84,9 @@ public class RoomService {
         }
         List<Long> resRoomIds = buildingRepository
             .filterBuildingsOnLocationAndNameAndTimeList(location, building, open, closed);
-        return (resRoomIds.size() > 0
-            ? roomRepository.filterRooms(capacity, onlyStaff, resRoomIds, newFacilities)
-            : new ArrayList<Room>());
+        return resRoomIds.size() > 0
+               ? roomRepository.filterRooms(capacity, onlyStaff, resRoomIds, newFacilities)
+               : new ArrayList<>();
     }
 
     /**

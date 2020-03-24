@@ -4,27 +4,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+import nl.tudelft.oopp.group39.AbstractTest;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class UserServiceTest {
+class UserServiceTest extends AbstractTest {
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",
         "test",
         null,
         Role.STUDENT,
+        null,
         null
     );
-
-    @Autowired
-    private UserService userService;
 
     @BeforeEach
     void setUp() {

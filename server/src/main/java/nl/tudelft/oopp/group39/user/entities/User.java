@@ -1,7 +1,10 @@
 package nl.tudelft.oopp.group39.user.entities;
 
+import static nl.tudelft.oopp.group39.config.Utils.initSet;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.sql.Blob;
 import java.util.Collection;
@@ -19,6 +22,7 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import org.hibernate.annotations.LazyGroup;
 import org.springframework.data.annotation.Transient;
@@ -31,6 +35,12 @@ import org.springframework.security.core.userdetails.UserDetails;
     generator = ObjectIdGenerators.PropertyGenerator.class,
     property = User.COL_USERNAME
 )
+@JsonIgnoreProperties(allowSetters = true, value = {
+    User.COL_BOOKINGS,
+    User.COL_PASSWORD,
+    User.COL_IMAGE,
+    User.COL_RESERVATIONS
+})
 public class User implements UserDetails {
     public static final String TABLE_NAME = "users";
     public static final String MAPPED_NAME = "user";
@@ -40,6 +50,7 @@ public class User implements UserDetails {
     public static final String COL_IMAGE = "image";
     public static final String COL_ROLE = "role";
     public static final String COL_BOOKINGS = "bookings";
+    public static final String COL_RESERVATIONS = "reservations";
 
     @Id
     private String username;
@@ -53,6 +64,8 @@ public class User implements UserDetails {
     private Role role;
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
     private Set<Booking> bookings = new HashSet<>();
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
+    private Set<Reservation> reservations = new HashSet<>();
 
     public User() {
     }
@@ -60,12 +73,13 @@ public class User implements UserDetails {
     /**
      * Create a new User instance.
      *
-     * @param username Unique identifier as to be used in the database.
-     * @param email    Email address of the user.
-     * @param password Encrypted password of the user.
-     * @param role     Role of the user.
-     * @param image    Image of the user.
-     * @param bookings Bookings of user.
+     * @param username     Unique identifier as to be used in the database.
+     * @param email        Email address of the user.
+     * @param password     Encrypted password of the user.
+     * @param role         Role of the user.
+     * @param image        Image of the user.
+     * @param bookings     Bookings of user.
+     * @param reservations Reservations of user.
      */
     public User(
         String username,
@@ -73,14 +87,16 @@ public class User implements UserDetails {
         String password,
         Blob image,
         Role role,
-        Set<Booking> bookings
+        Set<Booking> bookings,
+        Set<Reservation> reservations
     ) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
         this.image = image;
-        this.bookings.addAll(bookings != null ? bookings : new HashSet<>());
+        this.bookings.addAll(initSet(bookings));
+        this.reservations.addAll(initSet(reservations));
     }
 
     @Override
@@ -133,6 +149,14 @@ public class User implements UserDetails {
         this.bookings = bookings;
     }
 
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
     @Override
     @Transient
     @JsonIgnore
@@ -182,6 +206,7 @@ public class User implements UserDetails {
             && Objects.equals(getPassword(), user.getPassword())
             && Objects.equals(getImage(), user.getImage())
             && getRole() == user.getRole()
-            && Objects.equals(getBookings(), user.getBookings());
+            && Objects.equals(getBookings(), user.getBookings())
+            && Objects.equals(getReservations(), user.getReservations());
     }
 }

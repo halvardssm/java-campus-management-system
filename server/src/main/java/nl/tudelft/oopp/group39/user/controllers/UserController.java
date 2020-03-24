@@ -43,7 +43,7 @@ public class UserController {
         try {
             return RestResponse.create(service.createUser(user), null, HttpStatus.CREATED);
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 
@@ -57,7 +57,7 @@ public class UserController {
         try {
             return RestResponse.create(service.readUser(id));
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 
@@ -74,7 +74,7 @@ public class UserController {
         try {
             return RestResponse.create(service.updateUser(id, user));
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 

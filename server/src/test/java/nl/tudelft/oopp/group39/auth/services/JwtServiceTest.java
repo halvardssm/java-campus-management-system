@@ -1,29 +1,22 @@
 package nl.tudelft.oopp.group39.auth.services;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.AbstractTest;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class JwtServiceTest {
+class JwtServiceTest extends AbstractTest {
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",
         "test",
         null,
         Role.STUDENT,
+        null,
         null
     );
-
-    @Autowired
-    JwtService jwtService;
 
     @Test
     void decryptUsername() {
@@ -60,14 +53,14 @@ class JwtServiceTest {
 
     @Test
     void validateFalse() {
-        Set<Booking> bookings = new HashSet<>();
         User user = new User(
             "test2",
             "test@tudelft.nl",
             "test",
             null,
             Role.STUDENT,
-            bookings
+            null,
+            null
         );
         Assertions.assertFalse(jwtService.validate(jwtService.encrypt(testUser), user));
     }
