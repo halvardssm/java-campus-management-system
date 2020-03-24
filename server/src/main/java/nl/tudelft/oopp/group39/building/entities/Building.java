@@ -54,13 +54,13 @@ public class Building {
      * @param rooms       rooms
      */
     public Building(
-            String name,
-            String location,
-            String description,
-            LocalTime open,
-            LocalTime closed,
-            Set<Room> rooms,
-            Set<Reservable> reservables
+        String name,
+        String location,
+        String description,
+        LocalTime open,
+        LocalTime closed,
+        Set<Room> rooms,
+        Set<Reservable> reservables
     ) {
         this.name = name;
         this.location = location;

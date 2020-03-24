@@ -90,13 +90,13 @@ public class Room {
      * @param bookings    set of bookings for the room
      */
     public Room(
-            Building building,
-            String name,
-            int capacity,
-            boolean onlyStaff,
-            String description,
-            Set<Facility> facilities,
-            Set<Booking> bookings
+        Building building,
+        String name,
+        int capacity,
+        boolean onlyStaff,
+        String description,
+        Set<Facility> facilities,
+        Set<Booking> bookings
     ) {
         this.building = building;
         this.name = name;
