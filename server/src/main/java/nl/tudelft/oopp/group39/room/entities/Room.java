@@ -3,21 +3,36 @@ package nl.tudelft.oopp.group39.room.entities;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import java.util.HashSet;
+
+import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+
 
 @Entity
 @Table(name = Room.TABLE_NAME)
 @JsonIdentityInfo(
-    generator = ObjectIdGenerators.IntSequenceGenerator.class,
-    property = Room.COL_ID
+        generator = ObjectIdGenerators.IntSequenceGenerator.class,
+        property = Room.COL_ID
 )
 public class Room {
     public static final String TABLE_NAME = "rooms";
@@ -42,13 +57,13 @@ public class Room {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = TABLE_NAME + "_" + Facility.TABLE_NAME,
             joinColumns = {
-            @JoinColumn(name = TABLE_NAME, referencedColumnName = COL_ID,
-                nullable = false, updatable = false)
-        },
-        inverseJoinColumns = {
-            @JoinColumn(name = Facility.TABLE_NAME, referencedColumnName = Facility.COL_ID,
-                nullable = false, updatable = false)
-        })
+                    @JoinColumn(name = TABLE_NAME, referencedColumnName = COL_ID,
+                            nullable = false, updatable = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = Facility.TABLE_NAME, referencedColumnName = Facility.COL_ID,
+                            nullable = false, updatable = false)
+            })
     private Set<Facility> facilities = new HashSet<>();
 
     @ManyToMany(mappedBy = TABLE_NAME, fetch = FetchType.LAZY)

@@ -4,13 +4,22 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import nl.tudelft.oopp.group39.room.entities.Room;
 
-import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import nl.tudelft.oopp.group39.room.entities.Room;
+import org.springframework.data.annotation.Id;
+
 
 @Entity
 @Table(name = Building.TABLE_NAME)
