@@ -146,9 +146,9 @@ public class DbSeeder {
     private void initRooms() {
         Set<Facility> facilities = new HashSet<>();
         Set<Booking> bookings = new HashSet<>();
-        Building b1 = buildingService.readBuilding(1);
-        Building b2 = buildingService.readBuilding(2);
-        Building b3 = buildingService.readBuilding(3);
+        final Building b1 = buildingService.readBuilding(1);
+        final Building b2 = buildingService.readBuilding(2);
+        final Building b3 = buildingService.readBuilding(3);
         roomService.createRoom(new Room(b1, "test", 10, true, "test1", facilities, bookings));
 
         roomService.createRoom(new Room(b1, "test", 10, true, "test1", facilities, bookings));
@@ -189,7 +189,7 @@ public class DbSeeder {
         LocalDate today = LocalDate.now();
         LocalDate tomorrow = today.plusDays(1);
         Building b1 = buildingService.readBuilding(1);
-        Room room = new Room(b1, "test" , 0, false, null, new HashSet<>(), new HashSet<>());
+        Room room = new Room(b1, "test", 0, false, null, new HashSet<>(), new HashSet<>());
         HashSet<Room> rooms = new HashSet<>(List.of(room));
         eventService.createEvent(new Event(EventTypes.EVENT, today, tomorrow, rooms));
 
