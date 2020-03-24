@@ -31,9 +31,7 @@ public class Building {
     private String name;
     private String location;
     private String description;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime open;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime closed;
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
     private Set<Room> rooms = new HashSet<>();
