@@ -48,11 +48,8 @@ public class Room {
     @JoinColumn(name = Building.MAPPED_NAME)
     @JsonIgnore
     private Building building;
-
     private int capacity;
-
     private boolean onlyStaff;
-
     private String description;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)

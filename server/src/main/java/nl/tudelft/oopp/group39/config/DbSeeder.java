@@ -146,21 +146,20 @@ public class DbSeeder {
     }
 
     private void initRooms() {
-        Set<Facility> facilities = new HashSet<>();
-        Set<Booking> bookings = new HashSet<>();
         final Building b1 = buildingService.readBuilding(1);
         final Building b2 = buildingService.readBuilding(2);
         final Building b3 = buildingService.readBuilding(3);
-        roomService.createRoom(new Room(b1, "test", 10, true, "test1", facilities, bookings));
+        roomService.createRoom(new Room(b1, "test", 10, true, "test1", null, null));
 
-        roomService.createRoom(new Room(b1, "test", 10, true, "test1", facilities, bookings));
+        roomService.createRoom(new Room(b1, "test", 10, true, "test1", null, null));
 
+        Set<Facility> facilities = new HashSet<>();
         facilities.add(facilityService.readFacility(1));
-        roomService.createRoom(new Room(b1, "lala", 6, true, "test2", facilities, bookings));
+        roomService.createRoom(new Room(b1, "lala", 6, true, "test2", facilities, null));
 
         facilities.add(facilityService.readFacility(2));
         roomService.createRoom(
-            new Room(b2, "another one", 15, false, "test3", facilities, bookings));
+            new Room(b2, "another one", 15, false, "test3", facilities, null));
 
         roomService.createRoom(new Room(
             b3,
@@ -169,7 +168,7 @@ public class DbSeeder {
             false,
             "Lecture hall in EEMCS",
             facilities,
-            bookings));
+            null));
 
         Set<Facility> facilities2 = new HashSet<>();
         facilities2.add(facilityService.readFacility(2));
@@ -181,7 +180,7 @@ public class DbSeeder {
             false,
             "Project Room 8",
             facilities2,
-            bookings));
+            null));
 
 
         System.out.println("[SEED] Rooms created");
