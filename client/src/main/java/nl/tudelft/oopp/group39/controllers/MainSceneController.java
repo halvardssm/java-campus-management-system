@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -273,6 +274,16 @@ public class MainSceneController {
             sidebar.getChildren().clear();
             sidebarShown = false;
         }
+    }
+
+    public void setCapacityPicker(Slider capacityPicker, int max) {
+        capacityPicker.setMin(0);
+        capacityPicker.setMax(max);
+        capacityPicker.setValue(0);
+        capacityPicker.setValue(0);
+        capacityPicker.setMajorTickUnit(1);
+        capacityPicker.setMinorTickCount(0);
+        capacityPicker.setSnapToTicks(true);
     }
 
 

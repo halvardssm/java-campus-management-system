@@ -28,10 +28,13 @@ public class RoomSceneController extends MainSceneController {
 
     private Building building;
     private boolean filterBarShown = false;
+    private boolean filtered = false;
     private VBox filterBarTemplate;
     private List<CheckBox> facilityBoxes = new ArrayList<>();
     private int maxCapacity;
     private List<Facility> facilities = new ArrayList<>();
+    private List<Integer> selectedFacilities = new ArrayList<>();
+    private int selectedCapacity = 0;
 
     @FXML
     public TextField roomBuildingIdField;
@@ -68,6 +71,9 @@ public class RoomSceneController extends MainSceneController {
 
     @FXML
     private Button filterBtn;
+
+    @FXML
+    private Hyperlink removeFilters;
 
     /**
      * Sets up the page to show rooms for selected building.
@@ -239,31 +245,29 @@ public class RoomSceneController extends MainSceneController {
 
     public void toggleFilterBar() throws IOException {
         if (!filterBarShown) {
-            filterBarTemplate = FXMLLoader.load(getClass().getResource("/filterBar.fxml"));
+            filterBarTemplate = FXMLLoader.load(getClass().getResource("/roomFilterBar.fxml"));
             capacityPicker = (Slider) filterBarTemplate.lookup("#capacityPicker");
-            capacityPicker.setMin(0);
-            capacityPicker.setMax(maxCapacity);
-            capacityPicker.setValue(0);
-            capacityPicker.setValue(0);
-            capacityPicker.setMajorTickUnit(1);
-            capacityPicker.setMinorTickCount(0);
-            capacityPicker.setSnapToTicks(true);
+            setCapacityPicker(capacityPicker, maxCapacity);
             capacityPicker.valueProperty().addListener((ov, oldVal, newVal) -> {
-                updateCapacityNumber(capacityPicker.getValue());
+                capacity = (Label) filterBarTemplate.lookup("#capacity");
+                capacity.setText("Capacity: " + (int) capacityPicker.getValue());
                 checkFiltersSelected();
             });
             createFacilityBoxes();
+            if (filtered) {
+                addRemoveFilters();
+                capacityPicker.setValue(selectedCapacity);
+                for (int selectedFacility : selectedFacilities) {
+                    CheckBox facilityBox = (CheckBox) filterBarTemplate.lookup("#" + selectedFacility);
+                    facilityBox.setSelected(true);
+                }
+            }
             filterBar.getChildren().add(filterBarTemplate);
             filterBarShown = true;
         } else {
             filterBar.getChildren().clear();
             filterBarShown = false;
         }
-    }
-
-    public void updateCapacityNumber(double cap) {
-        capacity = (Label) filterBarTemplate.lookup("#capacity");
-        capacity.setText("Capacity: " + (int) cap);
     }
 
     public void getFaclities() throws JsonProcessingException {
@@ -293,7 +297,7 @@ public class RoomSceneController extends MainSceneController {
     public void filterRooms() {
         int capacity = (int) capacityPicker.getValue();
         String faciltiesString = "";
-        List<Integer> selectedFacilities = new ArrayList<>();
+        selectedFacilities.clear();
         for (CheckBox facilityBox : facilityBoxes) {
             if (facilityBox.isSelected()) {
                 selectedFacilities.add(Integer.parseInt(facilityBox.getId()));
@@ -307,22 +311,17 @@ public class RoomSceneController extends MainSceneController {
             }
         }
         System.out.println(faciltiesString);
-        String request = "";
-        if (capacity != 0) {
-            request = request + "capacity=" + capacity;
-        }
+        String request = "capacity=" + capacity;
         if (!faciltiesString.equals("")) {
-            if (capacity == 0) {
-                request = request + "facilities=" + faciltiesString;
-            } else {
-                request = request + "&facilities=" + faciltiesString;
-            }
+            request = request + "&facilities=" + faciltiesString;
         }
         if (building != null) {
             request = request + "&buildingId=" + building.getId();
         }
         String json = ServerCommunication.getRooms(request);
         showRooms(json);
+        selectedCapacity = capacity;
+        filtered = true;
         addRemoveFilters();
     }
 
@@ -345,17 +344,23 @@ public class RoomSceneController extends MainSceneController {
     }
 
     public void addRemoveFilters() {
-        Hyperlink removeFilters = new Hyperlink("Remove filters");
+        removeFilters = (Hyperlink) filterBarTemplate.lookup("#removeFilters");
+        removeFilters.setText("Remove filters");
         removeFilters.setOnAction(event -> {
             if (building != null) {
                 getRooms(building.getId());
             } else {
                 getAllRooms();
             }
-            filterBarTemplate.getChildren().remove(removeFilters);
+            filtered = false;
+            removeFilters.setText(null);
+            removeFilters.setVisited(false);
+            capacityPicker.setValue(0);
+            for (CheckBox facilityBox : facilityBoxes) {
+                facilityBox.setSelected(false);
+            }
+            checkFiltersSelected();
         });
-        filterBarTemplate.getChildren().add(removeFilters);
     }
-
 
 }

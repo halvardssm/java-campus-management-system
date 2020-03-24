@@ -34,6 +34,10 @@
     -fx-font-size: 12;
 }
 
+.buttons:hover {
+    -fx-background-color: #007ba0;
+}
+
 #big {
     -fx-font-size: 16;
     -fx-pref-width: 90;
@@ -65,8 +69,7 @@
 
 #loginbtn:hover {
     -fx-background-radius: 4%;
-
-    -fx-background-color: #00607b;
+    -fx-background-color: #007ba0;
 }
 
 #errorfield {
@@ -126,7 +129,7 @@
 
 .menu-button:hover {
     -fx-background-radius: 4%;
-    -fx-background-color: #00607b;
+    -fx-background-color: #007ba0;
     -fx-cursor: hand;
 }
 
@@ -158,16 +161,6 @@
     -fx-background-color: rgba(106, 123, 127, 0.18);
 }
 
-
-#getMenuBtn {
-    -fx-background-color: #00A6D6;
-    -fx-text-fill: white;
-}
-
-#getMenuBtn:hover {
-    -fx-background-color: #00607b;
-}
-
 .scroll-pane {
     -fx-background-color: transparent;
 }
@@ -181,7 +174,7 @@
 }
 
 #orderbtn:hover {
-    -fx-background-color: #00607b;
+    -fx-background-color: #007ba0;
 }
 
 #carttitle {
@@ -225,7 +218,7 @@
 }
 
 #reserveButton:hover {
-    -fx-background-color: #00607b;
+    -fx-background-color: #007ba0;
 }
 
 #toggleFilter {
@@ -239,5 +232,19 @@
 
 #filterBar {
     -fx-background-color: rgba(106, 123, 127, 0.18);
+}
+
+#removeFilters {
+    -fx-padding: 0;
+    -fx-text-fill: #00A6D6;
+}
+
+#removeFilters:hover {
+    -fx-text-fill: #007ba0;
+}
+
+#filterBtn {
+    -fx-padding: 7 20;
+    -fx-font-size: 14;
 }
 

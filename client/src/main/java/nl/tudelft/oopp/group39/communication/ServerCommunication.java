@@ -111,15 +111,9 @@ public class ServerCommunication {
      *
      * @return the body of a get request to the server.
      */
-    public static String getFilteredBuildings(
-        String name,
-        String location,
-        String open,
-        String closed,
-        String capacity
-    ) {
-        String urlString = url + "building?capacity=" + capacity + "&building=" + name
-            + "&location=" + location + "&open=" + open + "&closed=" + closed;
+    public static String getFilteredBuildings(String filters) {
+        String urlString = url + "building?" + filters;
+        System.out.println(urlString);
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
         return httpRequest(request);
     }
