@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,14 +27,25 @@ public class Building {
     public static final String TABLE_NAME = "buildings";
     public static final String MAPPED_NAME = "building";
     public static final String COL_ID = "id";
+    public static final String COL_OPEN = "open";
+    public static final String COL_CLOSED = "closed";
+    public static final String NAME = "name";
+    public static final String LOCATION = "location";
+    public static final String DESC = "description";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = COL_ID)
     private long id;
+    @Column(name = NAME)
     private String name;
+    @Column(name = LOCATION)
     private String location;
+    @Column(name = DESC)
     private String description;
+    @Column(name = COL_OPEN)
     private LocalTime open;
+    @Column(name = COL_CLOSED)
     private LocalTime closed;
     @OneToMany(mappedBy = MAPPED_NAME) //TODO change to reservable id
     private Set<Reservable> reservables = new HashSet<>();
