@@ -41,7 +41,7 @@ public class AdminBViewController extends BuildingModifierController implements 
     @FXML
     private TextField nameFieldNew;
     @FXML
-    private TextField idFieldNew;
+    private TextField updateBuildingField;
     @FXML
     private TextField locationFieldNew;
     @FXML
@@ -74,6 +74,7 @@ public class AdminBViewController extends BuildingModifierController implements 
         getBuildingsButton();
 
 
+
         buildingnameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         buildinglocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
         buildingdescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -86,7 +87,7 @@ public class AdminBViewController extends BuildingModifierController implements 
     /**
      * TODO - Add building using buttons.
      */
-    public void addBuilding(ActionEvent actionEvent) throws IOException {
+    public void addBuilding() throws IOException {
         newBuildingButton();
 
         nameFieldNew.clear();
@@ -94,7 +95,7 @@ public class AdminBViewController extends BuildingModifierController implements 
         descriptionFieldNew.clear();
         timeOpenFieldNew.clear();
         timeClosedFieldNew.clear();
-        idFieldNew.clear();
+        updateBuildingField.clear();
     }
 
     /**
@@ -109,7 +110,7 @@ public class AdminBViewController extends BuildingModifierController implements 
         descriptionFieldNew.clear();
         timeOpenFieldNew.clear();
         timeClosedFieldNew.clear();
-        idFieldNew.clear();
+        updateBuildingField.clear();
     }
 
     /**
@@ -118,7 +119,7 @@ public class AdminBViewController extends BuildingModifierController implements 
     public void deleteBuilding() throws IOException {
         removeBuildingButton();
 
-        idFieldNew.clear();
+        updateBuildingField.clear();
     }
 
     /**

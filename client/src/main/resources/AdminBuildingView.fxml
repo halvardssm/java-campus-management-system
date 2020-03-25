@@ -91,7 +91,7 @@
                   <Font name="System Bold" size="17.0" />
                </font>
             </Text>
-            <TextField fx:id="idFieldNew" layoutX="421.0" layoutY="363.0" prefHeight="31.0" prefWidth="168.0" />
+            <TextField fx:id="updateBuildingField" layoutX="421.0" layoutY="363.0" prefHeight="31.0" prefWidth="168.0" />
             <Text layoutX="362.0" layoutY="384.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID">
                <font>
                   <Font name="System Bold" size="17.0" />

@@ -18,7 +18,7 @@ public class AdminRoomViewController {
      * Goes back to main admin panel.
      */
     @FXML
-    private void switchBack(ActionEvent actionEvent) throws IOException {
+    private void switchBack() throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/AdminPanel.fxml"));
         currentstage.setScene(new Scene(root, 700, 600));
