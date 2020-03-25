@@ -27,31 +27,7 @@
    <left>
       <StackPane prefHeight="300.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" smooth="false" StackPane.alignment="TOP_LEFT">
-               <StackPane.margin>
-                  <Insets left="7.0" top="7.0" />
-               </StackPane.margin>
-               <image>
-                  <Image url="@testimage.jpg" />
-               </image>
-            </ImageView>
-            <Label text="Your Name" StackPane.alignment="CENTER_LEFT">
-               <StackPane.margin>
-                  <Insets left="8.0" top="11.0" />
-               </StackPane.margin>
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label text="User ID" StackPane.alignment="CENTER_LEFT">
-               <StackPane.margin>
-                  <Insets left="8.0" top="78.0" />
-               </StackPane.margin>
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label text="Role in TUDelft" StackPane.alignment="CENTER_LEFT">
+            <Label fx:id="accountRole" text="Role in TUDelft" StackPane.alignment="CENTER_LEFT">
                <StackPane.margin>
                   <Insets left="8.0" top="122.0" />
                </StackPane.margin>
@@ -59,7 +35,7 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label text="E-mail" StackPane.alignment="CENTER_LEFT">
+            <Label fx:id="accountEmail" text="E-mail" StackPane.alignment="CENTER_LEFT">
                <font>
                   <Font size="13.0" />
                </font>
@@ -67,6 +43,22 @@
                   <Insets left="8.0" top="166.0" />
                </StackPane.margin>
             </Label>
+            <Label fx:id="accountName" text="Your Name" StackPane.alignment="CENTER_LEFT">
+               <StackPane.margin>
+                  <Insets left="8.0" top="71.0" />
+               </StackPane.margin>
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="146.0" fitWidth="152.0" pickOnBounds="true" smooth="false" StackPane.alignment="CENTER_LEFT">
+               <StackPane.margin>
+                  <Insets left="22.0" top="-115.0" />
+               </StackPane.margin>
+               <image>
+                  <Image url="@testimage.jpg" />
+               </image>
+            </ImageView>
          </children>
       </StackPane>
    </left>
@@ -74,9 +66,9 @@
       <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="0.0" BorderPane.alignment="CENTER">
+      <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="392.0" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" minHeight="40.0" text="Your Bookings:" AnchorPane.bottomAnchor="260.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="130.0" AnchorPane.topAnchor="0.0">
+            <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" minHeight="40.0" text="Your Bookings:" AnchorPane.bottomAnchor="263.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="175.0" AnchorPane.topAnchor="5.0">
                <font>
                   <Font size="20.0" />
                </font>

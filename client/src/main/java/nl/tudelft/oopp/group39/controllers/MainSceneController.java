@@ -3,11 +3,9 @@ package nl.tudelft.oopp.group39.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -77,6 +75,13 @@ public class MainSceneController {
     public void goToRoomScene() throws IOException {
         UsersDisplay.sceneHandler("/roomScene.fxml");
         changeTopBtn();
+    }
+
+    /**
+     * Doc. TODO Sven
+     */
+    public void goToUserPageScene() throws IOException {
+        UsersDisplay.sceneHandler("/userPage.fxml");
     }
 
     /**
@@ -208,6 +213,15 @@ public class MainSceneController {
                     e.printStackTrace();
                 }
             });
+
+            myacc.setOnAction(event -> {
+                try {
+                    goToUserPageScene();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+
             myaccount.getItems().addAll(myres, myacc, logout);
             if (user.getRole().equals("ADMIN")) {
                 myaccount.getItems().add(admin);
