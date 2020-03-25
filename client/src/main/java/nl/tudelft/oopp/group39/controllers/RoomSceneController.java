@@ -81,6 +81,8 @@ public class RoomSceneController extends MainSceneController {
 
     @FXML
     private Button backButton;
+    @FXML
+    private TextField searchField;
 
     /**
      * Sets up the page to show rooms for selected building.
@@ -116,6 +118,20 @@ public class RoomSceneController extends MainSceneController {
             }
         }
         return maxCap;
+    }
+
+    public void searchRooms() {
+        if (searchField.getText().equals("") || searchField.getText() == null) {
+            if (building != null) {
+                getRooms(building.getId());
+            } else {
+                getAllRooms();
+            }
+        } else {
+            String request = "name=" + searchField.getText();
+            String json = ServerCommunication.getRooms(request);
+            showRooms(json);
+        }
     }
 
     /**

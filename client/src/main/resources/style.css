@@ -258,3 +258,17 @@
     -fx-font-style: italic;
 }
 
+#searchButton {
+    -fx-background-color: none;
+}
+
+#searchField {
+    -fx-text-fill: white;
+    -fx-background-color: white, #00A6D6;
+}
+
+#searchField:focused {
+    -fx-text-fill: white;
+    -fx-background-color: white, #00A6D6;
+}
+

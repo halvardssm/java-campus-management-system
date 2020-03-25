@@ -14,6 +14,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -57,6 +58,10 @@ public class BuildingSceneController extends MainSceneController implements Init
 
     @FXML
     private Hyperlink removeFilters;
+    @FXML
+    private TextField searchField;
+    @FXML
+    private GridPane search;
 
     /**
      * Retrieves buildings from the server and shows them.
@@ -222,6 +227,14 @@ public class BuildingSceneController extends MainSceneController implements Init
                 e.printStackTrace();
             }
         });
+    }
+
+    public void searchBuildings() {
+        if (searchField.getText() != null) {
+            String request = "name=" + searchField.getText();
+            String json = ServerCommunication.getFilteredBuildings(request);
+            showBuildings(json, 0);
+        }
     }
 
     /**

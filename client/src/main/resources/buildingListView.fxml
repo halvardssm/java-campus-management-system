@@ -5,10 +5,12 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
@@ -31,6 +33,17 @@
               <Label id="title" text="BUILDINGS" alignment="BOTTOM_CENTER"/>
           </VBox>
           <Region HBox.hgrow="ALWAYS"/>
+          <GridPane hgap="5" fx:id="search" alignment="CENTER">
+              <TextField fx:id="searchField" GridPane.columnIndex="0"/>
+              <Button fx:id="searchButton" id="searchButton" onAction="#searchBuildings" GridPane.columnIndex="1">
+                  <graphic>
+                      <ImageView fitHeight="20" fitWidth="20">
+                          <Image url="@icons/search-icon.png"/>
+                      </ImageView>
+                  </graphic>
+              </Button>
+          </GridPane>
+
           <VBox alignment="CENTER" fx:id="topBox">
               <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
           </VBox>
