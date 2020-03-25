@@ -11,13 +11,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Slider;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
@@ -87,6 +86,13 @@ public class MainSceneController {
     public void goToRoomScene() throws IOException {
         UsersDisplay.sceneHandler("/roomScene.fxml");
         changeTopBtn();
+    }
+
+    /**
+     * Doc. TODO Sven
+     */
+    public void goToUserPageScene() throws IOException {
+        UsersDisplay.sceneHandler("/userPage.fxml");
     }
 
     /**
