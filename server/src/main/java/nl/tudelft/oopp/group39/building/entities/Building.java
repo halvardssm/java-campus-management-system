@@ -9,13 +9,14 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
+
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.config.AbstractEntity;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
+import nl.tudelft.oopp.group39.room.entities.Room;
 
 @Entity
 @Table(name = Building.TABLE_NAME)
@@ -23,30 +24,27 @@ import nl.tudelft.oopp.group39.reservable.entities.Reservable;
     generator = ObjectIdGenerators.PropertyGenerator.class,
     property = Building.COL_ID
 )
-public class Building {
+public class Building extends AbstractEntity {
     public static final String TABLE_NAME = "buildings";
     public static final String MAPPED_NAME = "building";
-    public static final String COL_ID = "id";
     public static final String COL_OPEN = "open";
     public static final String COL_CLOSED = "closed";
-    public static final String NAME = "name";
-    public static final String LOCATION = "location";
-    public static final String DESC = "description";
+    public static final String COL_NAME = "name";
+    public static final String COL_LOCATION = "location";
+    public static final String COL_DESC = "description";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = COL_ID)
-    private long id;
-    @Column(name = NAME)
+    @Column(name = COL_NAME)
     private String name;
-    @Column(name = LOCATION)
+    @Column(name = COL_LOCATION)
     private String location;
-    @Column(name = DESC)
+    @Column(name = COL_DESC)
     private String description;
     @Column(name = COL_OPEN)
     private LocalTime open;
     @Column(name = COL_CLOSED)
     private LocalTime closed;
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
+    private Set<Room> rooms = new HashSet<>();
     @OneToMany(mappedBy = MAPPED_NAME) //TODO change to reservable id
     private Set<Reservable> reservables = new HashSet<>();
 
@@ -61,6 +59,7 @@ public class Building {
      * @param description description
      * @param open        open
      * @param closed      closed
+     * @param rooms       rooms
      */
     public Building(
         String name,
@@ -68,6 +67,7 @@ public class Building {
         String description,
         LocalTime open,
         LocalTime closed,
+        Set<Room> rooms,
         Set<Reservable> reservables
     ) {
         this.name = name;
@@ -75,15 +75,8 @@ public class Building {
         this.description = description;
         this.open = open;
         this.closed = closed;
+        this.rooms.addAll(initSet(rooms));
         this.reservables.addAll(initSet(reservables));
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -126,6 +119,14 @@ public class Building {
         this.closed = closed;
     }
 
+    public Set<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(Set<Room> rooms) {
+        this.rooms = rooms;
+    }
+
     public Set<Reservable> getReservables() {
         return reservables;
     }
@@ -143,7 +144,7 @@ public class Building {
             return false;
         }
         Building building = (Building) o;
-        return getId() == building.getId()
+        return getId().equals(building.getId())
             && Objects.equals(getName(), building.getName())
             && Objects.equals(getLocation(), building.getLocation())
             && Objects.equals(getDescription(), building.getDescription())
