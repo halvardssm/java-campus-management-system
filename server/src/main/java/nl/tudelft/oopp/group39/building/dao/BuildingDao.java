@@ -71,19 +71,19 @@ public class BuildingDao {
             allPredicates.add(building.in(em.createQuery(recq).getResultList()));
         }
 
-        if (keys.contains(Building.NAME)) {
-            allPredicates.add(cb.like(building.get(Building.NAME),
-                "%" + filters.get(Building.NAME) + "%"));
+        if (keys.contains(Building.COL_NAME)) {
+            allPredicates.add(cb.like(building.get(Building.COL_NAME),
+                "%" + filters.get(Building.COL_NAME) + "%"));
         }
 
-        if (keys.contains(Building.DESC)) {
-            allPredicates.add(cb.like(building.get(Building.DESC),
-                "%" + filters.get(Building.DESC) + "%"));
+        if (keys.contains(Building.COL_DESC)) {
+            allPredicates.add(cb.like(building.get(Building.COL_DESC),
+                "%" + filters.get(Building.COL_DESC) + "%"));
         }
 
-        if (keys.contains(Building.LOCATION)) {
-            allPredicates.add(cb.like(building.get(Building.LOCATION),
-                "%" + filters.get(Building.LOCATION) + "%"));
+        if (keys.contains(Building.COL_LOCATION)) {
+            allPredicates.add(cb.like(building.get(Building.COL_LOCATION),
+                "%" + filters.get(Building.COL_LOCATION) + "%"));
         }
 
         rcq.where(cb.and(allPredicates.toArray(new Predicate[0])));

@@ -14,9 +14,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -26,6 +23,7 @@ import javax.persistence.Table;
 
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.building.entities.Building;
+import nl.tudelft.oopp.group39.config.AbstractEntity;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
@@ -33,37 +31,33 @@ import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 @Entity
 @Table(name = Room.TABLE_NAME)
 @JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class,
+    generator = ObjectIdGenerators.None.class,
     property = Room.COL_ID
 )
-public class Room {
+public class Room extends AbstractEntity {
     public static final String TABLE_NAME = "rooms";
     public static final String MAPPED_NAME = "room";
     public static final String COL_ID = "id";
-    public static final String CAPACITY = "capacity";
-    public static final String ONLY_STAFF = "only_staff";
-    public static final String NAME = "name";
-    public static final String DESCRIPTION = "description";
+    public static final String COL_CAPACITY = "capacity";
+    public static final String COL_ONLY_STAFF = "only_staff";
+    public static final String COL_NAME = "name";
+    public static final String COL_DESCRIPTION = "description";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = COL_ID)
-    private long id;
-    @Column(name = NAME)
+    @Column(name = COL_NAME)
     private String name;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Building.MAPPED_NAME)
     @JsonIgnore
     private Building building;
-    @Column(name = CAPACITY)
+    @Column(name = COL_CAPACITY)
     private int capacity;
-    @Column(name = ONLY_STAFF)
+    @Column(name = COL_ONLY_STAFF)
     private boolean onlyStaff;
-    @Column(name = DESCRIPTION)
+    @Column(name = COL_DESCRIPTION)
     private String description;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
-    @JoinTable(name = TABLE_NAME + "_" + Facility.TABLE_NAME,
+    @JoinTable(name = (TABLE_NAME + "_" + Facility.TABLE_NAME),
         joinColumns = {
             @JoinColumn(name = TABLE_NAME, referencedColumnName = COL_ID,
                 nullable = false, updatable = false)
@@ -112,14 +106,6 @@ public class Room {
         this.description = description;
         this.facilities.addAll(initSet(facilities));
         this.bookings.addAll(initSet(bookings));
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -203,7 +189,7 @@ public class Room {
             return false;
         }
         Room room = (Room) o;
-        return getId() == room.getId()
+        return getId().equals(room.getId())
             && building.equals(room.building)
             && getCapacity() == room.getCapacity()
             && getOnlyStaff() == room.getOnlyStaff()

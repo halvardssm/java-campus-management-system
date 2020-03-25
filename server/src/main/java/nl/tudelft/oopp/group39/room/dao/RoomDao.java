@@ -40,10 +40,10 @@ public class RoomDao {
 
         List<Predicate> allPredicates = new ArrayList<>();
 
-        if (keys.contains(Room.CAPACITY)) {
+        if (keys.contains(Room.COL_CAPACITY)) {
             allPredicates.add(cb.greaterThanOrEqualTo(
-                room.get(Room.CAPACITY),
-                Integer.parseInt(filters.get(Room.CAPACITY))));
+                room.get(Room.COL_CAPACITY),
+                Integer.parseInt(filters.get(Room.COL_CAPACITY))));
         }
 
         if (keys.contains(Room.COL_ID)) {
@@ -52,10 +52,10 @@ public class RoomDao {
                 Long.parseLong(filters.get(Room.COL_ID))));
         }
 
-        if (keys.contains(Room.ONLY_STAFF)) {
+        if (keys.contains(Room.COL_ONLY_STAFF)) {
             allPredicates.add(cb.equal(
-                room.get(Room.ONLY_STAFF),
-                Boolean.parseBoolean(filters.get(Room.ONLY_STAFF))));
+                room.get(Room.COL_ONLY_STAFF),
+                Boolean.parseBoolean(filters.get(Room.COL_ONLY_STAFF))));
         }
 
         if (keys.contains(Building.MAPPED_NAME)) {

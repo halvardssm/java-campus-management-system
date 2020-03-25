@@ -8,17 +8,13 @@ import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.exceptions.BuildingExistsException;
 import nl.tudelft.oopp.group39.building.exceptions.BuildingNotFoundException;
 import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
-import nl.tudelft.oopp.group39.room.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BuildingService {
     @Autowired
-    private RoomRepository roomRepository;
-    @Autowired
     private BuildingRepository buildingRepository;
-
     @Autowired
     private BuildingDao buildingDao;
 
@@ -30,22 +26,21 @@ public class BuildingService {
         return buildingDao.buildingFilter(params);
     }
 
-    public Building readBuilding(long id) throws BuildingNotFoundException {
-        return buildingRepository.findById(id)
-            .orElseThrow(() -> new BuildingNotFoundException((int) id));
+    public Building readBuilding(Integer id) throws BuildingNotFoundException {
+        return buildingRepository.findById(id).orElseThrow(() -> new BuildingNotFoundException(id));
     }
 
     /**
      * Doc. TODO Sven
      */
-    public Building deleteBuilding(long id) throws BuildingNotFoundException {
+    public Building deleteBuilding(Integer id) throws BuildingNotFoundException {
         try {
             Building rf = readBuilding(id);
             buildingRepository.delete(readBuilding(id));
             return rf;
 
         } catch (BuildingNotFoundException e) {
-            throw new BuildingNotFoundException((int) id);
+            throw new BuildingNotFoundException(id);
         }
     }
 
@@ -53,14 +48,7 @@ public class BuildingService {
      * Doc. TODO Sven
      */
     public Building createBuilding(Building newBuilding) {
-        try {
-            Building building = readBuilding((int) newBuilding.getId());
-            throw new BuildingExistsException((int) building.getId());
-
-        } catch (BuildingNotFoundException e) {
-            buildingRepository.save(newBuilding);
-            return newBuilding;
-        }
+        return buildingRepository.save(newBuilding);
     }
 
     /**

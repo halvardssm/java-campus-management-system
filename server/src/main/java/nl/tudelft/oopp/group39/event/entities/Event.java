@@ -33,7 +33,7 @@ public class Event extends AbstractEntity {
     private LocalDate startDate;
     private LocalDate endDate;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = TABLE_NAME + "_" + Room.TABLE_NAME,
+    @JoinTable(name = (TABLE_NAME + "_" + Room.TABLE_NAME),
         joinColumns = {@JoinColumn(name = TABLE_NAME, referencedColumnName = COL_ID)},
         inverseJoinColumns = {
             @JoinColumn(name = Room.TABLE_NAME, referencedColumnName = Room.COL_ID)
