@@ -1,9 +1,8 @@
 package nl.tudelft.oopp.group39.building.services;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import nl.tudelft.oopp.group39.building.dao.BuildingDao;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.exceptions.BuildingExistsException;

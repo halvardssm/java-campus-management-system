@@ -3,6 +3,7 @@ package nl.tudelft.oopp.group39.booking.repositories;
 import java.time.LocalTime;
 import java.util.List;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.user.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,13 +15,13 @@ import org.springframework.stereotype.Repository;
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
     //Returns an array with bookings from a chosen building
-    @Query("SELECT u.id FROM Booking u WHERE u.room.buildingId = :buildingId")
-    int[] filterBookingsOnLocation(@Param("buildingId") int buildingId);
+    @Query("SELECT u.id FROM Booking u WHERE u.room.building = :building")
+    int[] filterBookingsOnLocation(@Param("building") Building building);
 
     //Returns an array with bookings from a chosen room in a chosen building
-    @Query("SELECT u.id FROM Booking u WHERE u.room.buildingId = :buildingId and u.room = :room")
+    @Query("SELECT u.id FROM Booking u WHERE u.room.building = :building and u.room = :room")
     int[] filterBookingsOnLocationAndRoomId(
-        @Param("buildingId") int buildingId,
+        @Param("building") Building building,
         @Param("room") Room room
     );
 
@@ -37,19 +38,19 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     );
 
     //Returns an array with bookings from a certain building with certain start/end-times
-    @Query("SELECT u.id FROM Booking u WHERE u.room.buildingId = :buildingId "
+    @Query("SELECT u.id FROM Booking u WHERE u.room.building = :building "
         + "and u.startTime <= :startTime and u.endTime >= :endTime and u.endTime>=u.startTime")
     int[] filterBookingsOnLocationAndTime(
-        @Param("buildingId") int buildingId,
+        @Param("building") Building building,
         @Param("startTime") LocalTime startTime,
         @Param("endTime") LocalTime endTime
     );
 
     //Returns a list with bookings from a certain building with certain start/end-times
-    @Query("SELECT u FROM Booking u WHERE u.room.buildingId = :buildingId "
+    @Query("SELECT u FROM Booking u WHERE u.room.building = :building "
         + "and u.startTime <= :startTime and u.endTime >= :endTime and u.endTime>=u.startTime")
     List<Integer> filterBookingsOnLocationAndTimeList(
-        @Param("buildingId") int buildingId,
+        @Param("building") Building building,
         @Param("startTime") LocalTime startTime,
         @Param("endTime") LocalTime endTime
     );
