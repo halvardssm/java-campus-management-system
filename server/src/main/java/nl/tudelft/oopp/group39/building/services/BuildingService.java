@@ -3,6 +3,8 @@ package nl.tudelft.oopp.group39.building.services;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import nl.tudelft.oopp.group39.building.dao.BuildingDao;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.exceptions.BuildingExistsException;
 import nl.tudelft.oopp.group39.building.exceptions.BuildingNotFoundException;
@@ -18,38 +20,15 @@ public class BuildingService {
     @Autowired
     private BuildingRepository buildingRepository;
 
+    @Autowired
+    private BuildingDao buildingDao;
+
     /**
      * Doc. TODO Sven
      */
-    public List<Building> filterBuildings(
-        int capacity,
-        String building,
-        String location,
-        LocalTime open,
-        LocalTime closed
-    ) {
-        int[] buildingIds = buildingRepository.filterBuildingsOnLocationAndNameAndTime(
-            building,
-            location,
-            open,
-            closed
-        );
-        List<Long> resBuildingIds = new ArrayList<>();
-        for (int buildingId : buildingIds) {
-            if (roomRepository.getRoomsByBuildingId(buildingId).size() > 0) {
-                int maxCapacity = roomRepository.getMaxRoomCapacityByBuildingId(buildingId);
-                if (capacity <= maxCapacity) {
-                    resBuildingIds.add((long) buildingId);
-                }
-            }
-        }
-        return resBuildingIds.size() > 0
-               ? buildingRepository.getAllBuildingsByIds(resBuildingIds)
-               : new ArrayList<>();
-    }
 
-    public List<Building> listBuildings() {
-        return buildingRepository.findAll();
+    public List<Building> listBuildings(Map<String,String> params) {
+        return buildingDao.buildingFilter(params);
     }
 
     public Building readBuilding(long id) throws BuildingNotFoundException {

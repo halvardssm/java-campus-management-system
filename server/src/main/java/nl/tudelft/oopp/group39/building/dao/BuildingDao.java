@@ -39,16 +39,16 @@ public class BuildingDao {
         List<Predicate> allPredicates = new ArrayList<>();
 
         if (keys.contains(Building.COL_OPEN)) {
-            allPredicates.add(cb.greaterThanOrEqualTo(
+            allPredicates.add(cb.lessThanOrEqualTo(
                 building.get(Building.COL_OPEN),
                 LocalTime.parse(filters.get(Building.COL_OPEN))
             ));
         }
 
         if (keys.contains(Building.COL_CLOSED)) {
-            allPredicates.add(cb.lessThanOrEqualTo(
+            allPredicates.add(cb.greaterThanOrEqualTo(
                 building.get(Building.COL_CLOSED),
-                LocalTime.parse(filters.get(Building.COL_OPEN))
+                LocalTime.parse(filters.get(Building.COL_CLOSED))
             ));
         }
 
