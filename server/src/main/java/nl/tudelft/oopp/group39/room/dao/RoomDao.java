@@ -71,9 +71,9 @@ public class RoomDao {
 
                     TypedQuery<Building> nestq = em.createQuery(bq);
 
-                    List<Building> test = nestq.getResultList();
+                    List<Building> res = nestq.getResultList();
 
-                    p = room.get(key).in(bvals);
+                    p = room.get(key).in(res);
                     break;
                 }
 
