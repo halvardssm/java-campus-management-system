@@ -19,7 +19,7 @@ public class AdminPanel extends Application {
 
         Scene scene = new Scene(root, 700, 600);
 
-        primaryStage.setTitle("Some Name | Admin Panel");
+        primaryStage.setTitle("Admin Panel");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

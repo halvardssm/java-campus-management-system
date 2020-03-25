@@ -37,45 +37,76 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="485.0" fitWidth="700.0" layoutY="-2.0" opacity="0.5" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <ImageView fitHeight="485.0" fitWidth="700.0" layoutY="-2.0" opacity="0.25" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <image>
                   <Image url="@../../../../../../../../TuDelft/download.png" />
                </image>
             </ImageView>
-            <Text layoutX="14.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Buildings" underline="true">
+            <Text layoutX="209.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Buildings" underline="true">
                <font>
                   <Font name="System Bold" size="33.0" />
                </font>
             </Text>
-            <Button fx:id="BAdd" layoutX="495.0" layoutY="37.0" mnemonicParsing="false" text="Add Building">
+            <Button fx:id="buildingAdd" layoutX="599.0" layoutY="335.0" mnemonicParsing="false" onAction="#addBuilding" prefHeight="42.0" prefWidth="100.0" text="Add">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font>
             </Button>
-            <TextField fx:id="BName" layoutX="456.0" layoutY="124.0" prefHeight="31.0" prefWidth="217.0" />
-            <Text layoutX="364.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
-               <font>
-                  <Font size="23.0" />
-               </font>
-            </Text>
-            <Text layoutX="367.0" layoutY="345.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Times:">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </Text>
-            <Text layoutX="357.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address:">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </Text>
-            <TextField fx:id="BTimes" layoutX="456.0" layoutY="321.0" prefHeight="31.0" prefWidth="216.0" />
-            <TextField fx:id="BAddress" layoutX="456.0" layoutY="218.0" prefHeight="31.0" prefWidth="221.0" />
-            <TableView fx:id="BTable" layoutY="58.0" opacity="0.75" prefHeight="426.0" prefWidth="359.0">
+            <TableView fx:id="buildingTable" layoutY="49.0" opacity="0.75" prefHeight="288.0" prefWidth="700.0">
               <columns>
-                <TableColumn fx:id="BNameCol" prefWidth="142.0" text="Name" />
-                <TableColumn fx:id="BAddressCol" prefWidth="215.0" text="Address" />
+                <TableColumn fx:id="buildingnameCol" prefWidth="142.0" text="Name" />
+                <TableColumn fx:id="buildinglocationCol" prefWidth="101.0" text="Address" />
+                  <TableColumn fx:id="buildingDescriptionCol" prefWidth="233.0" text="Description" />
+                  <TableColumn fx:id="buildingOpenTimeCol" prefWidth="117.0" text="Open Time" />
+                  <TableColumn fx:id="buildingCloseTimeCol" prefWidth="106.0" text="Closing Time" />
               </columns>
             </TableView>
+            <TextField fx:id="nameFieldNew" layoutX="96.0" layoutY="351.0" prefHeight="31.0" prefWidth="196.0" />
+            <Text layoutX="13.0" layoutY="374.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Text>
+            <Text layoutX="308.0" layoutY="472.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Closing Time:">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Text>
+            <Text layoutX="5.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address:">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Text>
+            <TextField fx:id="timeClosedFieldNew" layoutX="419.0" layoutY="448.0" prefHeight="31.0" prefWidth="173.0" />
+            <TextField fx:id="locationFieldNew" layoutX="96.0" layoutY="405.0" prefHeight="31.0" prefWidth="196.0" />
+            <Text layoutX="303.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Opening Time:">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Text>
+            <TextField fx:id="timeOpenFieldNew" layoutX="420.0" layoutY="406.0" prefHeight="31.0" prefWidth="170.0" />
+            <TextField fx:id="descriptionFieldNew" layoutX="96.0" layoutY="449.0" prefHeight="31.0" prefWidth="196.0" />
+            <Text layoutY="471.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" wrappingWidth="109.99365234375">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Text>
+            <TextField fx:id="idFieldNew" layoutX="421.0" layoutY="363.0" prefHeight="31.0" prefWidth="168.0" />
+            <Text layoutX="362.0" layoutY="384.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Text>
+            <Button fx:id="buildingUpdate" layoutX="600.0" layoutY="389.0" mnemonicParsing="false" onAction="#updateBuilding" prefHeight="42.0" prefWidth="99.0" text="Update">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Button>
+            <Button fx:id="buildingDelete" layoutX="600.0" layoutY="443.0" mnemonicParsing="false" onAction="#deleteBuilding" prefHeight="42.0" prefWidth="99.0" text="Delete">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </center>

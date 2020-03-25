@@ -24,7 +24,9 @@ public class AdminUListController {
 
     }
 
-
+    /**
+     * Goes back to main admin panel.
+     */
     @FXML
     private void switchBack(ActionEvent actionEvent) throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();

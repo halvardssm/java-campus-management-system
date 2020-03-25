@@ -31,6 +31,7 @@ public class BuildingModifierController extends MainSceneController {
     @FXML
     private TextField updateBuildingField;
 
+
     public void getBuildingsButton() {
         createAlert(ServerCommunication.get(ServerCommunication.building));
     }
@@ -92,7 +93,7 @@ public class BuildingModifierController extends MainSceneController {
     /**
      * Doc. TODO Sven
      */
-    public void removeBuildingButton(ActionEvent actionEvent) {
+    public void removeBuildingButton() {
 
         String id = updateBuildingField.getText();
 
