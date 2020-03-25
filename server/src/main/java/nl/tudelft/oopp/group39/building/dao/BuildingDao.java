@@ -87,7 +87,7 @@ public class BuildingDao {
         }
 
         rcq.where(cb.and(allPredicates.toArray(new Predicate[0])));
-        return (em.createQuery(rcq)).getResultList();
+        return em.createQuery(rcq).getResultList();
     }
 
 }

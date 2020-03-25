@@ -23,9 +23,7 @@ import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 @Table(name = Reservable.TABLE_NAME)
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties(allowSetters = true, value = {Reservable.COL_RESERVATIONS})
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.None.class
-)
+@JsonIdentityInfo(generator = ObjectIdGenerators.None.class)
 public class Reservable extends AbstractEntity {
     public static final String TABLE_NAME = "reservables";
     public static final String MAPPED_NAME = "reservable";

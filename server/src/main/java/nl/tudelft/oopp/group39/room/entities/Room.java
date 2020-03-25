@@ -37,7 +37,6 @@ import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 public class Room extends AbstractEntity {
     public static final String TABLE_NAME = "rooms";
     public static final String MAPPED_NAME = "room";
-    public static final String COL_ID = "id";
     public static final String COL_CAPACITY = "capacity";
     public static final String COL_ONLY_STAFF = "only_staff";
     public static final String COL_NAME = "name";
