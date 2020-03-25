@@ -21,13 +21,17 @@ public class FacilityService {
     private RoomRepository roomRepository;
 
     public Facility readFacility(long id) throws FacilityNotFoundException {
-        return facilityRepository.findById(id).orElseThrow(() -> new FacilityNotFoundException((int) id));
+        return facilityRepository.findById(id)
+            .orElseThrow(() -> new FacilityNotFoundException((int) id));
     }
 
     public List<Facility> listFacilities() {
         return facilityRepository.findAll();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public Facility createFacility(Facility newFacility) {
         try {
             Facility facility = readFacility((int) newFacility.getId());
@@ -38,12 +42,18 @@ public class FacilityService {
         }
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public Facility updateFacility(Facility newFacility, int id) throws FacilityNotFoundException {
         return facilityRepository.findById((long) id)
             .map(facility -> facilityRepository.save(newFacility))
             .orElseThrow(() -> new FacilityNotFoundException(id));
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public Facility deleteFacility(int id) throws FacilityNotFoundException {
         try {
             Facility rf = readFacility(id);

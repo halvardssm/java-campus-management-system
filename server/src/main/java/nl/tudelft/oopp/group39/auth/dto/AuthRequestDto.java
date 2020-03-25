@@ -1,17 +1,17 @@
-package nl.tudelft.oopp.group39.auth.entities;
+package nl.tudelft.oopp.group39.auth.dto;
 
 import java.io.Serializable;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AuthRequest implements Serializable {
+public class AuthRequestDto implements Serializable {
     private String username;
     private String password;
 
-    public AuthRequest() {
+    public AuthRequestDto() {
     }
 
-    public AuthRequest(String username, String password) {
+    public AuthRequestDto(String username, String password) {
         this.username = username;
         this.password = password;
     }

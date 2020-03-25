@@ -1,10 +1,9 @@
 package nl.tudelft.oopp.group39;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-public class CampusManagementApiTest {
+public class CampusManagementApiTest extends AbstractTest {
+
     @Test
     public void contextLoads() {
     }

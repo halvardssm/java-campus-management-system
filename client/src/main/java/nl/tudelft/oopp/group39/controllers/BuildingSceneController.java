@@ -1,19 +1,20 @@
 package nl.tudelft.oopp.group39.controllers;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.models.Building;
 
-import java.io.IOException;
-
-public class BuildingSceneController extends MainSceneController {
+public class BuildingSceneController extends MainSceneController implements Initializable {
 
     @FXML
     private FlowPane flowPane;
@@ -21,28 +22,44 @@ public class BuildingSceneController extends MainSceneController {
     @FXML
     private GridPane newBuilding;
 
-    public void refreshBuildings() {
+    /**
+     * Retrieves buildings from the server and shows them.
+     */
+    public void showBuildings() {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         flowPane.getChildren().clear();
         try {
-            String buildingString = ServerCommunication.getBuildings();
-
-            JsonObject body = ((JsonObject) JsonParser.parseString(buildingString));
-            JsonArray buildingArray = body.getAsJsonArray("body");
-
-            for (JsonElement building : buildingArray) {
+            String buildingString = ServerCommunication.get(ServerCommunication.building);
+            System.out.println(buildingString);
+            ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
+            buildingString = mapper.writeValueAsString(body);
+            Building[] list = mapper.readValue(buildingString, Building[].class);
+            for (Building building : list) {
                 newBuilding = FXMLLoader.load(getClass().getResource("/buildingCell.fxml"));
+                long buildingId = building.getId();
+                String buildingName = building.getName();
+                String address = building.getLocation();
+                String desc = building.getDescription();
+                newBuilding.setOnMouseClicked(e -> {
+                    try {
+                        goToRoomsScene(building);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+
+                });
 
                 Label name = (Label) newBuilding.lookup("#bname");
-                name.setText(((JsonObject) building).get("name").getAsString());
+                name.setText(buildingName);
 
-                String bDetails = ((JsonObject) building).get("location").getAsString()
-                        + "\n" + ((JsonObject) building).get("description").getAsString()
-                        + "\n" + "Max. Capacity"
-                        + "\n" + "Opening times: " + ((JsonObject) building).get("open").getAsString()
-                        + " - " + ((JsonObject) building).get("closed").getAsString();
+                String newDetails = (address
+                    + "\n" + desc
+                    + "\n" + "Max. Capacity"
+                    + "\n" + "Opening times: " + building.getOpen()
+                    + " - " + building.getClosed());
 
                 Label details = (Label) newBuilding.lookup("#bdetails");
-                details.setText(bDetails);
+                details.setText(newDetails);
 
                 flowPane.getChildren().add(newBuilding);
             }
@@ -51,11 +68,24 @@ public class BuildingSceneController extends MainSceneController {
         }
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void alertAllBuildings() {
         try {
-            createAlert("Users shown.",ServerCommunication.getBuildings());
+            createAlert("Users shown.", ServerCommunication.get(ServerCommunication.building));
         } catch (Exception e) {
             createAlert("Error Occurred.");
         }
     }
+
+    /**
+     * Retrieves the buildings when page is loaded.
+     */
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        showBuildings();
+    }
+
+
 }

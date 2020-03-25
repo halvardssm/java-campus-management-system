@@ -1,42 +1,36 @@
 package nl.tudelft.oopp.group39.user.services;
 
-import nl.tudelft.oopp.group39.booking.entities.Booking;
-import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
-class UserServiceTest {
-    Set<Booking> bookings = new HashSet<>();
+import java.util.ArrayList;
+import java.util.List;
+import nl.tudelft.oopp.group39.AbstractTest;
+import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+class UserServiceTest extends AbstractTest {
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",
         "test",
         null,
         Role.STUDENT,
-        bookings
+        null,
+        null
     );
-
-    @Autowired
-    UserService userService;
 
     @BeforeEach
     void setUp() {
-        for (User user : userService.listUsers()) {
-            userService.deleteUser(user.getUsername());
-        }
-
         userService.createUser(testUser);
+    }
+
+    @AfterEach
+    void tearDown() {
+        userService.deleteUser(testUser.getUsername());
+        testUser.setPassword("test");
     }
 
     @Test
@@ -48,36 +42,29 @@ class UserServiceTest {
     }
 
     @Test
-    void createUser() {
-        User user = testUser;
-        user.setUsername("user2");
-        User user2 = userService.createUser(user);
+    void deleteAndCreateUser() {
+        userService.deleteUser(testUser.getUsername());
 
-        assertEquals(user, user2);
+        assertEquals(new ArrayList<>(), userService.listUsers());
+
+        User user = userService.createUser(testUser);
+
+        assertEquals(testUser, user);
     }
 
     @Test
     void readUser() {
-        User user2 = userService.readUser("test");
+        User user = userService.readUser("test");
 
-        assertEquals(testUser, user2);
+        assertEquals(testUser, user);
     }
 
     @Test
     void updateUser() {
-        User user = testUser;
-        user.setEmail("test@tudelft.nl");
-        User user2 = userService.updateUser("test", user);
+        testUser.setEmail("test@tudelft.nl");
+        User user = userService.updateUser("test", testUser);
 
-        assertEquals(user, user2);
-    }
-
-    @Test
-    void deleteUser() {
-        List<User> testUsers = new ArrayList<>();
-        userService.deleteUser("test");
-
-        assertEquals(testUsers, userService.listUsers());
+        assertEquals(testUser, user);
     }
 
     @Test

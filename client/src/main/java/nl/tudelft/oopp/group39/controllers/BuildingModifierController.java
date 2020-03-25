@@ -1,10 +1,10 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import java.time.LocalTime;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
-import java.time.LocalTime;
 
 public class BuildingModifierController extends MainSceneController {
 
@@ -32,9 +32,12 @@ public class BuildingModifierController extends MainSceneController {
     private TextField updateBuildingField;
 
     public void getBuildingsButton() {
-        createAlert(ServerCommunication.getBuildings());
+        createAlert(ServerCommunication.get(ServerCommunication.building));
     }
 
+    /**
+     * Filter. TODO Sven
+     */
     public void getFilteredBuildings() {
         String name = nameField.getText();
         String location = locationField.getText();
@@ -44,9 +47,14 @@ public class BuildingModifierController extends MainSceneController {
 
         String open = getTime(timeOpenField.getText(), true);
         String closed = getTime(timeClosedField.getText(), false);
-        createAlert(ServerCommunication.getFilteredBuildings(name, location, open, closed, capacity));
+        createAlert(
+            ServerCommunication.getFilteredBuildings(name, location, open, closed, capacity)
+        );
     }
 
+    /**
+     * Button. TODO Sven
+     */
     public void newBuildingButton() {
         String name = nameFieldNew.getText();
         String location = locationFieldNew.getText();
@@ -56,6 +64,9 @@ public class BuildingModifierController extends MainSceneController {
         createAlert(ServerCommunication.addBuilding(name, location, desc, open, closed));
     }
 
+    /**
+     * Button. TODO Sven
+     */
     public void updateBuildingButton() {
         String name = nameFieldNew.getText();
         String location = locationFieldNew.getText();
@@ -68,6 +79,9 @@ public class BuildingModifierController extends MainSceneController {
         createAlert(ServerCommunication.updateBuilding(name, location, desc, open, closed, id));
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public String getTime(String time, boolean open) {
         if (open) {
             return time.contentEquals("") ? LocalTime.MAX.toString() : time;
@@ -75,6 +89,9 @@ public class BuildingModifierController extends MainSceneController {
         return time.contentEquals("") ? LocalTime.MIN.toString() : time;
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public void removeBuildingButton(ActionEvent actionEvent) {
 
         String id = updateBuildingField.getText();

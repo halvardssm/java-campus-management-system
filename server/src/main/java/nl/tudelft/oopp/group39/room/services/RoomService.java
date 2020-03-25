@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
@@ -33,6 +35,9 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public Room createRoom(Room newRoom) {
         try {
             Room room = readRoom((int) newRoom.getId());
@@ -45,6 +50,9 @@ public class RoomService {
         }
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public Room updateRoom(Room newRoom, int id) throws RoomNotFoundException {
         return roomRepository.findById((long) id)
             .map(room -> {
@@ -56,18 +64,36 @@ public class RoomService {
             }).orElseThrow(() -> new RoomNotFoundException(id));
     }
 
-    // Method to filter rooms based on capacity, a room being accessible to students or not, the facilities that
-    // should be present (if so their facility ids should be in the facilities array), the building name and a
-    // string of the inputted location
-    public List<Room> filterRooms(int capacity, boolean onlyStaff, int[] facilities, String building, String location, LocalTime open, LocalTime closed) {
-        List<Facility> nFacilities = new ArrayList<>();
+    /**
+     * Doc. TODO Sven
+     * Method to filter rooms.
+     * Based on capacity, a room being accessible to students or not, the facilities that should
+     * be present (if so their facility ids should be in the facilities array), the building name
+     * and a string of the inputted location
+     */
+    public List<Room> filterRooms(
+        int capacity,
+        boolean onlyStaff,
+        int[] facilities,
+        String building,
+        String location,
+        LocalTime open,
+        LocalTime closed
+    ) {
+        List<Facility> newFacilities = new ArrayList<>();
         for (long facility : facilities) {
-            nFacilities.add(facilityService.readFacility(facility));
+            newFacilities.add(facilityService.readFacility(facility));
         }
-        List<Long> resRoomIds = buildingRepository.filterBuildingsOnLocationAndNameAndTimeList(location, building, open, closed);
-        return (resRoomIds.size() > 0 ? roomRepository.filterRooms(capacity, onlyStaff, resRoomIds, nFacilities) : new ArrayList<Room>());
+        List<Long> resRoomIds = buildingRepository
+            .filterBuildingsOnLocationAndNameAndTimeList(location, building, open, closed);
+        return resRoomIds.size() > 0
+               ? roomRepository.filterRooms(capacity, onlyStaff, resRoomIds, newFacilities)
+               : new ArrayList<>();
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public Room deleteRoom(int id) throws RoomNotFoundException {
         try {
             Room rf = readRoom(id);

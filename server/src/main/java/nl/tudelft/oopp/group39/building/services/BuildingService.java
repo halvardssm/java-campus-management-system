@@ -18,18 +18,35 @@ public class BuildingService {
     @Autowired
     private BuildingRepository buildingRepository;
 
-    public List<Building> filterBuildings(int capacity, String building, String location, LocalTime open, LocalTime closed) {
-        int[] buildingIds = buildingRepository.filterBuildingsOnLocationAndNameAndTime(building, location, open, closed);
+    /**
+     * Doc. TODO Sven
+     */
+    public List<Building> filterBuildings(
+        int capacity,
+        String building,
+        String location,
+        LocalTime open,
+        LocalTime closed
+    ) {
+        int[] buildingIds = buildingRepository.filterBuildingsOnLocationAndNameAndTime(
+            building,
+            location,
+            open,
+            closed
+        );
         List<Long> resBuildingIds = new ArrayList<>();
         for (int buildingId : buildingIds) {
-            if (roomRepository.getRoomsByBuildingId(buildingId).size() > 0) {
-                int maxCapacity = roomRepository.getMaxRoomCapacityByBuildingId(buildingId);
+            if (roomRepository.getRoomsByBuildingId(readBuilding(buildingId)).size() > 0) {
+                Building b = readBuilding(buildingId);
+                int maxCapacity = roomRepository.getMaxRoomCapacityByBuildingId(b);
                 if (capacity <= maxCapacity) {
                     resBuildingIds.add((long) buildingId);
                 }
             }
         }
-        return (resBuildingIds.size() > 0 ? buildingRepository.getAllBuildingsByIds(resBuildingIds) : new ArrayList<Building>());
+        return resBuildingIds.size() > 0
+               ? buildingRepository.getAllBuildingsByIds(resBuildingIds)
+               : new ArrayList<>();
     }
 
     public List<Building> listBuildings() {
@@ -37,9 +54,13 @@ public class BuildingService {
     }
 
     public Building readBuilding(long id) throws BuildingNotFoundException {
-        return buildingRepository.findById(id).orElseThrow(() -> new BuildingNotFoundException((int) id));
+        return buildingRepository.findById(id)
+            .orElseThrow(() -> new BuildingNotFoundException((int) id));
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public Building deleteBuilding(long id) throws BuildingNotFoundException {
         try {
             Building rf = readBuilding(id);
@@ -51,6 +72,9 @@ public class BuildingService {
         }
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public Building createBuilding(Building newBuilding) {
         try {
             Building building = readBuilding((int) newBuilding.getId());
@@ -62,6 +86,9 @@ public class BuildingService {
         }
     }
 
+    /**
+     * Doc. TODO Sven
+     */
     public Building updateBuilding(int id, Building newBuilding) throws BuildingNotFoundException {
         return buildingRepository.findById((long) id)
             .map(building -> {

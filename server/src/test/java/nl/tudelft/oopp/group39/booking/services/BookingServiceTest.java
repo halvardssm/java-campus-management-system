@@ -1,99 +1,77 @@
 package nl.tudelft.oopp.group39.booking.services;
 
-import nl.tudelft.oopp.group39.booking.entities.Booking;
-import nl.tudelft.oopp.group39.facility.entities.Facility;
-import nl.tudelft.oopp.group39.room.entities.Room;
-import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import nl.tudelft.oopp.group39.AbstractTest;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-@SpringBootTest
-class BookingServiceTest {
-    Set<Facility> facilities = new HashSet<>();
-    Set<Booking> bookings = new HashSet<>();
-    private final User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.STUDENT,
-        bookings
-    );
-    private final Room testRoom = new Room(
-        1,
-        10,
-        false,
-        "This is a test description",
-        facilities,
-        bookings
-    );
-    LocalDate date = LocalDate.now();
-    LocalTime start = LocalTime.now();
-    LocalTime end = LocalTime.now();
+class BookingServiceTest extends AbstractTest {
+    private final LocalDate date = LocalDate.now();
+    private final LocalTime start = LocalTime.of(4, 20, 42);
+    private final LocalTime end = LocalTime.of(6, 9, 20);
     private final Booking testBooking = new Booking(
         date,
         start,
         end,
-        testUser,
-        testRoom
+        null,
+        null
     );
 
-    @Autowired
-    BookingService bookingService;
+    @BeforeEach
+    void setUp() {
+        Booking booking = bookingService.createBooking(testBooking);
+        testBooking.setId(booking.getId());
+    }
+
+    @AfterEach
+    void tearDown() {
+        bookingService.deleteBooking(testBooking.getId());
+    }
 
     @Test
     void listBookings() {
-        List<Booking> bookings = bookingService.listBookings();
+        List<Booking> bookings = bookingService.listBookings(new HashMap<>());
 
         assertEquals(1, bookings.size());
         assertEquals(testBooking, bookings.get(0));
     }
 
     @Test
-    void createBooking() {
-        Booking booking = testBooking;
-        booking.setId(3);
-        Booking booking2 = bookingService.createBooking(booking);
+    void deleteAndCreateBooking() {
+        bookingService.deleteBooking(testBooking.getId());
 
-        assertEquals(booking, booking2);
+        assertEquals(new ArrayList<>(), bookingService.listBookings(new HashMap<>()));
+
+        Booking booking = bookingService.createBooking(testBooking);
+
+        testBooking.setId(booking.getId());
+
+        assertEquals(testBooking, booking);
     }
 
     @Test
     void readBooking() {
-        Booking booking2 = bookingService.readBooking(3);
+        Booking booking2 = bookingService.readBooking(testBooking.getId());
 
         assertEquals(testBooking, booking2);
     }
 
     @Test
     void updateBooking() {
-        Booking booking = testBooking;
-        booking.setDate(booking.getDate());
-        booking.setStartTime(booking.getStartTime());
-        booking.setEndTime(booking.getEndTime());
-        booking.setUser(booking.getUser());
-        booking.setRoom(booking.getRoom());
-        Booking booking2 = bookingService.updateBooking(booking, 3);
+        testBooking.setDate(date.plusDays(1));
 
-        assertEquals(booking, booking2);
-    }
+        Booking booking = bookingService.updateBooking(testBooking, testBooking.getId());
 
-    @Test
-    void deleteBooking() {
-        List<Booking> testBookings = new ArrayList<>();
-        bookingService.deleteBooking(3);
+        assertEquals(testBooking, booking);
 
-        assertEquals(testBookings, bookingService.listBookings());
+        testBooking.setDate(date);
     }
 }

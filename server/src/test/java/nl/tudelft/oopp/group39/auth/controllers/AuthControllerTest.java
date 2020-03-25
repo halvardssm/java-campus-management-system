@@ -1,53 +1,51 @@
 package nl.tudelft.oopp.group39.auth.controllers;
 
-import com.google.gson.Gson;
-import nl.tudelft.oopp.group39.auth.entities.AuthRequest;
-import nl.tudelft.oopp.group39.booking.entities.Booking;
-import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
-import nl.tudelft.oopp.group39.user.services.UserService;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import java.util.HashSet;
-import java.util.Set;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class AuthControllerTest {
+import com.fasterxml.jackson.databind.ObjectMapper;
+import nl.tudelft.oopp.group39.AbstractControllerTest;
+import nl.tudelft.oopp.group39.auth.dto.AuthRequestDto;
+import nl.tudelft.oopp.group39.auth.exceptions.UnauthorizedException;
+import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private UserService userService;
+class AuthControllerTest extends AbstractControllerTest {
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final User testUser = new User(
+        "test",
+        "test@tudelft.nl",
+        "test",
+        null,
+        Role.ADMIN,
+        null,
+        null
+    );
+
+    @BeforeEach
+    void setUp() {
+        userService.createUser(testUser);
+    }
+
+    @AfterEach
+    void tearDown() {
+        userService.deleteUser(testUser.getUsername());
+    }
 
     @Test
     void createToken() throws Exception {
-        Set<Booking> bookings = new HashSet<>();
-        userService.createUser(new User(
-            "test",
-            "test@tudelft.nl",
-            "test",
-            null,
-            Role.STUDENT,
-            bookings
-        ));
-
-        AuthRequest request = new AuthRequest("test", "test");
-        Gson gson = new Gson();
-        String json = gson.toJson(request);
+        AuthRequestDto request = new AuthRequestDto("test", "test");
+        String json = objectMapper.writeValueAsString(request);
 
         mockMvc.perform(post(AuthController.REST_MAPPING)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json))
             .andExpect(status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.body.token").exists())
             .andExpect(MockMvcResultMatchers.jsonPath("$.body.token").isNotEmpty());
@@ -55,16 +53,15 @@ class AuthControllerTest {
 
     @Test
     void createTokenFailed() throws Exception {
-        AuthRequest request = new AuthRequest("test2", "test");
-        Gson gson = new Gson();
-        String json = gson.toJson(request);
+        AuthRequestDto request = new AuthRequestDto("test2", "test");
+        String json = objectMapper.writeValueAsString(request);
 
         mockMvc.perform(post(AuthController.REST_MAPPING)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(json))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json))
             .andExpect(status().isUnauthorized())
             .andExpect(MockMvcResultMatchers.jsonPath("$.error").exists())
             .andExpect(MockMvcResultMatchers.jsonPath("$.error")
-                .value("Wrong username or password"));
+                           .value(UnauthorizedException.UNAUTHORIZED));
     }
 }

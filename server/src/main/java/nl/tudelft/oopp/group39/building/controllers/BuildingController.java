@@ -1,7 +1,8 @@
 package nl.tudelft.oopp.group39.building.controllers;
 
-import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
+import nl.tudelft.oopp.group39.building.dao.BuildingDao;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
@@ -33,27 +34,33 @@ public class BuildingController {
     @Autowired
     private BuildingService buildingService;
 
-    @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listBuildings(@RequestParam(required = false) Integer capacity, @RequestParam(required = false) String building, @RequestParam(required = false) String location, @RequestParam(required = false) String open, @RequestParam(required = false) String closed) {
-        capacity = capacity == null ? 0 : capacity;
-        LocalTime nOpen = open == null ? LocalTime.MIN : LocalTime.parse(open);
-        LocalTime nClosed = closed == null ? LocalTime.MAX : LocalTime.parse(closed);
-        building = building == null ? "" : building;
-        location = location == null ? "" : location;
-        boolean allEmpty = capacity == 0
-            && building.contentEquals("")
-            && location.contentEquals("")
-            && nOpen.compareTo(LocalTime.MIN) == 0 //opening time is equal to 23:59
-            && nClosed.compareTo(LocalTime.MAX) == 0;
-        List<Building> result = allEmpty ? buildingService.listBuildings() : buildingService.filterBuildings(capacity, building, location, nOpen, nClosed);
+    @Autowired
+    private BuildingDao buildingDao;
 
+    /** TODO Sven.
+     */
+    @GetMapping("")
+    public ResponseEntity<RestResponse<Object>> listBuildings(
+        @RequestParam Map<String, String> params
+    ) {
+        List<Building> result = buildingDao.buildingFilter(params);
         return RestResponse.create(result);
     }
 
+    /**
+     * Create building. TODO Sven
+     *
+     * @param building building
+     * @return building
+     */
     @PostMapping("")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createBuilding(@RequestBody Building building) {
-        return RestResponse.create(buildingService.createBuilding(building), null, HttpStatus.CREATED);
+        return RestResponse.create(
+            buildingService.createBuilding(building),
+            null,
+            HttpStatus.CREATED
+        );
     }
 
     @GetMapping("/{id}")
@@ -64,10 +71,19 @@ public class BuildingController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> updateBuilding(@RequestBody Building updated, @PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> updateBuilding(
+        @RequestBody Building updated,
+        @PathVariable int id
+    ) {
         return RestResponse.create(buildingService.updateBuilding(id, updated));
     }
 
+    /**
+     * Delete building. TODO Sven
+     *
+     * @param id id
+     * @return nothing
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteBuilding(@PathVariable int id) {
         buildingService.deleteBuilding(id);
