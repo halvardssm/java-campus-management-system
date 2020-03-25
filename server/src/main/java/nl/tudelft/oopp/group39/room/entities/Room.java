@@ -3,10 +3,13 @@ package nl.tudelft.oopp.group39.room.entities;
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
+
 import java.util.Objects;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,9 +19,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
@@ -37,11 +43,15 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long buildingId;
     private String name;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = Building.MAPPED_NAME)
+    @JsonIgnore
+    private Building building;
     private int capacity;
     private boolean onlyStaff;
     private String description;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = TABLE_NAME + "_" + Facility.TABLE_NAME,
         joinColumns = {
@@ -68,7 +78,7 @@ public class Room {
     /**
      * Creates a room.
      *
-     * @param buildingId  the id of the building
+     * @param building    the building
      * @param name        name of the room
      * @param capacity    capacity of the room
      * @param onlyStaff   whether the room is only accessible to staff
@@ -77,7 +87,7 @@ public class Room {
      * @param bookings    set of bookings for the room
      */
     public Room(
-        long buildingId,
+        Building building,
         String name,
         int capacity,
         boolean onlyStaff,
@@ -85,7 +95,7 @@ public class Room {
         Set<Facility> facilities,
         Set<Booking> bookings
     ) {
-        this.buildingId = buildingId;
+        this.building = building;
         this.name = name;
         this.capacity = capacity;
         this.onlyStaff = onlyStaff;
@@ -110,12 +120,12 @@ public class Room {
         this.name = name;
     }
 
-    public long getBuilding() {
-        return buildingId;
+    public Building getBuilding() {
+        return building;
     }
 
-    public void setBuilding(long buildingId) {
-        this.buildingId = buildingId;
+    public void setBuilding(Building building) {
+        this.building = building;
     }
 
     public int getCapacity() {
@@ -184,7 +194,7 @@ public class Room {
         }
         Room room = (Room) o;
         return getId() == room.getId()
-            && buildingId == room.buildingId
+            && building.equals(room.building)
             && getCapacity() == room.getCapacity()
             && getOnlyStaff() == room.getOnlyStaff()
             && Objects.equals(getName(), room.getName())

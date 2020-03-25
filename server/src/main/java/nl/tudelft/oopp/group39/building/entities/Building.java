@@ -2,19 +2,23 @@ package nl.tudelft.oopp.group39.building.entities;
 
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
+import nl.tudelft.oopp.group39.room.entities.Room;
 
 @Entity
 @Table(name = Building.TABLE_NAME)
@@ -35,6 +39,8 @@ public class Building {
     private String description;
     private LocalTime open;
     private LocalTime closed;
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
+    private Set<Room> rooms = new HashSet<>();
     @OneToMany(mappedBy = MAPPED_NAME) //TODO change to reservable id
     private Set<Reservable> reservables = new HashSet<>();
 
@@ -49,6 +55,7 @@ public class Building {
      * @param description description
      * @param open        open
      * @param closed      closed
+     * @param rooms       rooms
      */
     public Building(
         String name,
@@ -56,6 +63,7 @@ public class Building {
         String description,
         LocalTime open,
         LocalTime closed,
+        Set<Room> rooms,
         Set<Reservable> reservables
     ) {
         this.name = name;
@@ -63,6 +71,7 @@ public class Building {
         this.description = description;
         this.open = open;
         this.closed = closed;
+        this.rooms.addAll(initSet(rooms));
         this.reservables.addAll(initSet(reservables));
     }
 
@@ -112,6 +121,14 @@ public class Building {
 
     public void setClosed(LocalTime closed) {
         this.closed = closed;
+    }
+
+    public Set<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(Set<Room> rooms) {
+        this.rooms = rooms;
     }
 
     public Set<Reservable> getReservables() {
