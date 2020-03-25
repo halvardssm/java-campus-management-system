@@ -46,6 +46,4 @@ public class LoginController extends MainSceneController {
             return false;
         }
     }
-
-
 }
