@@ -216,6 +216,11 @@ public class BuildingSceneController extends MainSceneController implements Init
             timeClosedPicker.getSelectionModel().clearSelection();
             timeOpenPicker.getSelectionModel().clearSelection();
             checkFiltersSelected();
+            try {
+                toggleFilterBar();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 

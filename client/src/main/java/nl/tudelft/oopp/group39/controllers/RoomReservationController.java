@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -20,6 +21,7 @@ import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Booking;
 import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.models.Room;
+import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 
 public class RoomReservationController extends MainSceneController {
@@ -50,6 +52,7 @@ public class RoomReservationController extends MainSceneController {
 
     private Building building;
     private Room room;
+    private Scene previous;
 
     /**
      * Generates an alert when called.
@@ -72,9 +75,10 @@ public class RoomReservationController extends MainSceneController {
      * @param room     the room you've selected
      * @param building the building of the room you've selected
      */
-    public void setup(Room room, Building building) throws JsonProcessingException {
+    public void setup(Room room, Building building, Scene previous) throws JsonProcessingException {
         this.building = building;
         this.room = room;
+        this.previous = previous;
         titleLabel.setText(room.getName());
         loadTimeslots();
         loadRoom(room);
@@ -350,7 +354,8 @@ public class RoomReservationController extends MainSceneController {
      */
     @FXML
     private void backToRoom() throws IOException {
-        goToRoomsScene(building);
+        // goToRoomsScene(building);
+        UsersDisplay.backToPrevious(previous);
     }
 
 

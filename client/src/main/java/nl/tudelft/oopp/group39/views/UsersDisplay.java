@@ -16,7 +16,7 @@ public class UsersDisplay extends Application {
         launch(args);
     }
 
-    private static Stage window;
+    public static Stage window;
     private static Parent root;
     private static int width = 700;
     private static int height = 600;
@@ -46,6 +46,11 @@ public class UsersDisplay extends Application {
         window.setScene(new Scene(root, previous.getWidth(), previous.getHeight()));
 
         return loader.getController();
+    }
+
+    @FXML
+    public static void backToPrevious(Scene previous) {
+        window.setScene(previous);
     }
 
 

@@ -3,6 +3,7 @@ package nl.tudelft.oopp.group39.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
@@ -134,11 +135,11 @@ public class MainSceneController {
      * @param building building of chosen room
      * @throws IOException throws an IOException
      */
-    public void goToReservationScene(Room room, Building building) throws IOException {
+    public void goToReservationScene(Room room, Building building, Scene previous) throws IOException {
         RoomReservationController controller =
             (RoomReservationController) UsersDisplay.sceneControllerHandler(
                 "/roomReservation.fxml");
-        controller.setup(room, building);
+        controller.setup(room, building, previous);
         controller.changeTopBtn();
     }
 

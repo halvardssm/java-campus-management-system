@@ -23,6 +23,7 @@ import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.models.Facility;
 import nl.tudelft.oopp.group39.models.Room;
+import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 public class RoomSceneController extends MainSceneController {
 
@@ -188,7 +189,7 @@ public class RoomSceneController extends MainSceneController {
                     newRoom = FXMLLoader.load(getClass().getResource("/roomCell.fxml"));
                     newRoom.setOnMouseClicked(e -> {
                         try {
-                            goToReservationScene(room, room.getBuildingObject());
+                            goToReservationScene(room, room.getBuildingObject(), UsersDisplay.window.getScene());
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
@@ -360,6 +361,11 @@ public class RoomSceneController extends MainSceneController {
                 facilityBox.setSelected(false);
             }
             checkFiltersSelected();
+            try {
+                toggleFilterBar();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 
