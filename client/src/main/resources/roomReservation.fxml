@@ -19,49 +19,57 @@
     <top>
         <HBox fx:id="topbar" styleClass="bar" spacing="10">
             <padding>
-                <Insets top="12" right="15" bottom="8" left="15"/>
+                <Insets top="10" right="15" bottom="10" left="15"/>
             </padding>
-            <Button onAction="#toggleSidebar" id="menubtn" alignment="CENTER">
-                <graphic>
-                    <ImageView fitHeight="30" fitWidth="30">
-                        <Image url="@icons/menu-icon.png"/>
-                    </ImageView>
-                </graphic>
-            </Button>
-            <Label id="title" fx:id="titleLabel" alignment="CENTER"/>
+            <VBox alignment="CENTER">
+                <Button onAction="#toggleSidebar" id="menubtn" alignment="CENTER">
+                    <graphic>
+                        <ImageView fitHeight="30" fitWidth="30">
+                            <Image url="@icons/menu-icon.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </VBox>
+            <VBox alignment="CENTER">
+                <Label id="title" fx:id="titleLabel" alignment="BOTTOM_CENTER"/>
+            </VBox>
             <Region HBox.hgrow="ALWAYS"/>
-            <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
+            <VBox alignment="CENTER" fx:id="topBox">
+                <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
+            </VBox>
         </HBox>
     </top>
     <center>
-        <VBox fx:id="roomInfo" BorderPane.alignment="CENTER" spacing="10">
-            <padding>
-                <Insets top="30" right="15" bottom="8" left="30"/>
-            </padding>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
-                       preserveRatio="true"
-                       scaleX="1.1" scaleY="1.1">
-                <Image url="@testimage.jpg"/>
-            </ImageView>
-            <Label fx:id="roomName" id="roomRName" text="Room Name"/>
-            <Label fx:id="roomDetails" id="roomRDetails" text="Description:&#10;Capacity:&#10;Facilities:"/>
-        </VBox>
+        <HBox spacing="20">
+            <VBox fx:id="roomInfo" BorderPane.alignment="CENTER" spacing="10">
+                <padding>
+                    <Insets top="30" right="15" bottom="8" left="30"/>
+                </padding>
+                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <Image url="@testimage.jpg"/>
+                </ImageView>
+                <Label fx:id="roomName" id="roomRName" text="Room Name"/>
+                <Label fx:id="roomDetails" id="roomRDetails" text="Description:&#10;Capacity:&#10;Facilities:"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <GridPane hgap="20" vgap="20">
+                <padding>
+                    <Insets top="30" right="50" bottom="8" left="10"/>
+                </padding>
+                <Label text="Pick a date: " id="text" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                <DatePicker fx:id="date" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                <Label text="From: " id="text" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                <ComboBox fx:id="fromTime" prefWidth="80.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                <Label text="To: " id="text" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                <ComboBox fx:id="toTime" prefWidth="80.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                <Label fx:id="onlyStaff" id="onlyStaff" GridPane.columnIndex="0" GridPane.rowIndex="4"
+                       GridPane.columnSpan="2"/>
+                <Button text="Reserve Room" id="reserveButton" fx:id="reserveButton" mnemonicParsing="false"
+                        GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.columnSpan="2"/>
+            </GridPane>
+        </HBox>
     </center>
-    <right>
-        <GridPane hgap="20" vgap="20">
-            <padding>
-                <Insets top="30" right="50" bottom="8" left="10"/>
-            </padding>
-            <Label text="Pick a date: " id="text" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <DatePicker fx:id="date" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-            <Label text="From: " id="text" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <ComboBox fx:id="fromTime" prefWidth="80.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-            <Label text="To: " id="text" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <ComboBox fx:id="toTime" prefWidth="80.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-            <Button text="Reserve Room" id="reserveButton" fx:id="reserveButton" mnemonicParsing="false"
-                    GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-        </GridPane>
-    </right>
     <left>
         <VBox fx:id="sidebar" id="sidebar">
         </VBox>
@@ -69,9 +77,12 @@
     <bottom>
         <HBox styleClass="bar" spacing="10">
             <padding>
-                <Insets top="12" right="15" bottom="8" left="15"/>
+                <Insets top="10" right="15" bottom="10" left="10"/>
             </padding>
-            <Button id="backButton" fx:id="backButton" mnemonicParsing="false" onAction="#backToRoom" text="◀ BACK"/>
+            <VBox alignment="CENTER">
+                <Button id="backButton" fx:id="backButton" mnemonicParsing="false" onAction="#backToRoom"
+                        text="◀ BACK"/>
+            </VBox>
         </HBox>
     </bottom>
     <stylesheets>

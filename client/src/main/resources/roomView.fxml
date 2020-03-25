@@ -32,7 +32,7 @@
                 <Label id="title" text="ROOMS" alignment="BOTTOM_CENTER"/>
             </VBox>
             <Region HBox.hgrow="ALWAYS"/>
-            <VBox alignment="CENTER">
+            <VBox alignment="CENTER" fx:id="topBox">
                 <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
             </VBox>
         </HBox>
@@ -44,8 +44,12 @@
         <VBox>
             <HBox>
                 <padding>
-                    <Insets top="10" right="40" left="105"/>
+                    <Insets top="10" right="40" left="30"/>
                 </padding>
+                <VBox alignment="CENTER" fx:id="goBack">
+                    <Button id="backBtn" fx:id="backButton" mnemonicParsing="false" onAction="#goToBuildingScene"
+                            text="◀ BACK"/>
+                </VBox>
                 <Region HBox.hgrow="ALWAYS"/>
                 <VBox fx:id="buildingInfo" alignment="CENTER" GridPane.halignment="CENTER"
                       GridPane.columnIndex="0"/>

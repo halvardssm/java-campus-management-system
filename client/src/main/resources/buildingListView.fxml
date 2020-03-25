@@ -31,7 +31,7 @@
               <Label id="title" text="BUILDINGS" alignment="BOTTOM_CENTER"/>
           </VBox>
           <Region HBox.hgrow="ALWAYS"/>
-          <VBox alignment="CENTER">
+          <VBox alignment="CENTER" fx:id="topBox">
               <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
           </VBox>
       </HBox>

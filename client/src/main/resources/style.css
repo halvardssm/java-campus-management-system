@@ -53,12 +53,14 @@
     -fx-font-weight: bold;
 }
 
-#backbtn {
+#backBtn {
     -fx-background-color: none;
-    -fx-font-size: 18;
-    -fx-font-weight: bold;
-    -fx-text-fill: white;
-    -fx-padding: 0;
+    -fx-font-size: 14;
+    -fx-padding: 7 15;
+}
+
+#backBtn:hover {
+    -fx-background-color: rgba(106, 123, 127, 0.18);
 }
 
 #loginbtn {
@@ -166,7 +168,7 @@
 }
 
 #orderbtn {
-    -fx-pref-width: 200;
+    -fx-pref-width: 300;
     -fx-pref-height: 50;
     -fx-background-color: #00A6D6;
     -fx-text-fill: white;
@@ -191,9 +193,13 @@
 
 #backButton {
     -fx-background-color: none;
-    -fx-font-size: 20;
+    -fx-font-size: 16;
     -fx-text-fill: white;
-    -fx-padding: 0;
+    -fx-padding: 5 15;
+}
+
+#backButton:hover {
+    -fx-background-color: #007ba0;
 }
 
 #text {
@@ -246,5 +252,9 @@
 #filterBtn {
     -fx-padding: 7 20;
     -fx-font-size: 14;
+}
+
+#onlyStaff {
+    -fx-font-style: italic;
 }
 

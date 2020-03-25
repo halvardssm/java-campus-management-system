@@ -49,6 +49,8 @@ public class RoomReservationController extends MainSceneController {
     private VBox roomInfo;
     @FXML
     private Label titleLabel;
+    @FXML
+    private Label onlyStaff;
 
     private Building building;
     private Room room;
@@ -281,12 +283,19 @@ public class RoomReservationController extends MainSceneController {
         String roomDescription = room.getDescription();
         int roomCapacity = room.getCapacity();
         String roomFacilities = room.facilitiesToString();
-
         roomName.setText(name);
-
         roomDetails.setText(roomDescription
             + "\n" + "Capacity: " + roomCapacity
             + "\n" + "Facilities: " + roomFacilities);
+        if (room.isOnlyStaff()) {
+            onlyStaff.setText("This room can only booked by a staff member");
+            reserveButton.setDisable(true);
+            if (loggedIn) {
+                if (!user.getRole().equals("STUDENT")) {
+                    reserveButton.setDisable(false);
+                }
+            }
+        }
     }
 
     /**

@@ -76,6 +76,12 @@ public class RoomSceneController extends MainSceneController {
     @FXML
     private Hyperlink removeFilters;
 
+    @FXML
+    private VBox goBack;
+
+    @FXML
+    private Button backButton;
+
     /**
      * Sets up the page to show rooms for selected building.
      *
@@ -95,6 +101,7 @@ public class RoomSceneController extends MainSceneController {
         getAllRooms();
         maxCapacity = getMaxCapacity();
         getFaclities();
+        goBack.getChildren().remove(backButton);
     }
 
     public int getMaxCapacity() throws JsonProcessingException {

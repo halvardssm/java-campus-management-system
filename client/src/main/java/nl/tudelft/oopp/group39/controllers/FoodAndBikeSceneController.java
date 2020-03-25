@@ -20,6 +20,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -37,7 +38,7 @@ public class FoodAndBikeSceneController extends MainSceneController {
     @FXML
     protected ComboBox<Label> buildinglist;
     @FXML
-    private VBox itemlist;
+    private FlowPane itemlist;
     @FXML
     private VBox cartlist;
     @FXML

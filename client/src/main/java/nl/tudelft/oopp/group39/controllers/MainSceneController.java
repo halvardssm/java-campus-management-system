@@ -10,7 +10,6 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
@@ -35,7 +34,7 @@ public class MainSceneController {
     protected Button topbtn;
 
     @FXML
-    protected HBox topbar;
+    protected VBox topBox;
 
     /**
      * Doc. TODO Sven
@@ -193,10 +192,6 @@ public class MainSceneController {
      * Changes the login button when logged in.
      */
     public void changeTopBtn() {
-        System.out.println(topbtn);
-        System.out.println(topbar);
-        System.out.println(loggedIn);
-
         if (loggedIn) {
             MenuButton myaccount = new MenuButton(user.getUsername());
             MenuItem myres = new MenuItem("My Reservations");
@@ -214,8 +209,8 @@ public class MainSceneController {
             if (user.getRole().equals("ADMIN")) {
                 myaccount.getItems().add(admin);
             }
-            topbar.getChildren().add(myaccount);
-            topbar.getChildren().remove(topbtn);
+            topBox.getChildren().add(myaccount);
+            topBox.getChildren().remove(topbtn);
         } else {
             topbtn.setText("Login");
             topbtn.setOnAction(e -> {
