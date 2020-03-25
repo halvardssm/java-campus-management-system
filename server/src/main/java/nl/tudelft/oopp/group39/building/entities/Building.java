@@ -71,7 +71,7 @@ public class Building {
         this.description = description;
         this.open = open;
         this.closed = closed;
-        this.rooms = rooms;
+        this.rooms.addAll(initSet(rooms));
         this.reservables.addAll(initSet(reservables));
     }
 
