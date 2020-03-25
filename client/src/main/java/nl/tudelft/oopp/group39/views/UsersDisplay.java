@@ -47,7 +47,6 @@ public class UsersDisplay extends Application {
         return loader.getController();
     }
 
-
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader();

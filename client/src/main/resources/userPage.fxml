@@ -19,7 +19,7 @@
                <font>
                   <Font size="25.0" />
                </font></Label>
-            <Button layoutX="252.0" layoutY="24.0" mnemonicParsing="false" onAction="#refreshBuildings2" text="Add room in the cell" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="12.0" />
+            <Button layoutX="252.0" layoutY="24.0" mnemonicParsing="false" onAction="#showBookings" text="Add room in the cell" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="12.0" />
          <BorderPane.margin>
             <Insets />
          </BorderPane.margin></AnchorPane>

@@ -30,7 +30,7 @@ public class BuildingSceneController extends MainSceneController implements Init
         flowPane.getChildren().clear();
         try {
             String buildingString = ServerCommunication.get(ServerCommunication.building);
-            System.out.println(buildingString);
+            System.out.println(buildingString); //This is not necessary right?
             ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
             buildingString = mapper.writeValueAsString(body);
             Building[] list = mapper.readValue(buildingString, Building[].class);
@@ -86,6 +86,4 @@ public class BuildingSceneController extends MainSceneController implements Init
     public void initialize(URL location, ResourceBundle resources) {
         showBuildings();
     }
-
-
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="136.0" prefWidth="338.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.UserPageController">
+   <children>
+      <Label fx:id="rName" layoutX="23.0" layoutY="24.0" style="-fx-underline: true;" text="Room Name">
+         <font>
+            <Font size="19.0" />
+         </font></Label>
+      <Label fx:id="rDate" layoutX="23.0" layoutY="68.0" text="Date: Starting Time" />
+      <Label fx:id="rDuration" layoutX="23.0" layoutY="98.0" text="Duration" />
+   </children>
+</AnchorPane>
