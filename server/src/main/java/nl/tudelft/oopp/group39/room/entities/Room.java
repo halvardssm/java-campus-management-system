@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -33,14 +34,25 @@ public class Room {
     public static final String TABLE_NAME = "rooms";
     public static final String MAPPED_NAME = "room";
     public static final String COL_ID = "id";
+    public static final String BUILDING_ID = "building_id";
+    public static final String CAPACITY = "capacity";
+    public static final String ONLY_STAFF = "only_staff";
+    public static final String NAME = "name";
+    public static final String DESCRIPTION = "description";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = COL_ID)
     private long id;
+    @Column(name = BUILDING_ID)
     private long buildingId;
+    @Column(name = NAME)
     private String name;
+    @Column(name = CAPACITY)
     private int capacity;
+    @Column(name = ONLY_STAFF)
     private boolean onlyStaff;
+    @Column(name = DESCRIPTION)
     private String description;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(name = TABLE_NAME + "_" + Facility.TABLE_NAME,
