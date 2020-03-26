@@ -3,13 +3,10 @@ package nl.tudelft.oopp.group39.room.entities;
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
-
 import java.util.Objects;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +17,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.config.AbstractEntity;
@@ -39,7 +35,7 @@ public class Room extends AbstractEntity {
     public static final String MAPPED_NAME = "room";
     public static final String COL_ID = "id";
     public static final String COL_CAPACITY = "capacity";
-    public static final String COL_ONLY_STAFF = "only_staff";
+    public static final String COL_ONLY_STAFF = "onlyStaff";
     public static final String COL_NAME = "name";
     public static final String COL_DESCRIPTION = "description";
 
@@ -47,7 +43,6 @@ public class Room extends AbstractEntity {
     private String name;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Building.MAPPED_NAME)
-    @JsonIgnore
     private Building building;
     @Column(name = COL_CAPACITY)
     private int capacity;

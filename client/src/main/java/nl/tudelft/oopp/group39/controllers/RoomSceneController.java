@@ -14,8 +14,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -36,6 +38,8 @@ public class RoomSceneController extends MainSceneController {
     private List<Facility> facilities = new ArrayList<>();
     private List<Integer> selectedFacilities = new ArrayList<>();
     private int selectedCapacity = 0;
+    private ToggleGroup availability;
+    private String selectedAvailability = "none";
 
     @FXML
     public TextField roomBuildingIdField;
@@ -83,6 +87,9 @@ public class RoomSceneController extends MainSceneController {
     private Button backButton;
     @FXML
     private TextField searchField;
+    @FXML
+    private VBox availabilityPicker;
+
 
     /**
      * Sets up the page to show rooms for selected building.
@@ -286,6 +293,7 @@ public class RoomSceneController extends MainSceneController {
                     facilityBox.setSelected(true);
                 }
             }
+            createStaffOnly();
             filterBar.getChildren().add(filterBarTemplate);
             filterBarShown = true;
         } else {
@@ -318,6 +326,36 @@ public class RoomSceneController extends MainSceneController {
         facilitiesPicker.getChildren().addAll(facilityBoxes);
     }
 
+    public void createStaffOnly() {
+        availabilityPicker = (VBox) filterBarTemplate.lookup("#availabilityPicker");
+        availability = new ToggleGroup();
+        RadioButton staffOnly = new RadioButton("Staff only");
+        staffOnly.setId("true");
+        staffOnly.setOnAction(event -> checkFiltersSelected());
+        RadioButton everyone = new RadioButton("Students and staff");
+        everyone.setId("false");
+        everyone.setOnAction(event -> checkFiltersSelected());
+        RadioButton showAll = new RadioButton("Show all");
+        showAll.setId("none");
+        showAll.setOnAction(event -> checkFiltersSelected());
+        staffOnly.setToggleGroup(availability);
+        everyone.setToggleGroup(availability);
+        showAll.setToggleGroup(availability);
+        if (!filtered) {
+            showAll.setSelected(true);
+        } else {
+            if (selectedAvailability.equals("true")) {
+                staffOnly.setSelected(true);
+            } else if (selectedAvailability.equals("false")) {
+                everyone.setSelected(true);
+            } else {
+                showAll.setSelected(true);
+            }
+        }
+
+        availabilityPicker.getChildren().addAll(staffOnly, everyone, showAll);
+    }
+
     public void filterRooms() {
         int capacity = (int) capacityPicker.getValue();
         String faciltiesString = "";
@@ -334,17 +372,24 @@ public class RoomSceneController extends MainSceneController {
                 faciltiesString = faciltiesString + selectedFacilities.get(i) + ",";
             }
         }
+        RadioButton selected = (RadioButton) availability.getSelectedToggle();
+        String onlyStaff = selected.getId();
+        System.out.println(onlyStaff);
         System.out.println(faciltiesString);
         String request = "capacity=" + capacity;
         if (!faciltiesString.equals("")) {
             request = request + "&facilities=" + faciltiesString;
         }
+        if (!onlyStaff.equals("none")) {
+            request = request + "&onlyStaff=" + onlyStaff;
+        }
         if (building != null) {
-            request = request + "&buildingId=" + building.getId();
+            request = request + "&building=" + building.getId();
         }
         String json = ServerCommunication.getRooms(request);
         showRooms(json);
         selectedCapacity = capacity;
+        selectedAvailability = onlyStaff;
         filtered = true;
         addRemoveFilters();
     }
@@ -356,7 +401,8 @@ public class RoomSceneController extends MainSceneController {
                 facilitySelected = true;
             }
         }
-        if ((int) capacityPicker.getValue() != 0 || facilitySelected) {
+        RadioButton selected = (RadioButton) availability.getSelectedToggle();
+        if ((int) capacityPicker.getValue() != 0 || facilitySelected || !selected.getId().equals(selectedAvailability)) {
             filterBtn = (Button) filterBarTemplate.lookup("#filterBtn");
             filterBtn.setDisable(false);
             filterBtn.setOnAction(event -> {

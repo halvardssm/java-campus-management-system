@@ -15,7 +15,10 @@
     <Label fx:id="capacity" text="Capacity: 0"/>
     <Slider fx:id="capacityPicker"/>
     <Label text="Facilities:"/>
-    <VBox fx:id="facilitiesPicker"/>
+    <VBox fx:id="facilitiesPicker" spacing="5"/>
+    <Label text="Available for:"/>
+    <VBox fx:id="availabilityPicker" spacing="5"/>
+
     <Button fx:id="filterBtn" id="filterBtn" styleClass="buttons" text="Filter" disable="true"/>
     <Hyperlink fx:id="removeFilters" id="removeFilters"/>
 </VBox>

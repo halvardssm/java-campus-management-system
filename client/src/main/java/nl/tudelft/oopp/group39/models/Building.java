@@ -78,14 +78,19 @@ public class Building {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String roomString = ServerCommunication.getRooms(id);
         ArrayNode body = (ArrayNode) mapper.readTree(roomString).get("body");
-        roomString = mapper.writeValueAsString(body);
-        Room[] rooms = mapper.readValue(roomString, Room[].class);
-        int maxCapacity = rooms[0].getCapacity();
-        for (Room room : rooms) {
-            if (room.getCapacity() > maxCapacity) {
-                maxCapacity = room.getCapacity();
+        if (body.isEmpty()) {
+            return 0;
+        } else {
+            roomString = mapper.writeValueAsString(body);
+            Room[] rooms = mapper.readValue(roomString, Room[].class);
+            int maxCapacity = rooms[0].getCapacity();
+            for (Room room : rooms) {
+                if (room.getCapacity() > maxCapacity) {
+                    maxCapacity = room.getCapacity();
+                }
             }
+            return maxCapacity;
         }
-        return maxCapacity;
+
     }
 }

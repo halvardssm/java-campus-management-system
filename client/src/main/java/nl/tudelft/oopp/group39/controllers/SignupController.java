@@ -37,11 +37,12 @@ public class SignupController extends MainSceneController {
         String netID = netIdField.getText();
         String password = passwordField.getText();
         String confirmpassword = confirmpasswordField.getText();
-        String role = getRole(email);
-        User user = new User(netID, email, password, null, role);
+
         if (checkEmpty(email, netID, password, confirmpassword)
             && isValid(email)
             && checkPwd(password, confirmpassword)) {
+            String role = getRole(email);
+            User user = new User(netID, email, password, null, role);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Sign up");
             alert.setHeaderText(null);

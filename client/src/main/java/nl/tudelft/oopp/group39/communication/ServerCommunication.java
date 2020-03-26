@@ -74,7 +74,7 @@ public class ServerCommunication {
     public static String getRooms(long buildingId) {
         HttpRequest request = HttpRequest.newBuilder()
             .GET()
-            .uri(URI.create(url + "room?buildingId=" + buildingId))
+            .uri(URI.create(url + "room?building=" + buildingId))
             .build();
         return httpRequest(request);
     }

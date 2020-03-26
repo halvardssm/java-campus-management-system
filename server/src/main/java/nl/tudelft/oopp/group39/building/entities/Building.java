@@ -3,13 +3,13 @@ package nl.tudelft.oopp.group39.building.entities;
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Column;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -44,6 +44,7 @@ public class Building extends AbstractEntity {
     @Column(name = COL_CLOSED)
     private LocalTime closed;
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Room> rooms = new HashSet<>();
     @OneToMany(mappedBy = MAPPED_NAME) //TODO change to reservable id
     private Set<Reservable> reservables = new HashSet<>();

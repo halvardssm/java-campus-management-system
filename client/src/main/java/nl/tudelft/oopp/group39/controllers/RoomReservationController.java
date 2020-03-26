@@ -363,7 +363,6 @@ public class RoomReservationController extends MainSceneController {
      */
     @FXML
     private void backToRoom() throws IOException {
-        // goToRoomsScene(building);
         UsersDisplay.backToPrevious(previous);
     }
 
