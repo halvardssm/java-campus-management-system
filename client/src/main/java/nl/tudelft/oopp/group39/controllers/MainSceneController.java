@@ -134,7 +134,11 @@ public class MainSceneController {
      * @param building building of chosen room
      * @throws IOException throws an IOException
      */
-    public void goToReservationScene(Room room, Building building, Scene previous) throws IOException {
+    public void goToReservationScene(
+        Room room,
+        Building building,
+        Scene previous
+    ) throws IOException {
         RoomReservationController controller =
             (RoomReservationController) UsersDisplay.sceneControllerHandler(
                 "/roomReservation.fxml");
@@ -272,6 +276,12 @@ public class MainSceneController {
         }
     }
 
+    /**
+     * Sets the capacity Slider for filtering in rooms and buildings.
+     *
+     * @param capacityPicker the Slider with which you can select the capacity
+     * @param max            the max capacity that can be selected
+     */
     public void setCapacityPicker(Slider capacityPicker, int max) {
         capacityPicker.setMin(0);
         capacityPicker.setMax(max);

@@ -73,6 +73,12 @@ public class Building {
         return closed;
     }
 
+    /**
+     * Finds the max capacity of the building.
+     *
+     * @return int of max capacity of building
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public int getMaxCapacity() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

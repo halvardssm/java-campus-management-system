@@ -95,6 +95,7 @@ public class RoomSceneController extends MainSceneController {
      * Sets up the page to show rooms for selected building.
      *
      * @param building where the rooms are located
+     * @throws JsonProcessingException when there is a processing exception
      */
     public void setup(Building building) throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -105,6 +106,11 @@ public class RoomSceneController extends MainSceneController {
         getFaclities();
     }
 
+    /**
+     * Sets up the page to show all rooms.
+     *
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public void setup() throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         getAllRooms();
@@ -113,6 +119,12 @@ public class RoomSceneController extends MainSceneController {
         goBack.getChildren().remove(backButton);
     }
 
+    /**
+     * Finds the max capacity of all the rooms.
+     *
+     * @return int of max capacity of all the rooms
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public int getMaxCapacity() throws JsonProcessingException {
         String roomString = ServerCommunication.get(ServerCommunication.room);
         ArrayNode body = (ArrayNode) mapper.readTree(roomString).get("body");
@@ -127,6 +139,9 @@ public class RoomSceneController extends MainSceneController {
         return maxCap;
     }
 
+    /**
+     * Searches the rooms.
+     */
     public void searchRooms() {
         if (searchField.getText().equals("") || searchField.getText() == null) {
             if (building != null) {
@@ -182,13 +197,6 @@ public class RoomSceneController extends MainSceneController {
     /**
      * Doc. TODO Sven
      */
-    public void getRoomsButton() {
-        createAlert(ServerCommunication.get(ServerCommunication.room));
-    }
-
-    /**
-     * Doc. TODO Sven
-     */
     public void deleteRoomButton(ActionEvent actionEvent) {
         String id = updateRoomField.getText();
 
@@ -219,7 +227,11 @@ public class RoomSceneController extends MainSceneController {
                     newRoom = FXMLLoader.load(getClass().getResource("/roomCell.fxml"));
                     newRoom.setOnMouseClicked(e -> {
                         try {
-                            goToReservationScene(room, room.getBuildingObject(), UsersDisplay.window.getScene());
+                            goToReservationScene(
+                                room,
+                                room.getBuildingObject(),
+                                UsersDisplay.window.getScene()
+                            );
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
@@ -274,6 +286,11 @@ public class RoomSceneController extends MainSceneController {
         buildingInfo.getChildren().addAll(buildingName, buildingAddress);
     }
 
+    /**
+     * Toggles the filter bar.
+     *
+     * @throws IOException when there is an io exception
+     */
     public void toggleFilterBar() throws IOException {
         if (!filterBarShown) {
             filterBarTemplate = FXMLLoader.load(getClass().getResource("/roomFilterBar.fxml"));
@@ -289,7 +306,8 @@ public class RoomSceneController extends MainSceneController {
                 addRemoveFilters();
                 capacityPicker.setValue(selectedCapacity);
                 for (int selectedFacility : selectedFacilities) {
-                    CheckBox facilityBox = (CheckBox) filterBarTemplate.lookup("#" + selectedFacility);
+                    CheckBox facilityBox =
+                        (CheckBox) filterBarTemplate.lookup("#" + selectedFacility);
                     facilityBox.setSelected(true);
                 }
             }
@@ -302,6 +320,11 @@ public class RoomSceneController extends MainSceneController {
         }
     }
 
+    /**
+     * Retrieves all facilities.
+     *
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public void getFaclities() throws JsonProcessingException {
         String facilitiesString = ServerCommunication.get(ServerCommunication.facility);
         ArrayNode body = (ArrayNode) mapper.readTree(facilitiesString).get("body");
@@ -312,6 +335,9 @@ public class RoomSceneController extends MainSceneController {
         }
     }
 
+    /**
+     * Creates a CheckBox for each facility.
+     */
     public void createFacilityBoxes() {
         facilityBoxes.clear();
         for (Facility facility : facilities) {
@@ -326,6 +352,9 @@ public class RoomSceneController extends MainSceneController {
         facilitiesPicker.getChildren().addAll(facilityBoxes);
     }
 
+    /**
+     * Creates RadioButtons for choosing availability of rooms.
+     */
     public void createStaffOnly() {
         availabilityPicker = (VBox) filterBarTemplate.lookup("#availabilityPicker");
         availability = new ToggleGroup();
@@ -356,9 +385,11 @@ public class RoomSceneController extends MainSceneController {
         availabilityPicker.getChildren().addAll(staffOnly, everyone, showAll);
     }
 
+    /**
+     * Filters the rooms and shows result.
+     */
     public void filterRooms() {
-        int capacity = (int) capacityPicker.getValue();
-        String faciltiesString = "";
+        StringBuilder faciltiesString = new StringBuilder();
         selectedFacilities.clear();
         for (CheckBox facilityBox : facilityBoxes) {
             if (facilityBox.isSelected()) {
@@ -367,19 +398,18 @@ public class RoomSceneController extends MainSceneController {
         }
         for (int i = 0; i < selectedFacilities.size(); i++) {
             if (i == selectedFacilities.size() - 1) {
-                faciltiesString = faciltiesString + selectedFacilities.get(i);
+                faciltiesString.append(selectedFacilities.get(i));
             } else {
-                faciltiesString = faciltiesString + selectedFacilities.get(i) + ",";
+                faciltiesString.append(selectedFacilities.get(i)).append(",");
             }
+        }
+        int capacity = (int) capacityPicker.getValue();
+        String request = "capacity=" + capacity;
+        if (!faciltiesString.toString().equals("")) {
+            request = request + "&facilities=" + faciltiesString;
         }
         RadioButton selected = (RadioButton) availability.getSelectedToggle();
         String onlyStaff = selected.getId();
-        System.out.println(onlyStaff);
-        System.out.println(faciltiesString);
-        String request = "capacity=" + capacity;
-        if (!faciltiesString.equals("")) {
-            request = request + "&facilities=" + faciltiesString;
-        }
         if (!onlyStaff.equals("none")) {
             request = request + "&onlyStaff=" + onlyStaff;
         }
@@ -394,6 +424,9 @@ public class RoomSceneController extends MainSceneController {
         addRemoveFilters();
     }
 
+    /**
+     * Checks if there are any filters selected.
+     */
     public void checkFiltersSelected() {
         boolean facilitySelected = false;
         for (CheckBox facilityBox : facilityBoxes) {
@@ -402,17 +435,21 @@ public class RoomSceneController extends MainSceneController {
             }
         }
         RadioButton selected = (RadioButton) availability.getSelectedToggle();
-        if ((int) capacityPicker.getValue() != 0 || facilitySelected || !selected.getId().equals(selectedAvailability)) {
+        if ((int) capacityPicker.getValue() != 0
+            || facilitySelected
+            || !selected.getId().equals(selectedAvailability)
+        ) {
             filterBtn = (Button) filterBarTemplate.lookup("#filterBtn");
             filterBtn.setDisable(false);
-            filterBtn.setOnAction(event -> {
-                filterRooms();
-            });
+            filterBtn.setOnAction(event -> filterRooms());
         } else {
             filterBtn.setDisable(true);
         }
     }
 
+    /**
+     * Adds the remove filters button.
+     */
     public void addRemoveFilters() {
         removeFilters = (Hyperlink) filterBarTemplate.lookup("#removeFilters");
         removeFilters.setText("Remove filters");

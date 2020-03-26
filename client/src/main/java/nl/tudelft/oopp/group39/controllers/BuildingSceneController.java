@@ -115,6 +115,11 @@ public class BuildingSceneController extends MainSceneController implements Init
         showBuildings(buildingString, 0);
     }
 
+    /**
+     * Toggles the filter bar.
+     *
+     * @throws IOException when there is an IO exception
+     */
     public void toggleFilterBar() throws IOException {
         if (!filterBarShown) {
             filterBarTemplate = FXMLLoader.load(getClass().getResource("/buildingFilterBar.fxml"));
@@ -140,6 +145,9 @@ public class BuildingSceneController extends MainSceneController implements Init
         }
     }
 
+    /**
+     * Checks if there are any filters selected.
+     */
     public void checkFiltersSelected() {
         if ((int) capacityPicker.getValue() != 0
             || !timeOpenPicker.getSelectionModel().isEmpty()
@@ -147,14 +155,18 @@ public class BuildingSceneController extends MainSceneController implements Init
         ) {
             filterBtn = (Button) filterBarTemplate.lookup("#filterBtn");
             filterBtn.setDisable(false);
-            filterBtn.setOnAction(event -> {
-                filterBuildings();
-            });
+            filterBtn.setOnAction(event -> filterBuildings());
         } else {
             filterBtn.setDisable(true);
         }
     }
 
+    /**
+     * Find the max capacity of all buildings.
+     *
+     * @return int of the max capacity of all buildings
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public int getMaxCapacity() throws JsonProcessingException {
         String json = ServerCommunication.get(ServerCommunication.building);
         ArrayNode body = (ArrayNode) mapper.readTree(json).get("body");
@@ -169,6 +181,9 @@ public class BuildingSceneController extends MainSceneController implements Init
         return maxCapacity;
     }
 
+    /**
+     * Sets the comboboxes to pick closing and opening time for filtering.
+     */
     public void setTimePickers() {
         timeOpenPicker = (ComboBox<String>) filterBarTemplate.lookup("#timeOpenPicker");
         timeClosedPicker = (ComboBox<String>) filterBarTemplate.lookup("#timeClosedPicker");
@@ -188,6 +203,9 @@ public class BuildingSceneController extends MainSceneController implements Init
         }
     }
 
+    /**
+     * Filters the buildings and shows results.
+     */
     public void filterBuildings() {
         String request = "";
         int capacity = (int) capacityPicker.getValue();
@@ -209,6 +227,9 @@ public class BuildingSceneController extends MainSceneController implements Init
         addRemoveFilters();
     }
 
+    /**
+     * Adds the remove filters button to the filter bar.
+     */
     public void addRemoveFilters() {
         removeFilters = (Hyperlink) filterBarTemplate.lookup("#removeFilters");
         removeFilters.setText("Remove filters");
@@ -229,22 +250,14 @@ public class BuildingSceneController extends MainSceneController implements Init
         });
     }
 
+    /**
+     * Searches the buildings.
+     */
     public void searchBuildings() {
         if (searchField.getText() != null) {
             String request = "name=" + searchField.getText();
             String json = ServerCommunication.getFilteredBuildings(request);
             showBuildings(json, 0);
-        }
-    }
-
-    /**
-     * Doc. TODO Sven
-     */
-    public void alertAllBuildings() {
-        try {
-            createAlert("Users shown.", ServerCommunication.get(ServerCommunication.building));
-        } catch (Exception e) {
-            createAlert("Error Occurred.");
         }
     }
 

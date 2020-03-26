@@ -79,6 +79,12 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
+    /**
+     * Retrieves the rooms with given filters.
+     *
+     * @param filters String representation of all the selected filters
+     * @return the body of a get request to the server.
+     */
     public static String getRooms(String filters) {
         System.out.println(url + "room?" + filters);
         HttpRequest request = HttpRequest.newBuilder()
