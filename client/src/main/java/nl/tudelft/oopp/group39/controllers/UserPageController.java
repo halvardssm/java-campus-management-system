@@ -3,22 +3,13 @@ package nl.tudelft.oopp.group39.controllers;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
-import javafx.util.converter.LocalTimeStringConverter;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import java.io.IOException;
-import java.net.URL;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.group39.models.Booking;
@@ -87,7 +78,7 @@ public class UserPageController extends MainSceneController {
     }
 
     /**
-     * Calculates the difference between two times.
+     * Calculates the difference between two times in HH:MM:SS format.
      *
      * @param l1 the starting time
      * @param l2 the end time
@@ -106,5 +97,9 @@ public class UserPageController extends MainSceneController {
 
     public void deleteBooking() {
         ServerCommunication.removeBooking(bookingID.getText());
+    }
+
+    public void editBooking() {
+        ServerCommunication.updateBooking("2020-04-03", "17:00:00", "22:30:00", "admin", "3", "1");
     }
 }
