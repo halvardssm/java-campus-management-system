@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.reservation.controllers;
 
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.reservation.dto.ReservationDto;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.reservation.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class ReservationController {
      */
     @PostMapping("")
     public ResponseEntity<RestResponse<Object>> createReservation(
-        @RequestBody Reservation reservation
+        @RequestBody ReservationDto reservation
     ) {
         try {
             return RestResponse.create(
@@ -49,7 +50,7 @@ public class ReservationController {
                 HttpStatus.CREATED
             );
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 
@@ -63,7 +64,7 @@ public class ReservationController {
         try {
             return RestResponse.create(reservationService.readReservation(id));
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 
@@ -75,12 +76,12 @@ public class ReservationController {
     @PutMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> updateReservation(
         @PathVariable Integer id,
-        @RequestBody Reservation reservation
+        @RequestBody ReservationDto reservation
     ) {
         try {
             return RestResponse.create(reservationService.updateReservation(id, reservation));
         } catch (Exception e) {
-            return RestResponse.error(e.getMessage());
+            return RestResponse.error(e);
         }
     }
 

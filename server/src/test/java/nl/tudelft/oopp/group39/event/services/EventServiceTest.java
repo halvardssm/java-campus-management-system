@@ -7,30 +7,20 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import javassist.NotFoundException;
+import nl.tudelft.oopp.group39.AbstractTest;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.event.enums.EventTypes;
-import nl.tudelft.oopp.group39.event.repositories.EventRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class EventServiceTest {
+class EventServiceTest extends AbstractTest {
     private static final Event testEvent = new Event(
         EventTypes.EVENT,
         LocalDate.now(ZoneId.of("Europe/Paris")),
         LocalDate.now(ZoneId.of("Europe/Paris")).plusDays(1),
         null
     );
-
-    @Autowired
-    private EventService eventService;
-    @Autowired
-    private EventRepository eventRepository;
 
     @BeforeEach
     void setUp() {

@@ -12,6 +12,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import org.springframework.stereotype.Component;
@@ -55,14 +56,24 @@ public class RoomDao {
                     p = cb.equal(room.get(key), staff);
                     break;
                 }
-                case "buildingId": {
+                case "building": {
                     List<Integer> bvals = new ArrayList<>();
 
                     for (String val: (filters.get(key)).split(",")) {
                         bvals.add(Integer.parseInt(val));
                     }
 
-                    p = room.get(key).in(bvals);
+                    CriteriaQuery<Building> bq = cb.createQuery(Building.class);
+                    Root<Building> building = bq.from(Building.class);
+
+                    bq.select(building);
+                    bq.where(building.get(Building.COL_ID).in(bvals));
+
+                    TypedQuery<Building> nestq = em.createQuery(bq);
+
+                    List<Building> res = nestq.getResultList();
+
+                    p = room.get(key).in(res);
                     break;
                 }
 

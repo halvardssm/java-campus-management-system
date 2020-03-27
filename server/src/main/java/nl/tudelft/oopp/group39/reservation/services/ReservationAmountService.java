@@ -76,4 +76,11 @@ public class ReservationAmountService {
     public void deleteReservation(Integer id) {
         reservationAmountRepository.deleteById(id);
     }
+
+    /**
+     * Delete all reservation amounts by reservation id {@link ReservationAmount}.
+     */
+    public void deleteReservationAmountsByReservationId(Integer id) {
+        reservationAmountRepository.deleteByReservationId(id);
+    }
 }

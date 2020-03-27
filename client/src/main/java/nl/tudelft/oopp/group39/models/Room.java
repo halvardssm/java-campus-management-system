@@ -1,6 +1,11 @@
 package nl.tudelft.oopp.group39.models;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
 public class Room {
     private long id;
@@ -106,6 +111,21 @@ public class Room {
             }
             return result.toString();
         }
+    }
+
+    /**
+     * Returns the building where the room is located.
+     *
+     * @return Building object
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public Building getBuildingObject() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        String buildingJson = ServerCommunication.getBuilding(building);
+        JsonNode buildingNode = mapper.readTree(buildingJson).get("body");
+        String buildingAsString = mapper.writeValueAsString(buildingNode);
+        return mapper.readValue(buildingAsString, Building.class);
     }
 
 }

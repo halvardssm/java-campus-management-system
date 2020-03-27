@@ -46,8 +46,9 @@ public class BuildingService {
         );
         List<Long> resBuildingIds = new ArrayList<>();
         for (int buildingId : buildingIds) {
-            if (roomRepository.getRoomsByBuildingId(buildingId).size() > 0) {
-                int maxCapacity = roomRepository.getMaxRoomCapacityByBuildingId(buildingId);
+            if (roomRepository.getRoomsByBuildingId(readBuilding(buildingId)).size() > 0) {
+                Building b = readBuilding(buildingId);
+                int maxCapacity = roomRepository.getMaxRoomCapacityByBuildingId(b);
                 if (capacity <= maxCapacity) {
                     resBuildingIds.add((long) buildingId);
                 }
