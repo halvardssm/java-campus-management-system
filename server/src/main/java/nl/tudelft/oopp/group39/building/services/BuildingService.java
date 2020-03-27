@@ -3,12 +3,18 @@ package nl.tudelft.oopp.group39.building.services;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.exceptions.BuildingExistsException;
 import nl.tudelft.oopp.group39.building.exceptions.BuildingNotFoundException;
 import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
+import nl.tudelft.oopp.group39.reservable.entities.Bike;
+import nl.tudelft.oopp.group39.reservable.entities.Reservable;
+import nl.tudelft.oopp.group39.reservable.services.BikeService;
+import nl.tudelft.oopp.group39.reservable.services.FoodService;
 import nl.tudelft.oopp.group39.room.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +23,10 @@ public class BuildingService {
     private RoomRepository roomRepository;
     @Autowired
     private BuildingRepository buildingRepository;
+    @Autowired
+    private BikeService bikeService;
+    @Autowired
+    private FoodService foodService;
 
     /**
      * Doc. TODO Sven

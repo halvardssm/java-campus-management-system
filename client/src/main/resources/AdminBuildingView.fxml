@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="600.0" prefWidth="700.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.AdminBViewController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.AdminBViewController">
    <top>
       <HBox spacing="10" styleClass="bar">
          <padding>
@@ -47,67 +40,41 @@
                   <Font name="System Bold" size="33.0" />
                </font>
             </Text>
-            <Button fx:id="buildingAdd" layoutX="599.0" layoutY="335.0" mnemonicParsing="false" onAction="#addBuilding" prefHeight="42.0" prefWidth="100.0" text="Add">
-               <font>
-                  <Font name="System Bold" size="19.0" />
-               </font>
-            </Button>
-            <TableView fx:id="buildingTable" layoutY="49.0" opacity="0.75" prefHeight="288.0" prefWidth="700.0">
+            <TableView fx:id="buildingTable" layoutY="49.0" opacity="0.75" prefHeight="400.0" prefWidth="700.0">
               <columns>
                 <TableColumn fx:id="buildingnameCol" prefWidth="142.0" text="Name" />
-                  <TableColumn fx:id="buildingidCol" prefWidth="139.0" text="ID" />
+                  <TableColumn fx:id="buildingidCol" prefWidth="39.0" text="ID" />
                 <TableColumn fx:id="buildinglocationCol" prefWidth="101.0" text="Address" />
-                  <TableColumn fx:id="buildingCloseTimeCol" prefWidth="101.0" text="Closing Time" />
                   <TableColumn fx:id="buildingOpenTimeCol" prefWidth="87.0" text="Open Time" />
+                  <TableColumn fx:id="buildingCloseTimeCol" prefWidth="101.0" text="Closing Time" />
                   <TableColumn fx:id="buildingDescriptionCol" prefWidth="129.0" text="Description" />
+                 <TableColumn fx:id="buildingDelCol" prefWidth="50.0" text="Delete" />
+                 <TableColumn fx:id="buildingUpCol" prefWidth="50.0" text="Update" />
               </columns>
             </TableView>
-            <TextField fx:id="nameFieldNew" layoutX="96.0" layoutY="351.0" prefHeight="31.0" prefWidth="196.0" />
-            <Text layoutX="13.0" layoutY="374.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
-               <font>
-                  <Font name="System Bold" size="17.0" />
-               </font>
-            </Text>
-            <Text layoutX="308.0" layoutY="472.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Closing Time:">
-               <font>
-                  <Font name="System Bold" size="17.0" />
-               </font>
-            </Text>
-            <Text layoutX="5.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address:">
-               <font>
-                  <Font name="System Bold" size="17.0" />
-               </font>
-            </Text>
-            <TextField fx:id="timeClosedFieldNew" layoutX="419.0" layoutY="448.0" prefHeight="31.0" prefWidth="173.0" />
-            <TextField fx:id="locationFieldNew" layoutX="96.0" layoutY="405.0" prefHeight="31.0" prefWidth="196.0" />
-            <Text layoutX="303.0" layoutY="428.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Opening Time:">
-               <font>
-                  <Font name="System Bold" size="17.0" />
-               </font>
-            </Text>
-            <TextField fx:id="timeOpenFieldNew" layoutX="420.0" layoutY="406.0" prefHeight="31.0" prefWidth="170.0" />
-            <TextField fx:id="descriptionFieldNew" layoutX="96.0" layoutY="449.0" prefHeight="31.0" prefWidth="196.0" />
-            <Text layoutY="471.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" wrappingWidth="109.99365234375">
-               <font>
-                  <Font name="System Bold" size="17.0" />
-               </font>
-            </Text>
-            <TextField fx:id="updateBuildingField" layoutX="421.0" layoutY="363.0" prefHeight="31.0" prefWidth="168.0" />
-            <Text layoutX="362.0" layoutY="384.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID">
-               <font>
-                  <Font name="System Bold" size="17.0" />
-               </font>
-            </Text>
-            <Button fx:id="buildingUpdate" layoutX="600.0" layoutY="389.0" mnemonicParsing="false" onAction="#updateBuilding" prefHeight="42.0" prefWidth="99.0" text="Update">
-               <font>
-                  <Font name="System Bold" size="19.0" />
-               </font>
-            </Button>
-            <Button fx:id="buildingDelete" layoutX="600.0" layoutY="443.0" mnemonicParsing="false" onAction="#deleteBuilding" prefHeight="42.0" prefWidth="99.0" text="Delete">
-               <font>
-                  <Font name="System Bold" size="19.0" />
-               </font>
-            </Button>
+            <Button layoutX="600.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#adminAddBuilding" text="Add Building" />
+            <BorderPane layoutX="716.0" layoutY="7.0" prefHeight="470.0" prefWidth="176.0" style="-fx-background-color: lightgray;">
+               <center>
+                  <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-padding: 4px;" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="160.0" style="-fx-underline: true;" text="Filter Buildings">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label text="Name:" />
+                        <TextField />
+                        <Label text="Address:" />
+                        <TextField />
+                        <Label text="Description:" />
+                        <TextField />
+                        <Label text="Opening time:" />
+                        <ChoiceBox prefWidth="150.0" />
+                        <Label text="Closing time:" />
+                        <ChoiceBox prefWidth="150.0" />
+                     </children>
+                  </VBox>
+               </center></BorderPane>
          </children>
       </AnchorPane>
    </center>

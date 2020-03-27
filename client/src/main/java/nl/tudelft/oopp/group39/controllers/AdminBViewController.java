@@ -1,15 +1,24 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -17,8 +26,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Building;
-
-
+import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 
 public class AdminBViewController extends MainSceneController implements Initializable {
@@ -56,6 +64,10 @@ public class AdminBViewController extends MainSceneController implements Initial
     @FXML
     private TableColumn<Building, LocalTime> buildingCTimeCol = new TableColumn<>("Closing Time");
     @FXML
+    private TableColumn<Building, Building> buildingDelCol = new TableColumn<>("Delete");
+    @FXML
+    private TableColumn<Building, Building> buildingUpCol = new TableColumn<>("Update");
+    @FXML
     private TableView<Building> buildingTable = new TableView<>();
 
 
@@ -64,66 +76,116 @@ public class AdminBViewController extends MainSceneController implements Initial
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        loadBuildings();
+        try {
+            loadBuildings();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
      * Display buildings and data in tableView buildingTable. -- Likely doesn't work yet.
      */
-    void loadBuildings() {
+    void loadBuildings() throws JsonProcessingException {
         buildingTable.setVisible(true);
         buildingTable.getItems().clear();
-        createAlert(ServerCommunication.get(ServerCommunication.building));
-
-
+        buildingTable.getColumns().clear();
+        String buildings = ServerCommunication.get(ServerCommunication.building);
+        System.out.println(buildings);
+        ArrayNode body = (ArrayNode) mapper.readTree(buildings).get("body");
+        buildings = mapper.writeValueAsString(body);
+        System.out.println(buildings);
+        Building[] list = mapper.readValue(buildings, Building[].class);
+        ObservableList<Building> data = FXCollections.observableArrayList(list);
         buildingnameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         buildingidCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         buildinglocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
         buildingdescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
         buildingOpenTimeCol.setCellValueFactory(new PropertyValueFactory<>("open"));
         buildingCTimeCol.setCellValueFactory(new PropertyValueFactory<>("closed"));
+
+        buildingDelCol.setCellValueFactory(
+            param -> new ReadOnlyObjectWrapper<>(param.getValue())
+        );
+        buildingDelCol.setCellFactory(param -> new TableCell<Building, Building>() {
+            private final Button deleteButton = new Button("Delete");
+
+            @Override
+            protected void updateItem(Building building, boolean empty) {
+                super.updateItem(building, empty);
+
+                if (building == null) {
+                    setGraphic(null);
+                    return;
+                }
+
+                setGraphic(deleteButton);
+                deleteButton.setOnAction(
+                    event -> {
+                        try {
+                            deleteBuildingView(building);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                );
+            }
+        });
+        buildingUpCol.setCellValueFactory(
+            param -> new ReadOnlyObjectWrapper<>(param.getValue())
+        );
+        buildingUpCol.setCellFactory(param -> new TableCell<Building, Building>() {
+            private final Button updateButton = new Button("Update");
+
+            @Override
+            protected void updateItem(Building building, boolean empty) {
+                super.updateItem(building, empty);
+
+                if (building == null) {
+                    setGraphic(null);
+                    return;
+                }
+
+                setGraphic(updateButton);
+                updateButton.setOnAction(
+                    event -> {
+                        try {
+                            updateBuildingView(building);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                );
+            }
+        });
+        buildingTable.setItems(data);
+        buildingTable.getColumns().addAll(buildingnameCol, buildingidCol, buildinglocationCol, buildingCTimeCol, buildingOpenTimeCol, buildingdescriptionCol, buildingDelCol, buildingUpCol);
     }
 
 
-    /**
-     * Adds a new building with auto-generated ID.
-     */
-    public void addBuilding() throws IOException {
-        String name = nameFieldNew.getText();
-        String location = locationFieldNew.getText();
-        String desc = descriptionFieldNew.getText();
-        String open = getTime(timeOpenFieldNew.getText(), true);
-        String closed = getTime(timeClosedFieldNew.getText(), false);
-        createAlert(ServerCommunication.addBuilding(name, location, desc, open, closed));
-
-        nameFieldNew.clear();
-        locationFieldNew.clear();
-        descriptionFieldNew.clear();
-        timeOpenFieldNew.clear();
-        timeClosedFieldNew.clear();
-        updateBuildingField.clear();
+    public void adminAddBuilding() throws IOException {
+        Stage currentstage = (Stage) backbtn.getScene().getWindow();
+        Parent root = FXMLLoader.load(getClass().getResource("/AdminAddBuilding.fxml"));
+        currentstage.setScene(new Scene(root, 700, 600));
     }
 
-    /**
-     * Updates building based on ID specified.
-     */
+    public void deleteBuildingView(Building building) throws IOException {
+        String id = Integer.toString(building.getId());
+        ServerCommunication.removeBuilding(id);
+        createAlert("removed: " + building.getName());
+        loadBuildings();
+    }
 
-    public void updateBuilding() throws IOException {
-        String name = nameFieldNew.getText();
-        String location = locationFieldNew.getText();
-        String desc = descriptionFieldNew.getText();
-        String open = getTime(timeOpenFieldNew.getText(), true);
-        String closed = getTime(timeClosedFieldNew.getText(), false);
-        String id = updateBuildingField.getText();
-        id = id.contentEquals("") ? "1" : id;
-        createAlert(ServerCommunication.updateBuilding(name, location, desc, open, closed, id));
-
-        nameFieldNew.clear();
-        locationFieldNew.clear();
-        descriptionFieldNew.clear();
-        timeOpenFieldNew.clear();
-        timeClosedFieldNew.clear();
-        updateBuildingField.clear();
+    public void updateBuildingView(Building building) throws IOException {
+        Stage currentstage = (Stage) backbtn.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminUpdateBuilding.fxml"));
+        Parent root = loader.load();
+        AdminUpdateBuildingController controller = loader.getController();
+        controller.initData(building);
+        currentstage.setScene(new Scene(root, 700, 600));
     }
 
     /**
@@ -136,16 +198,6 @@ public class AdminBViewController extends MainSceneController implements Initial
         createAlert(ServerCommunication.get(ServerCommunication.building));
 
         updateBuildingField.clear();
-    }
-
-    /**
-     * Doc. TODO
-     */
-    public String getTime(String time, boolean open) {
-        if (open) {
-            return time.contentEquals("") ? LocalTime.MAX.toString() : time;
-        }
-        return time.contentEquals("") ? LocalTime.MIN.toString() : time;
     }
 
     /**
