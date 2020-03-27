@@ -130,20 +130,25 @@ public class FoodAndBikeSceneController extends MainSceneController {
         total.setText("0.00");
         System.out.println(json);
         ArrayNode body = (ArrayNode) mapper.readTree(json).get("body");
-        for (JsonNode itemNode : body) {
-            String itemAsString = mapper.writeValueAsString(itemNode);
-            if (itemAsString.contains("id")) {
-                HBox item;
-                if (type.equals("bike")) {
-                    Bike bike = mapper.readValue(itemAsString, Bike.class);
-                    item = createItemBox(bike.getBikeType(), null, bike);
+        if (body.isEmpty()) {
+            Label label = new Label("No results found");
+            itemlist.getChildren().add(label);
+        } else {
+            for (JsonNode itemNode : body) {
+                String itemAsString = mapper.writeValueAsString(itemNode);
+                if (itemAsString.contains("id")) {
+                    HBox item;
+                    if (type.equals("bike")) {
+                        Bike bike = mapper.readValue(itemAsString, Bike.class);
+                        item = createItemBox(bike.getBikeType(), null, bike);
+                    } else {
+                        Food food = mapper.readValue(itemAsString, Food.class);
+                        item = createItemBox(food.getName(), food.getDescription(), food);
+                    }
+                    itemlist.getChildren().add(item);
                 } else {
-                    Food food = mapper.readValue(itemAsString, Food.class);
-                    item = createItemBox(food.getName(), food.getDescription(), food);
+                    break;
                 }
-                itemlist.getChildren().add(item);
-            } else {
-                break;
             }
         }
         checkEmptyCart();
@@ -184,16 +189,6 @@ public class FoodAndBikeSceneController extends MainSceneController {
     }
 
     /**
-     * Retrieves all bikes.
-     *
-     * @throws JsonProcessingException when there is a parsing exception
-     */
-    public void getBikes() throws JsonProcessingException {
-        showItems(ServerCommunication.get(ServerCommunication.bike));
-
-    }
-
-    /**
      * Retrieves bikes filtered on building id.
      *
      * @param buildingId the id of the selected building
@@ -201,15 +196,6 @@ public class FoodAndBikeSceneController extends MainSceneController {
      */
     public void getBikes(int buildingId) throws JsonProcessingException {
         showItems(ServerCommunication.getBikes(buildingId));
-    }
-
-    /**
-     * Retrieves food menu.
-     *
-     * @throws JsonProcessingException when there is a parsing exception
-     */
-    public void getMenu() throws JsonProcessingException {
-        showItems(ServerCommunication.get(ServerCommunication.food));
     }
 
     /**
