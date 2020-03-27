@@ -15,8 +15,10 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.building.entities.Building;
+import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.room.entities.Room;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -25,11 +27,16 @@ public class RoomDao {
     @PersistenceContext
     private EntityManager em;
 
+    @Autowired
+    private BuildingRepository buildingRepository;
+
     /**
-     * TODO.
+     * Filter for the rooms.
+     * It currently supports the values that are stored inside the Entity Room.
      *
-     * @param filters filters retrieved
-     * @return List rooms
+     * @param filters filters to filter the room with.
+     *                If entered an empty map, the program returns everyhting.
+     * @return the list of the filtered, or all rooms
      */
     public List<Room> roomFilter(Map<String, String> filters) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -66,20 +73,12 @@ public class RoomDao {
         }
 
         if (keys.contains(Building.MAPPED_NAME)) {
-            CriteriaQuery<Building> bq = cb.createQuery(Building.class);
-            Root<Building> building = bq.from(Building.class);
-
-            bq.select(building).where(cb.equal(
-                building.get(Building.COL_ID),
-                filters.get(Building.MAPPED_NAME)
-            ));
-
-            allPredicates.add(room.get(Building.MAPPED_NAME)
-                .in((em.createQuery(bq))
-                .getResultList()
+            allPredicates.add(cb.equal(
+                room.get(Building.MAPPED_NAME),
+                buildingRepository.findById(
+                    Integer.parseInt(filters.get(Building.MAPPED_NAME)))
             ));
         }
-
 
         if (keys.contains(Facility.TABLE_NAME)) {
             List<Integer> fvals = new ArrayList<>((Arrays.stream(
