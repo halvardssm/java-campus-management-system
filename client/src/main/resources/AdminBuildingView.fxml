@@ -55,10 +55,11 @@
             <TableView fx:id="buildingTable" layoutY="49.0" opacity="0.75" prefHeight="288.0" prefWidth="700.0">
               <columns>
                 <TableColumn fx:id="buildingnameCol" prefWidth="142.0" text="Name" />
+                  <TableColumn fx:id="buildingidCol" prefWidth="139.0" text="ID" />
                 <TableColumn fx:id="buildinglocationCol" prefWidth="101.0" text="Address" />
-                  <TableColumn fx:id="buildingDescriptionCol" prefWidth="233.0" text="Description" />
-                  <TableColumn fx:id="buildingOpenTimeCol" prefWidth="117.0" text="Open Time" />
-                  <TableColumn fx:id="buildingCloseTimeCol" prefWidth="106.0" text="Closing Time" />
+                  <TableColumn fx:id="buildingCloseTimeCol" prefWidth="101.0" text="Closing Time" />
+                  <TableColumn fx:id="buildingOpenTimeCol" prefWidth="87.0" text="Open Time" />
+                  <TableColumn fx:id="buildingDescriptionCol" prefWidth="129.0" text="Description" />
               </columns>
             </TableView>
             <TextField fx:id="nameFieldNew" layoutX="96.0" layoutY="351.0" prefHeight="31.0" prefWidth="196.0" />
