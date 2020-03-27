@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="600.0" prefWidth="700.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.AdminUListController">
+   <top>
+      <HBox spacing="10" styleClass="bar">
+         <padding>
+            <Insets bottom="15" left="15" right="15" top="15" />
+         </padding>
+         <children>
+            <Text id="title" text="Admin: User List" />
+         </children>
+      </HBox>
+   </top>
+   <bottom>
+      <HBox spacing="10" styleClass="bar">
+         <padding>
+            <Insets bottom="15" left="15" right="15" top="15" />
+         </padding>
+         <children>
+            <Button id="backbtn" fx:id="backbtn" onAction="#switchBack" text="◀ Back" />
+         </children>
+      </HBox>
+   </bottom>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="485.0" fitWidth="700.0" layoutY="-2.0" opacity="0.5" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <image>
+                  <Image url="@../../../../../../../../TuDelft/download.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="79.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Users" underline="true">
+               <font>
+                  <Font name="System Bold" size="33.0" />
+               </font>
+            </Text>
+            <Button fx:id="UAdd" layoutX="495.0" layoutY="37.0" mnemonicParsing="false" text="Add User">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Button>
+            <TextField fx:id="UID" layoutX="470.0" layoutY="125.0" prefHeight="31.0" prefWidth="217.0" />
+            <Text layoutX="441.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID:">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
+            <Text layoutX="411.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Text>
+            <Text layoutX="406.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status:">
+               <font>
+                  <Font size="21.0" />
+               </font>
+            </Text>
+            <TextField fx:id="UName" layoutX="470.0" layoutY="321.0" prefHeight="31.0" prefWidth="216.0" />
+            <TextField fx:id="UStatus" layoutX="468.0" layoutY="218.0" prefHeight="31.0" prefWidth="221.0" />
+            <TableView fx:id="usertable" editable="true" layoutY="55.0" opacity="0.75" prefHeight="432.0" prefWidth="406.0">
+              <columns>
+                <TableColumn fx:id="IDCol" prefWidth="71.0" text="ID" />
+                <TableColumn fx:id="nameCol" prefWidth="204.0" text="Name" />
+                 <TableColumn fx:id="statusCol" prefWidth="130.0" text="Status" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

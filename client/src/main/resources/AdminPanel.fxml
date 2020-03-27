@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.AdminPController">
+   <children>
+      <ImageView fitHeight="367.0" fitWidth="662.0" layoutX="17.0" layoutY="111.0" opacity="0.75" pickOnBounds="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="120.0">
+         <image>
+            <Image url="@../../../../../../../../TuDelft/download.png" />
+         </image>
+      </ImageView>
+      <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #00A6D6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin Navigation" textAlignment="CENTER" wrappingWidth="438.6708984375">
+               <font>
+                  <Font name="SansSerif Regular" size="52.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" top="25.0" />
+               </HBox.margin>
+            </Text>
+         </children>
+      </HBox>
+      <HBox layoutX="10.0" layoutY="678.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #00A6D6;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Button fx:id="BackBtn" mnemonicParsing="false" style="-fx-background-color: #00A6D6;" text="◀ Back" textFill="WHITE">
+               <font>
+                  <Font size="36.0" />
+               </font>
+               <padding>
+                  <Insets left="20.0" top="25.0" />
+               </padding>
+            </Button>
+         </children>
+      </HBox>
+      <Button id="UListView" fx:id="userlistView" layoutX="24.0" layoutY="116.0" mnemonicParsing="false" onAction="#switchUListView" prefHeight="120.0" prefWidth="250.0" text="User List Overview" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="125.0" />
+      <Button id="EventView" fx:id="eventView" layoutX="421.0" layoutY="360.0" mnemonicParsing="false" onAction="#switchEvents" prefHeight="120.0" prefWidth="250.0" text="Overview of Events and Vacations" AnchorPane.bottomAnchor="125.0" AnchorPane.rightAnchor="25.0" />
+      <Button id="RoomView" fx:id="roomView" layoutX="24.0" layoutY="367.0" mnemonicParsing="false" onAction="#switchRoomView" prefHeight="120.0" prefWidth="250.0" text="Room Overview" AnchorPane.bottomAnchor="125.0" AnchorPane.leftAnchor="25.0" />
+      <Button id="UListView" fx:id="buildingView" layoutX="340.0" layoutY="141.0" mnemonicParsing="false" onAction="#switchBuildingView" prefHeight="120.0" prefWidth="250.0" text="Building Overview" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="125.0" />
+   </children>
+</AnchorPane>
