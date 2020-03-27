@@ -2,8 +2,10 @@ package nl.tudelft.oopp.group39.reservable.entities;
 
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
 import java.util.Objects;
@@ -17,6 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.config.AbstractEntity;
+import nl.tudelft.oopp.group39.reservable.dto.ReservableDto;
+import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 
 @Entity
@@ -34,8 +38,10 @@ public class Reservable extends AbstractEntity {
     private Double price;
     @ManyToOne
     @JoinColumn(name = Building.MAPPED_NAME) //TODO Change to id
+    @JsonBackReference
     private Building building;
     @OneToMany(mappedBy = MAPPED_NAME)
+    @JsonManagedReference
     private Set<ReservationAmount> reservations = new HashSet<>();
 
     public Building getBuilding() {
@@ -80,6 +86,18 @@ public class Reservable extends AbstractEntity {
 
     public void setReservations(Set<ReservationAmount> reservations) {
         this.reservations = reservations;
+    }
+
+    public ReservableDto toDto() {
+        Set<ReservationAmountDto> reservationAmountDtos = new HashSet<>();
+
+        reservations.forEach(reservationAmount -> reservationAmountDtos.add(reservationAmount.toDto()));
+
+        return new ReservableDto(
+            price,
+            building.getId(),
+            reservationAmountDtos
+        );
     }
 
     @Override

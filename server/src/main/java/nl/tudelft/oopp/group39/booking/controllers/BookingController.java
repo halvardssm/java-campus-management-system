@@ -42,7 +42,7 @@ public class BookingController {
         List<Booking> bookings = bookingService.listBookings(params);
 
         for (Booking booking : bookings) {
-            BookingDto bookingDto = BookingService.convertBookingToBookingDto(booking);
+            BookingDto bookingDto = booking.toDto();
             bookingsDtoList.add(bookingDto);
         }
 
@@ -77,7 +77,7 @@ public class BookingController {
         try {
             Booking booking = bookingService.readBooking(id);
 
-            BookingDto bookingDto = BookingService.convertBookingToBookingDto(booking);
+            BookingDto bookingDto = booking.toDto();
 
             return RestResponse.create(bookingDto);
         } catch (Exception e) {

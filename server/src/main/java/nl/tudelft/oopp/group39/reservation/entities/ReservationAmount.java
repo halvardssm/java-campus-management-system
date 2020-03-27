@@ -7,6 +7,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.config.AbstractEntity;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
+import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 
 @Entity
 @Table(name = ReservationAmount.TABLE_NAME)
@@ -60,6 +61,13 @@ public class ReservationAmount extends AbstractEntity {
 
     public void setReservable(Reservable reservable) {
         this.reservable = reservable;
+    }
+
+    public ReservationAmountDto toDto() {
+        return new ReservationAmountDto(
+            amount,
+            reservable.getId()
+        );
     }
 
     @Override

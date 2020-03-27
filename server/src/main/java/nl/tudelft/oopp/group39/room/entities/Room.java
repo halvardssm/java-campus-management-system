@@ -2,16 +2,16 @@ package nl.tudelft.oopp.group39.room.entities;
 
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import java.util.HashSet;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -21,12 +21,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import nl.tudelft.oopp.group39.booking.dto.BookingDto;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.config.AbstractEntity;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
+import nl.tudelft.oopp.group39.room.dto.RoomDto;
 
 @Entity
 @Table(name = Room.TABLE_NAME)
@@ -45,9 +48,8 @@ public class Room extends AbstractEntity {
     private String name;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Building.MAPPED_NAME)
-    @JsonIgnore
+    @JsonManagedReference
     private Building building;
-    @Column(name = COL_CAPACITY)
     private int capacity;
     private Boolean onlyStaff;
     private String description;
@@ -68,8 +70,10 @@ public class Room extends AbstractEntity {
     private Set<Event> events = new HashSet<>();
 
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
+    @JsonBackReference
     private Set<Booking> bookings = new HashSet<>();
     @OneToMany(mappedBy = MAPPED_NAME)
+    @JsonBackReference
     private Set<Reservation> reservations = new HashSet<>();
 
     public Room() {
@@ -102,6 +106,26 @@ public class Room extends AbstractEntity {
         this.description = description;
         this.facilities.addAll(initSet(facilities));
         this.bookings.addAll(initSet(bookings));
+    }
+
+    /**
+     * Converts the Room entity to the RoomDto model for JSON serializing.
+     *
+     * @return converted RoomDto
+     */
+    public RoomDto toDto() {
+        Set<BookingDto> bookingDtos = new HashSet<>();
+        bookings.forEach(booking -> bookingDtos.add(booking.toDto()));
+
+        return new RoomDto(
+            id,
+            building.getId(),
+            name,
+            capacity,
+            onlyStaff,
+            description,
+            facilities,
+            bookingDtos);
     }
 
     public String getName() {
