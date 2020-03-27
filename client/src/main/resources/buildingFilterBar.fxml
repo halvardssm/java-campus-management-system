@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.VBox?>
 <VBox xmlns:fx="http://javafx.com/fxml"
       xmlns="http://javafx.com/javafx"
-      fx:controller="nl.tudelft.oopp.group39.controllers.RoomSceneController" spacing="15">
+      fx:controller="nl.tudelft.oopp.group39.controllers.BuildingSceneController" spacing="15">
     <padding>
-        <Insets top="15" right="15" bottom="8" left="15"/>
+        <Insets top="15" right="20" bottom="15" left="20"/>
     </padding>
     <Label fx:id="capacity" text="Max. Capacity: 0"/>
     <Slider fx:id="capacityPicker"/>

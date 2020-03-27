@@ -58,6 +58,11 @@ public class RoomDao {
                 Boolean.parseBoolean(filters.get(Room.COL_ONLY_STAFF))));
         }
 
+        if (keys.contains(Room.COL_NAME)) {
+            allPredicates.add(cb.like(room.get(Room.COL_NAME),
+                "%" + filters.get(Room.COL_NAME) + "%"));
+        }
+
         if (keys.contains(Building.MAPPED_NAME)) {
             CriteriaQuery<Building> bq = cb.createQuery(Building.class);
             Root<Building> building = bq.from(Building.class);

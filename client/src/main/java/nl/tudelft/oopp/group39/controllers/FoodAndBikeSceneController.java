@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -36,7 +37,9 @@ public class FoodAndBikeSceneController extends MainSceneController {
     public double totalprice = 0;
     public List<Room> rooms = new ArrayList<>();
     @FXML
-    protected ComboBox<Label> buildinglist;
+    protected ComboBox<Hyperlink> buildinglist;
+    @FXML
+    protected VBox buildingslist;
     @FXML
     private FlowPane itemlist;
     @FXML
@@ -87,26 +90,28 @@ public class FoodAndBikeSceneController extends MainSceneController {
         System.out.println(buildingString);
         ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
         for (JsonNode building : body) {
-            Label buildingName = new Label(building.get("name").asText());
+            Hyperlink buildingName = new Hyperlink(building.get("name").asText());
+            buildingName.getStyleClass().add("buildingList");
+            buildingName.setOnAction(event -> {
+                if (type.equals("bike")) {
+                    try {
+                        getBikes(building.get("id").asInt());
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        getMenu(building.get("id").asInt());
+                        getRoomsList(building.get("id").asInt());
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
             buildingName.getStyleClass().add("buildingList");
             buildingName.setId(building.get("id").asText());
-            buildinglist.getItems().add(buildingName);
+            buildingslist.getChildren().add(buildingName);
         }
-        buildinglist.setOnAction(event -> {
-            if (type.equals("bike")) {
-                try {
-                    getBikes(Integer.parseInt(buildinglist.getValue().getId()));
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    getMenu(Integer.parseInt(buildinglist.getValue().getId()));
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     /**
@@ -123,11 +128,6 @@ public class FoodAndBikeSceneController extends MainSceneController {
         rooms.clear();
         totalprice = 0.00;
         total.setText("0.00");
-        if (type.equals("food")) {
-            Label building = buildinglist.getValue();
-            long id = Integer.parseInt(building.getId());
-            getRoomsList(id);
-        }
         System.out.println(json);
         ArrayNode body = (ArrayNode) mapper.readTree(json).get("body");
         for (JsonNode itemNode : body) {

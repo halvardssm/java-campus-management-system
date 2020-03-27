@@ -18,7 +18,7 @@ public class UsersDisplay extends Application {
 
     public static Stage window;
     private static Parent root;
-    private static int width = 700;
+    private static int width = 900;
     private static int height = 600;
 
     /**

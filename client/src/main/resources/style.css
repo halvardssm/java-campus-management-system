@@ -91,7 +91,7 @@
 }
 
 .sidebar-item {
-    -fx-pref-width: 100;
+    -fx-pref-width: 120;
     -fx-text-fill: black;
     -fx-font-size: 14;
     -fx-padding: 10 0 10 10;
@@ -156,6 +156,7 @@
 }
 
 .gridblock:hover {
+    -fx-cursor: hand;
     -fx-background-color: rgba(106, 123, 127, 0.3);
 }
 
@@ -185,10 +186,25 @@
 
 .buildingList {
     -fx-text-fill: black;
+    -fx-font-size: 14;
+    -fx-border-color: rgba(106, 123, 127, 0.18);
+    -fx-border-width: 1;
+    -fx-padding: 10;
+    -fx-pref-width: 200;
 }
 
 .buildingList:focused {
-    -fx-text-fill: black;
+    -fx-underline: false;
+    -fx-background-color: #00A6D6;
+    -fx-text-fill: white;
+}
+
+.buildingList:hover {
+    -fx-border-color: #00A6D6;
+}
+
+.buildingList:visited {
+    -fx-underline: false;
 }
 
 #backButton {
@@ -252,6 +268,7 @@
 #filterBtn {
     -fx-padding: 7 20;
     -fx-font-size: 14;
+    -fx-pref-width: 100;
 }
 
 #onlyStaff {

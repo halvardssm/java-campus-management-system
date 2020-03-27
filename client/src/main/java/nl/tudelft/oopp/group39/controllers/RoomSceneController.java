@@ -151,6 +151,9 @@ public class RoomSceneController extends MainSceneController {
             }
         } else {
             String request = "name=" + searchField.getText();
+            if (building != null) {
+                request = request + "&building=" + building.getId();
+            }
             String json = ServerCommunication.getRooms(request);
             showRooms(json);
         }
