@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.group39.booking.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -36,7 +35,6 @@ public class Booking extends AbstractEntity {
     private User user;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Room.MAPPED_NAME)
-    @JsonManagedReference
     private Room room;
 
     public LocalDate getDate() {

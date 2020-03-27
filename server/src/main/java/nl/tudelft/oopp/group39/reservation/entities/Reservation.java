@@ -2,7 +2,6 @@ package nl.tudelft.oopp.group39.reservation.entities;
 
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -33,13 +32,11 @@ public class Reservation extends AbstractEntity {
     private LocalDateTime timeOfDelivery;
     @ManyToOne
     @JoinColumn(name = Room.MAPPED_NAME)
-    @JsonManagedReference
     private Room room;
     @ManyToOne
     @JoinColumn(name = User.MAPPED_NAME) //TODO change to id
     private User user;
     @OneToMany(mappedBy = MAPPED_NAME)
-    @JsonManagedReference
     private Set<ReservationAmount> reservationAmounts = new HashSet<>();
 
     public Reservation() {

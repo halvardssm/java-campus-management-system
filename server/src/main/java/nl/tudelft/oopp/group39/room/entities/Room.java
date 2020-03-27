@@ -48,7 +48,6 @@ public class Room extends AbstractEntity {
     private String name;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Building.MAPPED_NAME)
-    @JsonManagedReference
     private Building building;
     private int capacity;
     private Boolean onlyStaff;
@@ -70,10 +69,8 @@ public class Room extends AbstractEntity {
     private Set<Event> events = new HashSet<>();
 
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
-    @JsonBackReference
     private Set<Booking> bookings = new HashSet<>();
     @OneToMany(mappedBy = MAPPED_NAME)
-    @JsonBackReference
     private Set<Reservation> reservations = new HashSet<>();
 
     public Room() {

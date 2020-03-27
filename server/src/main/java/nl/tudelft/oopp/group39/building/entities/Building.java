@@ -2,9 +2,7 @@ package nl.tudelft.oopp.group39.building.entities;
 
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -41,11 +39,9 @@ public class Building extends AbstractEntity {
     private String description;
     private LocalTime open;
     private LocalTime closed;
-    @JsonBackReference
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
     private Set<Room> rooms = new HashSet<>();
     @OneToMany(mappedBy = MAPPED_NAME) //TODO change to reservable id
-    @JsonManagedReference
     private Set<Reservable> reservables = new HashSet<>();
 
     public Building() {
