@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.group39.models.Booking;
+import nl.tudelft.oopp.group39.models.BookingDTO;
 import nl.tudelft.oopp.group39.models.Room;
 
 public class UserPageController extends MainSceneController {
@@ -47,19 +48,17 @@ public class UserPageController extends MainSceneController {
             System.out.println(bookingString); //This is not necessary, just for checking
             ArrayNode body = (ArrayNode) mapper.readTree(bookingString).get("body");
             bookingString = mapper.writeValueAsString(body);
-            Booking[] bookingList = mapper.readValue(bookingString, Booking[].class);
+            BookingDTO[] bookingList = mapper.readValue(bookingString, BookingDTO[].class);
 
-            for(Booking booking : bookingList) {
+            for(BookingDTO booking : bookingList) {
                 newBooking = FXMLLoader.load(getClass().getResource("/bookingCell.fxml"));
                 //String roomName = booking.getRoom().getName(); //A problem
                 String bookingID = Integer.toString(booking.getId());
-                String startTime = booking.getStartTime();
-                String duration = DifferenceBetweenTwoTimes(
-                        LocalTime.parse(booking.getStartTime()),
-                        LocalTime.parse(booking.getEndTime()));
+                String startTime = booking.getStartTime().toString();
+                String duration = DifferenceBetweenTwoTimes(booking.getStartTime(), booking.getEndTime());
 
-//                Label name = (Label) newBooking.lookup("#rName");
-//                name.setText(roomName);
+                //Label name = (Label) newBooking.lookup("#rName");
+                //name.setText(roomName);
 
                 Label date = (Label) newBooking.lookup("#rDate");
                 date.setText("Starting Time: " + startTime);
