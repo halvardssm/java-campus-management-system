@@ -124,4 +124,19 @@ public class BookingService {
         }
     }
 
+    /**
+     * Converts booking to bookingDto.
+     *
+     * @param booking the booking
+     * @return the converted booking
+     */
+    public static BookingDto convertBookingToBookingDto(Booking booking) {
+        return new BookingDto(
+            booking.getDate(),
+            booking.getStartTime(),
+            booking.getEndTime(),
+            booking.getUser().getUsername(),
+            booking.getRoom().getId()
+        );
+    }
 }

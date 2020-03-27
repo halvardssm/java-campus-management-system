@@ -1,74 +1,55 @@
 package nl.tudelft.oopp.group39.building.services;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import nl.tudelft.oopp.group39.building.dao.BuildingDao;
 import nl.tudelft.oopp.group39.building.entities.Building;
-import nl.tudelft.oopp.group39.building.exceptions.BuildingExistsException;
 import nl.tudelft.oopp.group39.building.exceptions.BuildingNotFoundException;
 import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
-import nl.tudelft.oopp.group39.room.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BuildingService {
     @Autowired
-    private RoomRepository roomRepository;
-    @Autowired
     private BuildingRepository buildingRepository;
+    @Autowired
+    private BuildingDao buildingDao;
 
     /**
      * Doc. TODO Sven
      */
-    public List<Building> filterBuildings(
-        int capacity,
-        String building,
-        String location,
-        LocalTime open,
-        LocalTime closed
-    ) {
-        int[] buildingIds = buildingRepository.filterBuildingsOnLocationAndNameAndTime(
-            building,
-            location,
-            open,
-            closed
-        );
-        List<Long> resBuildingIds = new ArrayList<>();
-        for (int buildingId : buildingIds) {
-            if (roomRepository.getRoomsByBuildingId(readBuilding(buildingId)).size() > 0) {
-                Building b = readBuilding(buildingId);
-                int maxCapacity = roomRepository.getMaxRoomCapacityByBuildingId(b);
-                if (capacity <= maxCapacity) {
-                    resBuildingIds.add((long) buildingId);
-                }
-            }
+
+    public List<Building> listBuildings(Map<String,String> params) {
+        return buildingDao.buildingFilter(params);
+    }
+
+    /**
+     * Reads the building inside the database using its id.
+     *
+     * @param id the id of the Building
+     * @return the Building that was found.
+     * @throws BuildingNotFoundException when no building is found.
+     */
+    public Building readBuilding(Integer id) throws BuildingNotFoundException {
+        try {
+            return buildingRepository.findById(id);
+        } catch (Exception e) {
+            throw new BuildingNotFoundException(id);
         }
-        return resBuildingIds.size() > 0
-               ? buildingRepository.getAllBuildingsByIds(resBuildingIds)
-               : new ArrayList<>();
-    }
-
-    public List<Building> listBuildings() {
-        return buildingRepository.findAll();
-    }
-
-    public Building readBuilding(long id) throws BuildingNotFoundException {
-        return buildingRepository.findById(id)
-            .orElseThrow(() -> new BuildingNotFoundException((int) id));
     }
 
     /**
      * Doc. TODO Sven
      */
-    public Building deleteBuilding(long id) throws BuildingNotFoundException {
+    public Building deleteBuilding(Integer id) throws BuildingNotFoundException {
         try {
             Building rf = readBuilding(id);
             buildingRepository.delete(readBuilding(id));
             return rf;
-
         } catch (BuildingNotFoundException e) {
-            throw new BuildingNotFoundException((int) id);
+            throw new BuildingNotFoundException(id);
         }
     }
 
@@ -76,14 +57,7 @@ public class BuildingService {
      * Doc. TODO Sven
      */
     public Building createBuilding(Building newBuilding) {
-        try {
-            Building building = readBuilding((int) newBuilding.getId());
-            throw new BuildingExistsException((int) building.getId());
-
-        } catch (BuildingNotFoundException e) {
-            buildingRepository.save(newBuilding);
-            return newBuilding;
-        }
+        return buildingRepository.save(newBuilding);
     }
 
     /**

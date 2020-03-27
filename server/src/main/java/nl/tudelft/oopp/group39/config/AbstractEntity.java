@@ -3,6 +3,7 @@ package nl.tudelft.oopp.group39.config;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,10 +15,12 @@ import javax.persistence.MappedSuperclass;
     property = AbstractEntity.COL_ID
 )
 public abstract class AbstractEntity implements Serializable {
+
     public static final String COL_ID = "id";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = COL_ID)
     protected Integer id;
 
     public Integer getId() {

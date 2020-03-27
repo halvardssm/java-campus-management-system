@@ -40,8 +40,7 @@ public class RoomController {
     public ResponseEntity<RestResponse<Object>> listRooms(
         @RequestParam Map<String, String> allParams
     ) {
-        List<Room> result = roomDao.roomFilter(allParams);
-        return RestResponse.create(result);
+        return RestResponse.create(service.filterRooms(allParams));
     }
 
     @PostMapping("")

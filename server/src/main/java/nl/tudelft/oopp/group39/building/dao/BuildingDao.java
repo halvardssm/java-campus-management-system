@@ -2,12 +2,13 @@ package nl.tudelft.oopp.group39.building.dao;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -22,71 +23,71 @@ public class BuildingDao {
     @PersistenceContext
     private EntityManager em;
 
-    /** TODO @Cleanup.
+    /**
+     * TODO @Cleanup.
      *
      * @param filters filters retrieved
      * @return List rooms
      */
-    public List<Building> buildingFilter(Map<String,String> filters) {
+    public List<Building> buildingFilter(Map<String, String> filters) {
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Building> rcq = cb.createQuery(Building.class);
-
         Root<Building> building = rcq.from(Building.class);
         Set<String> keys = filters.keySet();
 
-        Predicate pall = cb.conjunction();
+        List<Predicate> allPredicates = new ArrayList<>();
 
-        for (String key : keys) {
-            Predicate p;
-
-            switch (key) {
-
-                case "open":
-                case "closed": {
-                    String timeString = filters.get(key);
-
-                    LocalTime time = LocalTime.parse(timeString);
-                    p = cb.equal(building.get(key), time);
-
-                    break;
-                }
-
-                case "reservables" : {
-
-                    List<Integer> rvals = new ArrayList<>();
-
-                    for (String val: (filters.get(key)).split(",")) {
-                        rvals.add(Integer.parseInt(val));
-                    }
-
-                    CriteriaQuery<Reservable> recq = cb.createQuery(Reservable.class);
-                    Root<Reservable> reservable = recq.from(Reservable.class);
-
-                    recq.select(reservable.get(Building.MAPPED_NAME));
-                    recq.where(reservable.get(Reservable.COL_ID).in(rvals));
-
-                    TypedQuery<Reservable> nestq = em.createQuery(recq);
-
-                    p = building.in(nestq.getResultList());
-                    break;
-                }
-
-                case "name":
-                case "location":
-                case "description":
-                default:
-                    p = cb.like(building.get(key), "%" + filters.get(key) + "%");
-                    break;
-            }
-
-            pall = cb.and(p, pall);
-
-
+        if (keys.contains(Building.COL_OPEN)) {
+            allPredicates.add(cb.lessThanOrEqualTo(
+                building.get(Building.COL_OPEN),
+                LocalTime.parse(filters.get(Building.COL_OPEN))
+            ));
         }
-        rcq.where(pall);
 
-        TypedQuery<Building> query = em.createQuery(rcq);
-        return query.getResultList();
+        if (keys.contains(Building.COL_CLOSED)) {
+            allPredicates.add(cb.greaterThanOrEqualTo(
+                building.get(Building.COL_CLOSED),
+                LocalTime.parse(filters.get(Building.COL_CLOSED))
+            ));
+        }
+
+        if (keys.contains(Reservable.MAPPED_NAME)) {
+            CriteriaQuery<Reservable> recq = cb.createQuery(Reservable.class);
+            Root<Reservable> reservable = recq.from(Reservable.class);
+
+            List<Integer> rvals = new ArrayList<>((Arrays.stream(
+                filters.get(
+                    Reservable.MAPPED_NAME)
+                    .split(","))
+                .mapToInt(Integer::parseInt)
+                .boxed()
+                .collect(Collectors.toList())
+            ));
+
+            recq.select(reservable.get(Building.MAPPED_NAME))
+                .where(reservable.get(Reservable.COL_ID).in(rvals));
+
+            allPredicates.add(building.in(em.createQuery(recq).getResultList()));
+        }
+
+        if (keys.contains(Building.COL_NAME)) {
+            allPredicates.add(cb.like(building.get(Building.COL_NAME),
+                "%" + filters.get(Building.COL_NAME) + "%"));
+        }
+
+        if (keys.contains(Building.COL_DESC)) {
+            allPredicates.add(cb.like(building.get(Building.COL_DESC),
+                "%" + filters.get(Building.COL_DESC) + "%"));
+        }
+
+        if (keys.contains(Building.COL_LOCATION)) {
+            allPredicates.add(cb.like(building.get(Building.COL_LOCATION),
+                "%" + filters.get(Building.COL_LOCATION) + "%"));
+        }
+
+        rcq.where(cb.and(allPredicates.toArray(new Predicate[0])));
+        return em.createQuery(rcq).getResultList();
     }
+
 }

@@ -2,7 +2,6 @@ package nl.tudelft.oopp.group39.building.controllers;
 
 import java.util.List;
 import java.util.Map;
-import nl.tudelft.oopp.group39.building.dao.BuildingDao;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
@@ -34,16 +33,13 @@ public class BuildingController {
     @Autowired
     private BuildingService buildingService;
 
-    @Autowired
-    private BuildingDao buildingDao;
-
     /** TODO Sven.
      */
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listBuildings(
         @RequestParam Map<String, String> params
     ) {
-        List<Building> result = buildingDao.buildingFilter(params);
+        List<Building> result = buildingService.listBuildings(params);
         return RestResponse.create(result);
     }
 
