@@ -38,11 +38,10 @@ public class Room extends AbstractEntity {
     public static final String TABLE_NAME = "rooms";
     public static final String MAPPED_NAME = "room";
     public static final String COL_CAPACITY = "capacity";
-    public static final String COL_ONLY_STAFF = "only_staff";
+    public static final String COL_ONLY_STAFF = "onlyStaff";
     public static final String COL_NAME = "name";
     public static final String COL_DESCRIPTION = "description";
 
-    @Column(name = COL_NAME)
     private String name;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Building.MAPPED_NAME)
@@ -50,9 +49,7 @@ public class Room extends AbstractEntity {
     private Building building;
     @Column(name = COL_CAPACITY)
     private int capacity;
-    @Column(name = COL_ONLY_STAFF)
-    private boolean onlyStaff;
-    @Column(name = COL_DESCRIPTION)
+    private Boolean onlyStaff;
     private String description;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)

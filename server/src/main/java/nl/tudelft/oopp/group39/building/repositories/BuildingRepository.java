@@ -11,14 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BuildingRepository extends JpaRepository<Building, Long> {
 
-    //Returns an array with all the buildings in it
-    @Query("SELECT id FROM Building")
-    Integer[] getAllBuildingIds();
-
-    @Query("SELECT u FROM Building u WHERE u.id IN :ids")
-    List<Building> getAllBuildingsByIds(@Param("ids") List<Long> ids);
-
     @Query("SELECT u FROM Building u WHERE u.id = :id")
-    Optional<Building> findById(@Param("id") int id);
+    Building findById(@Param("id") Integer id);
 
 }

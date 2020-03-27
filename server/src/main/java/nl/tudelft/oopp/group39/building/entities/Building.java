@@ -8,7 +8,6 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.Column;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,15 +32,10 @@ public class Building extends AbstractEntity {
     public static final String COL_LOCATION = "location";
     public static final String COL_DESC = "description";
 
-    @Column(name = COL_NAME)
     private String name;
-    @Column(name = COL_LOCATION)
     private String location;
-    @Column(name = COL_DESC)
     private String description;
-    @Column(name = COL_OPEN)
     private LocalTime open;
-    @Column(name = COL_CLOSED)
     private LocalTime closed;
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
     private Set<Room> rooms = new HashSet<>();
