@@ -62,6 +62,10 @@ public class BuildingService {
         return buildingRepository.findAll();
     }
 
+    public List<Building> getBuildingsByRoomId() {
+        return buildingRepository.findAll();
+    }
+
     public Building readBuilding(long id) throws BuildingNotFoundException {
         return buildingRepository.findById(id)
             .orElseThrow(() -> new BuildingNotFoundException((int) id));

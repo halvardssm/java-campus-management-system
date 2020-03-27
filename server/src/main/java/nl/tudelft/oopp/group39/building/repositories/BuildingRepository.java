@@ -3,6 +3,7 @@ package nl.tudelft.oopp.group39.building.repositories;
 import java.time.LocalTime;
 import java.util.List;
 import nl.tudelft.oopp.group39.building.entities.Building;
+import nl.tudelft.oopp.group39.room.entities.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -57,4 +58,6 @@ public interface BuildingRepository extends JpaRepository<Building, Long> {
     @Query("SELECT u FROM Building u WHERE u.id = :id")
     List<Building> findById(@Param("id") int id);
 
+    @Query("SELECT u FROM Building u WHERE :id IN u.rooms")
+    List<Building> findBuildingsByRoom(@Param("room") Room room);
 }

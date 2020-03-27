@@ -9,6 +9,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
+import nl.tudelft.oopp.group39.models.Room;
 import nl.tudelft.oopp.group39.models.User;
 
 public class ServerCommunication {
@@ -78,6 +79,14 @@ public class ServerCommunication {
     ) {
         String urlString = url + "building?capacity=" + capacity + "&building=" + name
             + "&location=" + location + "&open=" + open + "&closed=" + closed;
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
+        return httpRequest(request);
+    }
+
+    public static String getBuildingsByRoom(
+        Room room
+    ) {
+        String urlString = url + "building/room?room=" + room.toString();
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
         return httpRequest(request);
     }
