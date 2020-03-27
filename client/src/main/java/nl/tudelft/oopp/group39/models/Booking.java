@@ -38,9 +38,7 @@ public class Booking {
         this.room = room;
     }
 
-    public Integer getId() {
-        return id;
-    }
+    public Integer getId() { return id; }
 
     public String getDate() {
         return date;
@@ -48,9 +46,7 @@ public class Booking {
 
     public String getStartTime() { return startTime; }
 
-    public String getEndTime() {
-        return endTime;
-    }
+    public String getEndTime() { return endTime; }
 
     public User getUser() { return user; }
 
