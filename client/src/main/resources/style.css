@@ -1,11 +1,18 @@
-
 .bar {
     -fx-background-color: #00A6D6;
 }
 
+.hyperlink:hover{
+    -fx-underline: false;
+}
+
+.button:hover {
+    -fx-cursor: hand;
+}
+
 #title {
     -fx-font-size: 22;
-    -fx-font-weight: bold;
+    /*-fx-font-weight: bold;*/
     -fx-text-fill: white;
 }
 
@@ -48,13 +55,19 @@
 }
 
 #loginbtn {
-    -fx-background-color: white;
-    -fx-text-fill: black;
-    -fx-font-size: 14;
+    -fx-background-color: #00A6D6;
+    -fx-text-fill: white;
+    -fx-font-size: 18;
+}
+
+#loginbtn:hover {
+    -fx-background-radius: 4%;
+
+    -fx-background-color: #00607b;
 }
 
 #errorfield {
-    -fx-fill: red;
+    -fx-text-fill: red;
 }
 
 .buildingAddress {
@@ -70,15 +83,23 @@
 }
 
 .sidebar-item {
-    -fx-pref-width: 120;
+    -fx-pref-width: 100;
     -fx-text-fill: black;
-    -fx-font-size: 16;
+    -fx-font-size: 14;
     -fx-padding: 10 0 10 10;
 }
 
 .sidebar-item:hover {
     -fx-background-color: rgba(106, 123, 127, 0.3);
     -fx-text-fill: black;
+    -fx-underline: false;
+}
+
+.sidebar-icon {
+    -fx-background-color: none;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+    -fx-pref-width: 100;
 }
 
 #sidebar {
@@ -91,21 +112,123 @@
 }
 
 .menu-button {
-    -fx-background-color: white;
-    -fx-font-size: 14;
+    -fx-background-color: none;
+}
+
+.menu-button .label {
+    -fx-text-fill: white;
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+}
+
+.menu-button:hover {
+    -fx-background-radius: 4%;
+    -fx-background-color: #00607b;
+    -fx-cursor: hand;
 }
 
 .menu-item:focused {
     -fx-background-color: #00A6D6;
+}
+
+.menu-item .label {
+    -fx-text-fill: black;
+    -fx-font-size: 14;
+    -fx-font-weight: normal;
+}
+
+.menu-item:focused .label {
     -fx-text-fill: white;
 }
 
 .gridblock {
-    -fx-background-color: rgba(106,123,127,0.18);
-    -fx-border-radius: 6%;
-    -fx-background-radius: 6%;
+    -fx-background-color: rgba(106, 123, 127, 0.18);
+    -fx-border-radius: 3%;
+    -fx-background-radius: 3%;
 }
 
 .gridblock:hover {
     -fx-background-color: rgba(106, 123, 127, 0.3);
+}
+
+.fooditem {
+    -fx-background-color: rgba(106, 123, 127, 0.18);
+}
+
+
+#getMenuBtn {
+    -fx-background-color: #00A6D6;
+    -fx-text-fill: white;
+}
+
+#getMenuBtn:hover {
+    -fx-background-color: #00607b;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.buildingLink {
+    -fx-background-color: rgba(106, 123, 127, 0.18);
+}
+
+.buildingLink:hover {
+    -fx-background-color: rgba(106, 123, 127, 0.3);
+}
+
+#orderbtn {
+    -fx-pref-width: 200;
+    -fx-pref-height: 50;
+    -fx-background-color: #00A6D6;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
+}
+
+#orderbtn:hover {
+    -fx-background-color: #00607b;
+}
+
+#carttitle {
+    -fx-font-size: 18;
+}
+
+.buildingList {
+    -fx-text-fill: black;
+}
+
+.buildingList:focused {
+    -fx-text-fill: black;
+}
+
+#backButton {
+    -fx-background-color: none;
+    -fx-font-size: 20;
+    -fx-text-fill: white;
+    -fx-padding: 0;
+}
+
+#text {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-fill: black;
+}
+
+#roomRName {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+}
+
+#roomRDetails {
+    -fx-font-size: 14;
+}
+
+#reserveButton {
+    -fx-background-color: #00A6D6;
+    -fx-text-fill: white;
+    -fx-font-size: 18;
+}
+
+#reserveButton:hover {
+    -fx-background-color: #00607b;
 }

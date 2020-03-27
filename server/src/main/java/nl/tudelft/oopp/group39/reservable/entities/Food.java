@@ -12,6 +12,8 @@ import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 public class Food extends Reservable {
     public static final String TABLE_NAME = "foods";
     public static final String MAPPED_NAME = "food";
+    public static final String COL_NAME = "name";
+    public static final String COL_DESCRIPTION = "description";
 
     private String name;
     private String description;
@@ -40,18 +42,17 @@ public class Food extends Reservable {
      *
      * @param name        of the item
      * @param description of the item
-     * @param building    where the item is available
      * @param price       of the item
+     * @param building    where the item is available
      * @param reservation the reservation
      */
     public Food(
         String name,
         String description,
-        Building building,
-        Double price,
+        Double price, Building building,
         Set<ReservationAmount> reservation
     ) {
-        super(building, price, reservation);
+        super(price, building, reservation);
         setName(name);
         setDescription(description);
     }

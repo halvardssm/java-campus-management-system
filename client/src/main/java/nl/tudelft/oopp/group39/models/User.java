@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.models;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.sql.Blob;
 
 public class User {
@@ -8,6 +9,8 @@ public class User {
     private String password;
     private Blob image;
     private String role;
+    private ArrayNode bookings;
+
 
     public User() {
 
@@ -49,4 +52,9 @@ public class User {
     public String getRole() {
         return role;
     }
+
+    public ArrayNode getBookings() {
+        return bookings;
+    }
+
 }

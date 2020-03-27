@@ -3,9 +3,14 @@ package nl.tudelft.oopp.group39.booking.services;
 import java.util.List;
 import java.util.Map;
 import nl.tudelft.oopp.group39.booking.dao.BookingDao;
+import nl.tudelft.oopp.group39.booking.dto.BookingDto;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.booking.exceptions.BookingNotFoundException;
 import nl.tudelft.oopp.group39.booking.repositories.BookingRepository;
+import nl.tudelft.oopp.group39.room.entities.Room;
+import nl.tudelft.oopp.group39.room.services.RoomService;
+import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +20,10 @@ public class BookingService {
     private BookingRepository bookingRepository;
     @Autowired
     private BookingDao bookingDao;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private RoomService roomService;
 
     /**
      * List all bookings.
@@ -22,7 +31,6 @@ public class BookingService {
      * @return a list of bookings {@link Booking}.
      */
     public List<Booking> listBookings(Map<String, String> params) {
-
         return bookingDao.listBookings(params);
     }
 
@@ -32,8 +40,8 @@ public class BookingService {
      * @return booking by id {@link Booking}.
      */
     public Booking readBooking(Integer id) throws BookingNotFoundException {
-        return bookingRepository.findById(id).orElseThrow(()
-            -> new BookingNotFoundException(id));
+        return bookingRepository.findById(id)
+            .orElseThrow(() -> new BookingNotFoundException(id));
     }
 
     /**
@@ -43,6 +51,25 @@ public class BookingService {
      */
     public Booking createBooking(Booking newBooking) throws IllegalArgumentException {
         return bookingRepository.save(newBooking);
+    }
+
+    /**
+     * Create a booking.
+     *
+     * @return the created booking {@link Booking}.
+     */
+    public Booking createBooking(BookingDto newBooking) throws IllegalArgumentException {
+        User user = userService.readUser(newBooking.getUser());
+        Room room = roomService.readRoom(newBooking.getRoom());
+        Booking booking = new Booking(
+            newBooking.getDate(),
+            newBooking.getStartTime(),
+            newBooking.getEndTime(),
+            user,
+            room
+        );
+
+        return createBooking(booking);
     }
 
     /**
@@ -60,8 +87,28 @@ public class BookingService {
                 booking.setRoom(newBooking.getRoom());
                 return bookingRepository.save(newBooking);
             })
-            .orElseThrow(()
-                -> new BookingNotFoundException(id));
+            .orElseThrow(() -> new BookingNotFoundException(id));
+    }
+
+    /**
+     * Update a booking.
+     *
+     * @return the updated booking {@link Booking}.
+     */
+    public Booking updateBooking(BookingDto newBooking, Integer id)
+        throws BookingNotFoundException {
+        User user = userService.readUser(newBooking.getUser());
+        Room room = roomService.readRoom(newBooking.getRoom());
+
+        Booking booking = new Booking(
+            newBooking.getDate(),
+            newBooking.getStartTime(),
+            newBooking.getEndTime(),
+            user,
+            room
+        );
+
+        return updateBooking(booking, id);
     }
 
     /**

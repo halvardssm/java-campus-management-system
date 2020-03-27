@@ -1,87 +1,87 @@
-//package nl.tudelft.oopp.group39.reservation.services;
-//
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//
-//import java.time.LocalDate;
-//import java.time.ZoneId;
-//import java.util.ArrayList;
-//import java.util.List;
-//import javassist.NotFoundException;
-//import nl.tudelft.oopp.group39.reservation.entities.Reservation;
-//import nl.tudelft.oopp.group39.reservation.enums.ReservationTypes;
-//import nl.tudelft.oopp.group39.reservation.repositories.ReservationRepository;
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-//import org.springframework.boot.test.context.SpringBootTest;
-//
-//@SpringBootTest
-//@AutoConfigureMockMvc
-//class ReservationServiceTest {
-//    private static final Reservation testReservation = new Reservation(
-//        ReservationTypes.RESERVATION,
-//        LocalDate.now(ZoneId.of("Europe/Paris")),
-//        LocalDate.now(ZoneId.of("Europe/Paris")).plusDays(1),
-//        null
-//    );
-//
-//    @Autowired
-//    private ReservationService reservationService;
-//    @Autowired
-//    private ReservationRepository reservationRepository;
-//
-//    @BeforeEach
-//    void setUp() {
-//        Reservation reservation = reservationRepository.save(testReservation);
-//        testReservation.setId(reservation.getId());
-//    }
-//
-//    @AfterEach
-//    void tearDown() {
-//        reservationRepository.deleteAll();
-//        testReservation.setId(null);
-//    }
-//
-//    @Test
-//    void listReservations() {
-//        List<Reservation> reservations = reservationService.listReservations();
-//
-//        assertEquals(1, reservations.size());
-//        assertEquals(testReservation, reservations.get(0));
-//    }
-//
-//    @Test
-//    void readReservation() throws NotFoundException {
-//        Reservation reservation = reservationService.readReservation(testReservation.getId());
-//
-//        assertEquals(testReservation, reservation);
-//    }
-//
-//    @Test
-//    void createReservation() {
-//        Reservation reservation = testReservation;
-//        reservation.setType(ReservationTypes.HOLIDAY);
-//        Reservation reservation2 = reservationService.createReservation(reservation);
-//
-//        assertEquals(reservation, reservation2);
-//    }
-//
-//    @Test
-//    void updateReservation() throws NotFoundException {
-//        Reservation reservation = testReservation;
-//        reservation.setType(ReservationTypes.HOLIDAY);
-//        Reservation reservation2 = reservationService
-//        .updateReservation(testReservation.getId(), reservation);
-//
-//        assertEquals(reservation, reservation2);
-//    }
-//
-//    @Test
-//    void deleteReservation() {
-//        reservationService.deleteReservation(testReservation.getId());
-//
-//        assertEquals(new ArrayList<>(), reservationService.listReservations());
-//    }
-//}
+package nl.tudelft.oopp.group39.reservation.services;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
+import javassist.NotFoundException;
+import nl.tudelft.oopp.group39.AbstractTest;
+import nl.tudelft.oopp.group39.reservation.dto.ReservationDto;
+import nl.tudelft.oopp.group39.reservation.entities.Reservation;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+class ReservationServiceTest extends AbstractTest {
+    private final Reservation testReservation = new Reservation(
+        LocalDateTime.now(ZoneId.of("Europe/Paris")),
+        LocalDateTime.now(ZoneId.of("Europe/Paris")).plusHours(2),
+        null,
+        null,
+        null
+    );
+    private final ReservationDto testReservationDto = new ReservationDto(
+        testReservation.getTimeOfPickup().plusDays(2),
+        testReservation.getTimeOfDelivery().plusDays(5),
+        null,
+        null,
+        null
+    );
+
+    @BeforeEach
+    void setUp() {
+        Reservation reservation = reservationService.createReservation(testReservation);
+        testReservation.setId(reservation.getId());
+    }
+
+    @AfterEach
+    void tearDown() {
+        reservationService.deleteReservation(testReservation.getId());
+        testReservation.setId(null);
+    }
+
+    @Test
+    void listReservations() {
+        List<Reservation> reservations = reservationService.listReservations();
+
+        assertEquals(1, reservations.size());
+        assertEquals(testReservation.getId(), reservations.get(0).getId());
+        assertEquals(testReservation.getTimeOfPickup(), reservations.get(0).getTimeOfPickup());
+        assertEquals(testReservation.getTimeOfDelivery(), reservations.get(0).getTimeOfDelivery());
+    }
+
+    @Test
+    void readReservation() throws NotFoundException {
+        Reservation reservation = reservationService.readReservation(testReservation.getId());
+
+        assertEquals(testReservation.getId(), reservation.getId());
+        assertEquals(testReservation.getTimeOfPickup(), reservation.getTimeOfPickup());
+        assertEquals(testReservation.getTimeOfDelivery(), reservation.getTimeOfDelivery());
+    }
+
+    @Test
+    void deleteAndCreateReservation() {
+        reservationService.deleteReservation(testReservation.getId());
+
+        assertEquals(new ArrayList<>(), reservationService.listReservations());
+
+        Reservation reservation = reservationService.createReservation(testReservation);
+        testReservation.setId(reservation.getId());
+
+        assertEquals(testReservation.getId(), reservation.getId());
+        assertEquals(testReservation.getTimeOfPickup(), reservation.getTimeOfPickup());
+        assertEquals(testReservation.getTimeOfDelivery(), reservation.getTimeOfDelivery());
+    }
+
+    @Test
+    void updateReservation() throws NotFoundException {
+        Reservation reservation = reservationService
+            .updateReservation(testReservation.getId(), testReservationDto);
+
+        assertEquals(testReservation.getId(), reservation.getId());
+        assertEquals(testReservationDto.getTimeOfPickup(), reservation.getTimeOfPickup());
+        assertEquals(testReservationDto.getTimeOfDelivery(), reservation.getTimeOfDelivery());
+    }
+}

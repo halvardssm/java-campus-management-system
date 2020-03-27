@@ -1,15 +1,11 @@
 package nl.tudelft.oopp.group39.reservable.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import java.time.LocalTime;
-import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.building.entities.Building;
-import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.reservable.enums.BikeType;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 
@@ -17,11 +13,11 @@ import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 @Table(name = Bike.TABLE_NAME)
 public class Bike extends Reservable {
     public static final String TABLE_NAME = "bikes";
+    public static final String MAPPED_NAME = "bike";
+    public static final String COL_BIKE_TYPE = "bikeType";
 
     @Enumerated(EnumType.STRING)
     private BikeType bikeType;
-    @JsonFormat(pattern = Constants.FORMAT_TIME_SHORT)
-    private LocalTime rentalDuration;
 
     public BikeType getBikeType() {
         return bikeType;
@@ -31,36 +27,24 @@ public class Bike extends Reservable {
         this.bikeType = bikeType;
     }
 
-    public LocalTime getRentalDuration() {
-        return rentalDuration;
-    }
-
-    public void setRentalDuration(LocalTime rentalDuration) {
-        this.rentalDuration = rentalDuration;
-    }
-
     public Bike() {
     }
 
     /**
      * The constructor of Bike.
      *
-     * @param building       where the bike is available.
-     * @param price          of the item
-     * @param bikeType       the bike type
-     * @param rentalDuration duration of the rent
-     * @param reservations   the reservation
+     * @param bikeType     the bike type
+     * @param price        of the item
+     * @param building     where the bike is available.
+     * @param reservations the reservation
      */
     public Bike(
         BikeType bikeType,
-        LocalTime rentalDuration,
-        Building building,
-        Double price,
+        Double price, Building building,
         Set<ReservationAmount> reservations
     ) {
-        super(building, price, reservations);
+        super(price, building, reservations);
         setBikeType(bikeType != null ? bikeType : BikeType.CITY);
-        setRentalDuration(rentalDuration != null ? rentalDuration : LocalTime.parse("04:00:00"));
     }
 
     @Override
@@ -75,7 +59,6 @@ public class Bike extends Reservable {
             return false;
         }
         Bike bike = (Bike) o;
-        return getBikeType() == bike.getBikeType()
-            && Objects.equals(getRentalDuration(), bike.getRentalDuration());
+        return getBikeType() == bike.getBikeType();
     }
 }

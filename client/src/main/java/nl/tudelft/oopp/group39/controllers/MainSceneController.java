@@ -12,6 +12,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.models.Building;
+import nl.tudelft.oopp.group39.models.Room;
 import nl.tudelft.oopp.group39.models.User;
 import nl.tudelft.oopp.group39.views.UsersDisplay;
 
@@ -94,6 +96,7 @@ public class MainSceneController {
         controller.changeTopBtn();
     }
 
+
     /**
      * Doc. TODO Sven
      */
@@ -106,10 +109,10 @@ public class MainSceneController {
     /**
      * Doc. TODO Sven
      */
-    public void goToRoomsScene(long buildingId, String name, String address) throws IOException {
+    public void goToRoomsScene(Building building) throws IOException {
         RoomSceneController controller =
             (RoomSceneController) UsersDisplay.sceneControllerHandler("/roomView.fxml");
-        controller.setup(buildingId, name, address);
+        controller.setup(building);
         controller.changeTopBtn();
     }
 
@@ -121,6 +124,43 @@ public class MainSceneController {
             (RoomSceneController) UsersDisplay.sceneControllerHandler("/roomView.fxml");
         controller.getAllRooms();
         controller.changeTopBtn();
+    }
+
+    /**
+     * Goes to reservation scene.
+     *
+     * @param room     chosen room
+     * @param building building of chosen room
+     * @throws IOException throws an IOException
+     */
+    public void goToReservationScene(Room room, Building building) throws IOException {
+        RoomReservationController controller =
+            (RoomReservationController) UsersDisplay.sceneControllerHandler(
+                "/roomReservation.fxml");
+        controller.setup(room, building);
+        controller.changeTopBtn();
+    }
+
+    /**
+     * Doc. TODO Sven
+     */
+    public void goToBikeRentalScene() throws IOException {
+        FoodAndBikeSceneController controller =
+            (FoodAndBikeSceneController) UsersDisplay
+                .sceneControllerHandler("/bikeAndFoodView.fxml");
+        controller.changeTopBtn();
+        controller.setup("bike");
+    }
+
+    /**
+     * Doc. TODO Sven
+     */
+    public void goToFoodOrderScene() throws IOException {
+        FoodAndBikeSceneController controller =
+            (FoodAndBikeSceneController) UsersDisplay
+                .sceneControllerHandler("/bikeAndFoodView.fxml");
+        controller.changeTopBtn();
+        controller.setup("food");
     }
 
     /**
@@ -211,7 +251,23 @@ public class MainSceneController {
             });
             Hyperlink bikerental = new Hyperlink("Bike rental");
             bikerental.getStyleClass().add("sidebar-item");
-            sidebar.getChildren().addAll(buildings, rooms, bikerental);
+            bikerental.setOnAction(event -> {
+                try {
+                    goToBikeRentalScene();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            Hyperlink foodorder = new Hyperlink("Order food");
+            foodorder.getStyleClass().add("sidebar-item");
+            foodorder.setOnAction(event -> {
+                try {
+                    goToFoodOrderScene();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            sidebar.getChildren().addAll(buildings, rooms, bikerental, foodorder);
             sidebarShown = true;
         } else {
             sidebar.getChildren().clear();

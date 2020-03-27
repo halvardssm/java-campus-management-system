@@ -1,30 +1,21 @@
 package nl.tudelft.oopp.group39.reservation.entities;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.Objects;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.config.AbstractEntity;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 
 @Entity
 @Table(name = ReservationAmount.TABLE_NAME)
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class,
-    property = ReservationAmount.COL_ID
-)
-public class ReservationAmount {
+public class ReservationAmount extends AbstractEntity {
     public static final String TABLE_NAME = Reservation.TABLE_NAME + "_" + Reservable.TABLE_NAME;
-    public static final String COL_ID = "id";
+    public static final String COL_AMOUNT = "amount";
+    public static final String COL_RESERVATION = "reservation";
+    public static final String COL_RESERVABLE = "reservable";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
     private Integer amount;
     @ManyToOne
     @JoinColumn(name = Reservation.MAPPED_NAME)
@@ -45,14 +36,6 @@ public class ReservationAmount {
         this.amount = amount;
         this.reservation = reservation;
         this.reservable = reservable;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Integer getAmount() {
