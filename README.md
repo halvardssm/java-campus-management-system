@@ -23,13 +23,17 @@ The project supports implementation for rooms, buildings, reservations, users, f
 
 ## How to run it
 To run the program, the user first needs to set up a MYSQL database.
-Then, the user should create a user that is at least allowed the basic CRUD operations,
-and the name and password of the user should be inputted in the properties file in 
+* Makefile (recommended): `make db_start`
+* Docker: ```docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=pwd -e MYSQL_DATABASE=oopp -v `pwd`/data:/var/lib/mysql --rm --name oopp-db mysql:latest```
+* Local MySQL (not recommended): [mac](https://duckduckgo.com/?q=mysql+mac) | [linux](https://duckduckgo.com/?q=mysql+linux) | [windows](https://duckduckgo.com/?q=mysql+windows)  . 
 
-server/src/main/resources/application.properties.
+If the Makefile/Docker is changed or not used, make sure to place the correct information in the `application.properties` inside of server
 
-Then, the server should be started. After that, the client can be used to access the server.
+`/server/src/main/resources/application.properties`
+
+Start the server, and after `Seeding complete` shows, start the client
 
 ## How to contribute to it
+* This project uses checkstyle for formatting, you can find it in `/config/checkstyle/checkstyle.xml`
 
 ## Copyright / License (opt.)
