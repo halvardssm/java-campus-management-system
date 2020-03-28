@@ -65,6 +65,11 @@ public class Reservation extends AbstractEntity {
         this.reservationAmounts.addAll(initSet(reservationAmounts));
     }
 
+    /**
+     * Converts the object to dto for JSON serializing.
+     *
+     * @return the converted object
+     */
     public ReservationDto toDto() {
         Set<ReservationAmountDto> reservationAmountsDto = new HashSet<>();
         reservationAmounts.forEach(

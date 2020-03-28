@@ -21,6 +21,18 @@ public class RoomDto {
     public RoomDto() {
     }
 
+    /**
+     * Creates a RoomDto object.
+     *
+     * @param id the id of the Room
+     * @param building building id that contains the room
+     * @param name the name of the room
+     * @param capacity the capacity of the room
+     * @param onlyStaff value that determines if the room is only for staff or not
+     * @param description a description for the room
+     * @param facilities the facilities that are contained in the room
+     * @param bookings the bookings made for the room (in dto form)
+     */
     public RoomDto(
         Integer id,
         Integer building,

@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.group39.reservable.dto;
 
-import static nl.tudelft.oopp.group39.config.Utils.initSet;
-
 import java.util.HashSet;
 import java.util.Set;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
@@ -14,6 +12,13 @@ public class ReservableDto {
     public ReservableDto() {
     }
 
+    /**
+     * Creates a Dto object.
+     *
+     * @param price the price of the reservable
+     * @param building the building id of the reservable
+     * @param reservations the reservations associated with the reservable
+     */
     public ReservableDto(
         Double price,
         Integer building,

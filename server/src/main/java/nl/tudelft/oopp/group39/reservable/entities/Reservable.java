@@ -84,10 +84,18 @@ public class Reservable extends AbstractEntity {
         this.reservations = reservations;
     }
 
+    /**
+     * Converts the object to dto for JSON serializing.
+     *
+     * @return the converted dto of the object
+     */
     public ReservableDto toDto() {
         Set<ReservationAmountDto> reservationAmountDtos = new HashSet<>();
 
-        reservations.forEach(reservationAmount -> reservationAmountDtos.add(reservationAmount.toDto()));
+        reservations.forEach(
+            reservationAmount -> reservationAmountDtos.add(
+                reservationAmount.toDto()
+            ));
 
         return new ReservableDto(
             price,

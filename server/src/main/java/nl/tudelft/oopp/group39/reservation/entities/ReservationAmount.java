@@ -63,6 +63,11 @@ public class ReservationAmount extends AbstractEntity {
         this.reservable = reservable;
     }
 
+    /**
+     * Converts the object to dto for JSON serializing.
+     *
+     * @return the converted object
+     */
     public ReservationAmountDto toDto() {
         return new ReservationAmountDto(
             amount,

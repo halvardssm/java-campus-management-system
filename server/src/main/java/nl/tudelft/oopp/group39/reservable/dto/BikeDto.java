@@ -12,6 +12,14 @@ public class BikeDto extends ReservableDto {
     public BikeDto() {
     }
 
+    /**
+     * Creates a BikeDto object.
+     *
+     * @param bikeType type of the bike
+     * @param price price of the bike
+     * @param building building id of the bike
+     * @param reservations reservation associated with the bike
+     */
     public BikeDto(
         BikeType bikeType,
         Double price,

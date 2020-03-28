@@ -60,6 +60,11 @@ public class Food extends Reservable {
         setDescription(description);
     }
 
+    /**
+     * Converts a food entity to dto for JSON serializing.
+     *
+     * @return the converted FoodDto object
+     */
     public FoodDto toDto() {
         Set<ReservationAmountDto> reservationAmountDtos = new HashSet<>();
         super.getReservations().forEach(

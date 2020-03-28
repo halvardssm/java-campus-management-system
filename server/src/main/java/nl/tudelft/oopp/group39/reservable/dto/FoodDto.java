@@ -11,6 +11,15 @@ public class FoodDto extends ReservableDto {
     public FoodDto() {
     }
 
+    /**
+     * Creates a FoodDto object.
+     *
+     * @param name name of the food reservable
+     * @param description the description of said reservable
+     * @param price price of the reservable
+     * @param building building id associated with the reservable
+     * @param reservations reservations associated with the reservable (in Dto form)
+     */
     public FoodDto(
         String name,
         String description,
