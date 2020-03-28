@@ -21,7 +21,7 @@
             <Button onAction="#toggleSidebar" id="menubtn" alignment="CENTER">
                 <graphic>
                     <ImageView fitHeight="30" fitWidth="30">
-                        <Image url="@icons/menu-icon.png"/>
+                        <Image url="@../icons/menu-icon.png"/>
                     </ImageView>
                 </graphic>
             </Button>
@@ -65,6 +65,6 @@
         </GridPane>
     </center>
     <stylesheets>
-        <URL value="@style.css" />
+        <URL value="@../style/style.css" />
     </stylesheets>
 </BorderPane>

@@ -16,11 +16,11 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javax.swing.text.html.ImageView;
-import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.server.controller.MainSceneController;
 import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.controller.MainSceneController;
 
 
 public class RoomReservationController extends MainSceneController {
@@ -353,6 +353,4 @@ public class RoomReservationController extends MainSceneController {
     private void backToRoom() throws IOException {
         goToRoomsScene(building);
     }
-
-
 }

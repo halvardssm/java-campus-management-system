@@ -1,5 +1,9 @@
 package nl.tudelft.oopp.group39.building.model;
 
+import java.util.HashSet;
+import java.util.Set;
+import nl.tudelft.oopp.group39.room.model.Room;
+
 public class Building {
 
     private Integer id;
@@ -13,6 +17,8 @@ public class Building {
     private String open;
 
     private String closed;
+
+    private Set<Room> rooms = new HashSet<>();
 
     public Building() {
 
@@ -33,7 +39,8 @@ public class Building {
         String location,
         String description,
         String open,
-        String closed
+        String closed,
+        Set<Room> rooms
     ) {
         this.id = id;
         this.name = name;
@@ -41,6 +48,7 @@ public class Building {
         this.description = description;
         this.open = open;
         this.closed = closed;
+        this.rooms.addAll(rooms);
     }
 
     public Integer getId() {
@@ -65,5 +73,13 @@ public class Building {
 
     public String getClosed() {
         return closed;
+    }
+
+    public Set<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(Set<Room> rooms) {
+        this.rooms = rooms;
     }
 }

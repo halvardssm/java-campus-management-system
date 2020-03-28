@@ -8,8 +8,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import nl.tudelft.oopp.group39.server.controller.MainSceneController;
 import nl.tudelft.oopp.group39.room.model.Room;
+import nl.tudelft.oopp.group39.server.controller.MainSceneController;
 import nl.tudelft.oopp.group39.user.model.User;
 
 public class ServerCommunication {
@@ -74,7 +74,7 @@ public class ServerCommunication {
     public static String getRooms(long buildingId) {
         HttpRequest request = HttpRequest.newBuilder()
             .GET()
-            .uri(URI.create(url + "room?buildingId=" + buildingId))
+            .uri(URI.create(url + "room?building=" + buildingId))
             .build();
         return httpRequest(request);
     }

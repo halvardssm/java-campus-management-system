@@ -11,17 +11,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.MainSceneController;
-import nl.tudelft.oopp.group39.building.model.Building;
 
 public class BuildingSceneController extends MainSceneController implements Initializable {
 
     @FXML
     private FlowPane flowPane;
-
-    @FXML
-    private GridPane newBuilding;
 
     /**
      * Retrieves buildings from the server and shows them.
@@ -32,35 +29,23 @@ public class BuildingSceneController extends MainSceneController implements Init
         try {
             String buildingString = ServerCommunication.get(ServerCommunication.building);
             System.out.println(buildingString);
+
             ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
+
             buildingString = mapper.writeValueAsString(body);
             Building[] list = mapper.readValue(buildingString, Building[].class);
+
+            FXMLLoader loader;
+
             for (Building building : list) {
-                newBuilding = FXMLLoader.load(getClass().getResource("/building/buildingCell.fxml"));
-                long buildingId = building.getId();
-                String buildingName = building.getName();
-                String address = building.getLocation();
-                String desc = building.getDescription();
-                newBuilding.setOnMouseClicked(e -> {
-                    try {
-                        goToRoomsScene(building);
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
 
-                });
+                loader = new FXMLLoader(getClass()
+                    .getResource("/building/buildingCell.fxml"));
 
-                Label name = (Label) newBuilding.lookup("#bname");
-                name.setText(buildingName);
+                GridPane newBuilding = loader.load();
+                BuildingCellController controller = loader.getController();
 
-                String newDetails = (address
-                    + "\n" + desc
-                    + "\n" + "Max. Capacity"
-                    + "\n" + "Opening times: " + building.getOpen()
-                    + " - " + building.getClosed());
-
-                Label details = (Label) newBuilding.lookup("#bdetails");
-                details.setText(newDetails);
+                controller.createPane(building);
 
                 flowPane.getChildren().add(newBuilding);
             }

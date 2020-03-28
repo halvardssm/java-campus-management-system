@@ -24,12 +24,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.server.controller.MainSceneController;
 import nl.tudelft.oopp.group39.reservable.model.Bike;
 import nl.tudelft.oopp.group39.reservable.model.Food;
 import nl.tudelft.oopp.group39.reservable.model.Reservable;
 import nl.tudelft.oopp.group39.room.model.Room;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.controller.MainSceneController;
 
 public class FoodAndBikeSceneController extends MainSceneController {
 

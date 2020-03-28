@@ -11,17 +11,17 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.building.controller.BuildingSceneController;
+import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.reservable.controller.FoodAndBikeSceneController;
-import nl.tudelft.oopp.group39.user.controller.LoginController;
 import nl.tudelft.oopp.group39.room.controller.RoomReservationController;
 import nl.tudelft.oopp.group39.room.controller.RoomSceneController;
-import nl.tudelft.oopp.group39.user.controller.SignupController;
-import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
-import nl.tudelft.oopp.group39.user.model.User;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.views.UsersDisplay;
+import nl.tudelft.oopp.group39.user.controller.LoginController;
+import nl.tudelft.oopp.group39.user.controller.SignupController;
+import nl.tudelft.oopp.group39.user.model.User;
 
 public class MainSceneController {
 
@@ -73,16 +73,9 @@ public class MainSceneController {
      */
     public void goToBuildingScene() throws IOException {
         BuildingSceneController controller =
-            (BuildingSceneController) UsersDisplay.sceneControllerHandler("/building/buildingListView.fxml");
+            (BuildingSceneController) UsersDisplay
+                .sceneControllerHandler("/building/buildingListView.fxml");
         controller.changeTopBtn();
-    }
-
-    /**
-     * Doc. TODO Sven
-     */
-    public void goToRoomScene() throws IOException {
-        UsersDisplay.sceneHandler("/room/roomScene.fxml");
-        changeTopBtn();
     }
 
     /**
@@ -98,7 +91,7 @@ public class MainSceneController {
      */
     public void goToLoginScene() throws IOException {
         LoginController controller =
-            (LoginController) UsersDisplay.sceneControllerHandler("/login.fxml");
+            (LoginController) UsersDisplay.sceneControllerHandler("/user/login.fxml");
         controller.changeTopBtn();
     }
 
@@ -108,7 +101,7 @@ public class MainSceneController {
      */
     public void goToSignupScene() throws IOException {
         SignupController controller =
-            (SignupController) UsersDisplay.sceneControllerHandler("/signup.fxml");
+            (SignupController) UsersDisplay.sceneControllerHandler("/user/signup.fxml");
         controller.changeTopBtn();
     }
 
@@ -153,7 +146,7 @@ public class MainSceneController {
     public void goToBikeRentalScene() throws IOException {
         FoodAndBikeSceneController controller =
             (FoodAndBikeSceneController) UsersDisplay
-                .sceneControllerHandler("/bikeAndFoodView.fxml");
+                .sceneControllerHandler("/reservable/bikeAndFoodView.fxml");
         controller.changeTopBtn();
         controller.setup("bike");
     }
@@ -164,7 +157,7 @@ public class MainSceneController {
     public void goToFoodOrderScene() throws IOException {
         FoodAndBikeSceneController controller =
             (FoodAndBikeSceneController) UsersDisplay
-                .sceneControllerHandler("/bikeAndFoodView.fxml");
+                .sceneControllerHandler("/reservable/bikeAndFoodView.fxml");
         controller.changeTopBtn();
         controller.setup("food");
     }

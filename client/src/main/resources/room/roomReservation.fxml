@@ -41,7 +41,7 @@
             <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
                        preserveRatio="true"
                        scaleX="1.1" scaleY="1.1">
-                <Image url="@../testimage.jpg"/>
+                <Image url="@../style/testimage.jpg"/>
             </ImageView>
             <Label fx:id="roomName" id="roomRName" text="Room Name"/>
             <Label fx:id="roomDetails" id="roomRDetails" text="Description:&#10;Capacity:&#10;Facilities:"/>
@@ -75,6 +75,6 @@
         </HBox>
     </bottom>
     <stylesheets>
-        <URL value="@../style.css"/>
+        <URL value="@../style/style.css"/>
     </stylesheets>
 </BorderPane>

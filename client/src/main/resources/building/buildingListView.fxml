@@ -39,6 +39,6 @@
       </ScrollPane>
    </center>
    <stylesheets>
-      <URL value="@../style.css" />
+      <URL value="@../style/style.css" />
    </stylesheets>
 </BorderPane>
