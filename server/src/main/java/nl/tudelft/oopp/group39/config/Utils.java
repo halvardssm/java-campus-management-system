@@ -23,7 +23,7 @@ public interface Utils {
      * @return a set of the component type
      */
     static <E extends AbstractEntity<E, D>, D extends AbstractDto<E, D>> Set<E>
-    idsToComponentSet(List<Long> list, Class<E> clazz) {
+        idsToComponentSet(List<Long> list, Class<E> clazz) {
         Set<E> result = new HashSet<>();
         if (list != null) {
             list.forEach(id -> {
@@ -38,7 +38,7 @@ public interface Utils {
     }
 
     static <E extends AbstractEntity<E, D>, D extends AbstractDto<E, D>> Set<E>
-    idsToComponentSet(Set<Long> set, Class<E> clazz) {
+        idsToComponentSet(Set<Long> set, Class<E> clazz) {
         return idsToComponentSet(new ArrayList<>(set), clazz);
     }
 
