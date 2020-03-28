@@ -44,7 +44,7 @@ public class AdminPController {
     private void switchBuildingView(ActionEvent actionEvent) throws IOException {
         Stage currentstage = (Stage) buildingView.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource("/AdminBuildingView.fxml"));
-        currentstage.setScene(new Scene(root, 700, 600));
+        currentstage.setScene(new Scene(root, 900, 600));
     }
 
 }

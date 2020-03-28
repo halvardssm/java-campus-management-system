@@ -55,10 +55,12 @@
             <TableView fx:id="roomTable" layoutY="49.0" opacity="0.75" prefHeight="288.0" prefWidth="700.0">
                <columns>
                   <TableColumn fx:id="roomIdCol" prefWidth="106.0" text="ID" />
-                  <TableColumn fx:id="roomBuildingIdCol" prefWidth="137.0" text="Building ID" />
+                  <TableColumn fx:id="roomBuildingIdCol" prefWidth="37.0" text="Building ID" />
                   <TableColumn fx:id="roomCapacityCol" prefWidth="190.0" text="Capacity" />
                   <TableColumn fx:id="roomFacilityCol" prefWidth="160.0" text="Facilities" />
                   <TableColumn fx:id="roomStaffCol" prefWidth="106.0" text="Only staff" />
+                  <TableColumn fx:id="roomDelCol" prefWidth="50.0" text="Delete" />
+                  <TableColumn fx:id="roomUpdateCol" prefWidth="50.0" text="Update" />
                </columns>
             </TableView>
             <TextField fx:id="updateRoomField" layoutX="96.0" layoutY="351.0" prefHeight="31.0" prefWidth="196.0" />

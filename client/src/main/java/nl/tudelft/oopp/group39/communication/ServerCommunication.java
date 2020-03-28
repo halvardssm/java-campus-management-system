@@ -115,6 +115,14 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
+    public static String getBuildingsByRoom(
+        Room room
+    ) {
+        String urlString = url + "building/room?room=" + room.toString();
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
+        return httpRequest(request);
+    }
+
     /**
      * Adds a booking on the server.
      *

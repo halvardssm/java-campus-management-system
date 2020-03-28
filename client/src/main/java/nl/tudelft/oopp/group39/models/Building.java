@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.group39.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(value = { "reservables" })
 public class Building {
 
     private Integer id;

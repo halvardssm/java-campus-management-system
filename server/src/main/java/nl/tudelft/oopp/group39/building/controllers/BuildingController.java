@@ -69,6 +69,12 @@ public class BuildingController {
         return RestResponse.create(buildingService.readBuilding(id));
     }
 
+    @GetMapping("/room/{id}")
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> getBuildingsByRoomId(@PathVariable int id) {
+        return RestResponse.create(buildingService.getBuildingsByRoomId(id));
+    }
+
     @PutMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> updateBuilding(
