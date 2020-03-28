@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.reservable.dto;
 
+import static nl.tudelft.oopp.group39.config.Utils.initSet;
+
 import java.util.HashSet;
 import java.util.Set;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
@@ -26,7 +28,7 @@ public class ReservableDto {
     ) {
         this.price = price;
         this.building = building;
-        this.reservations.addAll(reservations);
+        this.reservations.addAll(initSet(reservations));
     }
 
     public Double getPrice() {

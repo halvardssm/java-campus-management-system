@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.room.dto;
 
+import static nl.tudelft.oopp.group39.config.Utils.initSet;
+
 import java.util.HashSet;
 import java.util.Set;
 import nl.tudelft.oopp.group39.booking.dto.BookingDto;
@@ -50,7 +52,7 @@ public class RoomDto {
         this.onlyStaff = onlyStaff;
         this.description = description;
         this.facilities.addAll(facilities);
-        this.bookings.addAll(bookings);
+        this.bookings.addAll(initSet(bookings));
     }
 
     public Integer getId() {

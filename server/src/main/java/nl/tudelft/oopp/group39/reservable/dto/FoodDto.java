@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.reservable.dto;
 
+import static nl.tudelft.oopp.group39.config.Utils.initSet;
+
 import java.util.Set;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 
@@ -27,7 +29,7 @@ public class FoodDto extends ReservableDto {
         Integer building,
         Set<ReservationAmountDto> reservations
     ) {
-        super(price, building, reservations);
+        super(price, building, initSet(reservations));
         this.name = name;
         this.description = description;
     }

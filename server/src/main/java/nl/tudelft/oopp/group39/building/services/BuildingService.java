@@ -33,11 +33,8 @@ public class BuildingService {
      * @throws BuildingNotFoundException when no building is found.
      */
     public Building readBuilding(Integer id) throws BuildingNotFoundException {
-        try {
-            return buildingRepository.findById(id);
-        } catch (Exception e) {
-            throw new BuildingNotFoundException(id);
-        }
+        return buildingRepository.findById(id)
+            .orElseThrow(() -> new BuildingNotFoundException(id));
     }
 
     /**
@@ -64,7 +61,7 @@ public class BuildingService {
      * Doc. TODO Sven
      */
     public Building updateBuilding(int id, Building newBuilding) throws BuildingNotFoundException {
-        return buildingRepository.findById((long) id)
+        return buildingRepository.findById(id)
             .map(building -> {
                 newBuilding.setId(id);
                 building = newBuilding;

@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.building.dto;
 
+import static nl.tudelft.oopp.group39.config.Utils.initSet;
+
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,8 +52,8 @@ public class BuildingDto {
         this.description = description;
         this.open = open;
         this.closed = closed;
-        this.rooms.addAll(rooms);
-        this.reservables.addAll(reservables);
+        this.rooms.addAll(initSet(rooms));
+        this.reservables.addAll(initSet(reservables));
     }
 
     public Integer getId() {

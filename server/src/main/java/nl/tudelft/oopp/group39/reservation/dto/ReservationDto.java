@@ -1,6 +1,9 @@
 package nl.tudelft.oopp.group39.reservation.dto;
 
+import static nl.tudelft.oopp.group39.config.Utils.initSet;
+
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +13,7 @@ public class ReservationDto {
     private LocalDateTime timeOfDelivery;
     private String user;
     private Integer room;
-    private Set<ReservationAmountDto> reservationAmounts;
+    private Set<ReservationAmountDto> reservationAmounts = new HashSet<>();
 
     public ReservationDto() {
     }
@@ -35,7 +38,7 @@ public class ReservationDto {
         this.timeOfDelivery = timeOfDelivery;
         this.user = user;
         this.room = room;
-        this.reservationAmounts = reservationAmounts;
+        this.reservationAmounts.addAll(initSet(reservationAmounts));
     }
 
     public LocalDateTime getTimeOfPickup() {
