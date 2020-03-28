@@ -94,7 +94,10 @@ class ReservationControllerTest extends AbstractControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isArray())
             .andExpect(jsonPath("$.body", hasSize(1)))
-            .andExpect(jsonPath("$.body[0]." + Reservation.COL_ID, is(testReservation.getId().intValue())))
+            .andExpect(jsonPath(
+                "$.body[0]." + Reservation.COL_ID,
+                is(testReservation.getId().intValue())
+            ))
             .andExpect(jsonPath(
                 "$.body[0]." + Reservation.COL_TIME_OF_PICKUP,
                 is(testReservation.getTimeOfPickup().format(Constants.FORMATTER_DATE_TIME))
@@ -151,7 +154,10 @@ class ReservationControllerTest extends AbstractControllerTest {
         mockMvc.perform(get(REST_MAPPING + "/" + testReservation.getId()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body." + Reservation.COL_ID, is(testReservation.getId().intValue())))
+            .andExpect(jsonPath(
+                "$.body." + Reservation.COL_ID,
+                is(testReservation.getId().intValue())
+            ))
             .andExpect(jsonPath(
                 "$.body." + Reservation.COL_TIME_OF_PICKUP,
                 is(testReservation.getTimeOfPickup().format(Constants.FORMATTER_DATE_TIME))
