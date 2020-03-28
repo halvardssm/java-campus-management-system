@@ -169,7 +169,6 @@ public class MainSceneController {
         loggedIn = false;
         jwt = null;
         goToBuildingScene();
-        changeTopBtn();
     }
 
     /**
@@ -211,8 +210,8 @@ public class MainSceneController {
             if (user.getRole().equals("ADMIN")) {
                 myaccount.getItems().add(admin);
             }
+            myaccount.setText(user.getUsername());
             topbar.getChildren().add(myaccount);
-            topbar.getChildren().remove(topbtn);
         } else {
             topbtn.setText("Login");
             topbtn.setOnAction(e -> {
@@ -273,5 +272,4 @@ public class MainSceneController {
             sidebarShown = false;
         }
     }
-
 }

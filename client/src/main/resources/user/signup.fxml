@@ -23,9 +23,6 @@
             <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
         </HBox>
     </top>
-    <left>
-        <VBox fx:id="sidebar" id="sidebar"/>
-    </left>
     <center>
         <GridPane id="loginpanel" alignment="center" hgap="20" vgap="20">
             <padding><Insets top="10" right="25" bottom="10" left="25"/></padding>

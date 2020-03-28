@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="430.0"
+<BorderPane fx:id="window" xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="430.0"
             minWidth="600.0" prefHeight="480.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="nl.tudelft.oopp.group39.room.controller.RoomReservationController">
     <top>
@@ -62,10 +62,6 @@
                     GridPane.columnIndex="0" GridPane.rowIndex="5"/>
         </GridPane>
     </right>
-    <left>
-        <VBox fx:id="sidebar" id="sidebar">
-        </VBox>
-    </left>
     <bottom>
         <HBox styleClass="bar" spacing="10">
             <padding>
