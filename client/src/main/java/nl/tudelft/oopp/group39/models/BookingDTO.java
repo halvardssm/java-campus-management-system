@@ -6,9 +6,9 @@ import java.time.LocalTime;
 public class BookingDTO {
 
     private Integer id;
-    private LocalDate date;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private String date;
+    private String startTime;
+    private String endTime;
     private String user;
     private Integer room;
 
@@ -26,9 +26,9 @@ public class BookingDTO {
      */
     public BookingDTO(
             Integer id,
-            LocalDate date,
-            LocalTime startTime,
-            LocalTime endTime,
+            String date,
+            String startTime,
+            String endTime,
             String user,
             Integer room) {
         this.id = id;
@@ -41,13 +41,13 @@ public class BookingDTO {
 
     public Integer getId() { return id; }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public LocalTime getStartTime() { return startTime; }
+    public String getStartTime() { return startTime; }
 
-    public LocalTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 

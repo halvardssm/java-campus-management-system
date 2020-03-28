@@ -101,7 +101,7 @@ public class ServerCommunication {
      * @param roomId id of the room
      * @return the body of a get request to the server.
      */
-    public static Room getRoom(long roomId) throws JsonProcessingException {
+    public static Room getRoom(Integer roomId) throws JsonProcessingException {
         HttpRequest request = HttpRequest.newBuilder()
             .GET()
             .uri(URI.create(url + room + roomId))

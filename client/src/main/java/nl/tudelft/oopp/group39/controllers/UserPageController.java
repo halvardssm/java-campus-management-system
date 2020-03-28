@@ -52,10 +52,11 @@ public class UserPageController extends MainSceneController {
 
             for(BookingDTO booking : bookingList) {
                 newBooking = FXMLLoader.load(getClass().getResource("/bookingCell.fxml"));
-                //String roomName = booking.getRoom().getName(); //A problem
-                String bookingID = Integer.toString(booking.getId());
-                String startTime = booking.getStartTime().toString();
-                String duration = DifferenceBetweenTwoTimes(booking.getStartTime(), booking.getEndTime());
+                Integer roomName2 = booking.getRoom();
+                String roomName = ServerCommunication.getRoom(roomName2).getName();
+                //String bookingID = Integer.toString(booking.getId());
+                String startTime = booking.getStartTime();
+                //String duration = DifferenceBetweenTwoTimes(booking.getStartTime(), booking.getEndTime());
 
                 //Label name = (Label) newBooking.lookup("#rName");
                 //name.setText(roomName);
@@ -63,11 +64,11 @@ public class UserPageController extends MainSceneController {
                 Label date = (Label) newBooking.lookup("#rDate");
                 date.setText("Starting Time: " + startTime);
 
-                Label bookingDuration = (Label) newBooking.lookup("#rDuration");
-                bookingDuration.setText("Duration: " + duration);
+//                Label bookingDuration = (Label) newBooking.lookup("#rDuration");
+//                bookingDuration.setText("Duration: " + duration);
 
-                Label bID = (Label) newBooking.lookup("#bookingID");
-                bID.setText(bookingID);
+//                Label bID = (Label) newBooking.lookup("#bookingID");
+//                bID.setText(bookingID);
 
                 flowPane.getChildren().add(newBooking);
             }
