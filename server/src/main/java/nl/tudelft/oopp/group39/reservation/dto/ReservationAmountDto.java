@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.group39.reservation.dto;
 
+import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
+import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 
 public class ReservationAmountDto extends AbstractDto<ReservationAmount, ReservationAmountDto> {
@@ -33,6 +35,10 @@ public class ReservationAmountDto extends AbstractDto<ReservationAmount, Reserva
 
     @Override
     public ReservationAmount toEntity() {
-        return null;
+        return new ReservationAmount(
+            getAmount(),
+            null,
+            Utils.idToEntity(getReservable(), Reservable.class)
+        );
     }
 }

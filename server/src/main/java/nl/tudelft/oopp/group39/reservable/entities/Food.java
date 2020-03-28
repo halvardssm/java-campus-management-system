@@ -1,13 +1,12 @@
 package nl.tudelft.oopp.group39.reservable.entities;
 
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.building.entities.Building;
+import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.reservable.dto.FoodDto;
-import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 
 @Entity
@@ -52,7 +51,8 @@ public class Food extends Reservable {
     public Food(
         String name,
         String description,
-        Double price, Building building,
+        Double price,
+        Building building,
         Set<ReservationAmount> reservation
     ) {
         super(price, building, reservation);
@@ -65,19 +65,15 @@ public class Food extends Reservable {
      *
      * @return the converted FoodDto object
      */
+    @Override
     public FoodDto toDto() {
-        Set<ReservationAmountDto> reservationAmountDtos = new HashSet<>();
-        super.getReservations().forEach(
-            reservationAmount -> reservationAmountDtos.add(
-                reservationAmount.toDto()
-            ));
 
         return new FoodDto(
-            name,
-            description,
-            super.getPrice(),
-            super.getBuilding().getId(),
-            reservationAmountDtos
+            getName(),
+            getDescription(),
+            getPrice(),
+            getBuilding().getId(),
+            Utils.setEntityToDto(getReservations())
         );
     }
 

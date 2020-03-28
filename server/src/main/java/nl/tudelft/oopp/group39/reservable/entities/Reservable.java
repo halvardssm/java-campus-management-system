@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.building.entities.Building;
+import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.reservable.dto.ReservableDto;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
@@ -89,13 +90,9 @@ public class Reservable extends AbstractEntity<Reservable, ReservableDto> {
      *
      * @return the converted dto of the object
      */
+    @Override
     public ReservableDto toDto() {
-        Set<ReservationAmountDto> reservationAmountDtos = new HashSet<>();
-
-        reservations.forEach(
-            reservationAmount -> reservationAmountDtos.add(
-                reservationAmount.toDto()
-            ));
+        Set<ReservationAmountDto> reservationAmountDtos = Utils.setEntityToDto(reservations);
 
         return new ReservableDto(
             price,

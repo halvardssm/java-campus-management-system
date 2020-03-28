@@ -5,6 +5,8 @@ import static nl.tudelft.oopp.group39.config.Utils.initSet;
 import java.util.HashSet;
 import java.util.Set;
 import nl.tudelft.oopp.group39.booking.dto.BookingDto;
+import nl.tudelft.oopp.group39.building.entities.Building;
+import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.room.entities.Room;
@@ -27,14 +29,14 @@ public class RoomDto extends AbstractDto<Room, RoomDto> {
     /**
      * Creates a RoomDto object.
      *
-     * @param id the id of the Room
-     * @param building building id that contains the room
-     * @param name the name of the room
-     * @param capacity the capacity of the room
-     * @param onlyStaff value that determines if the room is only for staff or not
+     * @param id          the id of the Room
+     * @param building    building id that contains the room
+     * @param name        the name of the room
+     * @param capacity    the capacity of the room
+     * @param onlyStaff   value that determines if the room is only for staff or not
      * @param description a description for the room
-     * @param facilities the facilities that are contained in the room
-     * @param bookings the bookings made for the room (in dto form)
+     * @param facilities  the facilities that are contained in the room
+     * @param bookings    the bookings made for the room (in dto form)
      */
     public RoomDto(
         Long id,
@@ -54,11 +56,6 @@ public class RoomDto extends AbstractDto<Room, RoomDto> {
         this.description = description;
         this.facilities.addAll(facilities);
         this.bookings.addAll(initSet(bookings));
-    }
-
-    @Override
-    public Room toEntity() {
-        return null;
     }
 
     public Long getBuilding() {
@@ -115,5 +112,18 @@ public class RoomDto extends AbstractDto<Room, RoomDto> {
 
     public void setBookings(Set<BookingDto> bookings) {
         this.bookings = bookings;
+    }
+
+    @Override
+    public Room toEntity() {
+        return new Room(
+            Utils.idToEntity(getBuilding(), Building.class),
+            getName(),
+            getCapacity(),
+            isOnlyStaff(),
+            getDescription(),
+            getFacilities(),
+            Utils.setDtoToEntity(getBookings())
+        );
     }
 }

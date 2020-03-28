@@ -68,6 +68,7 @@ public class ReservationAmount extends AbstractEntity<ReservationAmount, Reserva
      *
      * @return the converted object
      */
+    @Override
     public ReservationAmountDto toDto() {
         return new ReservationAmountDto(
             amount,
