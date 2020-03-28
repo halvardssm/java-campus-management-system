@@ -20,7 +20,7 @@ import nl.tudelft.oopp.group39.user.entities.User;
     Booking.COL_USER,
     Booking.COL_ROOM
 })
-public class Booking extends AbstractEntity {
+public class Booking extends AbstractEntity<Booking, BookingDto> {
     public static final String TABLE_NAME = "bookings";
     public static final String MAPPED_NAME = "booking";
     public static final String COL_DATE = "date";
@@ -98,11 +98,7 @@ public class Booking extends AbstractEntity {
 
     }
 
-    /**
-     * Converts booking to bookingDto.
-     *
-     * @return the converted booking
-     */
+    @Override
     public BookingDto toDto() {
         return new BookingDto(
             date,

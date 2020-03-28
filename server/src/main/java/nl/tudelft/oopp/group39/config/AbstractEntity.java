@@ -13,7 +13,8 @@ import javax.persistence.MappedSuperclass;
     generator = ObjectIdGenerators.PropertyGenerator.class,
     property = AbstractEntity.COL_ID
 )
-public abstract class AbstractEntity implements Serializable {
+public abstract class AbstractEntity<E extends AbstractEntity<E, D>, D extends AbstractDto<E, D>>
+    implements Serializable {
 
     public static final String COL_ID = "id";
 
@@ -28,4 +29,6 @@ public abstract class AbstractEntity implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public abstract D toDto();
 }
