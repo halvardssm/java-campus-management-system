@@ -3,6 +3,10 @@ package nl.tudelft.oopp.group39.reservable.dto;
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
 import java.util.Set;
+import nl.tudelft.oopp.group39.building.entities.Building;
+import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.reservable.entities.Food;
+import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 
 public class FoodDto extends ReservableDto {
@@ -48,5 +52,17 @@ public class FoodDto extends ReservableDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public Reservable toEntity() {
+
+        return new Food(
+            getName(),
+            getDescription(),
+            getPrice(),
+            Utils.idToEntity(getBuilding(), Building.class),
+            Utils.setDtoToEntity(getReservations())
+        );
     }
 }

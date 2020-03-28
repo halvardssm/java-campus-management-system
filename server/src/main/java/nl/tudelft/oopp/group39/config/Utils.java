@@ -134,4 +134,19 @@ public interface Utils {
 
         return result;
     }
+
+    /**
+     * Takes a set of entities and gives back a list of their ids.
+     *
+     * @param set the set
+     * @param <E> the entity type
+     * @return the list of ids
+     */
+    static <E extends IEntity> List<Long> entitiesToIds(Set<E> set) {
+        List<Long> list = new ArrayList<>();
+
+        set.forEach(entity -> list.add(entity.getId()));
+
+        return list;
+    }
 }

@@ -16,9 +16,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import nl.tudelft.oopp.group39.booking.dto.BookingDto;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.building.entities.Building;
+import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
@@ -99,26 +99,6 @@ public class Room extends AbstractEntity<Room, RoomDto> {
         this.bookings.addAll(initSet(bookings));
     }
 
-    /**
-     * Converts the Room entity to the RoomDto model for JSON serializing.
-     *
-     * @return converted RoomDto
-     */
-    public RoomDto toDto() {
-        Set<BookingDto> bookingDtos = new HashSet<>();
-        bookings.forEach(booking -> bookingDtos.add(booking.toDto()));
-
-        return new RoomDto(
-            id,
-            building.getId(),
-            name,
-            capacity,
-            onlyStaff,
-            description,
-            facilities,
-            bookingDtos);
-    }
-
     public String getName() {
         return name;
     }
@@ -189,6 +169,25 @@ public class Room extends AbstractEntity<Room, RoomDto> {
 
     public void setReservations(Set<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    /**
+     * Converts the Room entity to the RoomDto model for JSON serializing.
+     *
+     * @return converted RoomDto
+     */
+    @Override
+    public RoomDto toDto() {
+        return new RoomDto(
+            id,
+            building.getId(),
+            name,
+            capacity,
+            onlyStaff,
+            description,
+            facilities,
+            Utils.setEntityToDto(getBookings())
+        );
     }
 
     @Override
