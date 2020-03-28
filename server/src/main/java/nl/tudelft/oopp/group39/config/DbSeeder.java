@@ -154,10 +154,10 @@ public class DbSeeder {
         roomService.createRoom(new Room(b1, "test", 10, true, "test1", null, null));
 
         Set<Facility> facilities = new HashSet<>();
-        facilities.add(facilityService.readFacility(1));
+        facilities.add(facilityService.readFacility(1L));
         roomService.createRoom(new Room(b1, "lala", 6, true, "test2", facilities, null));
 
-        facilities.add(facilityService.readFacility(2));
+        facilities.add(facilityService.readFacility(2L));
         roomService.createRoom(
             new Room(b2, "another one", 15, false, "test3", facilities, null));
 
@@ -168,11 +168,12 @@ public class DbSeeder {
             false,
             "Lecture hall in EEMCS",
             facilities,
-            null));
+            null
+        ));
 
         Set<Facility> facilities2 = new HashSet<>();
-        facilities2.add(facilityService.readFacility(2));
-        facilities2.add(facilityService.readFacility(3));
+        facilities2.add(facilityService.readFacility(2L));
+        facilities2.add(facilityService.readFacility(3L));
         roomService.createRoom(new Room(
             b3,
             "Projectruimte 8",
@@ -180,7 +181,8 @@ public class DbSeeder {
             false,
             "Project Room 8",
             facilities2,
-            null));
+            null
+        ));
 
 
         System.out.println("[SEED] Rooms created");

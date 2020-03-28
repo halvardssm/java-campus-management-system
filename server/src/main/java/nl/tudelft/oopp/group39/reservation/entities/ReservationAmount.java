@@ -5,13 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import nl.tudelft.oopp.group39.config.AbstractEntity;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 
 @Entity
 @Table(name = ReservationAmount.TABLE_NAME)
-public class ReservationAmount extends AbstractEntity {
+public class ReservationAmount extends AbstractEntity<ReservationAmount, ReservationAmountDto> {
     public static final String TABLE_NAME = Reservation.TABLE_NAME + "_" + Reservable.TABLE_NAME;
     public static final String COL_AMOUNT = "amount";
     public static final String COL_RESERVATION = "reservation";

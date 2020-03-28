@@ -5,10 +5,12 @@ import static nl.tudelft.oopp.group39.config.Utils.initSet;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
+import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReservationDto {
+public class ReservationDto extends AbstractDto<Reservation, ReservationDto> {
     private LocalDateTime timeOfPickup;
     private LocalDateTime timeOfDelivery;
     private String user;
@@ -79,5 +81,10 @@ public class ReservationDto {
 
     public void setReservationAmounts(Set<ReservationAmountDto> reservationAmounts) {
         this.reservationAmounts = reservationAmounts;
+    }
+
+    @Override
+    public Reservation toEntity() {
+        return null;
     }
 }

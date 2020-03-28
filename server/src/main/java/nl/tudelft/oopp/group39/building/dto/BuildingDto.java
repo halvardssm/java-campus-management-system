@@ -5,13 +5,17 @@ import static nl.tudelft.oopp.group39.config.Utils.initSet;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
+import nl.tudelft.oopp.group39.building.entities.Building;
+import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
+import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.room.dto.RoomDto;
+import nl.tudelft.oopp.group39.room.entities.Room;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BuildingDto {
+public class BuildingDto extends AbstractDto<Building, BuildingDto> {
 
-    private Long id;
     private String name;
     private String location;
     private String description;
@@ -26,14 +30,13 @@ public class BuildingDto {
     /**
      * Constructor for BuildingDto.
      *
-     * @param name name of building
-     * @param location location value of building
+     * @param name        name of building
+     * @param location    location value of building
      * @param description description of building
-     * @param open opening time of the building
-     * @param closed closing time of the building
-     * @param rooms the set of rooms contained in building (in RoomDto form)
+     * @param open        opening time of the building
+     * @param closed      closing time of the building
+     * @param rooms       the set of rooms contained in building (in RoomDto form)
      * @param reservables TODO
-     *
      * @see RoomDto
      */
     public BuildingDto(
@@ -46,7 +49,7 @@ public class BuildingDto {
         Set<RoomDto> rooms,
         Set<Long> reservables
     ) {
-        this.id = id;
+        setId(id);
         this.name = name;
         this.location = location;
         this.description = description;
@@ -54,14 +57,6 @@ public class BuildingDto {
         this.closed = closed;
         this.rooms.addAll(initSet(rooms));
         this.reservables.addAll(initSet(reservables));
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -120,4 +115,27 @@ public class BuildingDto {
         this.reservables = reservables;
     }
 
+    @Override
+    public Building toEntity() {
+        Set<Room> rooms1 = new HashSet<>();
+        Set<Reservable> reservables1 = new HashSet<>();
+
+        if (getRooms() != null) {
+            rooms1.addAll(Utils.setDtoToEntity(getRooms()));
+        }
+
+        if (getReservables() != null) {
+            reservables1.addAll(Utils.idsToComponentSet(getReservables(), Reservable.class));
+        }
+
+        return new Building(
+            getName(),
+            getLocation(),
+            getDescription(),
+            getOpen(),
+            getClosed(),
+            rooms1,
+            reservables1
+        );
+    }
 }

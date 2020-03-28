@@ -2,15 +2,11 @@ package nl.tudelft.oopp.group39.room.entities;
 
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,12 +16,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import nl.tudelft.oopp.group39.booking.dto.BookingDto;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
-import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.building.entities.Building;
-import nl.tudelft.oopp.group39.config.AbstractEntity;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
@@ -37,7 +31,7 @@ import nl.tudelft.oopp.group39.room.dto.RoomDto;
     generator = ObjectIdGenerators.None.class,
     property = Room.COL_ID
 )
-public class Room extends AbstractEntity {
+public class Room extends AbstractEntity<Room, RoomDto> {
     public static final String TABLE_NAME = "rooms";
     public static final String MAPPED_NAME = "room";
     public static final String COL_CAPACITY = "capacity";
@@ -49,7 +43,7 @@ public class Room extends AbstractEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Building.MAPPED_NAME)
     private Building building;
-    private int capacity;
+    private Integer capacity;
     private Boolean onlyStaff;
     private String description;
 
@@ -90,8 +84,8 @@ public class Room extends AbstractEntity {
     public Room(
         Building building,
         String name,
-        int capacity,
-        boolean onlyStaff,
+        Integer capacity,
+        Boolean onlyStaff,
         String description,
         Set<Facility> facilities,
         Set<Booking> bookings
@@ -141,11 +135,11 @@ public class Room extends AbstractEntity {
         this.building = building;
     }
 
-    public int getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
+    public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
 

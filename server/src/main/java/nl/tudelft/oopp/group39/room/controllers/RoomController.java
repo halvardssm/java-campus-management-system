@@ -3,9 +3,6 @@ package nl.tudelft.oopp.group39.room.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import nl.tudelft.oopp.group39.booking.dto.BookingDto;
-import nl.tudelft.oopp.group39.booking.entities.Booking;
-import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.room.dao.RoomDao;
 import nl.tudelft.oopp.group39.room.dto.RoomDto;
@@ -63,7 +60,7 @@ public class RoomController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> readRoom(@PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> readRoom(@PathVariable Long id) {
         return RestResponse.create(service.readRoom(id));
     }
 
@@ -80,7 +77,7 @@ public class RoomController {
      * Doc. TODO Sven
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteRoom(@PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> deleteRoom(@PathVariable Long id) {
         service.deleteRoom(id);
 
         return RestResponse.create(null, null, HttpStatus.OK);

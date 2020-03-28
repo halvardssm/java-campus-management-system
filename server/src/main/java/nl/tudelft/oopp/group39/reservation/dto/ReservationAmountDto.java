@@ -1,9 +1,9 @@
 package nl.tudelft.oopp.group39.reservation.dto;
 
-import org.springframework.stereotype.Component;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
+import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 
-@Component
-public class ReservationAmountDto {
+public class ReservationAmountDto extends AbstractDto<ReservationAmount, ReservationAmountDto> {
     private Integer amount;
     private Long reservable;
 
@@ -29,5 +29,10 @@ public class ReservationAmountDto {
 
     public void setReservable(Long reservable) {
         this.reservable = reservable;
+    }
+
+    @Override
+    public ReservationAmount toEntity() {
+        return null;
     }
 }

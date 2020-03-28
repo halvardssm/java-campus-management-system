@@ -4,9 +4,11 @@ import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
 import java.util.HashSet;
 import java.util.Set;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
+import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 
-public class ReservableDto {
+public class ReservableDto extends AbstractDto<Reservable, ReservableDto> {
     private Double price;
     private Long building;
     private Set<ReservationAmountDto> reservations = new HashSet<>();
@@ -54,5 +56,10 @@ public class ReservableDto {
     public void setReservations(Set<ReservationAmountDto> reservations) {
         this.reservations.clear();
         this.reservations.addAll(reservations);
+    }
+
+    @Override
+    public Reservable toEntity() {
+        return null;
     }
 }

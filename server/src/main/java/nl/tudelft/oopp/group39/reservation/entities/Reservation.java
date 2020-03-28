@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import nl.tudelft.oopp.group39.config.AbstractEntity;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationDto;
 import nl.tudelft.oopp.group39.room.entities.Room;
@@ -19,7 +19,7 @@ import nl.tudelft.oopp.group39.user.entities.User;
 
 @Entity
 @Table(name = Reservation.TABLE_NAME)
-public class Reservation extends AbstractEntity {
+public class Reservation extends AbstractEntity<Reservation, ReservationDto> {
     public static final String TABLE_NAME = "reservations";
     public static final String MAPPED_NAME = "reservation";
     public static final String COL_TIME_OF_PICKUP = "timeOfPickup";

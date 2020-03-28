@@ -5,17 +5,18 @@ import static nl.tudelft.oopp.group39.config.Utils.initSet;
 import java.util.HashSet;
 import java.util.Set;
 import nl.tudelft.oopp.group39.booking.dto.BookingDto;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
+import nl.tudelft.oopp.group39.room.entities.Room;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RoomDto {
+public class RoomDto extends AbstractDto<Room, RoomDto> {
 
-    private Long id;
     private Long building;
     private String name;
-    private int capacity;
-    private boolean onlyStaff;
+    private Integer capacity;
+    private Boolean onlyStaff;
     private String description;
     private Set<Facility> facilities = new HashSet<>();
     private Set<BookingDto> bookings = new HashSet<>();
@@ -39,13 +40,13 @@ public class RoomDto {
         Long id,
         Long building,
         String name,
-        int capacity,
-        boolean onlyStaff,
+        Integer capacity,
+        Boolean onlyStaff,
         String description,
         Set<Facility> facilities,
         Set<BookingDto> bookings
     ) {
-        this.id = id;
+        setId(id);
         this.building = building;
         this.name = name;
         this.capacity = capacity;
@@ -55,12 +56,9 @@ public class RoomDto {
         this.bookings.addAll(initSet(bookings));
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    public Room toEntity() {
+        return null;
     }
 
     public Long getBuilding() {
@@ -79,19 +77,19 @@ public class RoomDto {
         this.name = name;
     }
 
-    public int getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(int capacity) {
+    public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
 
-    public boolean isOnlyStaff() {
+    public Boolean isOnlyStaff() {
         return onlyStaff;
     }
 
-    public void setOnlyStaff(boolean onlyStaff) {
+    public void setOnlyStaff(Boolean onlyStaff) {
         this.onlyStaff = onlyStaff;
     }
 

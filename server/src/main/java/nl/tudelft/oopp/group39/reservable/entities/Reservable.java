@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.building.entities.Building;
-import nl.tudelft.oopp.group39.config.AbstractEntity;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.reservable.dto.ReservableDto;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
@@ -26,7 +26,7 @@ import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties(allowSetters = true, value = {Reservable.COL_RESERVATIONS})
 @JsonIdentityInfo(generator = ObjectIdGenerators.None.class)
-public class Reservable extends AbstractEntity {
+public class Reservable extends AbstractEntity<Reservable, ReservableDto> {
     public static final String TABLE_NAME = "reservables";
     public static final String MAPPED_NAME = "reservable";
     public static final String COL_PRICE = "price";

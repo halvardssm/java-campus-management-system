@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.config;
+package nl.tudelft.oopp.group39.config.abstracts;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -13,13 +13,13 @@ import javax.persistence.MappedSuperclass;
     generator = ObjectIdGenerators.PropertyGenerator.class,
     property = AbstractEntity.COL_ID
 )
-public abstract class AbstractEntity<E extends AbstractEntity<E, D>, D extends AbstractDto<E, D>>
-    implements Serializable {
+public abstract class AbstractEntity<E extends AbstractEntity<E, D>, D extends IEntity>
+    implements Serializable, IEntity {
 
     public static final String COL_ID = "id";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
     public Long getId() {
