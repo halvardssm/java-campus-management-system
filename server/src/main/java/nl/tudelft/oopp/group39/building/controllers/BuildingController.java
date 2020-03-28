@@ -1,11 +1,14 @@
 package nl.tudelft.oopp.group39.building.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import nl.tudelft.oopp.group39.building.dao.BuildingDao;
+import nl.tudelft.oopp.group39.building.dto.BuildingDto;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.room.entities.Room;
+import nl.tudelft.oopp.group39.room.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,17 +37,18 @@ public class BuildingController {
     @Autowired
     private BuildingService buildingService;
 
-    @Autowired
-    private BuildingDao buildingDao;
-
     /** TODO Sven.
      */
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listBuildings(
         @RequestParam Map<String, String> params
     ) {
-        List<Building> result = buildingDao.buildingFilter(params);
-        return RestResponse.create(result);
+        List<BuildingDto> buildingDtoList = new ArrayList<>();
+        for (Building building : buildingService.listBuildings(params)) {
+            buildingDtoList.add(building.toDto());
+        }
+
+        return RestResponse.create(buildingDtoList);
     }
 
     /**
@@ -65,15 +69,15 @@ public class BuildingController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> readBuilding(@PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> readBuilding(@PathVariable Long id) {
         return RestResponse.create(buildingService.readBuilding(id));
     }
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> updateBuilding(
+    public ResponseEntity<RestResponse<Building>> updateBuilding(
         @RequestBody Building updated,
-        @PathVariable int id
+        @PathVariable Long id
     ) {
         return RestResponse.create(buildingService.updateBuilding(id, updated));
     }
@@ -85,7 +89,7 @@ public class BuildingController {
      * @return nothing
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteBuilding(@PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> deleteBuilding(@PathVariable Long id) {
         buildingService.deleteBuilding(id);
 
         return RestResponse.create(null, null, HttpStatus.OK);

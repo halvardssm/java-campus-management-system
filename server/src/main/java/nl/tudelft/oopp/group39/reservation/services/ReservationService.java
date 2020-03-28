@@ -46,7 +46,7 @@ public class ReservationService {
      *
      * @return reservation by id {@link Reservation}.
      */
-    public Reservation readReservation(Integer id) throws NotFoundException {
+    public Reservation readReservation(Long id) throws NotFoundException {
         return reservationRepository.findById(id)
             .orElseThrow(() -> new NotFoundException(String.format(
                 EXCEPTION_RESERVATION_NOT_FOUND,
@@ -108,7 +108,7 @@ public class ReservationService {
      *
      * @return the updated reservation {@link Reservation}.
      */
-    public Reservation updateReservation(Integer id, ReservationDto newReservation)
+    public Reservation updateReservation(Long id, ReservationDto newReservation)
         throws NotFoundException {
         return reservationRepository.findById(id)
             .map(reservation -> {
@@ -126,7 +126,7 @@ public class ReservationService {
     /**
      * Delete an reservation {@link Reservation}.
      */
-    public void deleteReservation(Integer id) {
+    public void deleteReservation(Long id) {
         reservationAmountService.deleteReservationAmountsByReservationId(id);
 
         reservationRepository.deleteById(id);

@@ -9,7 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import nl.tudelft.oopp.group39.config.AbstractEntity;
+import nl.tudelft.oopp.group39.booking.dto.BookingDto;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.user.entities.User;
 
@@ -19,7 +20,7 @@ import nl.tudelft.oopp.group39.user.entities.User;
     Booking.COL_USER,
     Booking.COL_ROOM
 })
-public class Booking extends AbstractEntity {
+public class Booking extends AbstractEntity<Booking, BookingDto> {
     public static final String TABLE_NAME = "bookings";
     public static final String MAPPED_NAME = "booking";
     public static final String COL_DATE = "date";
@@ -95,6 +96,17 @@ public class Booking extends AbstractEntity {
         this.user = user;
         this.room = room;
 
+    }
+
+    @Override
+    public BookingDto toDto() {
+        return new BookingDto(
+            date,
+            startTime,
+            endTime,
+            user.getUsername(),
+            room.getId()
+        );
     }
 
     @Override

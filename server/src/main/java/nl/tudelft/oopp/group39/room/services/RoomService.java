@@ -1,17 +1,13 @@
 package nl.tudelft.oopp.group39.room.services;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-
-import nl.tudelft.oopp.group39.building.entities.Building;
-import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
+import nl.tudelft.oopp.group39.room.dao.RoomDao;
 import nl.tudelft.oopp.group39.room.entities.Room;
-import nl.tudelft.oopp.group39.room.exceptions.RoomExistsException;
 import nl.tudelft.oopp.group39.room.exceptions.RoomNotFoundException;
 import nl.tudelft.oopp.group39.room.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +19,12 @@ public class RoomService {
     @Autowired
     private RoomRepository roomRepository;
     @Autowired
-    private BuildingRepository buildingRepository;
+    private RoomDao roomDao;
     @Autowired
     private FacilityService facilityService;
 
-    public Room readRoom(long id) throws RoomNotFoundException {
-        return roomRepository.findById(id).orElseThrow(() -> new RoomNotFoundException((int) id));
+    public Room readRoom(Long id) throws RoomNotFoundException {
+        return roomRepository.findById(id).orElseThrow(() -> new RoomNotFoundException(id));
     }
 
     public List<Room> listRooms() {
@@ -39,22 +35,14 @@ public class RoomService {
      * Doc. TODO Sven
      */
     public Room createRoom(Room newRoom) {
-        try {
-            Room room = readRoom((int) newRoom.getId());
-            throw new RoomExistsException((int) room.getId());
-        } catch (RoomNotFoundException e) {
-            mapFacilitiesForRooms(newRoom);
-            roomRepository.save(newRoom);
-
-            return newRoom;
-        }
+        return roomRepository.save(newRoom);
     }
 
     /**
      * Doc. TODO Sven
      */
-    public Room updateRoom(Room newRoom, int id) throws RoomNotFoundException {
-        return roomRepository.findById((long) id)
+    public Room updateRoom(Room newRoom, Long id) throws RoomNotFoundException {
+        return roomRepository.findById(id)
             .map(room -> {
                 newRoom.setId(id);
                 room = newRoom;
@@ -71,30 +59,14 @@ public class RoomService {
      * be present (if so their facility ids should be in the facilities array), the building name
      * and a string of the inputted location
      */
-    public List<Room> filterRooms(
-        int capacity,
-        boolean onlyStaff,
-        int[] facilities,
-        String building,
-        String location,
-        LocalTime open,
-        LocalTime closed
-    ) {
-        List<Facility> newFacilities = new ArrayList<>();
-        for (long facility : facilities) {
-            newFacilities.add(facilityService.readFacility(facility));
-        }
-        List<Long> resRoomIds = buildingRepository
-            .filterBuildingsOnLocationAndNameAndTimeList(location, building, open, closed);
-        return resRoomIds.size() > 0
-               ? roomRepository.filterRooms(capacity, onlyStaff, resRoomIds, newFacilities)
-               : new ArrayList<>();
+    public List<Room> filterRooms(Map<String,String> allParams) {
+        return roomDao.roomFilter(allParams);
     }
 
     /**
      * Doc. TODO Sven
      */
-    public Room deleteRoom(int id) throws RoomNotFoundException {
+    public Room deleteRoom(Long id) throws RoomNotFoundException {
         try {
             Room rf = readRoom(id);
             roomRepository.delete(readRoom(id));

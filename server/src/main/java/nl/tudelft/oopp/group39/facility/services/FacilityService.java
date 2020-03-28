@@ -3,7 +3,6 @@ package nl.tudelft.oopp.group39.facility.services;
 import java.util.List;
 import java.util.Set;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
-import nl.tudelft.oopp.group39.facility.exceptions.FacilityExistsException;
 import nl.tudelft.oopp.group39.facility.exceptions.FacilityNotFoundException;
 import nl.tudelft.oopp.group39.facility.repositories.FacilityRepository;
 import nl.tudelft.oopp.group39.room.entities.Room;
@@ -20,9 +19,9 @@ public class FacilityService {
     @Autowired
     private RoomRepository roomRepository;
 
-    public Facility readFacility(long id) throws FacilityNotFoundException {
+    public Facility readFacility(Long id) throws FacilityNotFoundException {
         return facilityRepository.findById(id)
-            .orElseThrow(() -> new FacilityNotFoundException((int) id));
+            .orElseThrow(() -> new FacilityNotFoundException(id));
     }
 
     public List<Facility> listFacilities() {
@@ -33,20 +32,14 @@ public class FacilityService {
      * Doc. TODO Sven
      */
     public Facility createFacility(Facility newFacility) {
-        try {
-            Facility facility = readFacility((int) newFacility.getId());
-            throw new FacilityExistsException((int) facility.getId());
-        } catch (FacilityNotFoundException e) {
-            facilityRepository.save(newFacility);
-            return newFacility;
-        }
+        return facilityRepository.save(newFacility);
     }
 
     /**
      * Doc. TODO Sven
      */
-    public Facility updateFacility(Facility newFacility, int id) throws FacilityNotFoundException {
-        return facilityRepository.findById((long) id)
+    public Facility updateFacility(Facility newFacility, Long id) throws FacilityNotFoundException {
+        return facilityRepository.findById(id)
             .map(facility -> facilityRepository.save(newFacility))
             .orElseThrow(() -> new FacilityNotFoundException(id));
     }
@@ -54,7 +47,7 @@ public class FacilityService {
     /**
      * Doc. TODO Sven
      */
-    public Facility deleteFacility(int id) throws FacilityNotFoundException {
+    public Facility deleteFacility(Long id) throws FacilityNotFoundException {
         try {
             Facility rf = readFacility(id);
             Room newRoom = new Room();

@@ -146,18 +146,18 @@ public class DbSeeder {
     }
 
     private void initRooms() {
-        final Building b1 = buildingService.readBuilding(1);
-        final Building b2 = buildingService.readBuilding(2);
-        final Building b3 = buildingService.readBuilding(3);
+        final Building b1 = buildingService.readBuilding(1L);
+        final Building b2 = buildingService.readBuilding(2L);
+        final Building b3 = buildingService.readBuilding(3L);
         roomService.createRoom(new Room(b1, "test", 10, true, "test1", null, null));
 
         roomService.createRoom(new Room(b1, "test", 10, true, "test1", null, null));
 
         Set<Facility> facilities = new HashSet<>();
-        facilities.add(facilityService.readFacility(1));
+        facilities.add(facilityService.readFacility(1L));
         roomService.createRoom(new Room(b1, "lala", 6, true, "test2", facilities, null));
 
-        facilities.add(facilityService.readFacility(2));
+        facilities.add(facilityService.readFacility(2L));
         roomService.createRoom(
             new Room(b2, "another one", 15, false, "test3", facilities, null));
 
@@ -168,11 +168,12 @@ public class DbSeeder {
             false,
             "Lecture hall in EEMCS",
             facilities,
-            null));
+            null
+        ));
 
         Set<Facility> facilities2 = new HashSet<>();
-        facilities2.add(facilityService.readFacility(2));
-        facilities2.add(facilityService.readFacility(3));
+        facilities2.add(facilityService.readFacility(2L));
+        facilities2.add(facilityService.readFacility(3L));
         roomService.createRoom(new Room(
             b3,
             "Projectruimte 8",
@@ -180,7 +181,8 @@ public class DbSeeder {
             false,
             "Project Room 8",
             facilities2,
-            null));
+            null
+        ));
 
 
         System.out.println("[SEED] Rooms created");
@@ -189,7 +191,7 @@ public class DbSeeder {
     private void initEvents() {
         LocalDate today = LocalDate.now();
         LocalDate tomorrow = today.plusDays(1);
-        Building b1 = buildingService.readBuilding(1);
+        Building b1 = buildingService.readBuilding(1L);
         Room room = new Room(b1, "test", 0, false, null, new HashSet<>(), new HashSet<>());
         HashSet<Room> rooms = new HashSet<>(List.of(room));
         eventService.createEvent(new Event(EventTypes.EVENT, today, tomorrow, rooms));
@@ -219,7 +221,7 @@ public class DbSeeder {
     }
 
     private void initBikes() {
-        Building building = buildingService.listBuildings().get(0);
+        Building building = buildingService.listBuildings(new HashMap<>()).get(0);
 
         Bike bike1 = new Bike(BikeType.CITY, 5.6, building, null);
         Bike bike2 = new Bike(BikeType.CITY, 6.7, building, null);
@@ -233,7 +235,7 @@ public class DbSeeder {
     }
 
     private void initFoods() {
-        Building building = buildingService.listBuildings().get(0);
+        Building building = buildingService.listBuildings(new HashMap<>()).get(0);
 
         Food food1 = new Food("Stew", "A warm pot of deliciousness", 5.6, building, null);
         Food food2 = new Food("Meatballs", "Balls of meat", 6.7, building, null);

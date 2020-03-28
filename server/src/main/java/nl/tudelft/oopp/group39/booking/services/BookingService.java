@@ -39,7 +39,7 @@ public class BookingService {
      *
      * @return booking by id {@link Booking}.
      */
-    public Booking readBooking(Integer id) throws BookingNotFoundException {
+    public Booking readBooking(Long id) throws BookingNotFoundException {
         return bookingRepository.findById(id)
             .orElseThrow(() -> new BookingNotFoundException(id));
     }
@@ -77,7 +77,7 @@ public class BookingService {
      *
      * @return the updated booking {@link Booking}.
      */
-    public Booking updateBooking(Booking newBooking, Integer id) throws BookingNotFoundException {
+    public Booking updateBooking(Booking newBooking, Long id) throws BookingNotFoundException {
         return bookingRepository.findById(id)
             .map(booking -> {
                 booking.setDate(newBooking.getDate());
@@ -95,7 +95,7 @@ public class BookingService {
      *
      * @return the updated booking {@link Booking}.
      */
-    public Booking updateBooking(BookingDto newBooking, Integer id)
+    public Booking updateBooking(BookingDto newBooking, Long id)
         throws BookingNotFoundException {
         User user = userService.readUser(newBooking.getUser());
         Room room = roomService.readRoom(newBooking.getRoom());
@@ -114,7 +114,7 @@ public class BookingService {
     /**
      * Delete a booking {@link Booking}.
      */
-    public Booking deleteBooking(Integer id) throws BookingNotFoundException {
+    public Booking deleteBooking(Long id) throws BookingNotFoundException {
         try {
             Booking rf = readBooking(id);
             bookingRepository.delete(readBooking(id));
@@ -123,5 +123,4 @@ public class BookingService {
             throw new BookingNotFoundException(id);
         }
     }
-
 }

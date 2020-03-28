@@ -1,16 +1,21 @@
 package nl.tudelft.oopp.group39.reservation.dto;
 
+import static nl.tudelft.oopp.group39.config.Utils.initSet;
+
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
+import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReservationDto {
+public class ReservationDto extends AbstractDto<Reservation, ReservationDto> {
     private LocalDateTime timeOfPickup;
     private LocalDateTime timeOfDelivery;
     private String user;
-    private Integer room;
-    private Set<ReservationAmountDto> reservationAmounts;
+    private Long room;
+    private Set<ReservationAmountDto> reservationAmounts = new HashSet<>();
 
     public ReservationDto() {
     }
@@ -28,14 +33,14 @@ public class ReservationDto {
         LocalDateTime timeOfPickup,
         LocalDateTime timeOfDelivery,
         String user,
-        Integer room,
+        Long room,
         Set<ReservationAmountDto> reservationAmounts
     ) {
         this.timeOfPickup = timeOfPickup;
         this.timeOfDelivery = timeOfDelivery;
         this.user = user;
         this.room = room;
-        this.reservationAmounts = reservationAmounts;
+        this.reservationAmounts.addAll(initSet(reservationAmounts));
     }
 
     public LocalDateTime getTimeOfPickup() {
@@ -62,11 +67,11 @@ public class ReservationDto {
         this.user = user;
     }
 
-    public Integer getRoom() {
+    public Long getRoom() {
         return room;
     }
 
-    public void setRoom(Integer room) {
+    public void setRoom(Long room) {
         this.room = room;
     }
 
@@ -76,5 +81,10 @@ public class ReservationDto {
 
     public void setReservationAmounts(Set<ReservationAmountDto> reservationAmounts) {
         this.reservationAmounts = reservationAmounts;
+    }
+
+    @Override
+    public Reservation toEntity() {
+        return null;
     }
 }

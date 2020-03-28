@@ -59,7 +59,7 @@ class FoodControllerTest extends AbstractControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isArray())
             .andExpect(jsonPath("$.body", hasSize(1)))
-            .andExpect(jsonPath("$.body[0]." + Food.COL_ID, is(testFood.getId())))
+            .andExpect(jsonPath("$.body[0]." + Food.COL_ID, is(testFood.getId().intValue())))
             .andExpect(jsonPath("$.body[0]." + Food.COL_NAME, is(testFood.getName())))
             .andExpect(jsonPath("$.body[0]." + Food.COL_DESCRIPTION, is(testFood.getDescription())))
             .andExpect(jsonPath("$.body[0]." + Food.COL_PRICE, is(testFood.getPrice())));
@@ -87,7 +87,7 @@ class FoodControllerTest extends AbstractControllerTest {
             .andDo((food) -> {
                 String responseString = food.getResponse().getContentAsString();
                 JsonNode productNode = new ObjectMapper().readTree(responseString);
-                testFood.setId(productNode.get("body").get("id").intValue());
+                testFood.setId(productNode.get("body").get("id").longValue());
             });
     }
 
@@ -96,7 +96,7 @@ class FoodControllerTest extends AbstractControllerTest {
         mockMvc.perform(get(REST_MAPPING + "/" + testFood.getId()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body." + Reservation.COL_ID, is(testFood.getId())))
+            .andExpect(jsonPath("$.body." + Reservation.COL_ID, is(testFood.getId().intValue())))
             .andExpect(jsonPath("$.body." + Food.COL_NAME, is(testFood.getName())))
             .andExpect(jsonPath("$.body." + Food.COL_DESCRIPTION, is(testFood.getDescription())))
             .andExpect(jsonPath("$.body." + Food.COL_PRICE, is(testFood.getPrice())));
@@ -131,12 +131,12 @@ class FoodControllerTest extends AbstractControllerTest {
 
         assertEquals(
             "Food 0 not found",
-            foodController.readFood(0).getBody().getError()
+            foodController.readFood(0L).getBody().getError()
         );
 
         assertEquals(
             "Food 0 not found",
-            foodController.updateFood(0, null).getBody().getError()
+            foodController.updateFood(0L, null).getBody().getError()
         );
     }
 }

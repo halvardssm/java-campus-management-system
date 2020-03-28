@@ -1,9 +1,11 @@
 package nl.tudelft.oopp.group39.room.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.room.dao.RoomDao;
+import nl.tudelft.oopp.group39.room.dto.RoomDto;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,20 +30,26 @@ public class RoomController {
     @Autowired
     private RoomService service;
 
-    @Autowired
-    private RoomDao roomDao;
-
-    /**TODO.
+    /**
+     * Method that gets all the parameters from a user, and then lists them.
+     * If the parameters are not entered via a get request, then it returns all rooms.
      *
-     * @param allParams parameters.
-     * @return filtered list.
+     * @param allParams parameters that is entered by the user.
+     * @return filtered list in accordance to the parameters entered.
+     *
+     * @see RoomDao#roomFilter(Map)
      */
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listRooms(
         @RequestParam Map<String, String> allParams
     ) {
-        List<Room> result = roomDao.roomFilter(allParams);
-        return RestResponse.create(result);
+        List<RoomDto> roomDtoList = new ArrayList<>();
+
+        for (Room room : service.filterRooms(allParams)) {
+            roomDtoList.add(room.toDto());
+        }
+
+        return RestResponse.create(roomDtoList);
     }
 
     @PostMapping("")
@@ -52,15 +60,15 @@ public class RoomController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> readRoom(@PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> readRoom(@PathVariable Long id) {
         return RestResponse.create(service.readRoom(id));
     }
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> updateRoom(
+    public ResponseEntity<RestResponse<Room>> updateRoom(
         @RequestBody Room updated,
-        @PathVariable int id
+        @PathVariable Long id
     ) {
         return RestResponse.create(service.updateRoom(updated, id));
     }
@@ -69,7 +77,7 @@ public class RoomController {
      * Doc. TODO Sven
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteRoom(@PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> deleteRoom(@PathVariable Long id) {
         service.deleteRoom(id);
 
         return RestResponse.create(null, null, HttpStatus.OK);

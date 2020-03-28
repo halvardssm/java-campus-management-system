@@ -29,7 +29,7 @@ public class ReservationAmountService {
      *
      * @return reservation by id {@link Reservation}.
      */
-    public ReservationAmount readReservation(Integer id) throws NotFoundException {
+    public ReservationAmount readReservation(Long id) throws NotFoundException {
         return reservationAmountRepository.findById(id)
             .orElseThrow(() -> new NotFoundException(String.format(
                 EXCEPTION_RESERVATION_NOT_FOUND,
@@ -53,7 +53,7 @@ public class ReservationAmountService {
      * @return the updated reservation {@link ReservationAmount}.
      */
     public ReservationAmount updateReservation(
-        Integer id,
+        Long id,
         ReservationAmount newReservation
     )
         throws NotFoundException {
@@ -73,14 +73,14 @@ public class ReservationAmountService {
     /**
      * Delete an reservation {@link ReservationAmount}.
      */
-    public void deleteReservation(Integer id) {
+    public void deleteReservation(Long id) {
         reservationAmountRepository.deleteById(id);
     }
 
     /**
      * Delete all reservation amounts by reservation id {@link ReservationAmount}.
      */
-    public void deleteReservationAmountsByReservationId(Integer id) {
+    public void deleteReservationAmountsByReservationId(Long id) {
         reservationAmountRepository.deleteByReservationId(id);
     }
 }

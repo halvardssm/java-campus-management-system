@@ -2,38 +2,32 @@ package nl.tudelft.oopp.group39.building.entities;
 
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.building.dto.BuildingDto;
+import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
+import nl.tudelft.oopp.group39.room.dto.RoomDto;
 import nl.tudelft.oopp.group39.room.entities.Room;
 
 @Entity
 @Table(name = Building.TABLE_NAME)
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class,
-    property = Building.COL_ID
-)
-public class Building {
+public class Building extends AbstractEntity<Building, BuildingDto> {
     public static final String TABLE_NAME = "buildings";
     public static final String MAPPED_NAME = "building";
-    public static final String COL_ID = "id";
+    public static final String COL_OPEN = "open";
+    public static final String COL_CLOSED = "closed";
+    public static final String COL_NAME = "name";
+    public static final String COL_LOCATION = "location";
+    public static final String COL_DESC = "description";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
     private String name;
     private String location;
     private String description;
@@ -75,12 +69,28 @@ public class Building {
         this.reservables.addAll(initSet(reservables));
     }
 
-    public long getId() {
-        return id;
-    }
+    /**
+     * Method to convert a Building object to BuildingDto for JSON serializing.
+     *
+     * @return the BuildingDto converted from building
+     */
+    public BuildingDto toDto() {
+        Set<RoomDto> roomDtoSet = Utils.setEntityToDto(rooms);
+        Set<Long> reservableSet = new HashSet<>();
+        reservables.forEach(reservable -> reservableSet.add(
+                reservable.getId()
+            ));
 
-    public void setId(long id) {
-        this.id = id;
+        return new BuildingDto(
+            id,
+            name,
+            location,
+            description,
+            open,
+            closed,
+            roomDtoSet,
+            reservableSet
+        );
     }
 
     public String getName() {
@@ -148,7 +158,7 @@ public class Building {
             return false;
         }
         Building building = (Building) o;
-        return getId() == building.getId()
+        return getId().equals(building.getId())
             && Objects.equals(getName(), building.getName())
             && Objects.equals(getLocation(), building.getLocation())
             && Objects.equals(getDescription(), building.getDescription())

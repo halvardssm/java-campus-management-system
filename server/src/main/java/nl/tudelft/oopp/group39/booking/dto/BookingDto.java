@@ -2,16 +2,21 @@ package nl.tudelft.oopp.group39.booking.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
+import nl.tudelft.oopp.group39.room.entities.Room;
+import nl.tudelft.oopp.group39.user.entities.User;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BookingDto {
+public class BookingDto extends AbstractDto<Booking, BookingDto> {
 
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
     private String user;
-    private Integer room;
+    private Long room;
 
     public BookingDto() {
     }
@@ -30,7 +35,7 @@ public class BookingDto {
         LocalTime startTime,
         LocalTime endTime,
         String user,
-        Integer room
+        Long room
     ) {
         this.date = date;
         this.startTime = startTime;
@@ -71,11 +76,25 @@ public class BookingDto {
         this.user = user;
     }
 
-    public Integer getRoom() {
+    public Long getRoom() {
         return room;
     }
 
-    public void setRoom(Integer room) {
+    public void setRoom(Long room) {
         this.room = room;
+    }
+
+    @Override
+    public Booking toEntity() {
+        User user1 = new User();
+        user1.setUsername(getUser());
+        Room room1 = Utils.idToEntity(getRoom(), Room.class);
+        return new Booking(
+            getDate(),
+            getStartTime(),
+            getEndTime(),
+            user1,
+            room1
+        );
     }
 }
