@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml"
+      xmlns="http://javafx.com/javafx"
+      fx:controller="nl.tudelft.oopp.group39.room.controller.RoomSceneController">
+
+    <Label/>
+    <Button text="Get all rooms." onAction="#getRoomsButton"/>
+
+    <Label/>
+    <Button text="Go to main scene." onAction="#goToMainScene"/>
+
+    <Label text="-------------------------------"/>
+    <Label text="Make a new Room."/>
+<!--        <ComboBox fx:id="roomFacilitiesBox" cellFactory="s"/>-->
+
+    <TextField fx:id="roomBuildingIdField" promptText="building id"/>
+
+    <TextField fx:id="roomCapacityField" promptText="capacity"/>
+
+    <TextField fx:id="roomDescriptionField" promptText="description"/>
+
+    <Button text="Submit" onAction="#newRoomButton"/>
+
+    <Label text="Update a Room."/>
+    <TextField fx:id="updateRoomField" promptText="room id"/>
+    <Button text="Submit" onAction="#updateRoomButton"/>
+    <Button text="Delete Room" onAction="#deleteRoomButton"/>
+    <Label/>
+    <Label/>
+
+</VBox>
+

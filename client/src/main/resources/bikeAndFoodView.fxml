@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" maxHeight="-Infinity" maxWidth="-Infinity"
-            fx:controller="nl.tudelft.oopp.group39.controllers.FoodAndBikeSceneController">
+            fx:controller="nl.tudelft.oopp.group39.reservable.controller.FoodAndBikeSceneController">
     <top>
         <HBox fx:id="topbar" styleClass="bar" spacing="10">
             <padding>
