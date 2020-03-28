@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.booking.dto.BookingDto;
 import nl.tudelft.oopp.group39.config.AbstractEntity;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.user.entities.User;
@@ -95,6 +96,21 @@ public class Booking extends AbstractEntity {
         this.user = user;
         this.room = room;
 
+    }
+
+    /**
+     * Converts booking to bookingDto.
+     *
+     * @return the converted booking
+     */
+    public BookingDto toDto() {
+        return new BookingDto(
+            date,
+            startTime,
+            endTime,
+            user.getUsername(),
+            room.getId()
+        );
     }
 
     @Override

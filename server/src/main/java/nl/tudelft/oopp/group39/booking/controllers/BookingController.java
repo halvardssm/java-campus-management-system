@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.booking.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import nl.tudelft.oopp.group39.booking.dto.BookingDto;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
@@ -36,7 +38,15 @@ public class BookingController {
     public ResponseEntity<RestResponse<Object>> listBookings(
         @RequestParam Map<String, String> params
     ) {
-        return RestResponse.create(bookingService.listBookings(params));
+        List<BookingDto> bookingsDtoList = new ArrayList<>();
+        List<Booking> bookings = bookingService.listBookings(params);
+
+        for (Booking booking : bookings) {
+            BookingDto bookingDto = booking.toDto();
+            bookingsDtoList.add(bookingDto);
+        }
+
+        return RestResponse.create(bookingsDtoList);
     }
 
     /**
@@ -65,7 +75,11 @@ public class BookingController {
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> readBooking(@PathVariable Integer id) {
         try {
-            return RestResponse.create(bookingService.readBooking(id));
+            Booking booking = bookingService.readBooking(id);
+
+            BookingDto bookingDto = booking.toDto();
+
+            return RestResponse.create(bookingDto);
         } catch (Exception e) {
             return RestResponse.error(e);
         }
@@ -98,5 +112,4 @@ public class BookingController {
 
         return RestResponse.create(null, null, HttpStatus.OK);
     }
-
 }

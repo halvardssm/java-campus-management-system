@@ -1,9 +1,14 @@
 package nl.tudelft.oopp.group39.room.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import nl.tudelft.oopp.group39.booking.dto.BookingDto;
+import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.room.dao.RoomDao;
+import nl.tudelft.oopp.group39.room.dto.RoomDto;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,19 +33,26 @@ public class RoomController {
     @Autowired
     private RoomService service;
 
-    @Autowired
-    private RoomDao roomDao;
-
-    /**TODO.
+    /**
+     * Method that gets all the parameters from a user, and then lists them.
+     * If the parameters are not entered via a get request, then it returns all rooms.
      *
-     * @param allParams parameters.
-     * @return filtered list.
+     * @param allParams parameters that is entered by the user.
+     * @return filtered list in accordance to the parameters entered.
+     *
+     * @see RoomDao#roomFilter(Map)
      */
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listRooms(
         @RequestParam Map<String, String> allParams
     ) {
-        return RestResponse.create(service.filterRooms(allParams));
+        List<RoomDto> roomDtoList = new ArrayList<>();
+
+        for (Room room : service.filterRooms(allParams)) {
+            roomDtoList.add(room.toDto());
+        }
+
+        return RestResponse.create(roomDtoList);
     }
 
     @PostMapping("")

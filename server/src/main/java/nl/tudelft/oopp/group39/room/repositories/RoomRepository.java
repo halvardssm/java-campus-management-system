@@ -15,17 +15,9 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
-
-    /**
-     * Returns an array of all room ids.
-     */
-    @Query("SELECT id FROM Room")
-    int[] getAllRoomIds();
-
     /**
      * Returns a list with the rooms which a selected user has reserved.
      */
     @Query("SELECT u FROM Room u where u.id = :id")
     List<Room> findById(@Param("id") int id);
-
 }

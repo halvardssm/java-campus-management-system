@@ -4,7 +4,6 @@ import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
@@ -40,7 +39,6 @@ public class Facility {
     private String description;
 
     @ManyToMany(mappedBy = Facility.TABLE_NAME, fetch = FetchType.LAZY)
-    @JsonIgnore
     private Set<Room> rooms = new HashSet<>();
 
     public Facility() {

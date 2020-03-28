@@ -17,15 +17,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.config.AbstractEntity;
+import nl.tudelft.oopp.group39.reservable.dto.ReservableDto;
+import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 
 @Entity
 @Table(name = Reservable.TABLE_NAME)
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties(allowSetters = true, value = {Reservable.COL_RESERVATIONS})
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.None.class
-)
+@JsonIdentityInfo(generator = ObjectIdGenerators.None.class)
 public class Reservable extends AbstractEntity {
     public static final String TABLE_NAME = "reservables";
     public static final String MAPPED_NAME = "reservable";
@@ -82,6 +82,26 @@ public class Reservable extends AbstractEntity {
 
     public void setReservations(Set<ReservationAmount> reservations) {
         this.reservations = reservations;
+    }
+
+    /**
+     * Converts the object to dto for JSON serializing.
+     *
+     * @return the converted dto of the object
+     */
+    public ReservableDto toDto() {
+        Set<ReservationAmountDto> reservationAmountDtos = new HashSet<>();
+
+        reservations.forEach(
+            reservationAmount -> reservationAmountDtos.add(
+                reservationAmount.toDto()
+            ));
+
+        return new ReservableDto(
+            price,
+            building.getId(),
+            reservationAmountDtos
+        );
     }
 
     @Override

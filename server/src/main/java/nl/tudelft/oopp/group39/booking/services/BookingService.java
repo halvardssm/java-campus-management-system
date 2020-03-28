@@ -123,5 +123,4 @@ public class BookingService {
             throw new BookingNotFoundException(id);
         }
     }
-
 }

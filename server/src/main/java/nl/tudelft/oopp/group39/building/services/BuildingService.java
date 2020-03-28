@@ -5,7 +5,6 @@ import java.util.Map;
 
 import nl.tudelft.oopp.group39.building.dao.BuildingDao;
 import nl.tudelft.oopp.group39.building.entities.Building;
-import nl.tudelft.oopp.group39.building.exceptions.BuildingExistsException;
 import nl.tudelft.oopp.group39.building.exceptions.BuildingNotFoundException;
 import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +25,19 @@ public class BuildingService {
         return buildingDao.buildingFilter(params);
     }
 
+    /**
+     * Reads the building inside the database using its id.
+     *
+     * @param id the id of the Building
+     * @return the Building that was found.
+     * @throws BuildingNotFoundException when no building is found.
+     */
     public Building readBuilding(Integer id) throws BuildingNotFoundException {
-        return buildingRepository.findById(id).orElseThrow(() -> new BuildingNotFoundException(id));
+        try {
+            return buildingRepository.findById(id);
+        } catch (Exception e) {
+            throw new BuildingNotFoundException(id);
+        }
     }
 
     /**
@@ -38,7 +48,6 @@ public class BuildingService {
             Building rf = readBuilding(id);
             buildingRepository.delete(readBuilding(id));
             return rf;
-
         } catch (BuildingNotFoundException e) {
             throw new BuildingNotFoundException(id);
         }

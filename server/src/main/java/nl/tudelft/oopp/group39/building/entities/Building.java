@@ -3,19 +3,20 @@ package nl.tudelft.oopp.group39.building.entities;
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.Column;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.building.dto.BuildingDto;
 import nl.tudelft.oopp.group39.config.AbstractEntity;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
+import nl.tudelft.oopp.group39.room.dto.RoomDto;
 import nl.tudelft.oopp.group39.room.entities.Room;
 
 @Entity
@@ -33,18 +34,12 @@ public class Building extends AbstractEntity {
     public static final String COL_LOCATION = "location";
     public static final String COL_DESC = "description";
 
-    @Column(name = COL_NAME)
     private String name;
-    @Column(name = COL_LOCATION)
     private String location;
-    @Column(name = COL_DESC)
     private String description;
-    @Column(name = COL_OPEN)
     private LocalTime open;
-    @Column(name = COL_CLOSED)
     private LocalTime closed;
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
-    @JsonIgnore
     private Set<Room> rooms = new HashSet<>();
     @OneToMany(mappedBy = MAPPED_NAME) //TODO change to reservable id
     private Set<Reservable> reservables = new HashSet<>();
@@ -78,6 +73,30 @@ public class Building extends AbstractEntity {
         this.closed = closed;
         this.rooms.addAll(initSet(rooms));
         this.reservables.addAll(initSet(reservables));
+    }
+
+    /**
+     * Method to convert a Building object to BuildingDto for JSON serializing.
+     *
+     * @return the BuildingDto converted from building
+     */
+    public BuildingDto toDto() {
+        Set<RoomDto> roomDtoSet = new HashSet<>();
+        rooms.forEach(room -> roomDtoSet.add(room.toDto()));
+        Set<Integer> reservableSet = new HashSet<>();
+        reservables.forEach(reservable -> reservableSet.add(
+                reservable.getId()
+            ));
+
+        return new BuildingDto(
+            id,
+            name,
+            location,
+            description,
+            open,
+            closed,
+            roomDtoSet,
+            reservableSet);
     }
 
     public String getName() {

@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.config.AbstractEntity;
+import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
+import nl.tudelft.oopp.group39.reservation.dto.ReservationDto;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.user.entities.User;
 
@@ -61,6 +63,27 @@ public class Reservation extends AbstractEntity {
         setRoom(room);
         setUser(user);
         this.reservationAmounts.addAll(initSet(reservationAmounts));
+    }
+
+    /**
+     * Converts the object to dto for JSON serializing.
+     *
+     * @return the converted object
+     */
+    public ReservationDto toDto() {
+        Set<ReservationAmountDto> reservationAmountsDto = new HashSet<>();
+        reservationAmounts.forEach(
+            reservationAmount -> reservationAmountsDto.add(
+                reservationAmount.toDto()
+            ));
+
+        return new ReservationDto(
+            timeOfPickup,
+            timeOfDelivery,
+            user.getUsername(),
+            room.getId(),
+            reservationAmountsDto
+        );
     }
 
     public LocalDateTime getTimeOfPickup() {
