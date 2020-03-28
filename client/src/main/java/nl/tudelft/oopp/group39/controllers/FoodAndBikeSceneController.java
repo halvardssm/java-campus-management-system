@@ -28,14 +28,13 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Bike;
+import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.models.Food;
 import nl.tudelft.oopp.group39.models.Reservable;
 import nl.tudelft.oopp.group39.models.Room;
 
 public class FoodAndBikeSceneController extends MainSceneController {
 
-    public double totalprice = 0;
-    public List<Room> rooms = new ArrayList<>();
     @FXML
     protected ComboBox<Hyperlink> buildinglist;
     @FXML
@@ -56,10 +55,15 @@ public class FoodAndBikeSceneController extends MainSceneController {
     private Label total;
     @FXML
     private Label titleLabel;
+
+    public double totalprice = 0;
+    public List<Room> rooms = new ArrayList<>();
     private int cartItems = 0;
     private List<Reservable> cart = new ArrayList<>();
     private String type;
     private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private Building building;
+    private ComboBox<String> endTimePicker = new ComboBox<>();
 
 
     /**
@@ -73,10 +77,22 @@ public class FoodAndBikeSceneController extends MainSceneController {
         getBuildingsList();
         if (type.equals("bike")) {
             titleLabel.setText("BIKE RENTAL");
-            orderbtn.setOnAction(event -> placeBikeOrder());
+            orderbtn.setOnAction(event -> {
+                try {
+                    placeBikeOrder();
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+            });
         } else {
             titleLabel.setText("FOOD ORDER");
-            orderbtn.setOnAction(event -> placeFoodOrder());
+            orderbtn.setOnAction(event -> {
+                try {
+                    placeFoodOrder();
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+            });
         }
     }
 
@@ -86,30 +102,34 @@ public class FoodAndBikeSceneController extends MainSceneController {
      * @throws JsonProcessingException when there is a parsing exception
      */
     public void getBuildingsList() throws JsonProcessingException {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String buildingString = ServerCommunication.get(ServerCommunication.building);
         System.out.println(buildingString);
         ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
-        for (JsonNode building : body) {
-            Hyperlink buildingName = new Hyperlink(building.get("name").asText());
+        for (JsonNode buildingJson : body) {
+            String buildingAsString = mapper.writeValueAsString(buildingJson);
+            Building buildingObj = mapper.readValue(buildingAsString, Building.class);
+            Hyperlink buildingName = new Hyperlink(buildingObj.getName());
             buildingName.getStyleClass().add("buildingList");
             buildingName.setOnAction(event -> {
+                building = buildingObj;
                 if (type.equals("bike")) {
                     try {
-                        getBikes(building.get("id").asInt());
+                        getBikes(building.getId());
                     } catch (JsonProcessingException e) {
                         e.printStackTrace();
                     }
                 } else {
                     try {
-                        getMenu(building.get("id").asInt());
-                        getRoomsList(building.get("id").asInt());
+                        getMenu(building.getId());
+                        getRoomsList(building.getId());
                     } catch (JsonProcessingException e) {
                         e.printStackTrace();
                     }
                 }
             });
             buildingName.getStyleClass().add("buildingList");
-            buildingName.setId(building.get("id").asText());
+            buildingName.setId(String.valueOf(buildingObj.getId()));
             buildingslist.getChildren().add(buildingName);
         }
     }
@@ -125,6 +145,7 @@ public class FoodAndBikeSceneController extends MainSceneController {
         itemlist.getChildren().clear();
         cartlist.getChildren().clear();
         timeselector.getChildren().clear();
+        cartItems = 0;
         rooms.clear();
         totalprice = 0.00;
         total.setText("0.00");
@@ -343,27 +364,11 @@ public class FoodAndBikeSceneController extends MainSceneController {
             }
         });
         timeselector.getChildren().add(datePicker);
-        ComboBox<String> timePicker = new ComboBox<>();
-        timePicker.setPromptText("Select delivery time");
-        timePicker.setId("timePicker");
-        for (int i = 9; i < 20; i++) {
-            if (i < 10) {
-                timePicker.getItems().add("0" + i + ":00");
-            } else {
-                timePicker.getItems().add(i + ":00");
-            }
-        }
+        ComboBox<String> timePicker = createTimePicker();
         timeselector.getChildren().add(timePicker);
-
         if (type.equals("bike")) {
-            ComboBox<String> durationPicker = new ComboBox<>();
-            durationPicker.setPromptText("Select duration");
-            timePicker.setId("timePicker");
-            durationPicker.setId("durationPicker");
-            for (int j = 1; j < 5; j++) {
-                durationPicker.getItems().add(j + " hours");
-            }
-            timeselector.getChildren().add(durationPicker);
+            updateEndTimePicker(building.getOpen());
+            timeselector.getChildren().add(endTimePicker);
         } else {
             ComboBox<Label> roomSelector = new ComboBox<>();
             roomSelector.setId("roomSelector");
@@ -374,6 +379,60 @@ public class FoodAndBikeSceneController extends MainSceneController {
                 roomSelector.getItems().add(roomName);
             }
             timeselector.getChildren().add(roomSelector);
+        }
+    }
+
+    /**
+     * Creates a start/delivery time picker.
+     *
+     * @return ComboBox for picking the time
+     */
+    public ComboBox<String> createTimePicker() {
+        int open = Integer.parseInt(building.getOpen().split(":")[0]);
+        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        ComboBox<String> timePicker = new ComboBox<>();
+        timePicker.setPromptText("Select delivery time");
+        timePicker.setId("timePicker");
+        if (type.equals("bike")) {
+            for (int i = open; i < closed; i++) {
+                if (i < 10) {
+                    timePicker.getItems().add("0" + i + ":00");
+                } else {
+                    timePicker.getItems().add(i + ":00");
+                }
+            }
+            timePicker.setOnAction(event -> updateEndTimePicker(timePicker.getValue()));
+        } else {
+            for (int i = open; i <= closed; i++) {
+                if (i < 10) {
+                    timePicker.getItems().add("0" + i + ":00");
+                } else {
+                    timePicker.getItems().add(i + ":00");
+                }
+            }
+        }
+        return timePicker;
+    }
+
+    /**
+     * Updates the end time picker for ordering bikes according to the chosen start time.
+     *
+     * @param selectedTime the selected start time
+     */
+    public void updateEndTimePicker(String selectedTime) {
+        endTimePicker.getItems().clear();
+        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        int start = Integer.parseInt(selectedTime.split(":")[0]);
+        endTimePicker.setPromptText("Select end time");
+        endTimePicker.setId("durationPicker");
+        for (int i = start + 1; i <= start + 4; i++) {
+            if (i <= closed) {
+                if (i < 10) {
+                    endTimePicker.getItems().add("0" + i + ":00");
+                } else {
+                    endTimePicker.getItems().add(i + ":00");
+                }
+            }
         }
     }
 
@@ -425,36 +484,9 @@ public class FoodAndBikeSceneController extends MainSceneController {
     }
 
     /**
-     * Retrieves the time of delivery for the bikes.
-     *
-     * @param datePicker     in which the date is selected by the user
-     * @param timePicker     in which the time is selected by the user
-     * @param durationPicker in which the duration is selected by the user
-     * @return String containing the time of delivery
-     */
-    public String getTimeOfDelivery(
-        DatePicker datePicker,
-        ComboBox<String> timePicker,
-        ComboBox<String> durationPicker
-    ) {
-        String time = timePicker.getValue();
-        LocalDate date = datePicker.getValue();
-        int duration = Integer.parseInt(durationPicker.getValue().split(" ")[0]);
-        int start = Integer.parseInt(time.split(":")[0]);
-        int end = start + duration;
-        String endTime;
-        if (end < 10) {
-            endTime = "0" + end + ":00:00";
-        } else {
-            endTime = end + ":00:00";
-        }
-        return dateTimeFormatter.format(date) + " " + endTime;
-    }
-
-    /**
      * Places a bike order.
      */
-    public void placeBikeOrder() {
+    public void placeBikeOrder() throws JsonProcessingException {
         DatePicker datePicker = (DatePicker) timeselector.lookup("#datePicker");
         ComboBox<String> timePicker = (ComboBox<String>) timeselector.lookup("#timePicker");
         ComboBox<String> durationPicker = (ComboBox<String>) timeselector.lookup("#durationPicker");
@@ -465,7 +497,7 @@ public class FoodAndBikeSceneController extends MainSceneController {
             errorfield.setText("Please select a date, time and duration");
         } else {
             String timeOfPickup = getTimeOfPickup(datePicker, timePicker);
-            String timeOfDelivery = getTimeOfDelivery(datePicker, timePicker, durationPicker);
+            String timeOfDelivery = getTimeOfPickup(datePicker, durationPicker);
             placeOrder(timeOfPickup, timeOfDelivery, null);
         }
     }
@@ -473,7 +505,7 @@ public class FoodAndBikeSceneController extends MainSceneController {
     /**
      * Places a food order.
      */
-    public void placeFoodOrder() {
+    public void placeFoodOrder() throws JsonProcessingException {
         DatePicker datePicker = (DatePicker) timeselector.lookup("#datePicker");
         ComboBox<String> timePicker = (ComboBox<String>) timeselector.lookup("#timePicker");
         ComboBox<Label> roomSelector = (ComboBox<Label>) timeselector.lookup("#roomSelector");
@@ -497,38 +529,44 @@ public class FoodAndBikeSceneController extends MainSceneController {
      * @param timeOfDelivery time of which the bike will be returned
      * @param roomId         room the food needs to be delivered to
      */
-    public void placeOrder(String timeOfPickup, String timeOfDelivery, Integer roomId) {
-        if (loggedIn) {
-            StringBuilder orderString = new StringBuilder("[");
-            for (int i = 0; i < cart.size(); i++) {
-                Spinner<Integer> amount =
-                    (Spinner<Integer>) cartlist.lookup("#" + cart.get(i).getId());
-                int amountInt = amount.getValue();
-                String ending;
-                if (i == cart.size() - 1) {
-                    ending = "}]";
-                } else {
-                    ending = "}, ";
+    public void placeOrder(
+        String timeOfPickup,
+        String timeOfDelivery,
+        Integer roomId
+    ) throws JsonProcessingException {
+        DatePicker datePicker = (DatePicker) timeselector.lookup("#datePicker");
+        if (checkDate(dateTimeFormatter.format(datePicker.getValue()))) {
+            if (loggedIn) {
+                StringBuilder orderString = new StringBuilder("[");
+                for (int i = 0; i < cart.size(); i++) {
+                    Spinner<Integer> amount =
+                        (Spinner<Integer>) cartlist.lookup("#" + cart.get(i).getId());
+                    int amountInt = amount.getValue();
+                    String ending;
+                    if (i == cart.size() - 1) {
+                        ending = "}]";
+                    } else {
+                        ending = "}, ";
+                    }
+                    orderString
+                        .append("{\"amount\":")
+                        .append(amountInt).append(",\"reservable\":")
+                        .append(cart.get(i).getId())
+                        .append(ending);
                 }
-                orderString
-                    .append("{\"amount\":")
-                    .append(amountInt).append(",\"reservable\":")
-                    .append(cart.get(i).getId())
-                    .append(ending);
+                System.out.println(orderString);
+                String username = MainSceneController.user.getUsername();
+                String result = ServerCommunication
+                    .orderFoodBike(
+                        timeOfPickup,
+                        timeOfDelivery,
+                        username,
+                        roomId,
+                        orderString.toString());
+                createAlert(result);
+            } else {
+                createAlert("Please log in to place an order");
             }
-            System.out.println(orderString);
-            String username = MainSceneController.user.getUsername();
-            String result = ServerCommunication
-                .orderFoodBike(
-                    timeOfPickup,
-                    timeOfDelivery,
-                    username,
-                    roomId,
-                    orderString.toString());
-            createAlert(result);
-        } else {
-            createAlert("Please log in to place an order");
         }
-
     }
 }

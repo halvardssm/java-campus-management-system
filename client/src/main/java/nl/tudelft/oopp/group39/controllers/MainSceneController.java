@@ -1,7 +1,15 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.Set;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -14,6 +22,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Building;
+import nl.tudelft.oopp.group39.models.Event;
 import nl.tudelft.oopp.group39.models.Room;
 import nl.tudelft.oopp.group39.models.User;
 import nl.tudelft.oopp.group39.views.UsersDisplay;
@@ -292,5 +301,48 @@ public class MainSceneController {
         capacityPicker.setSnapToTicks(true);
     }
 
+    /**
+     * Retrieves the events in a set.
+     *
+     * @return Set representation of all the events
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public Set<Event> getEventList() throws JsonProcessingException {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        String eventString = ServerCommunication.get(ServerCommunication.event);
+        System.out.println(eventString);
+        ArrayNode body = (ArrayNode) mapper.readTree(eventString).get("body");
+        Set<Event> events = new HashSet<>();
+        for (JsonNode eventJson : body) {
+            String eventAsString = mapper.writeValueAsString(eventJson);
+            Event event = mapper.readValue(eventAsString, Event.class);
+            events.add(event);
+        }
+        return events;
+    }
+
+    /**
+     * Checks if the given date is not during an event.
+     *
+     * @param date the selected date
+     * @return boolean true if date is not an event, false if date is on an event
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public boolean checkDate(String date) throws JsonProcessingException {
+        Set<Event> events = getEventList();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        for (Event event : events) {
+            LocalDate start = LocalDate.parse(event.getStartDate(), formatter);
+            LocalDate end = LocalDate.parse(event.getEndDate(), formatter);
+            LocalDate check = LocalDate.parse(date, formatter);
+            if ((check.isBefore(end) && check.isAfter(start))
+                || check.isEqual(start)
+                || check.isEqual(end)) {
+                createAlert("There is an event on this date");
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

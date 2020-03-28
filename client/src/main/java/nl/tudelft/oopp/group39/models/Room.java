@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
 public class Room {
     private long id;
@@ -15,7 +16,7 @@ public class Room {
     private ArrayNode facilities;
     private ArrayNode events;
     private ArrayNode bookings;
-    private JsonNode building;
+    private Integer building;
 
     public Room() {
 
@@ -38,7 +39,7 @@ public class Room {
         String name,
         boolean onlyStaff,
         String description,
-        JsonNode buildingId,
+        Integer buildingId,
         ArrayNode facilities,
         ArrayNode events,
         ArrayNode bookings
@@ -57,7 +58,7 @@ public class Room {
         return id;
     }
 
-    public JsonNode getBuilding() {
+    public Integer getBuilding() {
         return building;
     }
 
@@ -121,7 +122,9 @@ public class Room {
     public Building getBuildingObject() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String buildingAsString = mapper.writeValueAsString(building);
+        String buildingString = ServerCommunication.getBuilding(building);
+        JsonNode body = mapper.readTree(buildingString).get("body");
+        String buildingAsString = mapper.writeValueAsString(body);
         return mapper.readValue(buildingAsString, Building.class);
     }
 

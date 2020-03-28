@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -78,6 +79,7 @@ public class RoomReservationController extends MainSceneController {
      * @param building the building of the room you've selected
      */
     public void setup(Room room, Building building, Scene previous) throws JsonProcessingException {
+
         this.building = building;
         this.room = room;
         this.previous = previous;
@@ -101,33 +103,34 @@ public class RoomReservationController extends MainSceneController {
         LocalDate bookingDate = date.getValue();
         String bookingStart = fromTime.getValue() + ":00";
         String bookingEnd = toTime.getValue() + ":00";
-
         if (checkEmpty(date, fromTime, toTime)) {
-            if (loggedIn) {
-                String dateString = date.getValue()
-                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                long roomId = room.getId();
-                String roomIdString = "" + roomId;
-                String username = MainSceneController.user.getUsername();
-                ServerCommunication.addBooking(
-                    dateString,
-                    bookingStart,
-                    bookingEnd, username,
-                    roomIdString
-                );
+            String dateString = date.getValue()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            if (checkDate(dateString)) {
+                if (loggedIn) {
+                    long roomId = room.getId();
+                    String roomIdString = "" + roomId;
+                    String username = MainSceneController.user.getUsername();
+                    ServerCommunication.addBooking(
+                        dateString,
+                        bookingStart,
+                        bookingEnd, username,
+                        roomIdString
+                    );
 
-                showAlert(Alert.AlertType.INFORMATION, "", "Reservation successful.");
-                System.out.println(dateString
-                    + bookingStart + bookingEnd
-                    + username + roomIdString);
+                    showAlert(Alert.AlertType.INFORMATION, "", "Reservation successful.");
+                    System.out.println(dateString
+                        + bookingStart + bookingEnd
+                        + username + roomIdString);
 
-                System.out.println(bookingDate);
-                System.out.println(bookingStart + "\n" + bookingEnd);
-                backToRoom();
-            } else {
-                showAlert(Alert.AlertType.ERROR, "",
-                    "Please log in if you want to reserve a room.");
-                goToLoginScene();
+                    System.out.println(bookingDate);
+                    System.out.println(bookingStart + "\n" + bookingEnd);
+                    backToRoom();
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "",
+                        "Please log in if you want to reserve a room.");
+                    goToLoginScene();
+                }
             }
         }
     }
@@ -161,6 +164,7 @@ public class RoomReservationController extends MainSceneController {
      * @throws JsonProcessingException when there is something wrong with processing
      */
     public List<Integer> getBookedTimes(String date) throws JsonProcessingException {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String bookings = ServerCommunication.getBookings((int) room.getId(), date);
         System.out.println(bookings);
         ArrayNode body = (ArrayNode) mapper.readTree(bookings).get("body");
@@ -358,11 +362,9 @@ public class RoomReservationController extends MainSceneController {
 
     /**
      * Returns the user back to the room page when the back button is clicked.
-     *
-     * @throws IOException when there is an io exception
      */
     @FXML
-    private void backToRoom() throws IOException {
+    private void backToRoom() {
         UsersDisplay.backToPrevious(previous);
     }
 
