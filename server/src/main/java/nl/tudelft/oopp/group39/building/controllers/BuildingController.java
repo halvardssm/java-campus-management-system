@@ -69,15 +69,15 @@ public class BuildingController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> readBuilding(@PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> readBuilding(@PathVariable Long id) {
         return RestResponse.create(buildingService.readBuilding(id));
     }
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> updateBuilding(
+    public ResponseEntity<RestResponse<Building>> updateBuilding(
         @RequestBody Building updated,
-        @PathVariable int id
+        @PathVariable Long id
     ) {
         return RestResponse.create(buildingService.updateBuilding(id, updated));
     }
@@ -89,7 +89,7 @@ public class BuildingController {
      * @return nothing
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteBuilding(@PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> deleteBuilding(@PathVariable Long id) {
         buildingService.deleteBuilding(id);
 
         return RestResponse.create(null, null, HttpStatus.OK);

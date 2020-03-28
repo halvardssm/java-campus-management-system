@@ -73,7 +73,7 @@ public class BookingController {
      */
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> readBooking(@PathVariable Integer id) {
+    public ResponseEntity<RestResponse<Object>> readBooking(@PathVariable Long id) {
         try {
             Booking booking = bookingService.readBooking(id);
 
@@ -92,9 +92,9 @@ public class BookingController {
      */
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> updateBooking(
+    public ResponseEntity<RestResponse<Booking>> updateBooking(
         @RequestBody BookingDto updated,
-        @PathVariable Integer id
+        @PathVariable Long id
     ) {
         try {
             return RestResponse.create(bookingService.updateBooking(updated, id));
@@ -107,7 +107,7 @@ public class BookingController {
      * DELETE Endpoint to delete booking.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteBooking(@PathVariable Integer id) {
+    public ResponseEntity<RestResponse<Object>> deleteBooking(@PathVariable Long id) {
         bookingService.deleteBooking(id);
 
         return RestResponse.create(null, null, HttpStatus.OK);

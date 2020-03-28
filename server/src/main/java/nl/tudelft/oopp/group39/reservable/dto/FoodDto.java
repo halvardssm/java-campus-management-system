@@ -26,7 +26,7 @@ public class FoodDto extends ReservableDto {
         String name,
         String description,
         Double price,
-        Integer building,
+        Long building,
         Set<ReservationAmountDto> reservations
     ) {
         super(price, building, initSet(reservations));

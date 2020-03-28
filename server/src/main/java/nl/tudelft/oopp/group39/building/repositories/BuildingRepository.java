@@ -9,5 +9,5 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BuildingRepository extends JpaRepository<Building, Integer> {
+public interface BuildingRepository extends JpaRepository<Building, Long> {
 }

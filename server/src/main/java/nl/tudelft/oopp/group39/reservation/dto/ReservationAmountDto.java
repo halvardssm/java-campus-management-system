@@ -5,12 +5,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReservationAmountDto {
     private Integer amount;
-    private Integer reservable;
+    private Long reservable;
 
     public ReservationAmountDto() {
     }
 
-    public ReservationAmountDto(Integer amount, Integer reservable) {
+    public ReservationAmountDto(Integer amount, Long reservable) {
         this.amount = amount;
         this.reservable = reservable;
     }
@@ -23,11 +23,11 @@ public class ReservationAmountDto {
         this.amount = amount;
     }
 
-    public Integer getReservable() {
+    public Long getReservable() {
         return reservable;
     }
 
-    public void setReservable(Integer reservable) {
+    public void setReservable(Long reservable) {
         this.reservable = reservable;
     }
 }

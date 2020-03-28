@@ -43,8 +43,8 @@ public class RoomService {
     /**
      * Doc. TODO Sven
      */
-    public Room updateRoom(Room newRoom, int id) throws RoomNotFoundException {
-        return roomRepository.findById((long) id)
+    public Room updateRoom(Room newRoom, Long id) throws RoomNotFoundException {
+        return roomRepository.findById(id)
             .map(room -> {
                 newRoom.setId(id);
                 room = newRoom;

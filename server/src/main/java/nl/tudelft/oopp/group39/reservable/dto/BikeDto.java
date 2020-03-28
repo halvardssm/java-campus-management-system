@@ -5,7 +5,6 @@ import static nl.tudelft.oopp.group39.config.Utils.initSet;
 import java.util.Set;
 import nl.tudelft.oopp.group39.reservable.enums.BikeType;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
-import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 
 public class BikeDto extends ReservableDto {
 
@@ -25,7 +24,7 @@ public class BikeDto extends ReservableDto {
     public BikeDto(
         BikeType bikeType,
         Double price,
-        Integer building,
+        Long building,
         Set<ReservationAmountDto> reservations
     ) {
         super(price, building, initSet(reservations));

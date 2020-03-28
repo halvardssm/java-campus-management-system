@@ -28,7 +28,7 @@ public class EventService {
      *
      * @return event by id {@link Event}.
      */
-    public Event readEvent(Integer id) throws NotFoundException {
+    public Event readEvent(Long id) throws NotFoundException {
         return eventRepository.findById(id).orElseThrow(()
             -> new NotFoundException(String.format(EXCEPTION_EVENT_NOT_FOUND, id)));
     }
@@ -47,7 +47,7 @@ public class EventService {
      *
      * @return the updated event {@link Event}.
      */
-    public Event updateEvent(Integer id, Event newEvent) throws NotFoundException {
+    public Event updateEvent(Long id, Event newEvent) throws NotFoundException {
         return eventRepository.findById(id)
             .map(event -> {
                 event.setType(newEvent.getType());
@@ -62,7 +62,7 @@ public class EventService {
     /**
      * Delete an event {@link Event}.
      */
-    public void deleteEvent(Integer id) {
+    public void deleteEvent(Long id) {
         eventRepository.deleteById(id);
     }
 }

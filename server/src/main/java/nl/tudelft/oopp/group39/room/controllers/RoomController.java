@@ -69,9 +69,9 @@ public class RoomController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> updateRoom(
+    public ResponseEntity<RestResponse<Room>> updateRoom(
         @RequestBody Room updated,
-        @PathVariable int id
+        @PathVariable Long id
     ) {
         return RestResponse.create(service.updateRoom(updated, id));
     }

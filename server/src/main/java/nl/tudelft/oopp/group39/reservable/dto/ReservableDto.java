@@ -8,7 +8,7 @@ import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 
 public class ReservableDto {
     private Double price;
-    private Integer building;
+    private Long building;
     private Set<ReservationAmountDto> reservations = new HashSet<>();
 
     public ReservableDto() {
@@ -23,7 +23,7 @@ public class ReservableDto {
      */
     public ReservableDto(
         Double price,
-        Integer building,
+        Long building,
         Set<ReservationAmountDto> reservations
     ) {
         this.price = price;
@@ -39,11 +39,11 @@ public class ReservableDto {
         this.price = price;
     }
 
-    public Integer getBuilding() {
+    public Long getBuilding() {
         return building;
     }
 
-    public void setBuilding(Integer building) {
+    public void setBuilding(Long building) {
         this.building = building;
     }
 

@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class RoomDto {
 
-    private Integer id;
-    private Integer building;
+    private Long id;
+    private Long building;
     private String name;
     private int capacity;
     private boolean onlyStaff;
@@ -36,8 +36,8 @@ public class RoomDto {
      * @param bookings the bookings made for the room (in dto form)
      */
     public RoomDto(
-        Integer id,
-        Integer building,
+        Long id,
+        Long building,
         String name,
         int capacity,
         boolean onlyStaff,
@@ -55,19 +55,19 @@ public class RoomDto {
         this.bookings.addAll(initSet(bookings));
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getBuilding() {
+    public Long getBuilding() {
         return building;
     }
 
-    public void setBuilding(Integer building) {
+    public void setBuilding(Long building) {
         this.building = building;
     }
 

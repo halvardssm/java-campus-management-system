@@ -83,7 +83,7 @@ public class Building extends AbstractEntity {
     public BuildingDto toDto() {
         Set<RoomDto> roomDtoSet = new HashSet<>();
         rooms.forEach(room -> roomDtoSet.add(room.toDto()));
-        Set<Integer> reservableSet = new HashSet<>();
+        Set<Long> reservableSet = new HashSet<>();
         reservables.forEach(reservable -> reservableSet.add(
                 reservable.getId()
             ));

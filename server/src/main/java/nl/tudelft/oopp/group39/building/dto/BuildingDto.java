@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class BuildingDto {
 
-    private Integer id;
+    private Long id;
     private String name;
     private String location;
     private String description;
     private LocalTime open;
     private LocalTime closed;
     private Set<RoomDto> rooms = new HashSet<>();
-    private Set<Integer> reservables = new HashSet<>();
+    private Set<Long> reservables = new HashSet<>();
 
     public BuildingDto() {
     }
@@ -37,14 +37,14 @@ public class BuildingDto {
      * @see RoomDto
      */
     public BuildingDto(
-        Integer id,
+        Long id,
         String name,
         String location,
         String description,
         LocalTime open,
         LocalTime closed,
         Set<RoomDto> rooms,
-        Set<Integer> reservables
+        Set<Long> reservables
     ) {
         this.id = id;
         this.name = name;
@@ -56,11 +56,11 @@ public class BuildingDto {
         this.reservables.addAll(initSet(reservables));
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -112,11 +112,11 @@ public class BuildingDto {
         this.rooms = roomDtos;
     }
 
-    public Set<Integer> getReservables() {
+    public Set<Long> getReservables() {
         return reservables;
     }
 
-    public void setReservables(Set<Integer> reservables) {
+    public void setReservables(Set<Long> reservables) {
         this.reservables = reservables;
     }
 

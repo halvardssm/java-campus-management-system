@@ -7,6 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public interface ReservationAmountRepository extends JpaRepository<ReservationAmount, Integer> {
-    void deleteByReservationId(Integer id);
+public interface ReservationAmountRepository extends JpaRepository<ReservationAmount, Long> {
+    void deleteByReservationId(Long id);
 }

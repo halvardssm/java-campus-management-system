@@ -12,7 +12,7 @@ public class ReservationDto {
     private LocalDateTime timeOfPickup;
     private LocalDateTime timeOfDelivery;
     private String user;
-    private Integer room;
+    private Long room;
     private Set<ReservationAmountDto> reservationAmounts = new HashSet<>();
 
     public ReservationDto() {
@@ -31,7 +31,7 @@ public class ReservationDto {
         LocalDateTime timeOfPickup,
         LocalDateTime timeOfDelivery,
         String user,
-        Integer room,
+        Long room,
         Set<ReservationAmountDto> reservationAmounts
     ) {
         this.timeOfPickup = timeOfPickup;
@@ -65,11 +65,11 @@ public class ReservationDto {
         this.user = user;
     }
 
-    public Integer getRoom() {
+    public Long getRoom() {
         return room;
     }
 
-    public void setRoom(Integer room) {
+    public void setRoom(Long room) {
         this.room = room;
     }
 

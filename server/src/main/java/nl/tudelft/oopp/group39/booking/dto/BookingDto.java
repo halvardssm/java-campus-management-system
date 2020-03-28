@@ -11,7 +11,7 @@ public class BookingDto {
     private LocalTime startTime;
     private LocalTime endTime;
     private String user;
-    private Integer room;
+    private Long room;
 
     public BookingDto() {
     }
@@ -30,7 +30,7 @@ public class BookingDto {
         LocalTime startTime,
         LocalTime endTime,
         String user,
-        Integer room
+        Long room
     ) {
         this.date = date;
         this.startTime = startTime;
@@ -71,11 +71,11 @@ public class BookingDto {
         this.user = user;
     }
 
-    public Integer getRoom() {
+    public Long getRoom() {
         return room;
     }
 
-    public void setRoom(Integer room) {
+    public void setRoom(Long room) {
         this.room = room;
     }
 }
