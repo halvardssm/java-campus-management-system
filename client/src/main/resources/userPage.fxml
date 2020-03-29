@@ -27,29 +27,13 @@
    <left>
       <StackPane prefHeight="300.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="accountRole" text="Role in TUDelft" StackPane.alignment="CENTER_LEFT">
-               <StackPane.margin>
-                  <Insets left="8.0" top="122.0" />
-               </StackPane.margin>
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
             <Label fx:id="accountEmail" text="E-mail" StackPane.alignment="CENTER_LEFT">
                <font>
                   <Font size="13.0" />
                </font>
                <StackPane.margin>
-                  <Insets left="8.0" top="166.0" />
+                  <Insets left="22.0" top="166.0" />
                </StackPane.margin>
-            </Label>
-            <Label fx:id="accountName" text="Your Name" StackPane.alignment="CENTER_LEFT">
-               <StackPane.margin>
-                  <Insets left="8.0" top="71.0" />
-               </StackPane.margin>
-               <font>
-                  <Font size="23.0" />
-               </font>
             </Label>
             <ImageView fitHeight="146.0" fitWidth="152.0" pickOnBounds="true" smooth="false" StackPane.alignment="CENTER_LEFT">
                <StackPane.margin>
@@ -59,11 +43,33 @@
                   <Image url="@testimage.jpg" />
                </image>
             </ImageView>
+            <Label fx:id="accountName" text="Your Name" StackPane.alignment="CENTER_LEFT">
+               <StackPane.margin>
+                  <Insets left="22.0" top="71.0" />
+               </StackPane.margin>
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Label fx:id="accountRole" text="Role in TUDelft" StackPane.alignment="CENTER_LEFT">
+               <StackPane.margin>
+                  <Insets left="22.0" top="122.0" />
+               </StackPane.margin>
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
          </children>
       </StackPane>
    </left>
    <bottom>
-      <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER" />
+      <AnchorPane prefHeight="50.0" prefWidth="600.0" style="-fx-background-color: #00A6D6;" BorderPane.alignment="CENTER">
+         <children>
+            <Button id="backButton" fx:id="backButton" layoutY="6.0" mnemonicParsing="false" onAction="#backToRoom" style="-fx-background-color: false;" text="◀ BACK" textFill="WHITE">
+               <font>
+                  <Font size="17.0" />
+               </font></Button>
+         </children></AnchorPane>
    </bottom>
    <center>
       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="392.0" BorderPane.alignment="CENTER">

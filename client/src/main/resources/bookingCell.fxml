@@ -13,7 +13,7 @@
          </font></Label>
       <Label fx:id="rDate" layoutX="23.0" layoutY="68.0" text="Date: Starting Time" />
       <Label fx:id="rDuration" layoutX="23.0" layoutY="98.0" text="Duration" />
-      <Button layoutX="189.0" layoutY="56.0" mnemonicParsing="false" onAction="#deleteBooking" text="Delete" />
+      <Button layoutX="150.0" layoutY="103.0" mnemonicParsing="false" onAction="#deleteBooking" prefHeight="26.0" prefWidth="50.0" style="-fx-background-color: false; -fx-text-fill: blue;" text="Delete" />
       <Label fx:id="bookingID" layoutX="175.0" layoutY="16.0" opacity="0.0" text="booking ID" />
       <Button layoutX="251.0" layoutY="21.0" mnemonicParsing="false" onAction="#editBooking" text="Edt" />
    </children>

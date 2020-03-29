@@ -10,7 +10,7 @@ public class BookingDTO {
     private String startTime;
     private String endTime;
     private String user;
-    private Integer room;
+    private Long room;
 
     public BookingDTO() {
     }
@@ -30,7 +30,7 @@ public class BookingDTO {
             String startTime,
             String endTime,
             String user,
-            Integer room) {
+            Long room) {
         this.id = id;
         this.date = date;
         this.startTime = startTime;
@@ -53,5 +53,5 @@ public class BookingDTO {
 
     public String getUser() { return user; }
 
-    public Integer getRoom() { return room; }
+    public Long getRoom() { return room; }
 }

@@ -3,6 +3,7 @@ package nl.tudelft.oopp.group39.controllers;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
@@ -52,23 +53,25 @@ public class UserPageController extends MainSceneController {
 
             for(BookingDTO booking : bookingList) {
                 newBooking = FXMLLoader.load(getClass().getResource("/bookingCell.fxml"));
-                Integer roomName2 = booking.getRoom();
-                String roomName = ServerCommunication.getRoom(roomName2).getName();
-                //String bookingID = Integer.toString(booking.getId());
+//                Integer roomName2 = Math.toIntExact(booking.getRoom());
+//                String roomName = ServerCommunication.getRoom(roomName2).getName();
+                String bookingID = Long.toString(booking.getId());
                 String startTime = booking.getStartTime();
-                //String duration = DifferenceBetweenTwoTimes(booking.getStartTime(), booking.getEndTime());
+                String duration = DifferenceBetweenTwoTimes(
+                        LocalTime.parse(booking.getStartTime()),
+                        LocalTime.parse(booking.getEndTime()));
 
-                //Label name = (Label) newBooking.lookup("#rName");
-                //name.setText(roomName);
+//                Label name = (Label) newBooking.lookup("#rName");
+//                name.setText(roomName);
 
                 Label date = (Label) newBooking.lookup("#rDate");
                 date.setText("Starting Time: " + startTime);
 
-//                Label bookingDuration = (Label) newBooking.lookup("#rDuration");
-//                bookingDuration.setText("Duration: " + duration);
+                Label bookingDuration = (Label) newBooking.lookup("#rDuration");
+                bookingDuration.setText("Duration: " + duration);
 
-//                Label bID = (Label) newBooking.lookup("#bookingID");
-//                bID.setText(bookingID);
+                Label bID = (Label) newBooking.lookup("#bookingID");
+                bID.setText(bookingID);
 
                 flowPane.getChildren().add(newBooking);
             }
@@ -101,5 +104,15 @@ public class UserPageController extends MainSceneController {
 
     public void editBooking() {
         ServerCommunication.updateBooking("2020-04-03", "17:00:00", "22:30:00", "admin", "3", "1");
+    }
+
+    /**
+     * Returns the user back to the room page when the back button is clicked.
+     *
+     * @throws IOException when there is an io exception
+     */
+    @FXML
+    private void backToRoom() throws IOException {
+        goToBuildingScene();
     }
 }
