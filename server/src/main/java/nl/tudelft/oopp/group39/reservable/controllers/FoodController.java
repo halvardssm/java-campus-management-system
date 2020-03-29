@@ -47,7 +47,7 @@ public class FoodController {
     public ResponseEntity<RestResponse<Object>> createFood(@RequestBody FoodDto food) {
         try {
             return RestResponse.create(
-                foodService.createFood((Food) food.toEntity()).toDto(),
+                foodService.createFood(food.toEntity()).toDto(),
                 null, HttpStatus.CREATED);
         } catch (Exception e) {
             return RestResponse.error(e);

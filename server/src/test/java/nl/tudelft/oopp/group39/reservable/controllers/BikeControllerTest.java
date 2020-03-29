@@ -122,9 +122,7 @@ class BikeControllerTest extends AbstractControllerTest {
 
     @Test
     void testError() {
-        assertEquals(
-            "Target object must not be null; nested exception is java.lang"
-                + ".IllegalArgumentException: Target object must not be null",
+        assertEquals("java.lang.NullPointerException",
             bikeController.createBike(null).getBody().getError()
         );
 

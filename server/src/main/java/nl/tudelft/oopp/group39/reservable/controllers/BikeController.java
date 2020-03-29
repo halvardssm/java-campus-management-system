@@ -47,7 +47,7 @@ public class BikeController {
     public ResponseEntity<RestResponse<Object>> createBike(@RequestBody BikeDto bike) {
         try {
             return RestResponse.create(
-                bikeService.createBike((Bike) bike.toEntity()).toDto(), null, HttpStatus.CREATED
+                bikeService.createBike(bike.toEntity()).toDto(), null, HttpStatus.CREATED
             );
         } catch (Exception e) {
             return RestResponse.error(e);

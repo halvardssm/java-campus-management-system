@@ -63,7 +63,8 @@ public class FoodDto extends ReservableDto {
             getName(),
             getDescription(),
             getPrice(),
-            Utils.idToEntity(getBuilding(), Building.class),
+            getBuilding() == null
+                ? null : Utils.idToEntity(getBuilding(), Building.class),
             Utils.setDtoToEntity(getReservations())
         );
     }

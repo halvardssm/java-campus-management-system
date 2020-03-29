@@ -52,7 +52,8 @@ public class BikeDto extends ReservableDto {
             getId(),
             getBikeType(),
             getPrice(),
-            Utils.idToEntity(getBuilding(), Building.class),
+            getBuilding() == null
+                ? null : Utils.idToEntity(getBuilding(), Building.class),
             Utils.setDtoToEntity(getReservations())
         );
     }

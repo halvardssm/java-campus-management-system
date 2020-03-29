@@ -120,7 +120,7 @@ public class Reservation extends AbstractEntity<Reservation, ReservationDto> {
             getTimeOfPickup(),
             getTimeOfDelivery(),
             getUser().getUsername(),
-            getRoom().getId(),
+            room == null ? null : getRoom().getId(),
             Utils.setEntityToDto(getReservationAmounts())
         );
     }
