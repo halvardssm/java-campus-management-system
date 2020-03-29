@@ -49,13 +49,14 @@ public class RoomDto extends AbstractDto<Room, RoomDto> {
         Set<BookingDto> bookings
     ) {
         setId(id);
-        this.building = building;
-        this.name = name;
-        this.capacity = capacity;
-        this.onlyStaff = onlyStaff;
-        this.description = description;
-        this.facilities.addAll(facilities);
-        this.bookings.addAll(initSet(bookings));
+        setBuilding(building);
+        setName(name);
+        setCapacity(capacity);
+        setOnlyStaff(onlyStaff);
+        setDescription(description);
+        getFacilities().addAll(facilities);
+        getBookings().addAll(initSet(bookings));
+
     }
 
     public Long getBuilding() {
@@ -117,11 +118,13 @@ public class RoomDto extends AbstractDto<Room, RoomDto> {
     @Override
     public Room toEntity() {
         return new Room(
+            getId(),
             Utils.idToEntity(getBuilding(), Building.class),
             getName(),
             getCapacity(),
             isOnlyStaff(),
             getDescription(),
+            null,
             getFacilities(),
             Utils.setDtoToEntity(getBookings())
         );

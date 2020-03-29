@@ -20,19 +20,20 @@ public class BikeDto extends ReservableDto {
     /**
      * Creates a BikeDto object.
      *
-     * @param bikeType type of the bike
-     * @param price price of the bike
-     * @param building building id of the bike
+     * @param id           of the bike
+     * @param bikeType     type of the bike
+     * @param price        price of the bike
+     * @param building     building id of the bike
      * @param reservations reservation associated with the bike
      */
     public BikeDto(
+        Long id,
         BikeType bikeType,
         Double price,
         Long building,
         Set<ReservationAmountDto> reservations
     ) {
-        super(price, building, initSet(reservations));
-        this.bikeType = bikeType;
+        super(id, price, building, initSet(reservations));
         setBikeType(bikeType != null ? bikeType : BikeType.CITY);
     }
 
@@ -45,12 +46,14 @@ public class BikeDto extends ReservableDto {
     }
 
     @Override
-    public Reservable toEntity() {
+    public Bike toEntity() {
 
         return new Bike(
+            getId(),
             getBikeType(),
             getPrice(),
-            Utils.idToEntity(getBuilding(), Building.class),
+            getBuilding() == null
+                ? null : Utils.idToEntity(getBuilding(), Building.class),
             Utils.setDtoToEntity(getReservations())
         );
     }

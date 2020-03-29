@@ -63,18 +63,21 @@ public class Reservable extends AbstractEntity<Reservable, ReservableDto> {
     /**
      * The constructor of Reservable.
      *
+     * @param id           the id
      * @param price        the price of the item
      * @param building     the building connected
      * @param reservations the reservations
      */
     public Reservable(
+        Long id,
         Double price,
         Building building,
         Set<ReservationAmount> reservations
     ) {
+        setId(id);
         setBuilding(building);
         setPrice(price);
-        this.reservations.addAll(initSet(reservations));
+        getReservations().addAll(initSet(reservations));
     }
 
     public Set<ReservationAmount> getReservations() {
@@ -95,8 +98,9 @@ public class Reservable extends AbstractEntity<Reservable, ReservableDto> {
         Set<ReservationAmountDto> reservationAmountDtos = Utils.setEntityToDto(reservations);
 
         return new ReservableDto(
-            price,
-            building.getId(),
+            getId(),
+            getPrice(),
+            getBuilding().getId(),
             reservationAmountDtos
         );
     }

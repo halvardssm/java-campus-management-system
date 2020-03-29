@@ -12,9 +12,17 @@ public class ReservationAmountDto extends AbstractDto<ReservationAmount, Reserva
     public ReservationAmountDto() {
     }
 
-    public ReservationAmountDto(Integer amount, Long reservable) {
-        this.amount = amount;
-        this.reservable = reservable;
+    /**
+     * Constructor.
+     *
+     * @param id         the id
+     * @param amount     the amount reserved
+     * @param reservable the reservable
+     */
+    public ReservationAmountDto(Long id, Integer amount, Long reservable) {
+        setId(id);
+        setAmount(amount);
+        setReservable(reservable);
     }
 
     public Integer getAmount() {
@@ -36,6 +44,7 @@ public class ReservationAmountDto extends AbstractDto<ReservationAmount, Reserva
     @Override
     public ReservationAmount toEntity() {
         return new ReservationAmount(
+            getId(),
             getAmount(),
             null,
             Utils.idToEntity(getReservable(), Reservable.class)

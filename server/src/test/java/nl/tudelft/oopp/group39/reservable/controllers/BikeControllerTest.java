@@ -36,7 +36,7 @@ class BikeControllerTest extends AbstractControllerTest {
         null,
         null
     );
-    private final Bike testBike = new Bike(BikeType.CITY, 5.6, null, null);
+    private final Bike testBike = new Bike(null, BikeType.CITY, 5.6, null, null);
     private String jwt;
 
     @BeforeEach
@@ -75,7 +75,7 @@ class BikeControllerTest extends AbstractControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
 
-        String json = objectMapper.writeValueAsString(testBike);
+        String json = objectMapper.writeValueAsString(testBike.toDto());
 
         mockMvc.perform(post(REST_MAPPING)
                             .contentType(MediaType.APPLICATION_JSON)
@@ -122,9 +122,7 @@ class BikeControllerTest extends AbstractControllerTest {
 
     @Test
     void testError() {
-        assertEquals(
-            "Target object must not be null; nested exception is java.lang"
-                + ".IllegalArgumentException: Target object must not be null",
+        assertEquals("java.lang.NullPointerException",
             bikeController.createBike(null).getBody().getError()
         );
 

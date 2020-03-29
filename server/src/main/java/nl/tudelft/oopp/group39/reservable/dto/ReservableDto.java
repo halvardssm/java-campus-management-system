@@ -23,18 +23,21 @@ public class ReservableDto extends AbstractDto<Reservable, ReservableDto> {
     /**
      * Creates a Dto object.
      *
-     * @param price the price of the reservable
-     * @param building the building id of the reservable
+     * @param id           the id
+     * @param price        the price of the reservable
+     * @param building     the building id of the reservable
      * @param reservations the reservations associated with the reservable
      */
     public ReservableDto(
+        Long id,
         Double price,
         Long building,
         Set<ReservationAmountDto> reservations
     ) {
-        this.price = price;
-        this.building = building;
-        this.reservations.addAll(initSet(reservations));
+        setId(id);
+        setBuilding(building);
+        setPrice(price);
+        getReservations().addAll(initSet(reservations));
     }
 
     public Double getPrice() {
@@ -66,6 +69,6 @@ public class ReservableDto extends AbstractDto<Reservable, ReservableDto> {
     public Reservable toEntity() {
         Set<ReservationAmount> reservationAmount = Utils.setDtoToEntity(reservations);
 
-        return new Reservable(price, idToEntity(building, Building.class), reservationAmount);
+        return new Reservable(null, price, idToEntity(building, Building.class), reservationAmount);
     }
 }

@@ -1,9 +1,9 @@
 package nl.tudelft.oopp.group39.room.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.room.dao.RoomDao;
 import nl.tudelft.oopp.group39.room.dto.RoomDto;
 import nl.tudelft.oopp.group39.room.entities.Room;
@@ -43,19 +43,25 @@ public class RoomController {
     public ResponseEntity<RestResponse<Object>> listRooms(
         @RequestParam Map<String, String> allParams
     ) {
-        List<RoomDto> roomDtoList = new ArrayList<>();
+        List<Room> roomList = service.filterRooms(allParams);
 
-        for (Room room : service.filterRooms(allParams)) {
-            roomDtoList.add(room.toDto());
-        }
-
-        return RestResponse.create(roomDtoList);
+        return RestResponse.create(Utils.listEntityToDto(roomList));
     }
 
+    /**
+     * Creates a room with the dto supplied by the curl request.
+     *
+     * @param newRoom the dto values of the room to be created
+     * @return the inserted value converted back to dto
+     */
     @PostMapping("")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> createRoom(@RequestBody Room newRoom) {
-        return RestResponse.create(service.createRoom(newRoom), null, HttpStatus.CREATED);
+    public ResponseEntity<RestResponse<Object>> createRoom(@RequestBody RoomDto newRoom) {
+        return RestResponse.create(
+            service.createRoom(newRoom.toEntity()).toDto(),
+            null,
+            HttpStatus.CREATED
+        );
     }
 
     @GetMapping("/{id}")
@@ -66,11 +72,11 @@ public class RoomController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Room>> updateRoom(
-        @RequestBody Room updated,
+    public ResponseEntity<RestResponse<Object>> updateRoom(
+        @RequestBody RoomDto updated,
         @PathVariable Long id
     ) {
-        return RestResponse.create(service.updateRoom(updated, id));
+        return RestResponse.create(service.updateRoom(updated.toEntity(), id).toDto());
     }
 
     /**

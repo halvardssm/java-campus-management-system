@@ -42,6 +42,7 @@ public class Food extends Reservable {
     /**
      * The constructor for Food.
      *
+     * @param id          of the item
      * @param name        of the item
      * @param description of the item
      * @param price       of the item
@@ -49,13 +50,14 @@ public class Food extends Reservable {
      * @param reservation the reservation
      */
     public Food(
+        Long id,
         String name,
         String description,
         Double price,
         Building building,
         Set<ReservationAmount> reservation
     ) {
-        super(price, building, reservation);
+        super(id, price, building, reservation);
         setName(name);
         setDescription(description);
     }
@@ -69,10 +71,11 @@ public class Food extends Reservable {
     public FoodDto toDto() {
 
         return new FoodDto(
+            getId(),
             getName(),
             getDescription(),
             getPrice(),
-            getBuilding().getId(),
+            getBuilding() == null ? null : getBuilding().getId(),
             Utils.setEntityToDto(getReservations())
         );
     }

@@ -119,27 +119,33 @@ public class DbSeeder {
     private void initBuildings() {
         LocalTime open = LocalTime.of(9, 0);//.minusHours(3);
         LocalTime closed = LocalTime.of(20, 0);//.plusHours(3);
-        Building b = new Building("test", "test", "test", open, closed, null, null);
+        Building b = new Building(null, "test", "test", "test", open, closed, null, null);
         buildingService.createBuilding(b);
-        b = new Building("new", "new", "new", open, closed, null, null);
+        b = new Building(null, "new", "new", "new", open, closed, null, null);
         buildingService.createBuilding(b);
 
-        Building b2 = new Building("EEMCS",
+        Building b2 = new Building(
+            null,
+            "EEMCS",
             "Mekelweg 4",
             "Faculty of Electrical Engineering, Maths and Computer Science",
             LocalTime.of(7, 0),
             LocalTime.of(18, 0),
             null,
-            null);
+            null
+        );
         buildingService.createBuilding(b2);
 
-        Building b3 = new Building("Drebbelweg",
+        Building b3 = new Building(
+            null,
+            "Drebbelweg",
             "Drebbelweg 5",
             "Drebbelweg",
             LocalTime.of(6, 0),
             LocalTime.of(17, 30),
             null,
-            null);
+            null
+        );
         buildingService.createBuilding(b3);
 
         System.out.println("[SEED] Buildings created");
@@ -149,24 +155,36 @@ public class DbSeeder {
         final Building b1 = buildingService.readBuilding(1L);
         final Building b2 = buildingService.readBuilding(2L);
         final Building b3 = buildingService.readBuilding(3L);
-        roomService.createRoom(new Room(b1, "test", 10, true, "test1", null, null));
+        roomService.createRoom(new Room(null, b1, "test", 10, true, "test1", null, null, null));
 
-        roomService.createRoom(new Room(b1, "test", 10, true, "test1", null, null));
+        roomService.createRoom(new Room(null, b1, "test", 10, true, "test1", null, null, null));
 
         Set<Facility> facilities = new HashSet<>();
         facilities.add(facilityService.readFacility(1L));
-        roomService.createRoom(new Room(b1, "lala", 6, true, "test2", facilities, null));
+        roomService.createRoom(new Room(
+            null,
+            b1,
+            "lala",
+            6,
+            true,
+            "test2",
+            null,
+            facilities,
+            null
+        ));
 
         facilities.add(facilityService.readFacility(2L));
         roomService.createRoom(
-            new Room(b2, "another one", 15, false, "test3", facilities, null));
+            new Room(null, b2, "another one", 15, false, "test3", null, facilities, null));
 
         roomService.createRoom(new Room(
+            null,
             b3,
             "Lecture Hall Ampere",
             50,
             false,
             "Lecture hall in EEMCS",
+            null,
             facilities,
             null
         ));
@@ -175,11 +193,13 @@ public class DbSeeder {
         facilities2.add(facilityService.readFacility(2L));
         facilities2.add(facilityService.readFacility(3L));
         roomService.createRoom(new Room(
+            null,
             b3,
             "Projectruimte 8",
             8,
             false,
             "Project Room 8",
+            null,
             facilities2,
             null
         ));
@@ -192,7 +212,17 @@ public class DbSeeder {
         LocalDate today = LocalDate.now();
         LocalDate tomorrow = today.plusDays(1);
         Building b1 = buildingService.readBuilding(1L);
-        Room room = new Room(b1, "test", 0, false, null, new HashSet<>(), new HashSet<>());
+        Room room = new Room(
+            null,
+            b1,
+            "test",
+            0,
+            false,
+            null,
+            null,
+            new HashSet<>(),
+            new HashSet<>()
+        );
         HashSet<Room> rooms = new HashSet<>(List.of(room));
         eventService.createEvent(new Event(EventTypes.EVENT, today, tomorrow, rooms));
 
@@ -207,14 +237,14 @@ public class DbSeeder {
 
         List<Room> rooms = roomService.listRooms();
 
-        Booking b1 = new Booking(date, start, end, user, rooms.get(0));
+        Booking b1 = new Booking(null, date, start, end, user, rooms.get(0));
         bookingService.createBooking(b1);
-        Booking b2 = new Booking(date, start, end, user, rooms.get(1));
+        Booking b2 = new Booking(null, date, start, end, user, rooms.get(1));
         bookingService.createBooking(b2);
 
-        Booking b3 = new Booking(date.plusDays(1), start, end, user, rooms.get(0));
+        Booking b3 = new Booking(null, date.plusDays(1), start, end, user, rooms.get(0));
         bookingService.createBooking(b3);
-        Booking b4 = new Booking(date.plusDays(1), start, end, user, rooms.get(1));
+        Booking b4 = new Booking(null, date.plusDays(1), start, end, user, rooms.get(1));
         bookingService.createBooking(b4);
 
         System.out.println("[SEED] Bookings created");
@@ -223,9 +253,9 @@ public class DbSeeder {
     private void initBikes() {
         Building building = buildingService.listBuildings(new HashMap<>()).get(0);
 
-        Bike bike1 = new Bike(BikeType.CITY, 5.6, building, null);
-        Bike bike2 = new Bike(BikeType.CITY, 6.7, building, null);
-        Bike bike3 = new Bike(BikeType.CITY, 7.8, building, null);
+        Bike bike1 = new Bike(null, BikeType.CITY, 5.6, building, null);
+        Bike bike2 = new Bike(null, BikeType.CITY, 6.7, building, null);
+        Bike bike3 = new Bike(null, BikeType.CITY, 7.8, building, null);
 
         bikeService.createBike(bike1);
         bikeService.createBike(bike2);
@@ -237,9 +267,16 @@ public class DbSeeder {
     private void initFoods() {
         Building building = buildingService.listBuildings(new HashMap<>()).get(0);
 
-        Food food1 = new Food("Stew", "A warm pot of deliciousness", 5.6, building, null);
-        Food food2 = new Food("Meatballs", "Balls of meat", 6.7, building, null);
-        Food food3 = new Food("Carrot Cake", "I mean cake, it's simply good", 7.8, building, null);
+        Food food1 = new Food(null, "Stew", "A warm pot of deliciousness", 5.6, building, null);
+        Food food2 = new Food(null, "Meatballs", "Balls of meat", 6.7, building, null);
+        Food food3 = new Food(
+            null,
+            "Carrot Cake",
+            "I mean cake, it's simply good",
+            7.8,
+            building,
+            null
+        );
 
         foodService.createFood(food1);
         foodService.createFood(food2);
@@ -251,6 +288,7 @@ public class DbSeeder {
     private void initReservations() {
 
         Reservation reservation = reservationService.createReservation(new Reservation(
+            null,
             LocalDateTime.now(),
             LocalDateTime.now().plusHours(2),
             roomService.listRooms().get(0),
@@ -259,11 +297,13 @@ public class DbSeeder {
         ));
 
         ReservationAmount reservationAmount1 = new ReservationAmount(
+            null,
             5,
             reservation,
             foodService.listFoods(new HashMap<>()).get(0)
         );
         ReservationAmount reservationAmount2 = new ReservationAmount(
+            null,
             1,
             reservation,
             bikeService.listBikes(new HashMap<>()).get(0)

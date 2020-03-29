@@ -35,7 +35,7 @@ class FoodControllerTest extends AbstractControllerTest {
         null,
         null
     );
-    private final Food testFood = new Food("Food", "Piece of yummy food", 5.6, null, null);
+    private final Food testFood = new Food(null, "Food", "Piece of yummy food", 5.6, null, null);
     private String jwt;
 
     @BeforeEach
@@ -72,7 +72,7 @@ class FoodControllerTest extends AbstractControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
 
-        String json = objectMapper.writeValueAsString(testFood);
+        String json = objectMapper.writeValueAsString(testFood.toDto());
 
         mockMvc.perform(post(REST_MAPPING)
                             .contentType(MediaType.APPLICATION_JSON)
@@ -108,7 +108,7 @@ class FoodControllerTest extends AbstractControllerTest {
         testFood.setName("Other name");
         testFood.setDescription("Other description");
 
-        String json = objectMapper.writeValueAsString(testFood);
+        String json = objectMapper.writeValueAsString(testFood.toDto());
 
         mockMvc.perform(put(REST_MAPPING + "/" + testFood.getId())
                             .contentType(MediaType.APPLICATION_JSON)
@@ -124,8 +124,7 @@ class FoodControllerTest extends AbstractControllerTest {
     @Test
     void testError() {
         assertEquals(
-            "Target object must not be null; nested exception is java.lang"
-                + ".IllegalArgumentException: Target object must not be null",
+            "java.lang.NullPointerException",
             foodController.createFood(null).getBody().getError()
         );
 

@@ -50,13 +50,13 @@ public class BuildingDto extends AbstractDto<Building, BuildingDto> {
         Set<Long> reservables
     ) {
         setId(id);
-        this.name = name;
-        this.location = location;
-        this.description = description;
-        this.open = open;
-        this.closed = closed;
-        this.rooms.addAll(initSet(rooms));
-        this.reservables.addAll(initSet(reservables));
+        setName(name);
+        setLocation(location);
+        setDescription(description);
+        setOpen(open);
+        setClosed(closed);
+        getRooms().addAll(initSet(rooms));
+        getReservables().addAll(initSet(reservables));
     }
 
     public String getName() {
@@ -129,6 +129,7 @@ public class BuildingDto extends AbstractDto<Building, BuildingDto> {
         }
 
         return new Building(
+            getId(),
             getName(),
             getLocation(),
             getDescription(),

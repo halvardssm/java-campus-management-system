@@ -44,6 +44,7 @@ class ReservationControllerTest extends AbstractControllerTest {
         null
     );
     private final Reservation testReservation = new Reservation(
+        null,
         LocalDateTime.now(ZoneId.of("Europe/Paris")),
         LocalDateTime.now(ZoneId.of("Europe/Paris")).plusHours(2),
         null,
@@ -51,13 +52,16 @@ class ReservationControllerTest extends AbstractControllerTest {
         null
     );
     private final ReservationAmount testReservationAmount = new ReservationAmount(
+        null,
         2,
         null,
         null
     );
-    private final Reservable testReservable = new Reservable(5.4, null, null);
-    private final ReservationAmountDto testReservationAmountDto = new ReservationAmountDto(3, null);
+    private final Reservable testReservable = new Reservable(null, 5.4, null, null);
+    private final ReservationAmountDto testReservationAmountDto =
+        new ReservationAmountDto(null, 3, null);
     private final ReservationDto testReservationDto = new ReservationDto(
+        null,
         LocalDateTime.now(ZoneId.of("Europe/Paris")),
         LocalDateTime.now(ZoneId.of("Europe/Paris")).plusHours(2),
         testUser.getUsername(),
@@ -167,7 +171,7 @@ class ReservationControllerTest extends AbstractControllerTest {
                 is(testReservation.getTimeOfDelivery().format(Constants.FORMATTER_DATE_TIME))
             ))
             .andExpect(jsonPath(
-                "$.body." + Reservation.COL_USER + "." + User.COL_USERNAME,
+                "$.body." + Reservation.COL_USER,
                 is(testUser.getUsername())
             ))
             .andExpect(jsonPath("$.body." + Reservation.COL_RESERVATION_AMOUNTS).isArray())

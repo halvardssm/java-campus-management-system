@@ -83,29 +83,38 @@ public class Booking extends AbstractEntity<Booking, BookingDto> {
     /**
      * Doc. TODO Chuck
      *
+     * @param id        id
      * @param date      date
      * @param startTime startTime
      * @param endTime   endTime
      * @param user      user
      * @param room      room
      */
-    public Booking(LocalDate date, LocalTime startTime, LocalTime endTime, User user, Room room) {
-        this.date = date;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.user = user;
-        this.room = room;
-
+    public Booking(
+        Long id,
+        LocalDate date,
+        LocalTime startTime,
+        LocalTime endTime,
+        User user,
+        Room room
+    ) {
+        setId(id);
+        setDate(date);
+        setStartTime(startTime);
+        setEndTime(endTime);
+        setUser(user);
+        setRoom(room);
     }
 
     @Override
     public BookingDto toDto() {
         return new BookingDto(
-            date,
-            startTime,
-            endTime,
-            user.getUsername(),
-            room.getId()
+            getId(),
+            getDate(),
+            getStartTime(),
+            getEndTime(),
+            getUser().getUsername(),
+            getRoom().getId()
         );
     }
 

@@ -45,6 +45,7 @@ public class Reservation extends AbstractEntity<Reservation, ReservationDto> {
     /**
      * Constructor of Reservation.
      *
+     * @param id                 the id
      * @param timeOfPickup       the time of the pickup
      * @param timeOfDelivery     the time of the delivery (null for food)
      * @param room               the room
@@ -52,17 +53,19 @@ public class Reservation extends AbstractEntity<Reservation, ReservationDto> {
      * @param reservationAmounts all items in order
      */
     public Reservation(
+        Long id,
         LocalDateTime timeOfPickup,
         LocalDateTime timeOfDelivery,
         Room room,
         User user,
         Set<ReservationAmount> reservationAmounts
     ) {
+        setId(id);
         setTimeOfPickup(timeOfPickup);
         setTimeOfDelivery(timeOfDelivery);
         setRoom(room);
         setUser(user);
-        this.reservationAmounts.addAll(initSet(reservationAmounts));
+        getReservationAmounts().addAll(initSet(reservationAmounts));
     }
 
     public LocalDateTime getTimeOfPickup() {
@@ -113,10 +116,11 @@ public class Reservation extends AbstractEntity<Reservation, ReservationDto> {
     @Override
     public ReservationDto toDto() {
         return new ReservationDto(
+            getId(),
             getTimeOfPickup(),
             getTimeOfDelivery(),
             getUser().getUsername(),
-            getRoom().getId(),
+            room == null ? null : getRoom().getId(),
             Utils.setEntityToDto(getReservationAmounts())
         );
     }
