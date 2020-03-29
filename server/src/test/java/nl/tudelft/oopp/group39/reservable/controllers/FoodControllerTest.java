@@ -108,7 +108,7 @@ class FoodControllerTest extends AbstractControllerTest {
         testFood.setName("Other name");
         testFood.setDescription("Other description");
 
-        String json = objectMapper.writeValueAsString(testFood);
+        String json = objectMapper.writeValueAsString(testFood.toDto());
 
         mockMvc.perform(put(REST_MAPPING + "/" + testFood.getId())
                             .contentType(MediaType.APPLICATION_JSON)

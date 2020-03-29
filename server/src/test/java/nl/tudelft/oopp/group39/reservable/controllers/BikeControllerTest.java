@@ -75,7 +75,7 @@ class BikeControllerTest extends AbstractControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
 
-        String json = objectMapper.writeValueAsString(testBike);
+        String json = objectMapper.writeValueAsString(testBike.toDto());
 
         mockMvc.perform(post(REST_MAPPING)
                             .contentType(MediaType.APPLICATION_JSON)
