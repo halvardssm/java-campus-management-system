@@ -35,7 +35,7 @@ class EventServiceTest extends AbstractTest {
     }
 
     @Test
-    void listEvents() {
+    void listEventsTest() {
         List<Event> events = eventService.listEvents();
 
         assertEquals(1, events.size());
@@ -43,14 +43,14 @@ class EventServiceTest extends AbstractTest {
     }
 
     @Test
-    void readEvent() throws NotFoundException {
+    void readEventTest() throws NotFoundException {
         Event event = eventService.readEvent(testEvent.getId());
 
         assertEquals(testEvent, event);
     }
 
     @Test
-    void deleteAndCreateEvent() {
+    void deleteAndCreateEventTest() {
         eventService.deleteEvent(testEvent.getId());
 
         assertEquals(new ArrayList<>(), eventService.listEvents());
@@ -63,7 +63,7 @@ class EventServiceTest extends AbstractTest {
     }
 
     @Test
-    void updateEvent() throws NotFoundException {
+    void updateEventTest() throws NotFoundException {
         Event event = testEvent;
         event.setType(EventTypes.HOLIDAY);
         Event event2 = eventService.updateEvent(testEvent.getId(), event);

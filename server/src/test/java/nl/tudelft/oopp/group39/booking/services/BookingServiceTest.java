@@ -38,7 +38,7 @@ class BookingServiceTest extends AbstractTest {
     }
 
     @Test
-    void listBookings() {
+    void listBookingsTest() {
         List<Booking> bookings = bookingService.listBookings(new HashMap<>());
 
         assertEquals(1, bookings.size());
@@ -46,7 +46,7 @@ class BookingServiceTest extends AbstractTest {
     }
 
     @Test
-    void deleteAndCreateBooking() {
+    void deleteAndCreateBookingTest() {
         bookingService.deleteBooking(testBooking.getId());
 
         assertEquals(new ArrayList<>(), bookingService.listBookings(new HashMap<>()));
@@ -59,14 +59,14 @@ class BookingServiceTest extends AbstractTest {
     }
 
     @Test
-    void readBooking() {
+    void readBookingTest() {
         Booking booking2 = bookingService.readBooking(testBooking.getId());
 
         assertEquals(testBooking, booking2);
     }
 
     @Test
-    void updateBooking() {
+    void updateBookingTest() {
         testBooking.setDate(date.plusDays(1));
 
         Booking booking = bookingService.updateBooking(testBooking, testBooking.getId());

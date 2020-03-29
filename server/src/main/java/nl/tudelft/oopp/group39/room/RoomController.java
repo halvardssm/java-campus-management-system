@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.room.controllers;
+package nl.tudelft.oopp.group39.room;
 
 import java.util.List;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.building.controllers;
+package nl.tudelft.oopp.group39.building;
 
 import java.util.List;
 import java.util.Map;
