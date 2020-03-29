@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.building.controllers;
 
 import java.util.List;
 import java.util.Map;
+import nl.tudelft.oopp.group39.building.dto.BuildingDto;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
@@ -54,9 +55,9 @@ public class BuildingController {
      */
     @PostMapping("")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> createBuilding(@RequestBody Building building) {
+    public ResponseEntity<RestResponse<Object>> createBuilding(@RequestBody BuildingDto building) {
         return RestResponse.create(
-            buildingService.createBuilding(building),
+            buildingService.createBuilding(building.toEntity()).toDto(),
             null,
             HttpStatus.CREATED
         );
@@ -70,11 +71,11 @@ public class BuildingController {
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Building>> updateBuilding(
-        @RequestBody Building updated,
+    public ResponseEntity<RestResponse<Object>> updateBuilding(
+        @RequestBody BuildingDto updated,
         @PathVariable Long id
     ) {
-        return RestResponse.create(buildingService.updateBuilding(id, updated));
+        return RestResponse.create(buildingService.updateBuilding(id, updated.toEntity()).toDto());
     }
 
     /**
