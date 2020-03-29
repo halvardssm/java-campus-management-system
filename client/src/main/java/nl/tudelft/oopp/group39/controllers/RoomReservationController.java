@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
@@ -60,21 +59,6 @@ public class RoomReservationController extends MainSceneController {
     private Scene previous;
 
     /**
-     * Generates an alert when called.
-     *
-     * @param alertType the type of alert
-     * @param title     the title of the alert
-     * @param content   the content of the alert
-     */
-    public static void showAlert(Alert.AlertType alertType, String title, String content) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-
-    /**
      * Sets the entire scene up, so loading the timeslots, room information and sets up the buttons.
      *
      * @param room     the room you've selected
@@ -120,7 +104,7 @@ public class RoomReservationController extends MainSceneController {
                         roomIdString
                     );
 
-                    showAlert(Alert.AlertType.INFORMATION, "", "Reservation successful.");
+                    createAlert("Reservation successful.");
                     System.out.println(dateString
                         + bookingStart + bookingEnd
                         + username + roomIdString);
