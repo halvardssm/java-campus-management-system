@@ -32,7 +32,7 @@ public class FoodService {
      *
      * @return food by id {@link Food}.
      */
-    public Food readFood(Integer id) throws NotFoundException {
+    public Food readFood(Long id) throws NotFoundException {
         return foodRepository.findById(id).orElseThrow(()
             -> new NotFoundException(String.format(EXCEPTION_FOOD_NOT_FOUND, id)));
     }
@@ -51,7 +51,7 @@ public class FoodService {
      *
      * @return the updated food {@link Food}.
      */
-    public Food updateFood(Integer id, Food newFood) throws NotFoundException {
+    public Food updateFood(Long id, Food newFood) throws NotFoundException {
         return foodRepository.findById(id)
             .map(food -> {
                 newFood.setId(id);
@@ -65,7 +65,7 @@ public class FoodService {
     /**
      * Delete an food {@link Food}.
      */
-    public void deleteFood(Integer id) {
+    public void deleteFood(Long id) {
         foodRepository.deleteById(id);
     }
 }

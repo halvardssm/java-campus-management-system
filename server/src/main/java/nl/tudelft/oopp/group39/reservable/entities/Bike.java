@@ -6,6 +6,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.building.entities.Building;
+import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.reservable.dto.BikeDto;
 import nl.tudelft.oopp.group39.reservable.enums.BikeType;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 
@@ -33,18 +35,33 @@ public class Bike extends Reservable {
     /**
      * The constructor of Bike.
      *
+     * @param id           of the bike
      * @param bikeType     the bike type
      * @param price        of the item
      * @param building     where the bike is available.
      * @param reservations the reservation
      */
     public Bike(
+        Long id,
         BikeType bikeType,
-        Double price, Building building,
+        Double price,
+        Building building,
         Set<ReservationAmount> reservations
     ) {
-        super(price, building, reservations);
+        super(id, price, building, reservations);
         setBikeType(bikeType != null ? bikeType : BikeType.CITY);
+    }
+
+    @Override
+    public BikeDto toDto() {
+
+        return new BikeDto(
+            getId(),
+            getBikeType(),
+            getPrice(),
+            getBuilding().getId(),
+            Utils.setEntityToDto(getReservations())
+        );
     }
 
     @Override

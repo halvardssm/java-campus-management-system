@@ -18,6 +18,7 @@ class BookingServiceTest extends AbstractTest {
     private final LocalTime start = LocalTime.of(4, 20, 42);
     private final LocalTime end = LocalTime.of(6, 9, 20);
     private final Booking testBooking = new Booking(
+        null,
         date,
         start,
         end,

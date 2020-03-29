@@ -60,7 +60,7 @@ public class ReservationController {
      * @return the requested reservation {@link Reservation}.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> readReservation(@PathVariable Integer id) {
+    public ResponseEntity<RestResponse<Reservation>> readReservation(@PathVariable Long id) {
         try {
             return RestResponse.create(reservationService.readReservation(id));
         } catch (Exception e) {
@@ -74,8 +74,8 @@ public class ReservationController {
      * @return the updated reservation {@link Reservation}.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> updateReservation(
-        @PathVariable Integer id,
+    public ResponseEntity<RestResponse<Reservation>> updateReservation(
+        @PathVariable Long id,
         @RequestBody ReservationDto reservation
     ) {
         try {
@@ -89,7 +89,7 @@ public class ReservationController {
      * DELETE Endpoint to delete am reservation.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteReservation(@PathVariable Integer id) {
+    public ResponseEntity<RestResponse<Object>> deleteReservation(@PathVariable Long id) {
         reservationService.deleteReservation(id);
 
         return RestResponse.create(null, null, HttpStatus.OK);

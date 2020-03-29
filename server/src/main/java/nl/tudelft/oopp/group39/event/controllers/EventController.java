@@ -53,7 +53,7 @@ public class EventController {
      * @return the requested event {@link Event}.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> readEvent(@PathVariable Integer id) {
+    public ResponseEntity<RestResponse<Event>> readEvent(@PathVariable Long id) {
         try {
             return RestResponse.create(eventService.readEvent(id));
         } catch (Exception e) {
@@ -67,8 +67,8 @@ public class EventController {
      * @return the updated event {@link Event}.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> updateEvent(
-        @PathVariable Integer id,
+    public ResponseEntity<RestResponse<Event>> updateEvent(
+        @PathVariable Long id,
         @RequestBody Event event
     ) {
         try {
@@ -82,7 +82,7 @@ public class EventController {
      * DELETE Endpoint to delete event.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteEvent(@PathVariable Integer id) {
+    public ResponseEntity<RestResponse<Object>> deleteEvent(@PathVariable Long id) {
         eventService.deleteEvent(id);
 
         return RestResponse.create(null, null, HttpStatus.OK);
