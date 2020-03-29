@@ -336,6 +336,4 @@ public class RoomReservationController extends MainSceneController {
     private void backToRoom() {
         UsersDisplay.backToPrevious(previous);
     }
-
-
 }

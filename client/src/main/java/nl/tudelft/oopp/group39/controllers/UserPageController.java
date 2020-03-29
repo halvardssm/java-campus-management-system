@@ -3,8 +3,11 @@ package nl.tudelft.oopp.group39.controllers;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import java.io.IOException;
@@ -36,6 +39,21 @@ public class UserPageController extends MainSceneController {
     @FXML
     private Label bookingID;
 
+    @FXML
+    private Label roomID;
+
+    @FXML
+    private TextField editStartingTime;
+
+    @FXML
+    private TextField editDuration;
+
+    @FXML
+    private DatePicker editDate;
+
+    @FXML
+    private Button doneButton;
+
     public void showBookings() {
         //TODO replace these to other method as soon as I know how to load certain methods immediately when scene is loaded
         accountName.setText(MainSceneController.user.getUsername());
@@ -56,13 +74,14 @@ public class UserPageController extends MainSceneController {
 //                Integer roomName2 = Math.toIntExact(booking.getRoom());
 //                String roomName = ServerCommunication.getRoom(roomName2).getName();
                 String bookingID = Long.toString(booking.getId());
+                String roomId = Long.toString(booking.getRoom());
                 String startTime = booking.getStartTime();
                 String duration = DifferenceBetweenTwoTimes(
                         LocalTime.parse(booking.getStartTime()),
                         LocalTime.parse(booking.getEndTime()));
 
-//                Label name = (Label) newBooking.lookup("#rName");
-//                name.setText(roomName);
+                Label name = (Label) newBooking.lookup("#rName");
+                name.setText("Booking ID #" + booking.getId());
 
                 Label date = (Label) newBooking.lookup("#rDate");
                 date.setText("Starting Time: " + startTime);
@@ -72,6 +91,9 @@ public class UserPageController extends MainSceneController {
 
                 Label bID = (Label) newBooking.lookup("#bookingID");
                 bID.setText(bookingID);
+
+                Label bookedRoom = (Label) newBooking.lookup("#roomID");
+                bookedRoom.setText(roomId);
 
                 flowPane.getChildren().add(newBooking);
             }
@@ -102,8 +124,30 @@ public class UserPageController extends MainSceneController {
         ServerCommunication.removeBooking(bookingID.getText());
     }
 
-    public void editBooking() {
-        ServerCommunication.updateBooking("2020-04-03", "17:00:00", "22:30:00", "admin", "3", "1");
+    public void editBooking() throws IOException {
+        editStartingTime.setOpacity(1);
+        editDuration.setOpacity(1);
+        editDate.setOpacity(1);
+        doneButton.setOpacity(1);
+    }
+
+    public void finishEditBooking() {
+        editStartingTime.setOpacity(0);
+        editDuration.setOpacity(0);
+        editDate.setOpacity(0);
+        doneButton.setOpacity(0);
+
+        LocalTime t1 = LocalTime.parse(editStartingTime.getText());
+        LocalTime t2 = LocalTime.parse(editDuration.getText());
+        int endTimeHour = t1.getHour() + t2.getHour();
+
+        ServerCommunication.addBooking(editDate.getValue().toString(), t1.toString() + ":00", endTimeHour + ":00:00", user.getUsername(), roomID.getText());
+        ServerCommunication.removeBooking(bookingID.getText());
+        //showBookings();
+    }
+
+    public void viewRoom() throws IOException {
+        goToRoomsScene();
     }
 
     /**

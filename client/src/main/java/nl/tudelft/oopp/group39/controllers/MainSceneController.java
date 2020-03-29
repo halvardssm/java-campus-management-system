@@ -112,7 +112,6 @@ public class MainSceneController {
         controller.changeTopBtn();
     }
 
-
     /**
      * Doc. TODO Sven
      */
