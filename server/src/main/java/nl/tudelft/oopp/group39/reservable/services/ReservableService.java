@@ -32,7 +32,7 @@ public class ReservableService {
      *
      * @return reservable by id {@link Reservable}.
      */
-    public Reservable readReservable(Integer id) throws NotFoundException {
+    public Reservable readReservable(Long id) throws NotFoundException {
         return reservableRepository.findById(id)
             .orElseThrow(() -> new NotFoundException(
                 String.format(EXCEPTION_RESERVABLE_NOT_FOUND, id)
@@ -53,7 +53,7 @@ public class ReservableService {
      *
      * @return the updated reservable {@link Reservable}.
      */
-    public Reservable updateReservable(Integer id, Reservable newReservable)
+    public Reservable updateReservable(Long id, Reservable newReservable)
         throws NotFoundException {
         return reservableRepository.findById(id)
             .map(reservable -> {
@@ -71,7 +71,7 @@ public class ReservableService {
     /**
      * Delete an reservable {@link Reservable}.
      */
-    public void deleteReservable(Integer id) {
+    public void deleteReservable(Long id) {
         reservableRepository.deleteById(id);
     }
 }

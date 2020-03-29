@@ -35,7 +35,7 @@ class FoodControllerTest extends AbstractControllerTest {
         null,
         null
     );
-    private final Food testFood = new Food("Food", "Piece of yummy food", 5.6, null, null);
+    private final Food testFood = new Food(null, "Food", "Piece of yummy food", 5.6, null, null);
     private String jwt;
 
     @BeforeEach
@@ -59,7 +59,7 @@ class FoodControllerTest extends AbstractControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isArray())
             .andExpect(jsonPath("$.body", hasSize(1)))
-            .andExpect(jsonPath("$.body[0]." + Food.COL_ID, is(testFood.getId())))
+            .andExpect(jsonPath("$.body[0]." + Food.COL_ID, is(testFood.getId().intValue())))
             .andExpect(jsonPath("$.body[0]." + Food.COL_NAME, is(testFood.getName())))
             .andExpect(jsonPath("$.body[0]." + Food.COL_DESCRIPTION, is(testFood.getDescription())))
             .andExpect(jsonPath("$.body[0]." + Food.COL_PRICE, is(testFood.getPrice())));
@@ -72,7 +72,7 @@ class FoodControllerTest extends AbstractControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
 
-        String json = objectMapper.writeValueAsString(testFood);
+        String json = objectMapper.writeValueAsString(testFood.toDto());
 
         mockMvc.perform(post(REST_MAPPING)
                             .contentType(MediaType.APPLICATION_JSON)
@@ -87,7 +87,7 @@ class FoodControllerTest extends AbstractControllerTest {
             .andDo((food) -> {
                 String responseString = food.getResponse().getContentAsString();
                 JsonNode productNode = new ObjectMapper().readTree(responseString);
-                testFood.setId(productNode.get("body").get("id").intValue());
+                testFood.setId(productNode.get("body").get("id").longValue());
             });
     }
 
@@ -96,7 +96,7 @@ class FoodControllerTest extends AbstractControllerTest {
         mockMvc.perform(get(REST_MAPPING + "/" + testFood.getId()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body." + Reservation.COL_ID, is(testFood.getId())))
+            .andExpect(jsonPath("$.body." + Reservation.COL_ID, is(testFood.getId().intValue())))
             .andExpect(jsonPath("$.body." + Food.COL_NAME, is(testFood.getName())))
             .andExpect(jsonPath("$.body." + Food.COL_DESCRIPTION, is(testFood.getDescription())))
             .andExpect(jsonPath("$.body." + Food.COL_PRICE, is(testFood.getPrice())));
@@ -108,7 +108,7 @@ class FoodControllerTest extends AbstractControllerTest {
         testFood.setName("Other name");
         testFood.setDescription("Other description");
 
-        String json = objectMapper.writeValueAsString(testFood);
+        String json = objectMapper.writeValueAsString(testFood.toDto());
 
         mockMvc.perform(put(REST_MAPPING + "/" + testFood.getId())
                             .contentType(MediaType.APPLICATION_JSON)
@@ -124,19 +124,18 @@ class FoodControllerTest extends AbstractControllerTest {
     @Test
     void testError() {
         assertEquals(
-            "Target object must not be null; nested exception is java.lang"
-                + ".IllegalArgumentException: Target object must not be null",
+            "java.lang.NullPointerException",
             foodController.createFood(null).getBody().getError()
         );
 
         assertEquals(
             "Food 0 not found",
-            foodController.readFood(0).getBody().getError()
+            foodController.readFood(0L).getBody().getError()
         );
 
         assertEquals(
             "Food 0 not found",
-            foodController.updateFood(0, null).getBody().getError()
+            foodController.updateFood(0L, null).getBody().getError()
         );
     }
 }

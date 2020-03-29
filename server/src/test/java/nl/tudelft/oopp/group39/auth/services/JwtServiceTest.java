@@ -34,7 +34,7 @@ class JwtServiceTest extends AbstractTest {
         Date date = jwtService.decryptExpiration(jwt);
 
         // Gives a 10 seconds buffer due to stupid test time not being able to be mocked
-        long dateMin = new Date(System.currentTimeMillis() - 5000).getTime();
+        Long dateMin = new Date(System.currentTimeMillis() - 5000).getTime();
         Date dateMinExp = new Date(dateMin + JwtService.TOKEN_EXPIRATION_TIME);
         Date dateMaxExp = new Date(dateMin + JwtService.TOKEN_EXPIRATION_TIME + 10000);
 

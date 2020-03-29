@@ -1,10 +1,12 @@
 package nl.tudelft.oopp.group39.booking.controllers;
 
+import java.util.List;
 import java.util.Map;
 import nl.tudelft.oopp.group39.booking.dto.BookingDto;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +38,9 @@ public class BookingController {
     public ResponseEntity<RestResponse<Object>> listBookings(
         @RequestParam Map<String, String> params
     ) {
-        return RestResponse.create(bookingService.listBookings(params));
+        List<Booking> bookings = bookingService.listBookings(params);
+
+        return RestResponse.create(Utils.listEntityToDto(bookings));
     }
 
     /**
@@ -63,9 +67,13 @@ public class BookingController {
      */
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> readBooking(@PathVariable Integer id) {
+    public ResponseEntity<RestResponse<Object>> readBooking(@PathVariable Long id) {
         try {
-            return RestResponse.create(bookingService.readBooking(id));
+            Booking booking = bookingService.readBooking(id);
+
+            BookingDto bookingDto = booking.toDto();
+
+            return RestResponse.create(bookingDto);
         } catch (Exception e) {
             return RestResponse.error(e);
         }
@@ -80,10 +88,10 @@ public class BookingController {
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> updateBooking(
         @RequestBody BookingDto updated,
-        @PathVariable Integer id
+        @PathVariable Long id
     ) {
         try {
-            return RestResponse.create(bookingService.updateBooking(updated, id));
+            return RestResponse.create(bookingService.updateBooking(updated, id).toDto());
         } catch (Exception e) {
             return RestResponse.error(e);
         }
@@ -93,10 +101,9 @@ public class BookingController {
      * DELETE Endpoint to delete booking.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteBooking(@PathVariable Integer id) {
+    public ResponseEntity<RestResponse<Object>> deleteBooking(@PathVariable Long id) {
         bookingService.deleteBooking(id);
 
         return RestResponse.create(null, null, HttpStatus.OK);
     }
-
 }

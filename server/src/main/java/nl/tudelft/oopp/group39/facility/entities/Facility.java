@@ -4,7 +4,6 @@ import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
@@ -12,35 +11,26 @@ import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
+import nl.tudelft.oopp.group39.config.abstracts.IEntity;
 import nl.tudelft.oopp.group39.room.entities.Room;
 
 @Entity
 @Table(name = Facility.TABLE_NAME)
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.None.class,
-    property = Facility.COL_ID
-)
+@JsonIdentityInfo(generator = ObjectIdGenerators.None.class)
 @JsonIgnoreProperties(allowSetters = true, value = {Facility.COL_ROOMS})
-public class Facility {
+public class Facility extends AbstractEntity<Facility, IEntity> {
     public static final String TABLE_NAME = "facilities";
     public static final String MAPPED_NAME = "facility";
     public static final String COL_ID = "id";
     public static final String COL_ROOMS = "rooms";
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private String description;
 
     @ManyToMany(mappedBy = Facility.TABLE_NAME, fetch = FetchType.LAZY)
-    @JsonIgnore
     private Set<Room> rooms = new HashSet<>();
 
     public Facility() {
@@ -49,14 +39,6 @@ public class Facility {
     public Facility(String description, Set<Room> rooms) {
         this.description = description;
         this.rooms.addAll(initSet(rooms));
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getDescription() {
@@ -69,6 +51,11 @@ public class Facility {
 
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms.size() == 0 ? new HashSet<>() : rooms;
+    }
+
+    @Override
+    public IEntity toDto() {
+        return null;
     }
 
     @Override

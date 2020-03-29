@@ -60,9 +60,12 @@ public class ReservationController {
      * @return the requested reservation {@link Reservation}.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> readReservation(@PathVariable Integer id) {
+    public ResponseEntity<RestResponse<Object>> readReservation(@PathVariable Long id) {
         try {
-            return RestResponse.create(reservationService.readReservation(id));
+            Reservation test = reservationService.readReservation(id);
+
+            return RestResponse.create(test
+                .toDto());
         } catch (Exception e) {
             return RestResponse.error(e);
         }
@@ -75,11 +78,13 @@ public class ReservationController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> updateReservation(
-        @PathVariable Integer id,
+        @PathVariable Long id,
         @RequestBody ReservationDto reservation
     ) {
         try {
-            return RestResponse.create(reservationService.updateReservation(id, reservation));
+            return RestResponse.create(
+                reservationService.updateReservation(id, reservation).toDto()
+            );
         } catch (Exception e) {
             return RestResponse.error(e);
         }
@@ -89,7 +94,7 @@ public class ReservationController {
      * DELETE Endpoint to delete am reservation.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteReservation(@PathVariable Integer id) {
+    public ResponseEntity<RestResponse<Object>> deleteReservation(@PathVariable Long id) {
         reservationService.deleteReservation(id);
 
         return RestResponse.create(null, null, HttpStatus.OK);

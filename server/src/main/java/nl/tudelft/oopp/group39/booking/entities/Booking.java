@@ -9,7 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import nl.tudelft.oopp.group39.config.AbstractEntity;
+import nl.tudelft.oopp.group39.booking.dto.BookingDto;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.user.entities.User;
 
@@ -19,7 +20,7 @@ import nl.tudelft.oopp.group39.user.entities.User;
     Booking.COL_USER,
     Booking.COL_ROOM
 })
-public class Booking extends AbstractEntity {
+public class Booking extends AbstractEntity<Booking, BookingDto> {
     public static final String TABLE_NAME = "bookings";
     public static final String MAPPED_NAME = "booking";
     public static final String COL_DATE = "date";
@@ -82,19 +83,39 @@ public class Booking extends AbstractEntity {
     /**
      * Doc. TODO Chuck
      *
+     * @param id        id
      * @param date      date
      * @param startTime startTime
      * @param endTime   endTime
      * @param user      user
      * @param room      room
      */
-    public Booking(LocalDate date, LocalTime startTime, LocalTime endTime, User user, Room room) {
-        this.date = date;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.user = user;
-        this.room = room;
+    public Booking(
+        Long id,
+        LocalDate date,
+        LocalTime startTime,
+        LocalTime endTime,
+        User user,
+        Room room
+    ) {
+        setId(id);
+        setDate(date);
+        setStartTime(startTime);
+        setEndTime(endTime);
+        setUser(user);
+        setRoom(room);
+    }
 
+    @Override
+    public BookingDto toDto() {
+        return new BookingDto(
+            getId(),
+            getDate(),
+            getStartTime(),
+            getEndTime(),
+            getUser().getUsername(),
+            getRoom().getId()
+        );
     }
 
     @Override

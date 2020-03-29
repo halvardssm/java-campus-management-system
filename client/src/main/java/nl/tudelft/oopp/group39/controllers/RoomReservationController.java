@@ -106,7 +106,8 @@ public class RoomReservationController extends MainSceneController {
                 ServerCommunication.addBooking(
                     dateString,
                     bookingStart,
-                    bookingEnd, username,
+                    bookingEnd,
+                    username,
                     roomIdString
                 );
 

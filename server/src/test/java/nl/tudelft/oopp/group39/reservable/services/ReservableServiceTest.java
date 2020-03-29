@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ReservableServiceTest extends AbstractTest {
-    private final Reservable testReservable = new Reservable(5.6, null, null);
+    private final Reservable testReservable = new Reservable(null, 5.6, null, null);
 
     @BeforeEach
     void setUp() {
