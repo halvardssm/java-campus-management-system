@@ -46,7 +46,7 @@ public class BikeDto extends ReservableDto {
     }
 
     @Override
-    public Reservable toEntity() {
+    public Bike toEntity() {
 
         return new Bike(
             getId(),
