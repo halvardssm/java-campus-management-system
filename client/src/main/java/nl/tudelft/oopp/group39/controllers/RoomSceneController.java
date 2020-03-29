@@ -100,7 +100,7 @@ public class RoomSceneController extends MainSceneController {
     public void setup(Building building) throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         this.building = building;
-        setBuildingDetails(building.getName(), building.getDescription());
+        setBuildingDetails(building.getName(), building.getLocation());
         getRooms(building.getId());
         maxCapacity = building.getMaxCapacity();
         getFaclities();

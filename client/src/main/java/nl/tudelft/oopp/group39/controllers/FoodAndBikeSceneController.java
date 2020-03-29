@@ -36,8 +36,6 @@ import nl.tudelft.oopp.group39.models.Room;
 public class FoodAndBikeSceneController extends MainSceneController {
 
     @FXML
-    protected ComboBox<Hyperlink> buildinglist;
-    @FXML
     protected VBox buildingslist;
     @FXML
     private FlowPane itemlist;
@@ -64,7 +62,6 @@ public class FoodAndBikeSceneController extends MainSceneController {
     private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private Building building;
     private ComboBox<String> endTimePicker = new ComboBox<>();
-
 
     /**
      * Sets up the page for food or bike.
@@ -131,7 +128,9 @@ public class FoodAndBikeSceneController extends MainSceneController {
             buildingName.getStyleClass().add("buildingList");
             buildingName.setId(String.valueOf(buildingObj.getId()));
             buildingslist.getChildren().add(buildingName);
+
         }
+
     }
 
     /**
@@ -187,7 +186,7 @@ public class FoodAndBikeSceneController extends MainSceneController {
         HBox item = new HBox(20);
         item.getStyleClass().add("fooditem");
         item.setPadding(new Insets(0, 20, 0, 20));
-        item.setPrefSize(300, 60);
+        item.setPrefSize(320, 60);
         item.setAlignment(Pos.CENTER_LEFT);
         VBox namedesc = new VBox();
         Label nameLabel = new Label(name);
@@ -197,7 +196,13 @@ public class FoodAndBikeSceneController extends MainSceneController {
             Label desc = new Label(description);
             namedesc.getChildren().add(desc);
         }
-        Button addToCart = new Button("+");
+        Image plus = new Image(getClass().getResourceAsStream("/icons/plus-icon.png"));
+        ImageView plusicon = new ImageView(plus);
+        plusicon.setFitWidth(15);
+        plusicon.setFitHeight(15);
+        Button addToCart = new Button();
+        addToCart.setGraphic(plusicon);
+        addToCart.getStyleClass().add("addToCart");
         addToCart.setOnAction(event -> addToCart(name, reservable));
         Region region = new Region();
         HBox.setHgrow(region, Priority.ALWAYS);

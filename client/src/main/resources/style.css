@@ -55,8 +55,8 @@
 
 #backBtn {
     -fx-background-color: none;
-    -fx-font-size: 14;
-    -fx-padding: 7 15;
+    -fx-background-radius: 5em;
+    -fx-padding: 12;
 }
 
 #backBtn:hover {
@@ -151,8 +151,8 @@
 
 .gridblock {
     -fx-background-color: rgba(106, 123, 127, 0.18);
-    -fx-border-radius: 3%;
-    -fx-background-radius: 3%;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
 }
 
 .gridblock:hover {
@@ -162,6 +162,8 @@
 
 .fooditem {
     -fx-background-color: rgba(106, 123, 127, 0.18);
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
 }
 
 .scroll-pane {
@@ -203,30 +205,33 @@
     -fx-border-color: #00A6D6;
 }
 
+.selectedBuilding {
+    -fx-underline: false;
+    -fx-background-color: #00A6D6;
+    -fx-text-fill: white;
+}
+
 .buildingList:visited {
     -fx-underline: false;
 }
 
 #backButton {
-    -fx-background-color: none;
-    -fx-font-size: 16;
-    -fx-text-fill: white;
-    -fx-padding: 5 15;
+    -fx-background-color: rgba(106, 123, 127, 0.18);
+    -fx-background-radius: 5em;
+    -fx-padding: 12;
 }
 
 #backButton:hover {
-    -fx-background-color: #007ba0;
+    -fx-background-color: rgba(106, 123, 127, 0.3);
 }
 
 #text {
     -fx-font-size: 14;
-    -fx-font-weight: bold;
     -fx-fill: black;
 }
 
 #roomRName {
     -fx-font-size: 16;
-    -fx-font-weight: bold;
 }
 
 #roomRDetails {
@@ -245,6 +250,8 @@
 
 #toggleFilter {
     -fx-background-color: transparent;
+    -fx-font-size: 12;
+    -fx-background-radius: 5%;
     -fx-padding: 8 10;
 }
 
@@ -287,5 +294,15 @@
 #searchField:focused {
     -fx-text-fill: white;
     -fx-background-color: white, #00A6D6;
+}
+
+.addToCart {
+    -fx-background-color: none;
+    -fx-background-radius: 5em;
+    -fx-padding: 10;
+}
+
+.addToCart:hover {
+    -fx-background-color: rgba(139, 162, 167, 0.3);
 }
 
