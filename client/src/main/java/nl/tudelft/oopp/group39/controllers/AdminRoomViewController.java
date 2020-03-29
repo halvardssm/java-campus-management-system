@@ -1,9 +1,15 @@
 package nl.tudelft.oopp.group39.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
@@ -14,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -28,15 +35,11 @@ public class AdminRoomViewController extends MainSceneController implements Init
     @FXML
     private Button backbtn;
     @FXML
-    private TextField updateRoomField;
+    private TextField roomNameField;
     @FXML
     private TextField roomFacilitiesField;
     @FXML
     private TextField roomDescriptionField;
-    @FXML
-    private TextField roomBuildingIdField;
-    @FXML
-    private TextField roomOnlyStaffField;
     @FXML
     private TextField roomCapacityField;
     @FXML
@@ -57,7 +60,12 @@ public class AdminRoomViewController extends MainSceneController implements Init
     private TableColumn<Room, Room> roomDelCol = new TableColumn<>("Delete");
     @FXML
     private TableColumn<Room, Room> roomUpdateCol = new TableColumn<>("Update");
-
+    private HashMap<String, Integer> buildingsByName = new HashMap();
+    private HashMap<Integer, String> buildingsById = new HashMap();
+    @FXML
+    private ComboBox roomBuildingIdField;
+    @FXML
+    private ComboBox roomOnlyStaffField;
 
     /**
      * Initialize data into tableView.
@@ -71,20 +79,46 @@ public class AdminRoomViewController extends MainSceneController implements Init
         }
     }
 
+    public ObservableList<String> getData(String b) throws JsonProcessingException {
+        List<Building> buildings = getBuildings(b);
+        List<String> buildingNames = getBuildingNames(buildings);
+        return FXCollections.observableArrayList(buildingNames);
+    }
+
     /**
      * Display rooms and data in tableView buildingTable. -- Likely doesn't work yet. Need to add nameCol.
      */
     void loadRooms() throws JsonProcessingException {
+        String b = ServerCommunication.get(ServerCommunication.building);
+        ObservableList<String> nData = getData(b);
+        List<String> options = new ArrayList<>();
+        options.add("All users"); options.add("Only staff members");
+        ObservableList<String> dataOptions = FXCollections.observableArrayList(options);
+        roomBuildingIdField.setItems(nData);
+        roomBuildingIdField.setPromptText(nData.get(0));
+        roomOnlyStaffField.setItems(dataOptions);
+        roomOnlyStaffField.setPromptText(dataOptions.get(0));
         roomTable.setVisible(true);
         roomTable.getItems().clear();
         roomTable.getColumns().clear();
-        String rooms = ServerCommunication.get(ServerCommunication.room);
-        System.out.println(rooms);
 
+        String rooms = ServerCommunication.get(ServerCommunication.room);
         ArrayNode body = (ArrayNode) mapper.readTree(rooms).get("body");
-        rooms = mapper.writeValueAsString(body);
-        Room[] list = mapper.readValue(rooms, Room[].class);
-        ObservableList<Room> data = FXCollections.observableArrayList(list);
+        System.out.println(rooms = "\n" + body.toString());
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        List<Room> roomList = new ArrayList<>();
+        for (JsonNode roomJson : body) {
+            if(roomJson.toString().contains("{") && roomJson.toString().contains("}")) {
+                System.out.println(roomJson);
+                String roomAsString = mapper.writeValueAsString(roomJson);
+                Room room = mapper.readValue(roomAsString, Room.class);
+                roomList.add(room);
+            }
+        }
+//        rooms = mapper.writeValueAsString(body);
+//        System.out.println(rooms);
+//        Room[] list = mapper.readValue(rooms, Room[].class);
+        ObservableList<Room> data = FXCollections.observableArrayList(roomList);
         roomBuildingIdCol.setCellValueFactory(new PropertyValueFactory<>("building"));
         roomIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         roomCapacityCol.setCellValueFactory(new PropertyValueFactory<>("capacity"));
@@ -166,49 +200,67 @@ public class AdminRoomViewController extends MainSceneController implements Init
 
     public void updateRoomField(Room room) throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminUpdateRoom.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminUpdateRoomView.fxml"));
         Parent root = loader.load();
         AdminUpdateRoomController controller = loader.getController();
         controller.initData(room);
         currentstage.setScene(new Scene(root, 700, 600));
     }
 
+    public List<Building> getBuildings(String buildings) throws JsonProcessingException {
+        System.out.println(buildings);
+        ArrayNode body = (ArrayNode) mapper.readTree(buildings).get("body");
+        buildings = mapper.writeValueAsString(body);
+        Building[] list = mapper.readValue(buildings, Building[].class);
+        return Arrays.asList(list);
+    }
+
+    public List<String> getBuildingNames(List<Building> buildings) {
+        List<String> a = new ArrayList<>();
+        for(Building building : buildings) {
+            this.buildingsByName.put(building.getName(), building.getId());
+            this.buildingsById.put(building.getId(), building.getName());
+            a.add(building.getName());
+        }
+        return a;
+    }
+
+    public String getOnlyStaff(Room room) {
+        if(room.isOnlyStaff()){
+            return "Only staff members";
+        }
+        return "All users";
+    }
+
     /**
      * Adds a new Room with auto-generated ID.
      */
-    public void addRoom() throws IOException {
-        String buildingId = roomBuildingIdField.getText();
-        String roomCapacity = roomCapacityField.getText();
-        String roomDescription = roomDescriptionField.getText();
-        createAlert(ServerCommunication.addRoom(buildingId, roomCapacity, roomDescription));
-
-    }
+//    public void addRoom() throws IOException {
+//        String buildingId = (String) roomBuildingIdField.getValue();
+//        String roomCapacity = roomCapacityField.getText();
+//        String roomDescription = roomDescriptionField.getText();
+//        createAlert(ServerCommunication.addRoom(buildingId, roomCapacity, roomDescription));
+//
+//    }
 
     /**
      * Updates room based on ID specified.
      */
 
     public void updateRoom() throws IOException {
-        String buildingId = roomBuildingIdField.getText();
-        String roomCap = roomCapacityField.getText();
-        String roomDesc = roomDescriptionField.getText();
-        String roomID = updateRoomField.getText();
-        roomID = roomID.contentEquals("") ? "1" : roomID;
-
-        createAlert(ServerCommunication.updateRoom(buildingId, roomCap, roomDesc, roomID));
+//        String buildingId = roomBuildingIdField.getText();
+//        String roomCap = roomCapacityField.getText();
+//        String roomDesc = roomDescriptionField.getText();
+//        String roomID = updateRoomField.getText();
+//        roomID = roomID.contentEquals("") ? "1" : roomID;
+//
+//        createAlert(ServerCommunication.updateRoom(buildingId, roomCap, roomDesc, roomID));
     }
 
     /**
      * Delete room.
      */
-    public void deleteRoom() throws IOException {
-        String id = updateRoomField.getText();
-        id = id.contentEquals("") ? "1" : id;
-        ServerCommunication.removeRoom(id);
 
-        createAlert(ServerCommunication.get(ServerCommunication.room));
-
-    }
 
 
     /**

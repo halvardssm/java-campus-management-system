@@ -118,7 +118,8 @@ public class ServerCommunication {
     public static String getBuildingsByRoom(
         Room room
     ) {
-        String urlString = url + "building/room?room=" + room.toString();
+        String urlString = url + "building/room/" + room.getId();
+        System.out.println(urlString);
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
         return httpRequest(request);
     }
@@ -185,10 +186,11 @@ public class ServerCommunication {
      *
      * @return the body of a post request to the server.
      */
-    public static String addRoom(String buildingId, String roomCapacity, String roomDescription) {
+    public static String addRoom(String buildingId, String roomCapacity, String roomDescription, String onlyStaff, String name) {
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers
             .ofString("{\"buildingId\": \"" + buildingId + "\", \"capacity\":\""
-                + roomCapacity + "\", \"description\":\"" + roomDescription + "\"}");
+                + roomCapacity + "\", \"description\":\"" + roomDescription + "\", \"onlyStaff\":\"" + onlyStaff
+                + "\", \"name\":\"" + name + "\"}");
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
             .uri(URI.create(url + "room/"))
             .header("Content-Type", "application/json").build();
@@ -224,19 +226,21 @@ public class ServerCommunication {
      * @return the body of a put request to the server.
      */
     public static String updateRoom(
-        String buildingId,
+        String building,
         String roomCapacity,
         String roomDescription,
         String id,
-        String bookings
+        String onlyStaff,
+        String name
     ) {
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers
-            .ofString("{\"buildingId\": \"" + buildingId + "\", \"capacity\":\""
+            .ofString("{\"building\": \"" + building + "\", \"capacity\":\""
                 + roomCapacity + "\", \"description\":\"" + roomDescription
-                + "\", \"bookings\":\"" + bookings + "\"}");
+                + "\", \"onlyStaff\":\"" + onlyStaff + "\", \"name\":\"" + name + "\"}");
         HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding)
             .uri(URI.create(url + "room/" + id))
             .header("Content-Type", "application/json").build();
+        System.out.println(httpRequest(request));
         return httpRequest(request);
     }
 

@@ -74,7 +74,8 @@
                         <ChoiceBox prefWidth="150.0" />
                      </children>
                   </VBox>
-               </center></BorderPane>
+               </center>
+            </BorderPane>
          </children>
       </AnchorPane>
    </center>

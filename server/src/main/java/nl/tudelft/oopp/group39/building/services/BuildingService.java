@@ -12,6 +12,7 @@ import nl.tudelft.oopp.group39.reservable.entities.Bike;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservable.services.BikeService;
 import nl.tudelft.oopp.group39.reservable.services.FoodService;
+import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -63,8 +64,9 @@ public class BuildingService {
         return buildingRepository.findAll();
     }
 
-    public List<Building> getBuildingsByRoomId() {
-        return buildingRepository.findAll();
+    public List<Building> getBuildingsByRoomId(int id) {
+        Room room = roomRepository.getRoomById(id);
+        return buildingRepository.findBuildingsByRoom(room);
     }
 
     public Building readBuilding(long id) throws BuildingNotFoundException {

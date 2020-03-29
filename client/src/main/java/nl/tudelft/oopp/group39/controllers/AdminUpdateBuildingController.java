@@ -117,7 +117,6 @@ public class AdminUpdateBuildingController extends MainSceneController implement
         descriptionFieldNew.clear();
         timeOpenFieldNew.clear();
         timeClosedFieldNew.clear();
-        updateBuildingField.clear();
     }
 
 }

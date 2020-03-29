@@ -56,15 +56,15 @@ public class RoomSceneController extends MainSceneController {
     /**
      * Doc. TODO Sven
      */
-    public void newRoomButton() {
-        String buildingId = roomBuildingIdField.getText();
-
-        String roomCapacity = roomCapacityField.getText();
-
-        String roomDescription = roomDescriptionField.getText();
-
-        createAlert(ServerCommunication.addRoom(buildingId, roomCapacity, roomDescription));
-    }
+//    public void newRoomButton() {
+//        String buildingId = roomBuildingIdField.getText();
+//
+//        String roomCapacity = roomCapacityField.getText();
+//
+//        String roomDescription = roomDescriptionField.getText();
+//
+//        createAlert(ServerCommunication.addRoom(buildingId, roomCapacity, roomDescription));
+//    }
 
     /**
      * Doc. TODO Sven
@@ -87,7 +87,8 @@ public class RoomSceneController extends MainSceneController {
             roomCap,
             roomDesc,
             roomID,
-            roomReservations
+            Boolean.toString(true),
+            ""
         ));
     }
 

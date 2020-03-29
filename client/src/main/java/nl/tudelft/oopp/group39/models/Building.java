@@ -2,7 +2,7 @@ package nl.tudelft.oopp.group39.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(value = { "reservables" })
+@JsonIgnoreProperties(value = { "reservables", "rooms" })
 public class Building {
 
     private Integer id;
