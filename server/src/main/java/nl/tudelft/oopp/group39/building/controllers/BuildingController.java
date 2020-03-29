@@ -43,6 +43,7 @@ public class BuildingController {
     public ResponseEntity<RestResponse<Object>> listBuildings(
         @RequestParam Map<String, String> params
     ) {
+        System.out.println(params);
         List<Building> result = buildingDao.buildingFilter(params);
         return RestResponse.create(result);
     }

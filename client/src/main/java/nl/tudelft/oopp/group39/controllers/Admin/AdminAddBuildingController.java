@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers;
+package nl.tudelft.oopp.group39.controllers.Admin;
 
 import java.io.IOException;
 import java.net.URL;
@@ -17,11 +17,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.controllers.MainSceneController;
 import nl.tudelft.oopp.group39.models.Building;
 
-public class AdminUpdateBuildingController extends MainSceneController implements Initializable {
+public class AdminAddBuildingController extends MainSceneController implements Initializable {
 
-    private Building building;
     @FXML
     private Button backbtn;
     @FXML
@@ -64,14 +64,24 @@ public class AdminUpdateBuildingController extends MainSceneController implement
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
-
-    public void initData(Building building) {
-        this.building = building;
-        nameFieldNew.setPromptText(building.getName());
-        locationFieldNew.setPromptText(building.getLocation());
-        descriptionFieldNew.setPromptText(building.getDescription());
-        timeOpenFieldNew.setPromptText(building.getOpen());
-        timeClosedFieldNew.setPromptText(building.getClosed());
+    /**
+     * Adds a new building with auto-generated ID.
+     */
+    public void addBuilding() throws IOException {
+        String name = nameFieldNew.getText();
+        String location = locationFieldNew.getText();
+        String desc = descriptionFieldNew.getText();
+        String open = getTime(timeOpenFieldNew.getText(), true);
+        String closed = getTime(timeClosedFieldNew.getText(), false);
+        ServerCommunication.addBuilding(name, location, desc, open, closed);
+        createAlert("Added a new building.");
+        switchBack();
+        nameFieldNew.clear();
+        locationFieldNew.clear();
+        descriptionFieldNew.clear();
+        timeOpenFieldNew.clear();
+        timeClosedFieldNew.clear();
+        updateBuildingField.clear();
     }
 
     /**
@@ -92,31 +102,8 @@ public class AdminUpdateBuildingController extends MainSceneController implement
     @FXML
     private void switchBack() throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/AdminBuildingView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminBuildingView.fxml"));
         currentstage.setScene(new Scene(root, 700, 600));
-    }
-
-    public void updateBuilding() throws IOException {
-        String name = nameFieldNew.getText();
-        name = name.contentEquals("") ? building.getName() : name;
-        String location = locationFieldNew.getText();
-        location = location.contentEquals("") ? building.getLocation() : location;
-        String desc = descriptionFieldNew.getText();
-        desc = desc.contentEquals("") ? building.getDescription() : desc;
-        String open = timeOpenFieldNew.getText();
-        open = open.contentEquals("") ? building.getOpen() : getTime(open, true);
-        String closed =timeClosedFieldNew.getText();
-        closed = closed.contentEquals("") ? building.getClosed() : getTime(closed, false);
-        String id = Integer.toString(building.getId());
-        ServerCommunication.updateBuilding(name, location, desc, open, closed, id);
-        switchBack();
-        createAlert("Updated: " + building.getName());
-
-        nameFieldNew.clear();
-        locationFieldNew.clear();
-        descriptionFieldNew.clear();
-        timeOpenFieldNew.clear();
-        timeClosedFieldNew.clear();
     }
 
 }

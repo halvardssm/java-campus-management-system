@@ -13,7 +13,7 @@ public class AdminPanel extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        URL xmlUrl = getClass().getResource("/AdminPanel.fxml");
+        URL xmlUrl = getClass().getResource("/Admin/AdminPanel.fxml");
         loader.setLocation(xmlUrl);
         Parent root = loader.load();
 

@@ -1,16 +1,13 @@
-package nl.tudelft.oopp.group39.controllers;
+package nl.tudelft.oopp.group39.controllers.Admin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,20 +22,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.controllers.MainSceneController;
 import nl.tudelft.oopp.group39.models.Building;
-import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 
 public class AdminBViewController extends MainSceneController implements Initializable {
 
     @FXML
     private Button backbtn;
-    @FXML
-    private Button buildingUpdate;
-    @FXML
-    private Button buildingAdd;
-    @FXML
-    private Button buildingDelete;
     @FXML
     private TextField nameFieldNew;
     @FXML
@@ -50,7 +41,7 @@ public class AdminBViewController extends MainSceneController implements Initial
     @FXML
     private TextField timeClosedFieldNew;
     @FXML
-    private TextField updateBuildingField;
+    private TextField capacityField;
     @FXML
     private TableColumn<Building, String> buildingnameCol = new TableColumn<>("Name");
     @FXML
@@ -77,21 +68,48 @@ public class AdminBViewController extends MainSceneController implements Initial
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            loadBuildings();
+            loadBuildingsStandard();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
 
     }
 
+    void loadBuildingsStandard() throws JsonProcessingException {
+        String buildings = ServerCommunication.get(ServerCommunication.building);
+        loadBuildings(buildings);
+    }
+
+    public void filterBuildings() throws JsonProcessingException {
+        String name = nameFieldNew.getText();
+        name = name == null ? "" : name;
+        String description = descriptionFieldNew.getText();
+        description = description == null ? "" : description;
+        String location = locationFieldNew.getText();
+        location = location == null ? "" : location;
+        String open = getTime("00:00:00", true);
+        String closed = getTime("23:59:00", false);
+//        String capacity = capacityField.getText();
+//        capacity = capacity == null ? "0" : capacity;
+        String buildings = ServerCommunication.getFilteredBuildings(name, location, open, closed, description);
+        System.out.println(buildings);
+        loadBuildings(buildings);
+    }
+
+    public String getTime(String time, boolean open) {
+        if (open) {
+            return time.contentEquals("") ? LocalTime.MAX.toString() : time;
+        }
+        return time.contentEquals("") ? LocalTime.MIN.toString() : time;
+    }
+
     /**
      * Display buildings and data in tableView buildingTable. -- Likely doesn't work yet.
      */
-    void loadBuildings() throws JsonProcessingException {
+    void loadBuildings(String buildings) throws JsonProcessingException {
         buildingTable.setVisible(true);
         buildingTable.getItems().clear();
         buildingTable.getColumns().clear();
-        String buildings = ServerCommunication.get(ServerCommunication.building);
         System.out.println(buildings);
         ArrayNode body = (ArrayNode) mapper.readTree(buildings).get("body");
         buildings = mapper.writeValueAsString(body);
@@ -168,7 +186,7 @@ public class AdminBViewController extends MainSceneController implements Initial
 
     public void adminAddBuilding() throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/AdminAddBuilding.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminAddBuilding.fxml"));
         currentstage.setScene(new Scene(root, 700, 600));
     }
 
@@ -176,28 +194,16 @@ public class AdminBViewController extends MainSceneController implements Initial
         String id = Integer.toString(building.getId());
         ServerCommunication.removeBuilding(id);
         createAlert("removed: " + building.getName());
-        loadBuildings();
+        loadBuildingsStandard();
     }
 
     public void updateBuildingView(Building building) throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminUpdateBuilding.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Admin/AdminUpdateBuilding.fxml"));
         Parent root = loader.load();
         AdminUpdateBuildingController controller = loader.getController();
         controller.initData(building);
         currentstage.setScene(new Scene(root, 700, 600));
-    }
-
-    /**
-     * Delete building.
-     */
-    public void deleteBuilding() throws IOException {
-        String id = updateBuildingField.getText();
-        id = id.contentEquals("") ? "1" : id;
-        ServerCommunication.removeBuilding(id);
-        createAlert(ServerCommunication.get(ServerCommunication.building));
-
-        updateBuildingField.clear();
     }
 
     /**
@@ -207,7 +213,7 @@ public class AdminBViewController extends MainSceneController implements Initial
     @FXML
     private void switchBack() throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/AdminPanel.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminPanel.fxml"));
         currentstage.setScene(new Scene(root, 700, 600));
     }
 

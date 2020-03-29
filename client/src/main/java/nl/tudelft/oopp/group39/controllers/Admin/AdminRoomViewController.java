@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers;
+package nl.tudelft.oopp.group39.controllers.Admin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -28,6 +28,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.controllers.MainSceneController;
 import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.models.Room;
 
@@ -187,7 +188,7 @@ public class AdminRoomViewController extends MainSceneController implements Init
 
     public void adminAddRoom() throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/AdminAddRoom.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminAddRoom.fxml"));
         currentstage.setScene(new Scene(root, 700, 600));
     }
 
@@ -200,7 +201,7 @@ public class AdminRoomViewController extends MainSceneController implements Init
 
     public void updateRoomField(Room room) throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminUpdateRoomView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Admin/AdminUpdateRoomView.fxml"));
         Parent root = loader.load();
         AdminUpdateRoomController controller = loader.getController();
         controller.initData(room);
@@ -270,7 +271,7 @@ public class AdminRoomViewController extends MainSceneController implements Init
     @FXML
     private void switchBack() throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/AdminPanel.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminPanel.fxml"));
         currentstage.setScene(new Scene(root, 700, 600));
     }
 }

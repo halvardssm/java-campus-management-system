@@ -107,10 +107,13 @@ public class ServerCommunication {
         String location,
         String open,
         String closed,
-        String capacity
+        String description
     ) {
-        String urlString = url + "building?capacity=" + capacity + "&building=" + name
-            + "&location=" + location + "&open=" + open + "&closed=" + closed;
+//        String urlString = url + "building?name=" + name
+//            + "&location=" + location + "&open=" + open + "&closed=" + closed
+//            + "&description=" + description;
+        String urlString = url + "building?name=" + name
+            + "&location=" + location + "&description=" + description;
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
         return httpRequest(request);
     }
@@ -293,6 +296,12 @@ public class ServerCommunication {
     public static void removeBuilding(String id) {
         HttpRequest request = HttpRequest.newBuilder().DELETE()
             .uri(URI.create(url + "building/" + id)).build();
+        httpRequest(request);
+    }
+
+    public static void removeUser(String id) {
+        HttpRequest request = HttpRequest.newBuilder().DELETE()
+            .uri(URI.create(url + "user/" + id)).build();
         httpRequest(request);
     }
 
