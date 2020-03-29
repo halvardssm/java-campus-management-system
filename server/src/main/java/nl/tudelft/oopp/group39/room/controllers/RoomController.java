@@ -1,11 +1,10 @@
 package nl.tudelft.oopp.group39.room.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.room.dao.RoomDao;
-import nl.tudelft.oopp.group39.room.dto.RoomDto;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +42,9 @@ public class RoomController {
     public ResponseEntity<RestResponse<Object>> listRooms(
         @RequestParam Map<String, String> allParams
     ) {
-        List<RoomDto> roomDtoList = new ArrayList<>();
+        List<Room> roomList = service.filterRooms(allParams);
 
-        for (Room room : service.filterRooms(allParams)) {
-            roomDtoList.add(room.toDto());
-        }
-
-        return RestResponse.create(roomDtoList);
+        return RestResponse.create(Utils.listEntityToDto(roomList));
     }
 
     @PostMapping("")

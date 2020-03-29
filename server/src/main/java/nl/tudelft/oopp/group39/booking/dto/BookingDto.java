@@ -24,6 +24,7 @@ public class BookingDto extends AbstractDto<Booking, BookingDto> {
     /**
      * Constructor for BookingDto.
      *
+     * @param id        id
      * @param date      date of the booking
      * @param startTime start time of the booking
      * @param endTime   end time of the booking
@@ -31,17 +32,19 @@ public class BookingDto extends AbstractDto<Booking, BookingDto> {
      * @param room      room id
      */
     public BookingDto(
+        Long id,
         LocalDate date,
         LocalTime startTime,
         LocalTime endTime,
         String user,
         Long room
     ) {
-        this.date = date;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.user = user;
-        this.room = room;
+        setId(id);
+        setDate(date);
+        setStartTime(startTime);
+        setEndTime(endTime);
+        setUser(user);
+        setRoom(room);
     }
 
     public LocalDate getDate() {
@@ -90,6 +93,7 @@ public class BookingDto extends AbstractDto<Booking, BookingDto> {
         user1.setUsername(getUser());
         Room room1 = Utils.idToEntity(getRoom(), Room.class);
         return new Booking(
+            getId(),
             getDate(),
             getStartTime(),
             getEndTime(),

@@ -35,18 +35,20 @@ public class Bike extends Reservable {
     /**
      * The constructor of Bike.
      *
+     * @param id           of the bike
      * @param bikeType     the bike type
      * @param price        of the item
      * @param building     where the bike is available.
      * @param reservations the reservation
      */
     public Bike(
+        Long id,
         BikeType bikeType,
         Double price,
         Building building,
         Set<ReservationAmount> reservations
     ) {
-        super(price, building, reservations);
+        super(id, price, building, reservations);
         setBikeType(bikeType != null ? bikeType : BikeType.CITY);
     }
 
@@ -54,6 +56,7 @@ public class Bike extends Reservable {
     public BikeDto toDto() {
 
         return new BikeDto(
+            getId(),
             getBikeType(),
             getPrice(),
             getBuilding().getId(),

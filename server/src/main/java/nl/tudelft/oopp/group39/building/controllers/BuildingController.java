@@ -1,14 +1,11 @@
 package nl.tudelft.oopp.group39.building.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import nl.tudelft.oopp.group39.building.dto.BuildingDto;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
-import nl.tudelft.oopp.group39.room.entities.Room;
-import nl.tudelft.oopp.group39.room.services.RoomService;
+import nl.tudelft.oopp.group39.config.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,18 +34,16 @@ public class BuildingController {
     @Autowired
     private BuildingService buildingService;
 
-    /** TODO Sven.
+    /**
+     * TODO Sven.
      */
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listBuildings(
         @RequestParam Map<String, String> params
     ) {
-        List<BuildingDto> buildingDtoList = new ArrayList<>();
-        for (Building building : buildingService.listBuildings(params)) {
-            buildingDtoList.add(building.toDto());
-        }
+        List<Building> buildingList = buildingService.listBuildings(params);
 
-        return RestResponse.create(buildingDtoList);
+        return RestResponse.create(Utils.listEntityToDto(buildingList));
     }
 
     /**

@@ -1,12 +1,12 @@
 package nl.tudelft.oopp.group39.booking.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import nl.tudelft.oopp.group39.booking.dto.BookingDto;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,15 +38,9 @@ public class BookingController {
     public ResponseEntity<RestResponse<Object>> listBookings(
         @RequestParam Map<String, String> params
     ) {
-        List<BookingDto> bookingsDtoList = new ArrayList<>();
         List<Booking> bookings = bookingService.listBookings(params);
 
-        for (Booking booking : bookings) {
-            BookingDto bookingDto = booking.toDto();
-            bookingsDtoList.add(bookingDto);
-        }
-
-        return RestResponse.create(bookingsDtoList);
+        return RestResponse.create(Utils.listEntityToDto(bookings));
     }
 
     /**

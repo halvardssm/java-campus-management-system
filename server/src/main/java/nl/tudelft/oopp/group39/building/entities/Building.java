@@ -44,6 +44,7 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
     /**
      * Constructor. TODO Sven
      *
+     * @param id          id
      * @param name        name
      * @param location    location
      * @param description description
@@ -52,6 +53,7 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
      * @param rooms       rooms
      */
     public Building(
+        Long id,
         String name,
         String location,
         String description,
@@ -60,13 +62,14 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
         Set<Room> rooms,
         Set<Reservable> reservables
     ) {
-        this.name = name;
-        this.location = location;
-        this.description = description;
-        this.open = open;
-        this.closed = closed;
-        this.rooms.addAll(initSet(rooms));
-        this.reservables.addAll(initSet(reservables));
+        setId(id);
+        setName(name);
+        setLocation(location);
+        setDescription(description);
+        setOpen(open);
+        setClosed(closed);
+        getRooms().addAll(initSet(rooms));
+        getReservables().addAll(initSet(reservables));
     }
 
     /**

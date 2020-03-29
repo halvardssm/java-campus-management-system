@@ -20,20 +20,22 @@ public class FoodDto extends ReservableDto {
     /**
      * Creates a FoodDto object.
      *
-     * @param name name of the food reservable
-     * @param description the description of said reservable
-     * @param price price of the reservable
-     * @param building building id associated with the reservable
+     * @param id           the id
+     * @param name         name of the food reservable
+     * @param description  the description of said reservable
+     * @param price        price of the reservable
+     * @param building     building id associated with the reservable
      * @param reservations reservations associated with the reservable (in Dto form)
      */
     public FoodDto(
+        Long id,
         String name,
         String description,
         Double price,
         Long building,
         Set<ReservationAmountDto> reservations
     ) {
-        super(price, building, initSet(reservations));
+        super(id, price, building, initSet(reservations));
         this.name = name;
         this.description = description;
     }
@@ -58,6 +60,7 @@ public class FoodDto extends ReservableDto {
     public Reservable toEntity() {
 
         return new Food(
+            getId(),
             getName(),
             getDescription(),
             getPrice(),

@@ -26,6 +26,7 @@ public class ReservationDto extends AbstractDto<Reservation, ReservationDto> {
     /**
      * Constructor for the ReservationDto.
      *
+     * @param id                 the id
      * @param timeOfPickup       the time of pickup
      * @param timeOfDelivery     the time of delivery, nullable
      * @param user               the username connected
@@ -33,17 +34,19 @@ public class ReservationDto extends AbstractDto<Reservation, ReservationDto> {
      * @param reservationAmounts set of {@link ReservationAmountDto}
      */
     public ReservationDto(
+        Long id,
         LocalDateTime timeOfPickup,
         LocalDateTime timeOfDelivery,
         String user,
         Long room,
         Set<ReservationAmountDto> reservationAmounts
     ) {
-        this.timeOfPickup = timeOfPickup;
-        this.timeOfDelivery = timeOfDelivery;
-        this.user = user;
-        this.room = room;
-        this.reservationAmounts.addAll(initSet(reservationAmounts));
+        setId(id);
+        setTimeOfPickup(timeOfPickup);
+        setTimeOfDelivery(timeOfDelivery);
+        setUser(user);
+        setRoom(room);
+        getReservationAmounts().addAll(initSet(reservationAmounts));
     }
 
     public LocalDateTime getTimeOfPickup() {
@@ -90,6 +93,7 @@ public class ReservationDto extends AbstractDto<Reservation, ReservationDto> {
     public Reservation toEntity() {
 
         return new Reservation(
+            getId(),
             getTimeOfPickup(),
             getTimeOfDelivery(),
             Utils.idToEntity(getRoom(), Room.class),

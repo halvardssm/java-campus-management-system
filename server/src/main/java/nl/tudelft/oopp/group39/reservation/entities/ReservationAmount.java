@@ -31,12 +31,19 @@ public class ReservationAmount extends AbstractEntity<ReservationAmount, Reserva
     /**
      * Constructor for ReservationAmount.
      *
+     * @param id     the id
      * @param amount the amount of the item
      */
-    public ReservationAmount(Integer amount, Reservation reservation, Reservable reservable) {
-        this.amount = amount;
-        this.reservation = reservation;
-        this.reservable = reservable;
+    public ReservationAmount(
+        Long id,
+        Integer amount,
+        Reservation reservation,
+        Reservable reservable
+    ) {
+        setId(id);
+        setAmount(amount);
+        setReservation(reservation);
+        setReservable(reservable);
     }
 
     public Integer getAmount() {
@@ -71,8 +78,9 @@ public class ReservationAmount extends AbstractEntity<ReservationAmount, Reserva
     @Override
     public ReservationAmountDto toDto() {
         return new ReservationAmountDto(
-            amount,
-            reservable.getId()
+            getId(),
+            getAmount(),
+            getReservable().getId()
         );
     }
 

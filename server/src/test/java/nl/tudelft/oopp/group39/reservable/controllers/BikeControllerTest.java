@@ -36,7 +36,7 @@ class BikeControllerTest extends AbstractControllerTest {
         null,
         null
     );
-    private final Bike testBike = new Bike(BikeType.CITY, 5.6, null, null);
+    private final Bike testBike = new Bike(null, BikeType.CITY, 5.6, null, null);
     private String jwt;
 
     @BeforeEach

@@ -62,6 +62,7 @@ public class BookingService {
         User user = userService.readUser(newBooking.getUser());
         Room room = roomService.readRoom(newBooking.getRoom());
         Booking booking = new Booking(
+            null,
             newBooking.getDate(),
             newBooking.getStartTime(),
             newBooking.getEndTime(),
@@ -101,6 +102,7 @@ public class BookingService {
         Room room = roomService.readRoom(newBooking.getRoom());
 
         Booking booking = new Booking(
+            null,
             newBooking.getDate(),
             newBooking.getStartTime(),
             newBooking.getEndTime(),

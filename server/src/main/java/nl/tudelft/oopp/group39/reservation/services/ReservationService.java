@@ -73,6 +73,7 @@ public class ReservationService {
         User user = userService.readUser(reservation.getUser());
 
         Reservation reservation1 = new Reservation(
+            null,
             reservation.getTimeOfPickup(),
             reservation.getTimeOfDelivery(),
             null,
@@ -92,6 +93,7 @@ public class ReservationService {
                 = reservableService.readReservable(reservationAmountDto.getReservable());
 
             ReservationAmount reservationAmount = new ReservationAmount(
+                null,
                 reservationAmountDto.getAmount(),
                 reservation2,
                 reservable
