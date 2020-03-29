@@ -32,7 +32,7 @@ public class BikeService {
      *
      * @return bike by id {@link Bike}.
      */
-    public Bike readBike(Integer id) throws NotFoundException {
+    public Bike readBike(Long id) throws NotFoundException {
         return bikeRepository.findById(id).orElseThrow(()
             -> new NotFoundException(String.format(EXCEPTION_BIKE_NOT_FOUND, id)));
     }
@@ -51,7 +51,7 @@ public class BikeService {
      *
      * @return the updated bike {@link Bike}.
      */
-    public Bike updateBike(Integer id, Bike newBike) throws NotFoundException {
+    public Bike updateBike(Long id, Bike newBike) throws NotFoundException {
         return bikeRepository.findById(id)
             .map(bike -> {
                 newBike.setId(id);
@@ -65,7 +65,7 @@ public class BikeService {
     /**
      * Delete an bike {@link Bike}.
      */
-    public void deleteBike(Integer id) {
+    public void deleteBike(Long id) {
         bikeRepository.deleteById(id);
     }
 }

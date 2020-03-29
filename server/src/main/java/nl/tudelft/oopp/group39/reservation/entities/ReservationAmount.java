@@ -5,13 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import nl.tudelft.oopp.group39.config.AbstractEntity;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 
 @Entity
 @Table(name = ReservationAmount.TABLE_NAME)
-public class ReservationAmount extends AbstractEntity {
+public class ReservationAmount extends AbstractEntity<ReservationAmount, ReservationAmountDto> {
     public static final String TABLE_NAME = Reservation.TABLE_NAME + "_" + Reservable.TABLE_NAME;
     public static final String COL_AMOUNT = "amount";
     public static final String COL_RESERVATION = "reservation";
@@ -31,12 +31,19 @@ public class ReservationAmount extends AbstractEntity {
     /**
      * Constructor for ReservationAmount.
      *
+     * @param id     the id
      * @param amount the amount of the item
      */
-    public ReservationAmount(Integer amount, Reservation reservation, Reservable reservable) {
-        this.amount = amount;
-        this.reservation = reservation;
-        this.reservable = reservable;
+    public ReservationAmount(
+        Long id,
+        Integer amount,
+        Reservation reservation,
+        Reservable reservable
+    ) {
+        setId(id);
+        setAmount(amount);
+        setReservation(reservation);
+        setReservable(reservable);
     }
 
     public Integer getAmount() {
@@ -68,10 +75,12 @@ public class ReservationAmount extends AbstractEntity {
      *
      * @return the converted object
      */
+    @Override
     public ReservationAmountDto toDto() {
         return new ReservationAmountDto(
-            amount,
-            reservable.getId()
+            getId(),
+            getAmount(),
+            getReservable().getId()
         );
     }
 

@@ -35,6 +35,7 @@ public class Room {
      * @param bookings    ArrayNode of bookings for the room
      */
     public Room(
+        long id,
         int capacity,
         String name,
         boolean onlyStaff,
@@ -44,6 +45,7 @@ public class Room {
         ArrayNode events,
         ArrayNode bookings
     ) {
+        this.id = id;
         this.building = buildingId;
         this.name = name;
         this.capacity = capacity;

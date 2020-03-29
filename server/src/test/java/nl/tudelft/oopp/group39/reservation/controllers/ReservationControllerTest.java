@@ -44,6 +44,7 @@ class ReservationControllerTest extends AbstractControllerTest {
         null
     );
     private final Reservation testReservation = new Reservation(
+        null,
         LocalDateTime.now(ZoneId.of("Europe/Paris")),
         LocalDateTime.now(ZoneId.of("Europe/Paris")).plusHours(2),
         null,
@@ -51,13 +52,16 @@ class ReservationControllerTest extends AbstractControllerTest {
         null
     );
     private final ReservationAmount testReservationAmount = new ReservationAmount(
+        null,
         2,
         null,
         null
     );
-    private final Reservable testReservable = new Reservable(5.4, null, null);
-    private final ReservationAmountDto testReservationAmountDto = new ReservationAmountDto(3, null);
+    private final Reservable testReservable = new Reservable(null, 5.4, null, null);
+    private final ReservationAmountDto testReservationAmountDto =
+        new ReservationAmountDto(null, 3, null);
     private final ReservationDto testReservationDto = new ReservationDto(
+        null,
         LocalDateTime.now(ZoneId.of("Europe/Paris")),
         LocalDateTime.now(ZoneId.of("Europe/Paris")).plusHours(2),
         testUser.getUsername(),
@@ -94,7 +98,10 @@ class ReservationControllerTest extends AbstractControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isArray())
             .andExpect(jsonPath("$.body", hasSize(1)))
-            .andExpect(jsonPath("$.body[0]." + Reservation.COL_ID, is(testReservation.getId())))
+            .andExpect(jsonPath(
+                "$.body[0]." + Reservation.COL_ID,
+                is(testReservation.getId().intValue())
+            ))
             .andExpect(jsonPath(
                 "$.body[0]." + Reservation.COL_TIME_OF_PICKUP,
                 is(testReservation.getTimeOfPickup().format(Constants.FORMATTER_DATE_TIME))
@@ -142,7 +149,7 @@ class ReservationControllerTest extends AbstractControllerTest {
             .andDo((reservation) -> {
                 String responseString = reservation.getResponse().getContentAsString();
                 JsonNode productNode = new ObjectMapper().readTree(responseString);
-                testReservation.setId(productNode.get("body").get("id").intValue());
+                testReservation.setId(productNode.get("body").get("id").longValue());
             });
     }
 
@@ -151,7 +158,10 @@ class ReservationControllerTest extends AbstractControllerTest {
         mockMvc.perform(get(REST_MAPPING + "/" + testReservation.getId()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body." + Reservation.COL_ID, is(testReservation.getId())))
+            .andExpect(jsonPath(
+                "$.body." + Reservation.COL_ID,
+                is(testReservation.getId().intValue())
+            ))
             .andExpect(jsonPath(
                 "$.body." + Reservation.COL_TIME_OF_PICKUP,
                 is(testReservation.getTimeOfPickup().format(Constants.FORMATTER_DATE_TIME))
@@ -161,7 +171,7 @@ class ReservationControllerTest extends AbstractControllerTest {
                 is(testReservation.getTimeOfDelivery().format(Constants.FORMATTER_DATE_TIME))
             ))
             .andExpect(jsonPath(
-                "$.body." + Reservation.COL_USER + "." + User.COL_USERNAME,
+                "$.body." + Reservation.COL_USER,
                 is(testUser.getUsername())
             ))
             .andExpect(jsonPath("$.body." + Reservation.COL_RESERVATION_AMOUNTS).isArray())
@@ -202,12 +212,12 @@ class ReservationControllerTest extends AbstractControllerTest {
 
         assertEquals(
             "Reservation 0 not found",
-            reservationController.readReservation(0).getBody().getError()
+            reservationController.readReservation(0L).getBody().getError()
         );
 
         assertEquals(
             "Reservation 0 not found",
-            reservationController.updateReservation(0, null).getBody().getError()
+            reservationController.updateReservation(0L, null).getBody().getError()
         );
     }
 }

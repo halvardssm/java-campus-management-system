@@ -92,7 +92,7 @@ class EventControllerTest extends AbstractControllerTest {
             .andDo((event) -> {
                 String responseString = event.getResponse().getContentAsString();
                 JsonNode productNode = new ObjectMapper().readTree(responseString);
-                testEvent.setId(productNode.get("body").get("id").intValue());
+                testEvent.setId(productNode.get("body").get("id").longValue());
             });
     }
 
@@ -131,11 +131,11 @@ class EventControllerTest extends AbstractControllerTest {
             eventController.createEvent(null).getBody().getError()
         );
 
-        assertEquals("Event 0 not found", eventController.readEvent(0).getBody().getError());
+        assertEquals("Event 0 not found", eventController.readEvent(0L).getBody().getError());
 
         assertEquals(
             "Event 0 not found",
-            eventController.updateEvent(0, null).getBody().getError()
+            eventController.updateEvent(0L, null).getBody().getError()
         );
     }
 }

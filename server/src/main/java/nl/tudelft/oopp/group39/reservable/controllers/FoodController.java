@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.reservable.controllers;
 
 import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.reservable.dto.FoodDto;
 import nl.tudelft.oopp.group39.reservable.entities.Food;
 import nl.tudelft.oopp.group39.reservable.services.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +44,11 @@ public class FoodController {
      * @return the created food {@link Food}.
      */
     @PostMapping("")
-    public ResponseEntity<RestResponse<Object>> createFood(@RequestBody Food food) {
+    public ResponseEntity<RestResponse<Object>> createFood(@RequestBody FoodDto food) {
         try {
-            return RestResponse.create(foodService.createFood(food), null, HttpStatus.CREATED);
+            return RestResponse.create(
+                foodService.createFood(food.toEntity()).toDto(),
+                null, HttpStatus.CREATED);
         } catch (Exception e) {
             return RestResponse.error(e);
         }
@@ -57,9 +60,9 @@ public class FoodController {
      * @return the requested food {@link Food}.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> readFood(@PathVariable Integer id) {
+    public ResponseEntity<RestResponse<Object>> readFood(@PathVariable Long id) {
         try {
-            return RestResponse.create(foodService.readFood(id));
+            return RestResponse.create(foodService.readFood(id).toDto());
         } catch (Exception e) {
             return RestResponse.error(e);
         }
@@ -72,11 +75,11 @@ public class FoodController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> updateFood(
-        @PathVariable Integer id,
+        @PathVariable Long id,
         @RequestBody Food food
     ) {
         try {
-            return RestResponse.create(foodService.updateFood(id, food));
+            return RestResponse.create(foodService.updateFood(id, food).toDto());
         } catch (Exception e) {
             return RestResponse.error(e);
         }
@@ -86,7 +89,7 @@ public class FoodController {
      * DELETE Endpoint to delete am food.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteFood(@PathVariable Integer id) {
+    public ResponseEntity<RestResponse<Object>> deleteFood(@PathVariable Long id) {
         foodService.deleteFood(id);
 
         return RestResponse.create(null, null, HttpStatus.OK);

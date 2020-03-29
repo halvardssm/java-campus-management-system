@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 class ReservationServiceTest extends AbstractTest {
     private final Reservation testReservation = new Reservation(
+        null,
         LocalDateTime.now(ZoneId.of("Europe/Paris")),
         LocalDateTime.now(ZoneId.of("Europe/Paris")).plusHours(2),
         null,
@@ -23,6 +24,7 @@ class ReservationServiceTest extends AbstractTest {
         null
     );
     private final ReservationDto testReservationDto = new ReservationDto(
+        null,
         testReservation.getTimeOfPickup().plusDays(2),
         testReservation.getTimeOfDelivery().plusDays(5),
         null,

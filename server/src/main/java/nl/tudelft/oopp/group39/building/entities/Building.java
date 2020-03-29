@@ -2,30 +2,24 @@ package nl.tudelft.oopp.group39.building.entities;
 
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.building.dto.BuildingDto;
-import nl.tudelft.oopp.group39.config.AbstractEntity;
+import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.room.dto.RoomDto;
 import nl.tudelft.oopp.group39.room.entities.Room;
 
 @Entity
 @Table(name = Building.TABLE_NAME)
-@JsonIdentityInfo(
-    generator = ObjectIdGenerators.PropertyGenerator.class,
-    property = Building.COL_ID
-)
-public class Building extends AbstractEntity {
+public class Building extends AbstractEntity<Building, BuildingDto> {
     public static final String TABLE_NAME = "buildings";
     public static final String MAPPED_NAME = "building";
     public static final String COL_OPEN = "open";
@@ -50,6 +44,7 @@ public class Building extends AbstractEntity {
     /**
      * Constructor. TODO Sven
      *
+     * @param id          id
      * @param name        name
      * @param location    location
      * @param description description
@@ -58,6 +53,7 @@ public class Building extends AbstractEntity {
      * @param rooms       rooms
      */
     public Building(
+        Long id,
         String name,
         String location,
         String description,
@@ -66,13 +62,14 @@ public class Building extends AbstractEntity {
         Set<Room> rooms,
         Set<Reservable> reservables
     ) {
-        this.name = name;
-        this.location = location;
-        this.description = description;
-        this.open = open;
-        this.closed = closed;
-        this.rooms.addAll(initSet(rooms));
-        this.reservables.addAll(initSet(reservables));
+        setId(id);
+        setName(name);
+        setLocation(location);
+        setDescription(description);
+        setOpen(open);
+        setClosed(closed);
+        getRooms().addAll(initSet(rooms));
+        getReservables().addAll(initSet(reservables));
     }
 
     /**
@@ -81,12 +78,8 @@ public class Building extends AbstractEntity {
      * @return the BuildingDto converted from building
      */
     public BuildingDto toDto() {
-        Set<RoomDto> roomDtoSet = new HashSet<>();
-        rooms.forEach(room -> roomDtoSet.add(room.toDto()));
-        Set<Integer> reservableSet = new HashSet<>();
-        reservables.forEach(reservable -> reservableSet.add(
-                reservable.getId()
-            ));
+        Set<RoomDto> roomDtoSet = Utils.setEntityToDto(rooms);
+        Set<Long> reservableSet = new HashSet<>(Utils.entitiesToIds(reservables));
 
         return new BuildingDto(
             id,
@@ -96,7 +89,8 @@ public class Building extends AbstractEntity {
             open,
             closed,
             roomDtoSet,
-            reservableSet);
+            reservableSet
+        );
     }
 
     public String getName() {

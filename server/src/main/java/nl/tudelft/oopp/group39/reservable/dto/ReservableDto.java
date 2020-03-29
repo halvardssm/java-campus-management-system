@@ -1,12 +1,20 @@
 package nl.tudelft.oopp.group39.reservable.dto;
 
+import static nl.tudelft.oopp.group39.config.Utils.idToEntity;
+import static nl.tudelft.oopp.group39.config.Utils.initSet;
+
 import java.util.HashSet;
 import java.util.Set;
+import nl.tudelft.oopp.group39.building.entities.Building;
+import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
+import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
+import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 
-public class ReservableDto {
+public class ReservableDto extends AbstractDto<Reservable, ReservableDto> {
     private Double price;
-    private Integer building;
+    private Long building;
     private Set<ReservationAmountDto> reservations = new HashSet<>();
 
     public ReservableDto() {
@@ -15,18 +23,21 @@ public class ReservableDto {
     /**
      * Creates a Dto object.
      *
-     * @param price the price of the reservable
-     * @param building the building id of the reservable
+     * @param id           the id
+     * @param price        the price of the reservable
+     * @param building     the building id of the reservable
      * @param reservations the reservations associated with the reservable
      */
     public ReservableDto(
+        Long id,
         Double price,
-        Integer building,
+        Long building,
         Set<ReservationAmountDto> reservations
     ) {
-        this.price = price;
-        this.building = building;
-        this.reservations.addAll(reservations);
+        setId(id);
+        setBuilding(building);
+        setPrice(price);
+        getReservations().addAll(initSet(reservations));
     }
 
     public Double getPrice() {
@@ -37,11 +48,11 @@ public class ReservableDto {
         this.price = price;
     }
 
-    public Integer getBuilding() {
+    public Long getBuilding() {
         return building;
     }
 
-    public void setBuilding(Integer building) {
+    public void setBuilding(Long building) {
         this.building = building;
     }
 
@@ -52,5 +63,12 @@ public class ReservableDto {
     public void setReservations(Set<ReservationAmountDto> reservations) {
         this.reservations.clear();
         this.reservations.addAll(reservations);
+    }
+
+    @Override
+    public Reservable toEntity() {
+        Set<ReservationAmount> reservationAmount = Utils.setDtoToEntity(reservations);
+
+        return new Reservable(null, price, idToEntity(building, Building.class), reservationAmount);
     }
 }

@@ -16,14 +16,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import nl.tudelft.oopp.group39.config.AbstractEntity;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
+import nl.tudelft.oopp.group39.config.abstracts.IEntity;
 import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.room.entities.Room;
 
 @Entity
 @Table(name = Event.TABLE_NAME)
 @JsonIgnoreProperties(allowSetters = true, value = {Event.COL_ROOMS})
-public class Event extends AbstractEntity {
+public class Event extends AbstractEntity<Event, IEntity> {
     public static final String TABLE_NAME = "events";
     public static final String MAPPED_NAME = "event";
     public static final String COL_ROOMS = "rooms";
@@ -109,5 +110,10 @@ public class Event extends AbstractEntity {
             && Objects.equals(getStartDate(), event.getStartDate())
             && Objects.equals(getEndDate(), event.getEndDate())
             && getRooms().equals(event.getRooms());
+    }
+
+    @Override
+    public IEntity toDto() {
+        return null;
     }
 }

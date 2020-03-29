@@ -10,8 +10,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BuildingRepository extends JpaRepository<Building, Long> {
-
-    @Query("SELECT u FROM Building u WHERE u.id = :id")
-    Building findById(@Param("id") Integer id);
-
 }

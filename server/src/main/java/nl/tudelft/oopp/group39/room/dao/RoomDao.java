@@ -76,8 +76,8 @@ public class RoomDao {
         if (keys.contains(Building.MAPPED_NAME)) {
             allPredicates.add(cb.equal(
                 room.get(Building.MAPPED_NAME),
-                buildingRepository.findById(
-                    Integer.parseInt(filters.get(Building.MAPPED_NAME)))
+                buildingRepository.getOne(
+                    Long.parseLong(filters.get(Building.MAPPED_NAME)))
             ));
         }
 
