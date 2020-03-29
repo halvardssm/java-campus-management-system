@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -7,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
+@JsonIgnoreProperties(value = { "reservations" })
 public class Room {
     private long id;
     private int capacity;
@@ -16,7 +19,12 @@ public class Room {
     private ArrayNode facilities;
     private ArrayNode events;
     private ArrayNode bookings;
-    private long building;
+    private long buildingId;
+
+    @JsonProperty("building")
+    public void setBuildingId(Building building){
+        this.buildingId = building.getId();
+    }
 
     public Room() {
 
@@ -28,23 +36,25 @@ public class Room {
      * @param capacity    capacity of the room
      * @param name        name of the room
      * @param onlyStaff   whether the room is only accessible to staff
-     * @param buildingId  the id of the building
+     * @param building  the id of the building
      * @param description description of the room
      * @param facilities  ArrayNode of facilities the room has
      * @param events      ArrayNode of events for the room
      * @param bookings    ArrayNode of bookings for the room
      */
     public Room(
+        long id,
         int capacity,
         String name,
         boolean onlyStaff,
         String description,
-        long buildingId,
+        ArrayNode building,
         ArrayNode facilities,
         ArrayNode events,
         ArrayNode bookings
     ) {
-        this.building = buildingId;
+        System.out.println("Building: " + building);
+        this.id = id;
         this.name = name;
         this.capacity = capacity;
         this.onlyStaff = onlyStaff;
@@ -59,7 +69,7 @@ public class Room {
     }
 
     public long getBuilding() {
-        return building;
+        return buildingId;
     }
 
     public String getName() {
@@ -122,7 +132,7 @@ public class Room {
     public Building getBuildingObject() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String buildingJson = ServerCommunication.getBuilding(building);
+        String buildingJson = ServerCommunication.getBuilding(this.buildingId);
         JsonNode buildingNode = mapper.readTree(buildingJson).get("body");
         String buildingAsString = mapper.writeValueAsString(buildingNode);
         return mapper.readValue(buildingAsString, Building.class);

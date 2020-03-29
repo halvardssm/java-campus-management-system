@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers;
+package nl.tudelft.oopp.group39.controllers.Admin;
 
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -24,15 +24,15 @@ public class AdminPController {
     @FXML
     private void switchUListView(ActionEvent actionEvent) throws IOException {
         Stage currentstage = (Stage) userlistView.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/AdminUserList.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminUserList.fxml"));
         currentstage.setScene(new Scene(root, 700, 600));
     }
 
     @FXML
     private void switchRoomView(ActionEvent actionEvent) throws IOException {
         Stage currentstage = (Stage) roomView.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/AdminRoomView.fxml"));
-        currentstage.setScene(new Scene(root, 700, 600));
+        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminRoomView.fxml"));
+        currentstage.setScene(new Scene(root, 900, 600));
     }
 
     @FXML
@@ -43,7 +43,7 @@ public class AdminPController {
     @FXML
     private void switchBuildingView(ActionEvent actionEvent) throws IOException {
         Stage currentstage = (Stage) buildingView.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/AdminBuildingView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminBuildingView.fxml"));
         currentstage.setScene(new Scene(root, 900, 600));
     }
 

@@ -1,15 +1,11 @@
-package nl.tudelft.oopp.group39.controllers;
+package nl.tudelft.oopp.group39.controllers.Admin;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,11 +15,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.controllers.MainSceneController;
 import nl.tudelft.oopp.group39.models.Building;
-import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 public class AdminAddBuildingController extends MainSceneController implements Initializable {
 
@@ -107,7 +102,7 @@ public class AdminAddBuildingController extends MainSceneController implements I
     @FXML
     private void switchBack() throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/AdminBuildingView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminBuildingView.fxml"));
         currentstage.setScene(new Scene(root, 700, 600));
     }
 

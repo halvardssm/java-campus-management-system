@@ -46,7 +46,6 @@ public class Room {
     private String name;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Building.MAPPED_NAME)
-    @JsonIgnore
     private Building building;
     private int capacity;
     private boolean onlyStaff;

@@ -6,14 +6,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="600.0" prefWidth="700.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.AdminUpdateRoomController">
+<BorderPane prefHeight="600.0" prefWidth="700.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.Admin.AdminAddBuildingController">
     <top>
         <HBox spacing="10" styleClass="bar">
             <padding>
                 <Insets bottom="15" left="15" right="15" top="15" />
             </padding>
             <children>
-                <Text id="title" text="Admin: Room View" />
+                <Text id="title" text="Admin: Building View" />
             </children>
         </HBox>
     </top>
@@ -30,12 +30,12 @@
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <ImageView fitHeight="485.0" fitWidth="700.0" layoutY="-2.0" opacity="0.25" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <ImageView fitHeight="485.0" fitWidth="400.0" layoutY="-2.0" opacity="0.25" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <image>
                         <Image url="@../../../../../../../../TuDelft/download.png" />
                     </image>
                 </ImageView>
-                <Text layoutX="209.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update a room" underline="true">
+                <Text layoutX="209.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add a building" underline="true">
                     <font>
                         <Font name="System Bold" size="33.0" />
                     </font>
@@ -45,32 +45,32 @@
                         <Font name="System Bold" size="17.0" />
                     </font>
                 </Text>
-                <TextField fx:id="roomNameField" layoutX="200.0" layoutY="84.0" prefHeight="31.0" prefWidth="200.0" promptText="name" />
-                <Text layoutX="18.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Capacity:">
+                <TextField fx:id="nameFieldNew" layoutX="200.0" layoutY="84.0" prefHeight="31.0" prefWidth="200.0" promptText="name" />
+                <Text layoutX="18.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Closing Time:">
                     <font>
                         <Font name="System Bold" size="17.0" />
                     </font>
                 </Text>
-                <TextField fx:id="roomCapacityField" layoutX="200.0" layoutY="329.0" prefHeight="31.0" prefWidth="200.0" promptText="0" />
-                <Text layoutX="19.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Building:">
+                <TextField fx:id="timeClosedFieldNew" layoutX="200.0" layoutY="329.0" prefHeight="31.0" prefWidth="200.0" promptText="00:00:00" />
+                <Text layoutX="19.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address:">
                     <font>
                         <Font name="System Bold" size="17.0" />
                     </font>
                 </Text>
-                <ComboBox fx:id="roomBuildingIdField" layoutX="200.0" layoutY="138.0" prefHeight="31.0" prefWidth="200.0" promptText="Address" />
+                <TextField fx:id="locationFieldNew" layoutX="200.0" layoutY="138.0" prefHeight="31.0" prefWidth="200.0" promptText="Address" />
                 <Text layoutX="13.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Opening Time:">
                     <font>
                         <Font name="System Bold" size="17.0" />
                     </font>
                 </Text>
-                <ComboBox fx:id="roomOnlyStaffField" layoutX="200.0" layoutY="287.0" prefHeight="31.0" prefWidth="200.0" promptText="Only staff" />
+                <TextField fx:id="timeOpenFieldNew" layoutX="200.0" layoutY="287.0" prefHeight="31.0" prefWidth="200.0" promptText="23:59:59" />
                 <Text layoutX="14.0" layoutY="204.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" wrappingWidth="109.99365234375">
                     <font>
                         <Font name="System Bold" size="17.0" />
                     </font>
                 </Text>
-                <TextField fx:id="roomDescriptionField" layoutX="200.0" layoutY="182.0" prefHeight="31.0" prefWidth="200.0" promptText="description" />
-                <Button layoutX="600.0" layoutY="450.0" mnemonicParsing="false" onMouseClicked="#updateBuilding" text="Update Building" />
+                <TextField fx:id="descriptionFieldNew" layoutX="200.0" layoutY="182.0" prefHeight="31.0" prefWidth="200.0" promptText="description" />
+                <Button layoutX="507.0" layoutY="445.0" mnemonicParsing="false" onMouseClicked="#addBuilding" text="Add Building" />
             </children>
         </AnchorPane>
     </center>

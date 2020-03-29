@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="600.0" prefWidth="700.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.AdminUListController">
+<BorderPane prefHeight="600.0" prefWidth="700.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.Admin.AdminUListController">
    <top>
       <HBox spacing="10" styleClass="bar">
          <padding>
@@ -35,7 +35,7 @@
                   <Image url="@../../../../../../../../TuDelft/download.png" />
                </image>
             </ImageView>
-            <Text layoutX="79.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Users" underline="true">
+            <Text layoutX="220.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Users" underline="true">
                <font>
                   <Font name="System Bold" size="33.0" />
                </font>
@@ -45,29 +45,13 @@
                   <Font name="System Bold" size="19.0" />
                </font>
             </Button>
-            <TextField fx:id="UID" layoutX="470.0" layoutY="125.0" prefHeight="31.0" prefWidth="217.0" />
-            <Text layoutX="441.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID:">
-               <font>
-                  <Font size="23.0" />
-               </font>
-            </Text>
-            <Text layoutX="411.0" layoutY="344.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </Text>
-            <Text layoutX="406.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status:">
-               <font>
-                  <Font size="21.0" />
-               </font>
-            </Text>
-            <TextField fx:id="UName" layoutX="470.0" layoutY="321.0" prefHeight="31.0" prefWidth="216.0" />
-            <TextField fx:id="UStatus" layoutX="468.0" layoutY="218.0" prefHeight="31.0" prefWidth="221.0" />
-            <TableView fx:id="usertable" editable="true" layoutY="55.0" opacity="0.75" prefHeight="432.0" prefWidth="406.0">
+            <TableView fx:id="usertable" editable="true" layoutY="55.0" opacity="0.75" prefHeight="432.0" prefWidth="700.0">
               <columns>
-                <TableColumn fx:id="IDCol" prefWidth="71.0" text="ID" />
-                <TableColumn fx:id="nameCol" prefWidth="204.0" text="Name" />
-                 <TableColumn fx:id="statusCol" prefWidth="130.0" text="Status" />
+                 <TableColumn fx:id="idCol" prefWidth="200.0" text="ID" />
+                 <TableColumn fx:id="emailCol" prefWidth="200.0" text="Name" />
+                 <TableColumn fx:id="statusCol" prefWidth="150.0" text="Status" />
+                 <TableColumn fx:id="userDelCol" prefWidth="75.0" text="Delete" />
+                 <TableColumn fx:id="userUpCol" prefWidth="75.0" text="Update" />
               </columns>
             </TableView>
          </children>

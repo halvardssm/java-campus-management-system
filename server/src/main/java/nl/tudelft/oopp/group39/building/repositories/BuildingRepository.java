@@ -68,6 +68,6 @@ public interface BuildingRepository extends JpaRepository<Building, Long> {
     @Query("SELECT u FROM Building u WHERE u.id = :id")
     List<Building> findById(@Param("id") int id);
 
-    @Query("SELECT u FROM Building u WHERE :id IN u.rooms")
+    @Query("SELECT u FROM Building u WHERE :room IN u.rooms")
     List<Building> findBuildingsByRoom(@Param("room") Room room);
 }

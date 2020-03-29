@@ -48,9 +48,9 @@ public class BuildingModifierController extends MainSceneController {
 
         String open = getTime(timeOpenField.getText(), true);
         String closed = getTime(timeClosedField.getText(), false);
-        createAlert(
-            ServerCommunication.getFilteredBuildings(name, location, open, closed, capacity)
-        );
+//        createAlert(
+//            ServerCommunication.getFilteredBuildings(name, location, open, closed, capacity)
+//        );
     }
 
     /**

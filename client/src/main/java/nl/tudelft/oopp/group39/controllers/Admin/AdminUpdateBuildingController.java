@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers;
+package nl.tudelft.oopp.group39.controllers.Admin;
 
 import java.io.IOException;
 import java.net.URL;
@@ -17,6 +17,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.controllers.MainSceneController;
 import nl.tudelft.oopp.group39.models.Building;
 
 public class AdminUpdateBuildingController extends MainSceneController implements Initializable {
@@ -92,7 +93,7 @@ public class AdminUpdateBuildingController extends MainSceneController implement
     @FXML
     private void switchBack() throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/AdminBuildingView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminBuildingView.fxml"));
         currentstage.setScene(new Scene(root, 700, 600));
     }
 
@@ -117,7 +118,6 @@ public class AdminUpdateBuildingController extends MainSceneController implement
         descriptionFieldNew.clear();
         timeOpenFieldNew.clear();
         timeClosedFieldNew.clear();
-        updateBuildingField.clear();
     }
 
 }
