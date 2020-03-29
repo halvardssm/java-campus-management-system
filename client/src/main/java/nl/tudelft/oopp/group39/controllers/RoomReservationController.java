@@ -52,6 +52,8 @@ public class RoomReservationController extends MainSceneController {
     private Label titleLabel;
     @FXML
     private Label onlyStaff;
+    @FXML
+    private Label errormsg;
 
     private Building building;
     private Room room;
@@ -103,11 +105,11 @@ public class RoomReservationController extends MainSceneController {
         LocalDate bookingDate = date.getValue();
         String bookingStart = fromTime.getValue() + ":00";
         String bookingEnd = toTime.getValue() + ":00";
-        if (checkEmpty(date, fromTime, toTime)) {
+        if (loggedIn) {
             String dateString = date.getValue()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             if (checkDate(dateString)) {
-                if (loggedIn) {
+                if (checkEmpty(date, fromTime, toTime)) {
                     long roomId = room.getId();
                     String roomIdString = "" + roomId;
                     String username = MainSceneController.user.getUsername();
@@ -126,12 +128,10 @@ public class RoomReservationController extends MainSceneController {
                     System.out.println(bookingDate);
                     System.out.println(bookingStart + "\n" + bookingEnd);
                     backToRoom();
-                } else {
-                    showAlert(Alert.AlertType.ERROR, "",
-                        "Please log in if you want to reserve a room.");
-                    goToLoginScene();
                 }
             }
+        } else {
+            errormsg.setText("Please log in to book a room");
         }
     }
 
@@ -149,7 +149,7 @@ public class RoomReservationController extends MainSceneController {
             || start.getSelectionModel().isEmpty()
             || end.getSelectionModel().isEmpty()
         ) {
-            showAlert(Alert.AlertType.ERROR, "", "Please fill in all the fields.");
+            errormsg.setText("Please fill in all the fields");
             return false;
         } else {
             return true;
@@ -273,6 +273,12 @@ public class RoomReservationController extends MainSceneController {
         }
     }
 
+    /**
+     * Updates the timeslots for choosing start time according to booked times on selected date.
+     *
+     * @param date the selected date
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public void updateStartSlots(String date) throws JsonProcessingException {
         fromTime.getItems().clear();
         fromTime.getItems().addAll(initiateTimeslots(date));
@@ -337,27 +343,6 @@ public class RoomReservationController extends MainSceneController {
             }
         });
 
-    }
-
-
-    /**
-     * Switches to login page when the Login button is clicked.
-     *
-     * @throws IOException throws an IOException
-     */
-    @FXML
-    private void switchLogin() throws IOException {
-        goToLoginScene();
-    }
-
-    /**
-     * Switches to the homepage when the *SomeName* button is clicked.
-     *
-     * @throws IOException throws an IOException
-     */
-    @FXML
-    private void switchMain() throws IOException {
-        goToBuildingScene();
     }
 
     /**

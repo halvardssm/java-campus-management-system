@@ -242,6 +242,7 @@
     -fx-background-color: #00A6D6;
     -fx-text-fill: white;
     -fx-font-size: 18;
+    -fx-padding: 15;
 }
 
 #reserveButton:hover {

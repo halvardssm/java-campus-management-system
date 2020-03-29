@@ -55,17 +55,19 @@
                         <Label fx:id="roomDetails" id="roomRDetails" text="Description:&#10;Capacity:&#10;Facilities:"/>
                     </VBox>
 
-                    <GridPane hgap="20" vgap="20">
+                    <GridPane hgap="20" vgap="20" prefWidth="300">
                         <Label text="Pick a date: " id="text" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
                         <DatePicker fx:id="date" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
                         <Label text="From: " id="text" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
                         <ComboBox fx:id="fromTime" prefWidth="80.0" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                         <Label text="To: " id="text" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
                         <ComboBox fx:id="toTime" prefWidth="80.0" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                        <Label fx:id="onlyStaff" id="onlyStaff" GridPane.columnIndex="0" GridPane.rowIndex="4"
+                        <Label fx:id="errormsg" id="errorfield" GridPane.columnIndex="0" GridPane.rowIndex="4"
                                GridPane.columnSpan="2"/>
-                        <Button text="Reserve Room" id="reserveButton" fx:id="reserveButton" mnemonicParsing="false"
+                        <Button text="Reserve Room" id="orderbtn" fx:id="reserveButton" mnemonicParsing="false"
                                 GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.columnSpan="2"/>
+                        <Label fx:id="onlyStaff" id="onlyStaff" GridPane.columnIndex="0" GridPane.rowIndex="6"
+                               GridPane.columnSpan="2"/>
                     </GridPane>
                 </HBox>
             </center>
@@ -92,17 +94,6 @@
         <VBox fx:id="sidebar" id="sidebar">
         </VBox>
     </left>
-    <!--    <bottom>-->
-    <!--        <HBox styleClass="bar" spacing="10">-->
-    <!--            <padding>-->
-    <!--                <Insets top="10" right="15" bottom="10" left="10"/>-->
-    <!--            </padding>-->
-    <!--            <VBox alignment="CENTER">-->
-    <!--                <Button id="backButton" fx:id="backButton" mnemonicParsing="false" onAction="#backToRoom"-->
-    <!--                        text="◀ BACK"/>-->
-    <!--            </VBox>-->
-    <!--        </HBox>-->
-    <!--    </bottom>-->
     <stylesheets>
         <URL value="@style.css"/>
     </stylesheets>
