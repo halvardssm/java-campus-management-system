@@ -42,14 +42,14 @@
             </Text>
             <TableView fx:id="buildingTable" layoutY="49.0" opacity="0.75" prefHeight="400.0" prefWidth="700.0">
               <columns>
-                <TableColumn fx:id="buildingnameCol" prefWidth="142.0" text="Name" />
-                  <TableColumn fx:id="buildingidCol" prefWidth="39.0" text="ID" />
-                <TableColumn fx:id="buildinglocationCol" prefWidth="101.0" text="Address" />
-                  <TableColumn fx:id="buildingOpenTimeCol" prefWidth="87.0" text="Open Time" />
-                  <TableColumn fx:id="buildingCloseTimeCol" prefWidth="101.0" text="Closing Time" />
-                  <TableColumn fx:id="buildingDescriptionCol" prefWidth="129.0" text="Description" />
-                 <TableColumn fx:id="buildingDelCol" prefWidth="50.0" text="Delete" />
-                 <TableColumn fx:id="buildingUpCol" prefWidth="50.0" text="Update" />
+                <TableColumn fx:id="buildingnameCol" prefWidth="100.0" text="Name" />
+                  <TableColumn fx:id="buildingidCol" prefWidth="50.0" text="ID" />
+                <TableColumn fx:id="buildinglocationCol" prefWidth="100.0" text="Address" />
+                  <TableColumn fx:id="buildingOpenTimeCol" prefWidth="100.0" text="Open Time" />
+                  <TableColumn fx:id="buildingCTimeCol" prefWidth="100.0" text="Closing Time" />
+                  <TableColumn fx:id="buildingDescriptionCol" prefWidth="125.0" text="Description" />
+                 <TableColumn fx:id="buildingDelCol" prefWidth="60.0" text="Delete" />
+                 <TableColumn fx:id="buildingUpCol" prefWidth="60.0" text="Update" />
               </columns>
             </TableView>
             <Button layoutX="600.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#adminAddBuilding" text="Add Building" />

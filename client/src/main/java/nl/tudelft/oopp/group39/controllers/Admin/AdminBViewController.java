@@ -49,9 +49,9 @@ public class AdminBViewController extends MainSceneController implements Initial
     @FXML
     private TableColumn<Building, String> buildinglocationCol = new TableColumn<>("Address");
     @FXML
-    private TableColumn<Building, String> buildingdescriptionCol = new TableColumn<>("Description");
+    private TableColumn<Building, String> buildingDescriptionCol = new TableColumn<>("Description");
     @FXML
-    private TableColumn<Building, LocalTime> buildingOpenTimeCol = new TableColumn<>("Open Time");
+    private TableColumn<Building, LocalTime> buildingOpenTimeCol = new TableColumn<>("Opening Time");
     @FXML
     private TableColumn<Building, LocalTime> buildingCTimeCol = new TableColumn<>("Closing Time");
     @FXML
@@ -119,7 +119,7 @@ public class AdminBViewController extends MainSceneController implements Initial
         buildingnameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         buildingidCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         buildinglocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
-        buildingdescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        buildingDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
         buildingOpenTimeCol.setCellValueFactory(new PropertyValueFactory<>("open"));
         buildingCTimeCol.setCellValueFactory(new PropertyValueFactory<>("closed"));
 
@@ -180,7 +180,7 @@ public class AdminBViewController extends MainSceneController implements Initial
             }
         });
         buildingTable.setItems(data);
-        buildingTable.getColumns().addAll(buildingnameCol, buildingidCol, buildinglocationCol, buildingCTimeCol, buildingOpenTimeCol, buildingdescriptionCol, buildingDelCol, buildingUpCol);
+        buildingTable.getColumns().addAll(buildingnameCol, buildingidCol, buildinglocationCol, buildingCTimeCol, buildingOpenTimeCol, buildingDescriptionCol, buildingDelCol, buildingUpCol);
     }
 
 
