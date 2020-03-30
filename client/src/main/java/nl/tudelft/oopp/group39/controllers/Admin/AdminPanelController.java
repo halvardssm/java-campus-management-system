@@ -1,9 +1,13 @@
 package nl.tudelft.oopp.group39.controllers.Admin;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -14,7 +18,7 @@ import nl.tudelft.oopp.group39.views.AdminPanel;
 import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 
-public class AdminPanelController extends MainAdminController {
+public class AdminPanelController extends MainAdminController implements Initializable {
     @FXML
     private Button userlistView;
     @FXML
@@ -23,29 +27,12 @@ public class AdminPanelController extends MainAdminController {
     private Button roomView;
     @FXML
     private Button eventView;
-
     @FXML
-    private void switchUListView(ActionEvent actionEvent) throws IOException {
-        Stage currentstage = (Stage) buildingView.getScene().getWindow();
-        mainSwitch("/Admin/User/UserList.fxml", currentstage);
-    }
+    private MenuBar NavBar;
 
-    @FXML
-    private void switchRoomView(ActionEvent actionEvent) throws IOException {
-        Stage currentstage = (Stage) buildingView.getScene().getWindow();
-        mainSwitch("/Admin/Room/RoomList.fxml", currentstage);
-    }
-
-    @FXML
-    private void switchEvents(ActionEvent actionEvent) throws IOException {
-        Stage currentstage = (Stage) buildingView.getScene().getWindow();
-        mainSwitch("/Admin/Event/EventList.fxml", currentstage);
-    }
-
-    @FXML
-    private void switchBuildingView(ActionEvent actionEvent) throws IOException {
-        Stage currentstage = (Stage) buildingView.getScene().getWindow();
-        mainSwitch("/Admin/Building/BuildingList.fxml", currentstage);
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        setNavBar(NavBar);
     }
 
     public void setNavBar(MenuBar menuBar) {

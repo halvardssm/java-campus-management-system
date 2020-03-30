@@ -9,6 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.MenuBar?>
 <AnchorPane prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.Admin.AdminPanelController">
    <children>
 <!--      <ImageView fitHeight="367.0" fitWidth="662.0" layoutX="17.0" layoutY="111.0" opacity="0.75" pickOnBounds="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="120.0">-->
@@ -40,9 +41,13 @@
             </Button>
          </children>
       </HBox>
-      <Button id="UListView" fx:id="userlistView" layoutX="24.0" layoutY="116.0" mnemonicParsing="false" onAction="#switchUListView" prefHeight="120.0" prefWidth="250.0" text="User List Overview" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="125.0" />
-      <Button id="EventView" fx:id="eventView" layoutX="421.0" layoutY="360.0" mnemonicParsing="false" onAction="#switchEvents" prefHeight="120.0" prefWidth="250.0" text="Overview of Events and Vacations" AnchorPane.bottomAnchor="125.0" AnchorPane.rightAnchor="25.0" />
-      <Button id="RoomView" fx:id="roomView" layoutX="24.0" layoutY="367.0" mnemonicParsing="false" onAction="#switchRoomView" prefHeight="120.0" prefWidth="250.0" text="Room Overview" AnchorPane.bottomAnchor="125.0" AnchorPane.leftAnchor="25.0" />
-      <Button id="UListView" fx:id="buildingView" layoutX="340.0" layoutY="141.0" mnemonicParsing="false" onAction="#switchBuildingView" prefHeight="120.0" prefWidth="250.0" text="Building Overview" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="125.0" />
+<!--      <Button id="UListView" fx:id="userlistView" layoutX="24.0" layoutY="116.0" mnemonicParsing="false" onAction="#switchUListView" prefHeight="120.0" prefWidth="250.0" text="User List Overview" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="125.0" />-->
+<!--      <Button id="EventView" fx:id="eventView" layoutX="421.0" layoutY="360.0" mnemonicParsing="false" onAction="#switchEvents" prefHeight="120.0" prefWidth="250.0" text="Overview of Events and Vacations" AnchorPane.bottomAnchor="125.0" AnchorPane.rightAnchor="25.0" />-->
+<!--      <Button id="RoomView" fx:id="roomView" layoutX="24.0" layoutY="367.0" mnemonicParsing="false" onAction="#switchRoomView" prefHeight="120.0" prefWidth="250.0" text="Room Overview" AnchorPane.bottomAnchor="125.0" AnchorPane.leftAnchor="25.0" />-->
+<!--      <Button id="UListView" fx:id="buildingView" layoutX="340.0" layoutY="141.0" mnemonicParsing="false" onAction="#switchBuildingView" prefHeight="120.0" prefWidth="250.0" text="Building Overview" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="125.0" />-->
+       <MenuBar layoutY="102.0" prefHeight="33.0" prefWidth="890.0" fx:id="NavBar">
+           <menus>
+           </menus>
+       </MenuBar>
    </children>
 </AnchorPane>
