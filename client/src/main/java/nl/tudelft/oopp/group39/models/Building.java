@@ -49,7 +49,9 @@ public class Building {
         this.closed = closed;
     }
 
-    public Integer getId() { return id; }
+    public Integer getId() {
+        return id;
+    }
 
     public String getName() {
         return name;

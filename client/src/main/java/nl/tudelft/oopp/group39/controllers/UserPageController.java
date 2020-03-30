@@ -17,7 +17,6 @@ import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.BookingDto;
 import nl.tudelft.oopp.group39.views.UsersDisplay;
 
-import javax.print.attribute.standard.Severity;
 
 public class UserPageController extends MainSceneController {
     @FXML
@@ -74,27 +73,26 @@ public class UserPageController extends MainSceneController {
                 newBooking = FXMLLoader.load(getClass().getResource("/bookingCell.fxml"));
                 Integer roomName2 = Math.toIntExact(booking.getRoom());
                 String roomName = ServerCommunication.getRoom(roomName2).getName();
-                String bookingID = Long.toString(booking.getId());
-                String roomId = Long.toString(booking.getRoom());
-                String startTime = booking.getStartTime();
-                String duration = differenceBetweenTwoTimes(
-                        LocalTime.parse(booking.getStartTime()),
-                        LocalTime.parse(booking.getEndTime()));
-
                 Label name = (Label) newBooking.lookup("#rName");
                 name.setText(roomName);
 
-                Label date = (Label) newBooking.lookup("#rDate");
-                date.setText("Starting Time: " + startTime);
-
-                Label bookingDuration = (Label) newBooking.lookup("#rDuration");
-                bookingDuration.setText("Duration: " + duration);
-
+                String bookingID = Long.toString(booking.getId());
                 Label bookID = (Label) newBooking.lookup("#bookingID");
                 bookID.setText(bookingID);
 
+                String roomId = Long.toString(booking.getRoom());
                 Label bookedRoom = (Label) newBooking.lookup("#roomID");
                 bookedRoom.setText(roomId);
+
+                String startTime = booking.getStartTime();
+                Label date = (Label) newBooking.lookup("#rDate");
+                date.setText("Starting Time: " + startTime);
+
+                String duration = differenceBetweenTwoTimes(
+                        LocalTime.parse(booking.getStartTime()),
+                        LocalTime.parse(booking.getEndTime()));
+                Label bookingDuration = (Label) newBooking.lookup("#rDuration");
+                bookingDuration.setText("Duration: " + duration);
 
                 flowPane.getChildren().add(newBooking);
             }
@@ -150,26 +148,26 @@ public class UserPageController extends MainSceneController {
         doneButton.setOpacity(0);
 
         try {
-            LocalTime sTime = LocalTime.parse(editStartingTime.getText());
-            LocalTime dTime = LocalTime.parse(editDuration.getText());
+            LocalTime startTime = LocalTime.parse(editStartingTime.getText());
+            LocalTime durationTime = LocalTime.parse(editDuration.getText());
 
-            if (sTime.getMinute() != 00 || sTime.getSecond() != 00
-                || dTime.getMinute() != 00 || dTime.getSecond() != 00) {
+            if (startTime.getMinute() != 00 || startTime.getSecond() != 00
+                || durationTime.getMinute() != 00 || durationTime.getSecond() != 00) {
                 createAlert("You can only book rooms starting at the hour");
                 return;
             }
-            if (sTime.getHour() < 9) {
+            if (startTime.getHour() < 9) {
                 createAlert("You can only book a room after 9");
                 return;
             }
-            if (dTime.getHour() > 4) {
+            if (durationTime.getHour() > 4) {
                 createAlert("You can't book a room longer than 4 hours");
                 return;
             }
-            if (sTime.getHour() == 17 && dTime.getHour() == 4
-                || sTime.getHour() == 18 && dTime.getHour() == 3
-                || sTime.getHour() == 19 && dTime.getHour() == 2
-                || sTime.getHour() == 20) {
+            if (startTime.getHour() == 17 && durationTime.getHour() == 4
+                || startTime.getHour() == 18 && durationTime.getHour() == 3
+                || startTime.getHour() == 19 && durationTime.getHour() == 2
+                || startTime.getHour() == 20) {
                 createAlert("You can only book a room until 8");
                 return;
             }
