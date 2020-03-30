@@ -62,9 +62,8 @@ public class ReservationController {
     @GetMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> readReservation(@PathVariable Long id) {
         try {
-            Reservation test = reservationService.readReservation(id);
-
-            return RestResponse.create(test
+            return RestResponse.create(
+                reservationService.readReservation(id)
                 .toDto());
         } catch (Exception e) {
             return RestResponse.error(e);
