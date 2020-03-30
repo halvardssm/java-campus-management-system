@@ -268,6 +268,4 @@ public class BuildingSceneController extends MainSceneController implements Init
     public void initialize(URL location, ResourceBundle resources) {
         getAllBuildings();
     }
-
-
 }

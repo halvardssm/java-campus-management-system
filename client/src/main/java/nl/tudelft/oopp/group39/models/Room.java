@@ -64,9 +64,7 @@ public class Room {
         return building;
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return name; }
 
     public Integer getCapacity() {
         return capacity;
