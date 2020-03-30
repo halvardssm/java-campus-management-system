@@ -113,19 +113,6 @@ public class ServerCommunication {
     }
 
     /**
-     * Retrieves bookings from the server.
-     *
-     * @return the body of a get request to the server.
-     */
-    public static String getBookings() {
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(url + "booking"))
-                .build();
-        return httpRequest(request);
-    }
-
-    /**
      * Retrieves filtered list of buildings from the server.
      *
      * @return the body of a get request to the server.
