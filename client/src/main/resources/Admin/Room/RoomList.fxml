@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.Admin.AdminRoomViewController">
+<BorderPane style="-fx-padding: 4px;" prefHeight="600.0" prefWidth="900.0" stylesheets="@../../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.Admin.Room.RoomListController">
    <top>
       <HBox spacing="10" styleClass="bar">
          <padding>
@@ -30,17 +30,17 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="485.0" fitWidth="700.0" layoutY="-2.0" opacity="0.25" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <image>
-                  <Image url="@../../../../../../../../TuDelft/download.png" />
-               </image>
-            </ImageView>
-            <Text layoutX="209.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Rooms" underline="true">
+<!--            <ImageView fitHeight="485.0" fitWidth="700.0" layoutY="-2.0" opacity="0.25" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">-->
+<!--               <image>-->
+<!--                  <Image url="@../../../../../../../../TuDelft/download.png" />-->
+<!--               </image>-->
+<!--            </ImageView>-->
+            <Text layoutX="209.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Rooms" underline="true">
                <font>
                   <Font name="System Bold" size="33.0" />
                </font>
             </Text>
-            <TableView fx:id="roomTable" layoutY="49.0" opacity="0.75" prefHeight="450.0" prefWidth="700.0">
+            <TableView fx:id="roomTable" layoutY="81.0" opacity="0.75" prefHeight="418.0" prefWidth="700.0">
                <columns>
                   <TableColumn fx:id="roomIdCol" prefWidth="106.0" text="ID" />
                   <TableColumn fx:id="roomBuildingIdCol" prefWidth="37.0" text="Building ID" />
@@ -51,8 +51,8 @@
                   <TableColumn fx:id="roomUpdateCol" prefWidth="50.0" text="Update" />
                </columns>
             </TableView>
-            <Button layoutX="600.0" layoutY="16.0" mnemonicParsing="false" onMouseClicked="#adminAddRoom" text="Add Room" />
-            <BorderPane layoutX="716.0" layoutY="7.0" prefHeight="470.0" prefWidth="176.0" style="-fx-background-color: lightgray;">
+            <Button layoutX="600.0" layoutY="48.0" mnemonicParsing="false" onMouseClicked="#createRoom" text="Add Room" />
+            <BorderPane layoutX="716.0" layoutY="39.0" prefHeight="438.0" prefWidth="176.0" style="-fx-background-color: lightgray;">
                <center>
                   <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-padding: 4px;" BorderPane.alignment="CENTER">
                      <children>
@@ -62,19 +62,23 @@
                            </font>
                         </Label>
                         <Label text="Name:" />
-                        <TextField fx:id="roomNameField"/>
+                        <TextField fx:id="roomNameField" />
                         <Label text="Building:" />
-                        <ComboBox fx:id="roomBuildingIdField"/>
+                        <ComboBox fx:id="roomBuildingIdField" />
                         <Label text="Description:" />
                         <TextField />
                         <Label text="Only Staff:" />
                         <ComboBox fx:id="roomOnlyStaffField" />
-                        <Label text="Closing time:" />
-                        <ChoiceBox prefWidth="150.0" />
+                        <Label text="Facilities:" />
+                        <ListView fx:id="facilitiesList" prefHeight="200.0" prefWidth="200.0" />
                      </children>
                   </VBox>
                </center>
             </BorderPane>
+            <MenuBar layoutY="2.0" prefHeight="33.0" prefWidth="890.0" fx:id="NavBar">
+               <menus>
+               </menus>
+            </MenuBar>
          </children>
       </AnchorPane>
    </center>

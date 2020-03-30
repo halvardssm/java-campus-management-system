@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers.Admin;
+package nl.tudelft.oopp.group39.controllers.Admin.Room;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,6 +22,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -28,21 +32,22 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.controllers.Admin.AdminPanelController;
+import nl.tudelft.oopp.group39.controllers.Admin.MainAdminController;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
 import nl.tudelft.oopp.group39.models.Building;
+import nl.tudelft.oopp.group39.models.Facility;
 import nl.tudelft.oopp.group39.models.Room;
 
-public class AdminRoomViewController extends MainSceneController implements Initializable {
+public class RoomListController extends AdminPanelController implements Initializable {
     @FXML
     private Button backbtn;
     @FXML
-    private TextField roomNameField;
+    private TextField nameFieldNew;
     @FXML
-    private TextField roomFacilitiesField;
+    private TextField locationFieldNew;
     @FXML
-    private TextField roomDescriptionField;
-    @FXML
-    private TextField roomCapacityField;
+    private TextField descriptionFieldNew;
     @FXML
     private TableView<Room> roomTable = new TableView<>();
     @FXML
@@ -63,10 +68,16 @@ public class AdminRoomViewController extends MainSceneController implements Init
     private TableColumn<Room, Room> roomUpdateCol = new TableColumn<>("Update");
     private HashMap<String, Integer> buildingsByName = new HashMap();
     private HashMap<Integer, String> buildingsById = new HashMap();
+    private HashMap<String, Integer> facilitiesByName = new HashMap();
+    private HashMap<Integer, String> facilitiesById = new HashMap();
     @FXML
     private ComboBox roomBuildingIdField;
     @FXML
     private ComboBox roomOnlyStaffField;
+    @FXML
+    private ListView facilitiesList;
+    @FXML
+    private MenuBar NavBar;
 
     /**
      * Initialize data into tableView.
@@ -75,6 +86,7 @@ public class AdminRoomViewController extends MainSceneController implements Init
     public void initialize(URL location, ResourceBundle resources) {
         try {
             loadRooms();
+            setNavBar(NavBar);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -86,18 +98,28 @@ public class AdminRoomViewController extends MainSceneController implements Init
         return FXCollections.observableArrayList(buildingNames);
     }
 
+    public ObservableList<String> getFacilityData(String b) throws JsonProcessingException {
+        List<Facility> facilities = getFacility(b);
+        List<String> facilityNames = getFacilityNames(facilities);
+        return FXCollections.observableArrayList(facilityNames);
+    }
     /**
      * Display rooms and data in tableView buildingTable. -- Likely doesn't work yet. Need to add nameCol.
      */
     void loadRooms() throws JsonProcessingException {
         String b = ServerCommunication.get(ServerCommunication.building);
         ObservableList<String> nData = getData(b);
+        String f = ServerCommunication.get(ServerCommunication.facility);
+        System.out.println("tset: " + f);
+        ObservableList<String> fData = getFacilityData(f);
         List<String> options = new ArrayList<>();
         options.add("All users"); options.add("Only staff members");
         ObservableList<String> dataOptions = FXCollections.observableArrayList(options);
         roomBuildingIdField.setItems(nData);
         roomBuildingIdField.setPromptText(nData.get(0));
         roomOnlyStaffField.setItems(dataOptions);
+        facilitiesList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        facilitiesList.setItems(fData);
         roomOnlyStaffField.setPromptText(dataOptions.get(0));
         roomTable.setVisible(true);
         roomTable.getItems().clear();
@@ -105,7 +127,7 @@ public class AdminRoomViewController extends MainSceneController implements Init
 
         String rooms = ServerCommunication.get(ServerCommunication.room);
         ArrayNode body = (ArrayNode) mapper.readTree(rooms).get("body");
-        System.out.println(rooms = "\n" + body.toString());
+        System.out.println(rooms + "\n" + body.toString());
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         List<Room> roomList = new ArrayList<>();
         for (JsonNode roomJson : body) {
@@ -116,9 +138,7 @@ public class AdminRoomViewController extends MainSceneController implements Init
                 roomList.add(room);
             }
         }
-//        rooms = mapper.writeValueAsString(body);
-//        System.out.println(rooms);
-//        Room[] list = mapper.readValue(rooms, Room[].class);
+
         ObservableList<Room> data = FXCollections.observableArrayList(roomList);
         roomBuildingIdCol.setCellValueFactory(new PropertyValueFactory<>("building"));
         roomIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -145,7 +165,7 @@ public class AdminRoomViewController extends MainSceneController implements Init
                 deleteButton.setOnAction(
                     event -> {
                         try {
-                            deleteRoomView(room);
+                            deleteRoom(room);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -173,7 +193,7 @@ public class AdminRoomViewController extends MainSceneController implements Init
                 updateButton.setOnAction(
                     event -> {
                         try {
-                            updateRoomField(room);
+                            editRoom(room);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -186,26 +206,21 @@ public class AdminRoomViewController extends MainSceneController implements Init
         roomTable.getColumns().addAll(roomBuildingIdCol, roomIdCol, roomCapacityCol, roomStaffCol, roomNameCol, roomDelCol, roomUpdateCol);
     }
 
-    public void adminAddRoom() throws IOException {
-        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminAddRoom.fxml"));
-        currentstage.setScene(new Scene(root, 700, 600));
+    public void createRoom() throws IOException {
+        switchFunc("/Admin/Room/RoomCreate.fxml");
     }
 
-    public void deleteRoomView(Room room) throws IOException {
+    public void deleteRoom(Room room) throws IOException {
         String id = Integer.toString((int) room.getId());
         ServerCommunication.removeRoom(id);
         createAlert("removed: " + room.getName());
         loadRooms();
     }
 
-    public void updateRoomField(Room room) throws IOException {
-        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Admin/AdminUpdateRoomView.fxml"));
-        Parent root = loader.load();
-        AdminUpdateRoomController controller = loader.getController();
+    public void editRoom(Room room) throws IOException {
+        FXMLLoader loader = switchFunc("/Admin/Room/RoomEdit.fxml");
+        RoomEditController controller = loader.getController();
         controller.initData(room);
-        currentstage.setScene(new Scene(root, 700, 600));
     }
 
     public List<Building> getBuildings(String buildings) throws JsonProcessingException {
@@ -226,6 +241,35 @@ public class AdminRoomViewController extends MainSceneController implements Init
         return a;
     }
 
+    public List<Facility> getFacility(String facilities) throws JsonProcessingException {
+        ArrayNode body = (ArrayNode) mapper.readTree(facilities).get("body");
+        facilities = mapper.writeValueAsString(body);
+        Facility[] list = mapper.readValue(facilities, Facility[].class);
+        return Arrays.asList(list);
+    }
+
+    public List<String> getFacilityNames(List<Facility> facilities) {
+        List<String> a = new ArrayList<>();
+        for(Facility facility : facilities) {
+            this.facilitiesByName.put(facility.getDescription(), (int) facility.getId());
+            this.facilitiesById.put((int) facility.getId(), facility.getDescription());
+            a.add(facility.getDescription());
+            System.out.println("------------news: " + facility.getDescription());
+        }
+        return a;
+    }
+
+//    public void filterRooms() throws JsonProcessingException {
+//        String name = nameFieldNew.getText();
+//        name = name == null ? "" : name;
+//        String description = descriptionFieldNew.getText();
+//        description = description == null ? "" : description;
+//        String building = (String) roomBuildingIdField.getValue();
+//        location = location == null ? "" : location;
+//        String rooms = ServerCommunication.getFilteredRooms(name, location, open, closed, description);
+//        loadRooms(rooms);
+//    }
+
     public String getOnlyStaff(Room room) {
         if(room.isOnlyStaff()){
             return "Only staff members";
@@ -233,46 +277,14 @@ public class AdminRoomViewController extends MainSceneController implements Init
         return "All users";
     }
 
-    /**
-     * Adds a new Room with auto-generated ID.
-     */
-//    public void addRoom() throws IOException {
-//        String buildingId = (String) roomBuildingIdField.getValue();
-//        String roomCapacity = roomCapacityField.getText();
-//        String roomDescription = roomDescriptionField.getText();
-//        createAlert(ServerCommunication.addRoom(buildingId, roomCapacity, roomDescription));
-//
-//    }
-
-    /**
-     * Updates room based on ID specified.
-     */
-
-    public void updateRoom() throws IOException {
-//        String buildingId = roomBuildingIdField.getText();
-//        String roomCap = roomCapacityField.getText();
-//        String roomDesc = roomDescriptionField.getText();
-//        String roomID = updateRoomField.getText();
-//        roomID = roomID.contentEquals("") ? "1" : roomID;
-//
-//        createAlert(ServerCommunication.updateRoom(buildingId, roomCap, roomDesc, roomID));
+    @FXML
+    private void switchBack(ActionEvent actionEvent) throws IOException {
+        switchFunc("/Admin/AdminPanel.fxml");
     }
 
-    /**
-     * Delete room.
-     */
-
-
-
-    /**
-     * Goes back to main admin panel.
-     */
-
-    @FXML
-    private void switchBack() throws IOException {
+    private FXMLLoader switchFunc(String resource) throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminPanel.fxml"));
-        currentstage.setScene(new Scene(root, 700, 600));
+        return mainSwitch(resource, currentstage);
     }
 }
 

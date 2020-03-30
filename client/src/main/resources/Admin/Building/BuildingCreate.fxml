@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="600.0" prefWidth="700.0" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.Admin.AdminUpdateBuildingController">
+<BorderPane style="-fx-padding: 4px;" prefHeight="600.0" prefWidth="700.0" stylesheets="@../../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.Admin.Building.BuildingCreateController">
     <top>
         <HBox spacing="10" styleClass="bar">
             <padding>
@@ -23,19 +23,19 @@
                 <Insets bottom="15" left="15" right="15" top="15" />
             </padding>
             <children>
-                <Button id="backbtn" fx:id="backbtn" onAction="#switchBack" text="◀ Back" />
+                <Button id="backbtn" fx:id="backbtn" onAction="#getBack" text="◀ Back" />
             </children>
         </HBox>
     </bottom>
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <ImageView fitHeight="485.0" fitWidth="700.0" layoutY="-2.0" opacity="0.25" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <image>
-                        <Image url="@../../../../../../../../TuDelft/download.png" />
-                    </image>
-                </ImageView>
-                <Text layoutX="209.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update a building" underline="true">
+<!--                <ImageView fitHeight="485.0" fitWidth="400.0" layoutY="-2.0" opacity="0.25" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">-->
+<!--                    <image>-->
+<!--                        <Image url="@../../../../../../../../TuDelft/download.png" />-->
+<!--                    </image>-->
+<!--                </ImageView>-->
+                <Text layoutX="209.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add a building" underline="true">
                     <font>
                         <Font name="System Bold" size="33.0" />
                     </font>
@@ -70,7 +70,7 @@
                     </font>
                 </Text>
                 <TextField fx:id="descriptionFieldNew" layoutX="200.0" layoutY="182.0" prefHeight="31.0" prefWidth="200.0" promptText="description" />
-                <Button layoutX="600.0" layoutY="450.0" mnemonicParsing="false" onMouseClicked="#updateBuilding" text="Update Building" />
+                <Button layoutX="507.0" layoutY="445.0" mnemonicParsing="false" onMouseClicked="#addBuilding" text="Add Building" />
             </children>
         </AnchorPane>
     </center>

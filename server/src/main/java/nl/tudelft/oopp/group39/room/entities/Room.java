@@ -91,6 +91,7 @@ public class Room extends AbstractEntity<Room, RoomDto> {
         Set<Facility> facilities,
         Set<Booking> bookings
     ) {
+        System.out.println("test2: " + building.toString());
         setId(id);
         setBuilding(building);
         setName(name);
@@ -181,15 +182,16 @@ public class Room extends AbstractEntity<Room, RoomDto> {
      */
     @Override
     public RoomDto toDto() {
+        System.out.println("test:" + this.getBuilding().toString());
         return new RoomDto(
-            getId(),
-            getBuilding().getId(),
-            getName(),
-            getCapacity(),
-            getOnlyStaff(),
-            getDescription(),
-            getFacilities(),
-            Utils.setEntityToDto(getBookings())
+            this.getId(),
+            this.getBuilding().getId(),
+            this.getName(),
+            this.getCapacity(),
+            this.getOnlyStaff(),
+            this.getDescription(),
+            this.getFacilities(),
+            Utils.setEntityToDto(this.getBookings())
         );
     }
 

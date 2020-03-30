@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.group39.building.services;
 
 import java.util.List;
+import java.util.Map;
+import nl.tudelft.oopp.group39.building.dao.BuildingDao;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.exceptions.BuildingNotFoundException;
 import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 public class BuildingService {
     @Autowired
     private BuildingRepository buildingRepository;
+    @Autowired
+    private BuildingDao buildingDao;
 
     /**
      * Doc. TODO Sven

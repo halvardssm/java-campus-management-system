@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers.Admin;
+package nl.tudelft.oopp.group39.controllers.Admin.Building;
 
 import java.io.IOException;
 import java.net.URL;
@@ -17,20 +17,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.controllers.MainSceneController;
+import nl.tudelft.oopp.group39.controllers.Admin.MainAdminController;
 import nl.tudelft.oopp.group39.models.Building;
 
-public class AdminUpdateBuildingController extends MainSceneController implements Initializable {
+public class BuildingEditController extends BuildingListController implements Initializable {
 
     private Building building;
     @FXML
     private Button backbtn;
-    @FXML
-    private Button buildingUpdate;
-    @FXML
-    private Button buildingAdd;
-    @FXML
-    private Button buildingDelete;
     @FXML
     private TextField nameFieldNew;
     @FXML
@@ -41,22 +35,6 @@ public class AdminUpdateBuildingController extends MainSceneController implement
     private TextField timeOpenFieldNew;
     @FXML
     private TextField timeClosedFieldNew;
-    @FXML
-    private TextField updateBuildingField;
-    @FXML
-    private TableColumn<Building, String> buildingnameCol = new TableColumn<>("Name");
-    @FXML
-    private TableColumn<Building, String> buildingidCol = new TableColumn<>("ID");
-    @FXML
-    private TableColumn<Building, String> buildinglocationCol = new TableColumn<>("Address");
-    @FXML
-    private TableColumn<Building, String> buildingdescriptionCol = new TableColumn<>("Description");
-    @FXML
-    private TableColumn<Building, LocalTime> buildingOpenTimeCol = new TableColumn<>("Open Time");
-    @FXML
-    private TableColumn<Building, LocalTime> buildingCTimeCol = new TableColumn<>("Closing Time");
-    @FXML
-    private TableView<Building> buildingTable = new TableView<>();
 
 
     /**
@@ -91,15 +69,15 @@ public class AdminUpdateBuildingController extends MainSceneController implement
      */
 
     @FXML
-    private void switchBack() throws IOException {
+    private void getBack() throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminBuildingView.fxml"));
-        currentstage.setScene(new Scene(root, 700, 600));
+        mainSwitch("/Admin/Building/BuildingList.fxml", currentstage);
     }
 
     public void updateBuilding() throws IOException {
         String name = nameFieldNew.getText();
         name = name.contentEquals("") ? building.getName() : name;
+        System.out.println(name);
         String location = locationFieldNew.getText();
         location = location.contentEquals("") ? building.getLocation() : location;
         String desc = descriptionFieldNew.getText();
@@ -110,7 +88,7 @@ public class AdminUpdateBuildingController extends MainSceneController implement
         closed = closed.contentEquals("") ? building.getClosed() : getTime(closed, false);
         String id = Integer.toString(building.getId());
         ServerCommunication.updateBuilding(name, location, desc, open, closed, id);
-        switchBack();
+        getBack();
         createAlert("Updated: " + building.getName());
 
         nameFieldNew.clear();

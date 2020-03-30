@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers.Admin;
+package nl.tudelft.oopp.group39.controllers.Admin.Room;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -23,9 +23,10 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Building;
 
-public class AdminAddRoomController extends AdminRoomViewController implements Initializable {
+public class RoomCreateController extends RoomListController implements Initializable {
 
     private HashMap<String, Integer> buildingsByName = new HashMap();
+    private HashMap<Integer, Building> buildingById = new HashMap();
     @FXML
     private Button backbtn;
     @FXML
@@ -64,6 +65,7 @@ public class AdminAddRoomController extends AdminRoomViewController implements I
         List<String> a = new ArrayList<>();
         for(Building building : buildings) {
             this.buildingsByName.put(building.getName(), building.getId());
+            this.buildingById.put(building.getId(), building);
             a.add(building.getName());
         }
         return a;
@@ -88,25 +90,28 @@ public class AdminAddRoomController extends AdminRoomViewController implements I
      */
 
     @FXML
-    private void switchBack() throws IOException {
+    private void getBack() throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminRoomView.fxml"));
-        currentstage.setScene(new Scene(root, 700, 600));
+        mainSwitch("/Admin/Room/RoomList.fxml", currentstage);
     }
 
-    public void addRoom() throws IOException {
+    public void createRoom() throws IOException {
         String name = roomNameField.getText();
-        name = name.contentEquals("") ? "" : name;
+        name = name == null ? "" : name;
         Object building = roomBuildingIdField.getValue();
-        String buildingId = building == null ? Integer.toString(0) : Integer.toString(this.buildingsByName.get(building.toString()));
+        String buildingId = building == null ? Integer.toString(buildingsByName.get(buildingsByName.keySet().toArray()[0])) : Integer.toString(this.buildingsByName.get(building.toString()));
+//        Building nBuilding = buildingById.get(buildingId);
+//        String sBuilding = nBuilding == null ? buildingById.get(buildingById.keySet().toArray()[0]).toString() : nBuilding.toString();
         String roomCap = roomCapacityField.getText();
         roomCap = roomCap == null? "0" : roomCap;
         String roomDesc = roomDescriptionField.getText();
+        roomDesc = roomDesc == null ? "" : roomDesc;
         Object onlyStaffObj = roomOnlyStaffField.getValue();
         String onlyStaff = onlyStaffObj == null ? Boolean.toString(false) : (String) onlyStaffObj;
         onlyStaff = Boolean.toString((onlyStaff).contentEquals("Only staff members"));
         ServerCommunication.addRoom(buildingId, roomCap, roomDesc, onlyStaff, name);
-        switchBack();
+//        System.out.println("---------------TEST: " + roomDesc + " IsNull: " + roomDesc == null);
+        getBack();
         createAlert("Added: " + name);
     }
 
