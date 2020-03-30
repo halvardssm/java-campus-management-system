@@ -80,6 +80,14 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
+    public static String getEventTypes() {
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create(url + "event/types"))
+            .build();
+        return httpRequest(request);
+    }
+
     /**
      * Retrieves the room from the server based on the room id.
      *
@@ -193,6 +201,20 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
+    public static String addEvent(
+        String type,
+        String startDate,
+        String endDate
+    ) {
+        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers
+            .ofString("{\"type\": \"" + type + "\", \"startDate\":\"" + startDate
+                + "\", \"endDate\":\"" + endDate + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
+            .uri(URI.create(url + "event/"))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
     /**
      * Adds a room on the server.
      *
@@ -228,6 +250,22 @@ public class ServerCommunication {
                 + "\", \"room\":\"" + room + "\"}");
         HttpRequest request = HttpRequest.newBuilder().PUT(newBooking)
             .uri(URI.create(url + "booking/" + id))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    public static String updateEvent(
+        String id,
+        String type,
+        String startDate,
+        String endDate
+    ) {
+        HttpRequest.BodyPublisher newBooking = HttpRequest.BodyPublishers
+            .ofString("{\"id\": \"" + id + "\", \"type\":\"" + type
+                + "\", \"startDate\":\"" + startDate + "\", \"endDate\":\"" + endDate
+                + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().PUT(newBooking)
+            .uri(URI.create(url + "event/" + id))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }

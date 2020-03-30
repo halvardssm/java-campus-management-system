@@ -144,9 +144,7 @@ public class EventListController extends AdminPanelController implements Initial
 
 
     public void createEvent() throws IOException {
-//        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-//        Parent root = FXMLLoader.load(getClass().getResource("/Admin/Event/EventCreate.fxml"));
-//        currentstage.setScene(new Scene(root, 900, 650));
+        switchFunc("/Admin/Event/EventCreate.fxml");
     }
 
     public void deleteEvent(Event event) throws IOException {

@@ -26,13 +26,13 @@ public class AdminPanelController extends MainAdminController {
 
     @FXML
     private void switchUListView(ActionEvent actionEvent) throws IOException {
-        Stage currentstage = (Stage) userlistView.getScene().getWindow();
+        Stage currentstage = (Stage) buildingView.getScene().getWindow();
         mainSwitch("/Admin/User/UserList.fxml", currentstage);
     }
 
     @FXML
     private void switchRoomView(ActionEvent actionEvent) throws IOException {
-        Stage currentstage = (Stage) roomView.getScene().getWindow();
+        Stage currentstage = (Stage) buildingView.getScene().getWindow();
         mainSwitch("/Admin/Room/RoomList.fxml", currentstage);
     }
 
@@ -54,7 +54,7 @@ public class AdminPanelController extends MainAdminController {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    UsersDisplay.sceneHandler("/Admin/User/UserList.fxml");
+                    AdminPanel.sceneHandler("/Admin/User/UserList.fxml");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -68,7 +68,7 @@ public class AdminPanelController extends MainAdminController {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    UsersDisplay.sceneHandler("/Admin/Room/RoomList.fxml");
+                    AdminPanel.sceneHandler("/Admin/Room/RoomList.fxml");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -82,7 +82,7 @@ public class AdminPanelController extends MainAdminController {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    UsersDisplay.sceneHandler("/Admin/Event/EventList.fxml");
+                    AdminPanel.sceneHandler("/Admin/Event/EventList.fxml");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
