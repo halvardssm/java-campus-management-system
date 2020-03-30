@@ -1,10 +1,10 @@
 package nl.tudelft.oopp.group39.controllers;
 
 import java.time.LocalTime;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.controllers.MainSceneController;
 
 public class BuildingModifierController extends MainSceneController {
 

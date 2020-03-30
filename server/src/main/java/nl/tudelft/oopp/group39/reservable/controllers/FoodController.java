@@ -57,7 +57,7 @@ public class FoodController {
      * @return the requested food {@link Food}.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> readFood(@PathVariable Integer id) {
+    public ResponseEntity<RestResponse<Object>> readFood(@PathVariable Long id) {
         try {
             return RestResponse.create(foodService.readFood(id));
         } catch (Exception e) {
@@ -71,8 +71,8 @@ public class FoodController {
      * @return the updated food {@link Food}.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> updateFood(
-        @PathVariable Integer id,
+    public ResponseEntity<RestResponse<Food>> updateFood(
+        @PathVariable Long id,
         @RequestBody Food food
     ) {
         try {
@@ -86,7 +86,7 @@ public class FoodController {
      * DELETE Endpoint to delete am food.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteFood(@PathVariable Integer id) {
+    public ResponseEntity<RestResponse<Object>> deleteFood(@PathVariable Long id) {
         foodService.deleteFood(id);
 
         return RestResponse.create(null, null, HttpStatus.OK);

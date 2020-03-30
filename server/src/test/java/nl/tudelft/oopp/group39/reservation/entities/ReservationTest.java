@@ -13,6 +13,7 @@ class ReservationTest extends AbstractTest {
     void testEquals() {
         LocalDateTime now = LocalDateTime.now();
         Reservation reservation1 = new Reservation(
+            null,
             now,
             now.plusHours(2),
             null,
@@ -20,6 +21,7 @@ class ReservationTest extends AbstractTest {
             null
         );
         Reservation reservation2 = new Reservation(
+            null,
             now,
             now.plusHours(2),
             null,
@@ -33,6 +35,7 @@ class ReservationTest extends AbstractTest {
     @Test
     void testEqualsNotInstanceOf() {
         Reservation reservation1 = new Reservation(
+            null,
             LocalDateTime.now(),
             LocalDateTime.now().plusHours(2),
             null,
@@ -46,6 +49,7 @@ class ReservationTest extends AbstractTest {
     @Test
     void testEqualsSame() {
         Reservation reservation = new Reservation(
+            null,
             LocalDateTime.now(),
             LocalDateTime.now().plusHours(2),
             null,

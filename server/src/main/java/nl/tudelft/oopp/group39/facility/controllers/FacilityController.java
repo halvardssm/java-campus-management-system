@@ -38,7 +38,7 @@ public class FacilityController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> readFacility(@PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> readFacility(@PathVariable Long id) {
         return RestResponse.create(service.readFacility(id));
     }
 
@@ -46,7 +46,7 @@ public class FacilityController {
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> updateFacility(
         @RequestBody Facility updated,
-        @PathVariable int id
+        @PathVariable Long id
     ) {
         return RestResponse.create(service.updateFacility(updated, id));
     }
@@ -55,7 +55,7 @@ public class FacilityController {
      * Doc. TODO Sven
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteFacility(@PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> deleteFacility(@PathVariable Long id) {
         service.deleteFacility(id);
 
         return RestResponse.create(null, null, HttpStatus.OK);

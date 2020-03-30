@@ -9,13 +9,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.Admin.AdminPController">
+<AnchorPane prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.Admin.AdminPanelController">
    <children>
-      <ImageView fitHeight="367.0" fitWidth="662.0" layoutX="17.0" layoutY="111.0" opacity="0.75" pickOnBounds="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="120.0">
-         <image>
-            <Image url="@../../../../../../../../TuDelft/download.png" />
-         </image>
-      </ImageView>
+<!--      <ImageView fitHeight="367.0" fitWidth="662.0" layoutX="17.0" layoutY="111.0" opacity="0.75" pickOnBounds="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="120.0">-->
+<!--         <image>-->
+<!--            <Image url="@../../../../../../../../TuDelft/download.png" />-->
+<!--         </image>-->
+<!--      </ImageView>-->
       <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #00A6D6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin Navigation" textAlignment="CENTER" wrappingWidth="438.6708984375">

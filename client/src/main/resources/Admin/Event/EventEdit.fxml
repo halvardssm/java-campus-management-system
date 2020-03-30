@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.Admin.Event.EventEditController">
+    <top>
+        <HBox spacing="10" styleClass="bar">
+            <padding>
+                <Insets bottom="15" left="15" right="15" top="15" />
+            </padding>
+            <children>
+                <Text id="title" text="Admin: Event View" />
+            </children>
+        </HBox>
+    </top>
+    <bottom>
+        <HBox spacing="10" styleClass="bar">
+            <padding>
+                <Insets bottom="15" left="15" right="15" top="15" />
+            </padding>
+            <children>
+                <Button id="backbtn" fx:id="backbtn" onAction="#getBack" text="◀ Back" />
+            </children>
+        </HBox>
+    </bottom>
+    <center>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <!--                <ImageView fitHeight="485.0" fitWidth="700.0" layoutY="-2.0" opacity="0.25" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">-->
+                <!--                    <image>-->
+                <!--                        <Image url="@../../../../../../../../TuDelft/download.png" />-->
+                <!--                    </image>-->
+                <!--                </ImageView>-->
+                <Text layoutX="209.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update an Event" underline="true">
+                    <font>
+                        <Font name="System Bold" size="33.0" />
+                    </font>
+                </Text>
+                <Text layoutX="27.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type:">
+                    <font>
+                        <Font name="System Bold" size="17.0" />
+                    </font>
+                </Text>
+                <TextField fx:id="typeField" layoutX="200.0" layoutY="94.0" prefHeight="31.0" prefWidth="200.0" promptText="type" />
+                <Text layoutX="20.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Opening time:">
+                    <font>
+                        <Font name="System Bold" size="17.0" />
+                    </font>
+                </Text>
+                <DatePicker fx:id="startField" layoutX="200.0" layoutY="148.0" prefHeight="31.0" prefWidth="200.0" promptText="23:59:00" />
+                <Text layoutX="18.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Closing time:">
+                    <font>
+                        <Font name="System Bold" size="17.0" />
+                    </font>
+                </Text>
+                <DatePicker fx:id="endField" layoutX="200.0" layoutY="210.0" prefHeight="31.0" prefWidth="200.0" promptText="00:00:00" />
+                <Button layoutX="776.0" layoutY="459.0" mnemonicParsing="false" onMouseClicked="#editEvent" text="Update Event" />
+                <MenuBar layoutY="2.0" prefHeight="33.0" prefWidth="890.0" fx:id="NavBar">
+                    <menus>
+                    </menus>
+                </MenuBar>
+            </children>
+        </AnchorPane>
+    </center>
+</BorderPane>

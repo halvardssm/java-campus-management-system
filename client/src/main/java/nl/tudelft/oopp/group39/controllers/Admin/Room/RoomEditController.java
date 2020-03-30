@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers.Admin;
+package nl.tudelft.oopp.group39.controllers.Admin.Room;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
@@ -19,10 +19,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.controllers.Admin.Room.RoomListController;
 import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.models.Room;
 
-public class AdminUpdateRoomController extends AdminRoomViewController implements Initializable {
+public class RoomEditController extends RoomListController implements Initializable {
 
     private Room room;
     private Building building;
@@ -73,13 +74,12 @@ public class AdminUpdateRoomController extends AdminRoomViewController implement
      */
 
     @FXML
-    private void switchBack() throws IOException {
+    private void getBack() throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminRoomView.fxml"));
-        currentstage.setScene(new Scene(root, 700, 600));
+        mainSwitch("/Admin/Room/RoomList.fxml", currentstage);
     }
 
-    public void updateRoom() throws IOException {
+    public void editRoom() throws IOException {
         String name = roomNameField.getText();
         name = name.contentEquals("") ? room.getName() : name;
         Object building = roomBuildingIdField.getValue();
@@ -92,7 +92,7 @@ public class AdminUpdateRoomController extends AdminRoomViewController implement
         onlyStaff = Boolean.toString((onlyStaff).contentEquals("Only staff members"));
         System.out.println(building + " " + buildingId + " " + this.room.getBuilding());
         ServerCommunication.updateRoom(buildingId, roomCap, roomDesc, roomID, onlyStaff, name);
-        switchBack();
+        getBack();
         createAlert("Updated: " + room.getName());
     }
 

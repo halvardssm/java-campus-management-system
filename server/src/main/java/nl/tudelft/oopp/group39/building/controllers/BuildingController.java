@@ -6,6 +6,7 @@ import nl.tudelft.oopp.group39.building.dao.BuildingDao;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,17 +34,16 @@ public class BuildingController {
 
     @Autowired
     private BuildingService buildingService;
-
     @Autowired
     private BuildingDao buildingDao;
 
-    /** TODO Sven.
+    /**
+     * TODO Sven.
      */
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listBuildings(
         @RequestParam Map<String, String> params
     ) {
-        System.out.println(params);
         List<Building> result = buildingDao.buildingFilter(params);
         return RestResponse.create(result);
     }
@@ -66,21 +66,15 @@ public class BuildingController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> readBuilding(@PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> readBuilding(@PathVariable Long id) {
         return RestResponse.create(buildingService.readBuilding(id));
-    }
-
-    @GetMapping("/room/{id}")
-    @ResponseBody
-    public ResponseEntity<RestResponse<Object>> getBuildingsByRoomId(@PathVariable int id) {
-        return RestResponse.create(buildingService.getBuildingsByRoomId(id));
     }
 
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> updateBuilding(
+    public ResponseEntity<RestResponse<Building>> updateBuilding(
         @RequestBody Building updated,
-        @PathVariable int id
+        @PathVariable Long id
     ) {
         return RestResponse.create(buildingService.updateBuilding(id, updated));
     }
@@ -92,7 +86,7 @@ public class BuildingController {
      * @return nothing
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteBuilding(@PathVariable int id) {
+    public ResponseEntity<RestResponse<Object>> deleteBuilding(@PathVariable Long id) {
         buildingService.deleteBuilding(id);
 
         return RestResponse.create(null, null, HttpStatus.OK);

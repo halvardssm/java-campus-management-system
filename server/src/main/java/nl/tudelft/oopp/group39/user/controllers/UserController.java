@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.user.controllers;
 
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.repositories.UserRepository;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,6 +24,8 @@ public class UserController {
 
     @Autowired
     private UserService service;
+    @Autowired
+    private UserRepository repository;
 
     /**
      * GET Endpoint to retrieve all users.
@@ -32,6 +36,12 @@ public class UserController {
     public ResponseEntity<RestResponse<Object>> listUsers() {
         return RestResponse.create(service.listUsers());
     }
+
+    @GetMapping("/filter")
+    public ResponseEntity<RestResponse<Object>> filterUsersTemp(@RequestParam String name) {
+        return RestResponse.create(repository.filterUsers(name));
+    }
+
 
     /**
      * POST Endpoint to create user.

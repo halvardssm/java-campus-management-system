@@ -13,7 +13,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ReservationAmountServiceTest extends AbstractTest {
-    private final ReservationAmount testReservationAmount = new ReservationAmount(1, null, null);
+    private final ReservationAmount testReservationAmount
+        = new ReservationAmount(null, 1, null, null);
 
     @BeforeEach
     void setUp() {

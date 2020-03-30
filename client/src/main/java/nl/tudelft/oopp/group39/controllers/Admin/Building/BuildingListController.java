@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers.Admin;
+package nl.tudelft.oopp.group39.controllers.Admin.Building;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,42 +23,38 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.controllers.Admin.AdminPanelController;
+import nl.tudelft.oopp.group39.controllers.Admin.MainAdminController;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
 import nl.tudelft.oopp.group39.models.Building;
 
 
-public class AdminBViewController extends MainSceneController implements Initializable {
+public class BuildingListController extends AdminPanelController implements Initializable {
 
     @FXML
     private Button backbtn;
     @FXML
-    private TextField nameFieldNew;
+    private TextField nameFilter;
     @FXML
-    private TextField locationFieldNew;
+    private TextField locationFilter;
     @FXML
-    private TextField descriptionFieldNew;
+    private TextField descriptionFilter;
     @FXML
-    private TextField timeOpenFieldNew;
+    private TableColumn<Building, String> nameCol = new TableColumn<>("Name");
     @FXML
-    private TextField timeClosedFieldNew;
+    private TableColumn<Building, String> idCol = new TableColumn<>("ID");
     @FXML
-    private TextField capacityField;
+    private TableColumn<Building, String> locationCol = new TableColumn<>("Address");
     @FXML
-    private TableColumn<Building, String> buildingnameCol = new TableColumn<>("Name");
+    private TableColumn<Building, String> descriptionCol = new TableColumn<>("Description");
     @FXML
-    private TableColumn<Building, String> buildingidCol = new TableColumn<>("ID");
+    private TableColumn<Building, LocalTime> openTimeCol = new TableColumn<>("Opening Time");
     @FXML
-    private TableColumn<Building, String> buildinglocationCol = new TableColumn<>("Address");
+    private TableColumn<Building, LocalTime> closingTimeCol = new TableColumn<>("Closing Time");
     @FXML
-    private TableColumn<Building, String> buildingDescriptionCol = new TableColumn<>("Description");
+    private TableColumn<Building, Building> deleteCol = new TableColumn<>("Delete");
     @FXML
-    private TableColumn<Building, LocalTime> buildingOpenTimeCol = new TableColumn<>("Opening Time");
-    @FXML
-    private TableColumn<Building, LocalTime> buildingCTimeCol = new TableColumn<>("Closing Time");
-    @FXML
-    private TableColumn<Building, Building> buildingDelCol = new TableColumn<>("Delete");
-    @FXML
-    private TableColumn<Building, Building> buildingUpCol = new TableColumn<>("Update");
+    private TableColumn<Building, Building> updateCol = new TableColumn<>("Update");
     @FXML
     private TableView<Building> buildingTable = new TableView<>();
 
@@ -68,31 +65,30 @@ public class AdminBViewController extends MainSceneController implements Initial
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
-            loadBuildingsStandard();
+            loadAllBuildings();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
 
     }
 
-    void loadBuildingsStandard() throws JsonProcessingException {
+    void loadAllBuildings() throws JsonProcessingException {
         String buildings = ServerCommunication.get(ServerCommunication.building);
         loadBuildings(buildings);
     }
 
     public void filterBuildings() throws JsonProcessingException {
-        String name = nameFieldNew.getText();
+        String name = nameFilter.getText();
         name = name == null ? "" : name;
-        String description = descriptionFieldNew.getText();
+        String description = descriptionFilter.getText();
         description = description == null ? "" : description;
-        String location = locationFieldNew.getText();
+        String location = locationFilter.getText();
         location = location == null ? "" : location;
         String open = getTime("00:00:00", true);
         String closed = getTime("23:59:00", false);
 //        String capacity = capacityField.getText();
 //        capacity = capacity == null ? "0" : capacity;
         String buildings = ServerCommunication.getFilteredBuildings(name, location, open, closed, description);
-        System.out.println(buildings);
         loadBuildings(buildings);
     }
 
@@ -116,17 +112,17 @@ public class AdminBViewController extends MainSceneController implements Initial
         System.out.println(buildings);
         Building[] list = mapper.readValue(buildings, Building[].class);
         ObservableList<Building> data = FXCollections.observableArrayList(list);
-        buildingnameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        buildingidCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        buildinglocationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
-        buildingDescriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
-        buildingOpenTimeCol.setCellValueFactory(new PropertyValueFactory<>("open"));
-        buildingCTimeCol.setCellValueFactory(new PropertyValueFactory<>("closed"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        locationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+        openTimeCol.setCellValueFactory(new PropertyValueFactory<>("open"));
+        closingTimeCol.setCellValueFactory(new PropertyValueFactory<>("closed"));
 
-        buildingDelCol.setCellValueFactory(
+        deleteCol.setCellValueFactory(
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
-        buildingDelCol.setCellFactory(param -> new TableCell<Building, Building>() {
+        deleteCol.setCellFactory(param -> new TableCell<Building, Building>() {
             private final Button deleteButton = new Button("Delete");
 
             @Override
@@ -142,7 +138,7 @@ public class AdminBViewController extends MainSceneController implements Initial
                 deleteButton.setOnAction(
                     event -> {
                         try {
-                            deleteBuildingView(building);
+                            deleteBuilding(building);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -151,10 +147,10 @@ public class AdminBViewController extends MainSceneController implements Initial
                 );
             }
         });
-        buildingUpCol.setCellValueFactory(
+        updateCol.setCellValueFactory(
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
-        buildingUpCol.setCellFactory(param -> new TableCell<Building, Building>() {
+        updateCol.setCellFactory(param -> new TableCell<Building, Building>() {
             private final Button updateButton = new Button("Update");
 
             @Override
@@ -170,7 +166,7 @@ public class AdminBViewController extends MainSceneController implements Initial
                 updateButton.setOnAction(
                     event -> {
                         try {
-                            updateBuildingView(building);
+                            editBuilding(building);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -180,41 +176,38 @@ public class AdminBViewController extends MainSceneController implements Initial
             }
         });
         buildingTable.setItems(data);
-        buildingTable.getColumns().addAll(buildingnameCol, buildingidCol, buildinglocationCol, buildingCTimeCol, buildingOpenTimeCol, buildingDescriptionCol, buildingDelCol, buildingUpCol);
+        buildingTable.getColumns().addAll(nameCol, idCol, locationCol, closingTimeCol, openTimeCol, descriptionCol, deleteCol, updateCol);
     }
 
 
-    public void adminAddBuilding() throws IOException {
-        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminAddBuilding.fxml"));
-        currentstage.setScene(new Scene(root, 700, 600));
+    public void createBuilding() throws IOException {
+        switchFunc("/Admin/Building/BuildingCreate.fxml");
     }
 
-    public void deleteBuildingView(Building building) throws IOException {
+    public void deleteBuilding(Building building) throws IOException {
         String id = Integer.toString(building.getId());
         ServerCommunication.removeBuilding(id);
         createAlert("removed: " + building.getName());
-        loadBuildingsStandard();
+        loadAllBuildings();
     }
 
-    public void updateBuildingView(Building building) throws IOException {
-        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Admin/AdminUpdateBuilding.fxml"));
-        Parent root = loader.load();
-        AdminUpdateBuildingController controller = loader.getController();
+    public void editBuilding(Building building) throws IOException {
+        FXMLLoader loader = switchFunc("/Admin/Building/BuildingEdit.fxml");
+        BuildingEditController controller = loader.getController();
         controller.initData(building);
-        currentstage.setScene(new Scene(root, 700, 600));
     }
 
     /**
      * Goes back to main admin panel.
      */
-
     @FXML
-    private void switchBack() throws IOException {
+    private void switchBack(ActionEvent actionEvent) throws IOException {
+        switchFunc("/Admin/AdminPanel.fxml");
+    }
+
+    private FXMLLoader switchFunc(String resource) throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminPanel.fxml"));
-        currentstage.setScene(new Scene(root, 700, 600));
+        return mainSwitch(resource, currentstage);
     }
 
 }

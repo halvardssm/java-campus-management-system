@@ -19,12 +19,12 @@ public class Room {
     private ArrayNode facilities;
     private ArrayNode events;
     private ArrayNode bookings;
-    private long buildingId;
+    private long building;
 
-    @JsonProperty("building")
-    public void setBuildingId(Building building){
-        this.buildingId = building.getId();
-    }
+//    @JsonProperty("building")
+//    public void setBuildingId(Building building){
+//        this.buildingId = building.getId();
+//    }
 
     public Room() {
 
@@ -48,12 +48,12 @@ public class Room {
         String name,
         boolean onlyStaff,
         String description,
-        ArrayNode building,
+//        ArrayNode building,
+        long building,
         ArrayNode facilities,
         ArrayNode events,
         ArrayNode bookings
     ) {
-        System.out.println("Building: " + building);
         this.id = id;
         this.name = name;
         this.capacity = capacity;
@@ -62,6 +62,7 @@ public class Room {
         this.facilities = facilities;
         this.events = events;
         this.bookings = bookings;
+        this.building = building;
     }
 
     public long getId() {
@@ -69,7 +70,7 @@ public class Room {
     }
 
     public long getBuilding() {
-        return buildingId;
+        return building;
     }
 
     public String getName() {
@@ -132,7 +133,7 @@ public class Room {
     public Building getBuildingObject() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String buildingJson = ServerCommunication.getBuilding(this.buildingId);
+        String buildingJson = ServerCommunication.getBuilding(this.building);
         JsonNode buildingNode = mapper.readTree(buildingJson).get("body");
         String buildingAsString = mapper.writeValueAsString(buildingNode);
         return mapper.readValue(buildingAsString, Building.class);

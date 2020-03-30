@@ -14,6 +14,7 @@ import nl.tudelft.oopp.group39.models.User;
 
 public class ServerCommunication {
 
+    public static String event = "event/";
     public static String user = "user/";
     public static String building = "building/";
     public static String room = "room/";
@@ -123,6 +124,14 @@ public class ServerCommunication {
     ) {
         String urlString = url + "building/room/" + room.getId();
         System.out.println(urlString);
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
+        return httpRequest(request);
+    }
+
+    public static String getFilteredUsers(
+        String name
+    ) {
+        String urlString = url + "user/filter?name=" + name;
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
         return httpRequest(request);
     }
@@ -302,6 +311,12 @@ public class ServerCommunication {
     public static void removeUser(String id) {
         HttpRequest request = HttpRequest.newBuilder().DELETE()
             .uri(URI.create(url + "user/" + id)).build();
+        httpRequest(request);
+    }
+
+    public static void removeEvent(String id) {
+        HttpRequest request = HttpRequest.newBuilder().DELETE()
+            .uri(URI.create(url + "event/" + id)).build();
         httpRequest(request);
     }
 
