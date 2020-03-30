@@ -6,8 +6,8 @@ public class Booking {
     private String date;
     private String startTime;
     private String endTime;
-    private User user;
-    private Room room;
+    private String user;
+    private Integer room;
 
     public Booking() {
 
@@ -28,8 +28,8 @@ public class Booking {
         String date,
         String startTime,
         String endTime,
-        User user,
-        Room room) {
+        String user,
+        Integer room) {
         this.id = id;
         this.date = date;
         this.startTime = startTime;
@@ -48,7 +48,11 @@ public class Booking {
 
     public String getEndTime() { return endTime; }
 
-    public User getUser() { return user; }
+    public String getUser() {
+        return user;
+    }
 
-    public Room getRoom() { return room; }
+    public Integer getRoom() {
+        return room;
+    }
 }

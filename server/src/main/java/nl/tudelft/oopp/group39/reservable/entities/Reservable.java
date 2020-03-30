@@ -16,7 +16,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.building.entities.Building;
-import nl.tudelft.oopp.group39.config.AbstractEntity;
+import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
+import nl.tudelft.oopp.group39.reservable.dto.ReservableDto;
+import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 
 @Entity
@@ -24,7 +27,7 @@ import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties(allowSetters = true, value = {Reservable.COL_RESERVATIONS})
 @JsonIdentityInfo(generator = ObjectIdGenerators.None.class)
-public class Reservable extends AbstractEntity {
+public class Reservable extends AbstractEntity<Reservable, ReservableDto> {
     public static final String TABLE_NAME = "reservables";
     public static final String MAPPED_NAME = "reservable";
     public static final String COL_PRICE = "price";
@@ -60,18 +63,21 @@ public class Reservable extends AbstractEntity {
     /**
      * The constructor of Reservable.
      *
+     * @param id           the id
      * @param price        the price of the item
      * @param building     the building connected
      * @param reservations the reservations
      */
     public Reservable(
+        Long id,
         Double price,
         Building building,
         Set<ReservationAmount> reservations
     ) {
+        setId(id);
         setBuilding(building);
         setPrice(price);
-        this.reservations.addAll(initSet(reservations));
+        getReservations().addAll(initSet(reservations));
     }
 
     public Set<ReservationAmount> getReservations() {
@@ -80,6 +86,23 @@ public class Reservable extends AbstractEntity {
 
     public void setReservations(Set<ReservationAmount> reservations) {
         this.reservations = reservations;
+    }
+
+    /**
+     * Converts the object to dto for JSON serializing.
+     *
+     * @return the converted dto of the object
+     */
+    @Override
+    public ReservableDto toDto() {
+        Set<ReservationAmountDto> reservationAmountDtos = Utils.setEntityToDto(reservations);
+
+        return new ReservableDto(
+            getId(),
+            getPrice(),
+            getBuilding().getId(),
+            reservationAmountDtos
+        );
     }
 
     @Override

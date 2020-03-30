@@ -32,18 +32,15 @@ public class BuildingService {
      * @return the Building that was found.
      * @throws BuildingNotFoundException when no building is found.
      */
-    public Building readBuilding(Integer id) throws BuildingNotFoundException {
-        try {
-            return buildingRepository.findById(id);
-        } catch (Exception e) {
-            throw new BuildingNotFoundException(id);
-        }
+    public Building readBuilding(Long id) throws BuildingNotFoundException {
+        return buildingRepository.findById(id)
+            .orElseThrow(() -> new BuildingNotFoundException(id));
     }
 
     /**
      * Doc. TODO Sven
      */
-    public Building deleteBuilding(Integer id) throws BuildingNotFoundException {
+    public Building deleteBuilding(Long id) throws BuildingNotFoundException {
         try {
             Building rf = readBuilding(id);
             buildingRepository.delete(readBuilding(id));
@@ -63,8 +60,8 @@ public class BuildingService {
     /**
      * Doc. TODO Sven
      */
-    public Building updateBuilding(int id, Building newBuilding) throws BuildingNotFoundException {
-        return buildingRepository.findById((long) id)
+    public Building updateBuilding(Long id, Building newBuilding) throws BuildingNotFoundException {
+        return buildingRepository.findById(id)
             .map(building -> {
                 newBuilding.setId(id);
                 building = newBuilding;

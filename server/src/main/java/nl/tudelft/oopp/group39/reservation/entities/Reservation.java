@@ -11,13 +11,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import nl.tudelft.oopp.group39.config.AbstractEntity;
+import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
+import nl.tudelft.oopp.group39.reservation.dto.ReservationDto;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.user.entities.User;
 
 @Entity
 @Table(name = Reservation.TABLE_NAME)
-public class Reservation extends AbstractEntity {
+public class Reservation extends AbstractEntity<Reservation, ReservationDto> {
     public static final String TABLE_NAME = "reservations";
     public static final String MAPPED_NAME = "reservation";
     public static final String COL_TIME_OF_PICKUP = "timeOfPickup";
@@ -43,6 +45,7 @@ public class Reservation extends AbstractEntity {
     /**
      * Constructor of Reservation.
      *
+     * @param id                 the id
      * @param timeOfPickup       the time of the pickup
      * @param timeOfDelivery     the time of the delivery (null for food)
      * @param room               the room
@@ -50,17 +53,19 @@ public class Reservation extends AbstractEntity {
      * @param reservationAmounts all items in order
      */
     public Reservation(
+        Long id,
         LocalDateTime timeOfPickup,
         LocalDateTime timeOfDelivery,
         Room room,
         User user,
         Set<ReservationAmount> reservationAmounts
     ) {
+        setId(id);
         setTimeOfPickup(timeOfPickup);
         setTimeOfDelivery(timeOfDelivery);
         setRoom(room);
         setUser(user);
-        this.reservationAmounts.addAll(initSet(reservationAmounts));
+        getReservationAmounts().addAll(initSet(reservationAmounts));
     }
 
     public LocalDateTime getTimeOfPickup() {
@@ -101,6 +106,23 @@ public class Reservation extends AbstractEntity {
 
     public void setReservationAmounts(Set<ReservationAmount> reservables) {
         this.reservationAmounts = reservables;
+    }
+
+    /**
+     * Converts the object to dto for JSON serializing.
+     *
+     * @return the converted object
+     */
+    @Override
+    public ReservationDto toDto() {
+        return new ReservationDto(
+            getId(),
+            getTimeOfPickup(),
+            getTimeOfDelivery(),
+            getUser().getUsername(),
+            room == null ? null : getRoom().getId(),
+            Utils.setEntityToDto(getReservationAmounts())
+        );
     }
 
     @Override

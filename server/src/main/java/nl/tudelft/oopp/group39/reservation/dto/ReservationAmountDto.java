@@ -1,18 +1,28 @@
 package nl.tudelft.oopp.group39.reservation.dto;
 
-import org.springframework.stereotype.Component;
+import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
+import nl.tudelft.oopp.group39.reservable.entities.Reservable;
+import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 
-@Component
-public class ReservationAmountDto {
+public class ReservationAmountDto extends AbstractDto<ReservationAmount, ReservationAmountDto> {
     private Integer amount;
-    private Integer reservable;
+    private Long reservable;
 
     public ReservationAmountDto() {
     }
 
-    public ReservationAmountDto(Integer amount, Integer reservable) {
-        this.amount = amount;
-        this.reservable = reservable;
+    /**
+     * Constructor.
+     *
+     * @param id         the id
+     * @param amount     the amount reserved
+     * @param reservable the reservable
+     */
+    public ReservationAmountDto(Long id, Integer amount, Long reservable) {
+        setId(id);
+        setAmount(amount);
+        setReservable(reservable);
     }
 
     public Integer getAmount() {
@@ -23,11 +33,21 @@ public class ReservationAmountDto {
         this.amount = amount;
     }
 
-    public Integer getReservable() {
+    public Long getReservable() {
         return reservable;
     }
 
-    public void setReservable(Integer reservable) {
+    public void setReservable(Long reservable) {
         this.reservable = reservable;
+    }
+
+    @Override
+    public ReservationAmount toEntity() {
+        return new ReservationAmount(
+            getId(),
+            getAmount(),
+            null,
+            Utils.idToEntity(getReservable(), Reservable.class)
+        );
     }
 }

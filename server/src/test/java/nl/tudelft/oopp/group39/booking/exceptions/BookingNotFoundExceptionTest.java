@@ -8,7 +8,7 @@ public class BookingNotFoundExceptionTest extends AbstractTest {
     @Test
     public void notFoundTest() {
         Assertions.assertThrows(BookingNotFoundException.class, () -> {
-            throw new BookingNotFoundException(1);
+            throw new BookingNotFoundException(1L);
         });
     }
 }

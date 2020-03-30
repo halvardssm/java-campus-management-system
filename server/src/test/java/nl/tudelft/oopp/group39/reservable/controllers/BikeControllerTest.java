@@ -36,7 +36,7 @@ class BikeControllerTest extends AbstractControllerTest {
         null,
         null
     );
-    private final Bike testBike = new Bike(BikeType.CITY, 5.6, null, null);
+    private final Bike testBike = new Bike(null, BikeType.CITY, 5.6, null, null);
     private String jwt;
 
     @BeforeEach
@@ -60,7 +60,7 @@ class BikeControllerTest extends AbstractControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isArray())
             .andExpect(jsonPath("$.body", hasSize(1)))
-            .andExpect(jsonPath("$.body[0]." + Bike.COL_ID, is(testBike.getId())))
+            .andExpect(jsonPath("$.body[0]." + Bike.COL_ID, is(testBike.getId().intValue())))
             .andExpect(jsonPath(
                 "$.body[0]." + Bike.COL_BIKE_TYPE,
                 is(testBike.getBikeType().name())
@@ -75,7 +75,7 @@ class BikeControllerTest extends AbstractControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
 
-        String json = objectMapper.writeValueAsString(testBike);
+        String json = objectMapper.writeValueAsString(testBike.toDto());
 
         mockMvc.perform(post(REST_MAPPING)
                             .contentType(MediaType.APPLICATION_JSON)
@@ -89,7 +89,7 @@ class BikeControllerTest extends AbstractControllerTest {
             .andDo((bike) -> {
                 String responseString = bike.getResponse().getContentAsString();
                 JsonNode productNode = new ObjectMapper().readTree(responseString);
-                testBike.setId(productNode.get("body").get("id").intValue());
+                testBike.setId(productNode.get("body").get("id").longValue());
             });
     }
 
@@ -98,7 +98,7 @@ class BikeControllerTest extends AbstractControllerTest {
         mockMvc.perform(get(REST_MAPPING + "/" + testBike.getId()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body." + Reservation.COL_ID, is(testBike.getId())))
+            .andExpect(jsonPath("$.body." + Reservation.COL_ID, is(testBike.getId().intValue())))
             .andExpect(jsonPath("$.body." + Bike.COL_BIKE_TYPE, is(testBike.getBikeType().name())))
             .andExpect(jsonPath("$.body." + Bike.COL_PRICE, is(testBike.getPrice())));
     }
@@ -122,20 +122,18 @@ class BikeControllerTest extends AbstractControllerTest {
 
     @Test
     void testError() {
-        assertEquals(
-            "Target object must not be null; nested exception is java.lang"
-                + ".IllegalArgumentException: Target object must not be null",
+        assertEquals("java.lang.NullPointerException",
             bikeController.createBike(null).getBody().getError()
         );
 
         assertEquals(
             "Bike 0 not found",
-            bikeController.readBike(0).getBody().getError()
+            bikeController.readBike(0L).getBody().getError()
         );
 
         assertEquals(
             "Bike 0 not found",
-            bikeController.updateBike(0, null).getBody().getError()
+            bikeController.updateBike(0L, null).getBody().getError()
         );
     }
 }

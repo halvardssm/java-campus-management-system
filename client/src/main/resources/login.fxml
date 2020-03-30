@@ -17,17 +17,25 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="nl.tudelft.oopp.group39.controllers.LoginController">
     <top>
         <HBox fx:id="topbar" styleClass="bar" spacing="10">
-            <padding><Insets top="12" right="15" bottom="8" left="15"/></padding>
-            <Button onAction="#toggleSidebar" id="menubtn" alignment="CENTER">
-                <graphic>
-                    <ImageView fitHeight="30" fitWidth="30">
-                        <Image url="@icons/menu-icon.png"/>
-                    </ImageView>
-                </graphic>
-            </Button>
-            <Label id="title" text="LOGIN"/>
-            <Region  HBox.hgrow="ALWAYS" />
-            <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
+            <padding>
+                <Insets top="10" right="15" bottom="10" left="15"/>
+            </padding>
+            <VBox alignment="CENTER">
+                <Button onAction="#toggleSidebar" id="menubtn" alignment="CENTER">
+                    <graphic>
+                        <ImageView fitHeight="30" fitWidth="30">
+                            <Image url="@icons/menu-icon.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </VBox>
+            <VBox alignment="CENTER">
+                <Label id="title" text="LOGIN" alignment="BOTTOM_CENTER"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <VBox alignment="CENTER" fx:id="topBox">
+                <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
+            </VBox>
         </HBox>
     </top>
     <left>

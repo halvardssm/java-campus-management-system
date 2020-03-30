@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
 public class LoginController extends MainSceneController {
@@ -31,7 +30,6 @@ public class LoginController extends MainSceneController {
             }
         }
         System.out.println(loggedIn);
-        System.out.println(MainSceneController.user.getBookings());
     }
 
     /**

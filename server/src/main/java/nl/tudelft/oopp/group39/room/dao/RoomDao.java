@@ -35,7 +35,8 @@ public class RoomDao {
      * It currently supports the values that are stored inside the Entity Room.
      *
      * @param filters filters to filter the room with.
-     *                If entered an empty map, the program returns everyhting.
+     *                If entered an empty map, the program returns everything.
+     *
      * @return the list of the filtered, or all rooms
      */
     public List<Room> roomFilter(Map<String, String> filters) {
@@ -75,8 +76,8 @@ public class RoomDao {
         if (keys.contains(Building.MAPPED_NAME)) {
             allPredicates.add(cb.equal(
                 room.get(Building.MAPPED_NAME),
-                buildingRepository.findById(
-                    Integer.parseInt(filters.get(Building.MAPPED_NAME)))
+                buildingRepository.getOne(
+                    Long.parseLong(filters.get(Building.MAPPED_NAME)))
             ));
         }
 

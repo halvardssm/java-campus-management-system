@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.reservable.controllers;
 
 import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.reservable.dto.BikeDto;
 import nl.tudelft.oopp.group39.reservable.entities.Bike;
 import nl.tudelft.oopp.group39.reservable.services.BikeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +44,11 @@ public class BikeController {
      * @return the created bike {@link Bike}.
      */
     @PostMapping("")
-    public ResponseEntity<RestResponse<Object>> createBike(@RequestBody Bike bike) {
+    public ResponseEntity<RestResponse<Object>> createBike(@RequestBody BikeDto bike) {
         try {
-            return RestResponse.create(bikeService.createBike(bike), null, HttpStatus.CREATED);
+            return RestResponse.create(
+                bikeService.createBike(bike.toEntity()).toDto(), null, HttpStatus.CREATED
+            );
         } catch (Exception e) {
             return RestResponse.error(e);
         }
@@ -57,7 +60,7 @@ public class BikeController {
      * @return the requested bike {@link Bike}.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> readBike(@PathVariable Integer id) {
+    public ResponseEntity<RestResponse<Object>> readBike(@PathVariable Long id) {
         try {
             return RestResponse.create(bikeService.readBike(id));
         } catch (Exception e) {
@@ -72,11 +75,11 @@ public class BikeController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> updateBike(
-        @PathVariable Integer id,
+        @PathVariable Long id,
         @RequestBody Bike bike
     ) {
         try {
-            return RestResponse.create(bikeService.updateBike(id, bike));
+            return RestResponse.create(bikeService.updateBike(id, bike).toDto());
         } catch (Exception e) {
             return RestResponse.error(e);
         }
@@ -86,7 +89,7 @@ public class BikeController {
      * DELETE Endpoint to delete a bike.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteBike(@PathVariable Integer id) {
+    public ResponseEntity<RestResponse<Object>> deleteBike(@PathVariable Long id) {
         bikeService.deleteBike(id);
 
         return RestResponse.create(null, null, HttpStatus.OK);

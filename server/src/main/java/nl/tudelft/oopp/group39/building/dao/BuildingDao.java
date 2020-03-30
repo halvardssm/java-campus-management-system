@@ -57,9 +57,7 @@ public class BuildingDao {
             Root<Reservable> reservable = recq.from(Reservable.class);
 
             List<Integer> rvals = new ArrayList<>((Arrays.stream(
-                filters.get(
-                    Reservable.MAPPED_NAME)
-                    .split(","))
+                filters.get(Reservable.MAPPED_NAME).split(","))
                 .mapToInt(Integer::parseInt)
                 .boxed()
                 .collect(Collectors.toList())

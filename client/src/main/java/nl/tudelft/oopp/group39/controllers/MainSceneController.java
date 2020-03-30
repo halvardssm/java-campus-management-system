@@ -1,16 +1,28 @@
 package nl.tudelft.oopp.group39.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
+import java.util.Set;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Building;
+import nl.tudelft.oopp.group39.models.Event;
 import nl.tudelft.oopp.group39.models.Room;
 import nl.tudelft.oopp.group39.models.User;
 import nl.tudelft.oopp.group39.views.UsersDisplay;
@@ -31,7 +43,7 @@ public class MainSceneController {
     protected Button topbtn;
 
     @FXML
-    protected HBox topbar;
+    protected VBox topBox;
 
     /**
      * Doc. TODO Sven
@@ -127,7 +139,7 @@ public class MainSceneController {
     public void goToRoomsScene() throws IOException {
         RoomSceneController controller =
             (RoomSceneController) UsersDisplay.sceneControllerHandler("/roomView.fxml");
-        controller.getAllRooms();
+        controller.setup();
         controller.changeTopBtn();
     }
 
@@ -138,11 +150,15 @@ public class MainSceneController {
      * @param building building of chosen room
      * @throws IOException throws an IOException
      */
-    public void goToReservationScene(Room room, Building building) throws IOException {
+    public void goToReservationScene(
+        Room room,
+        Building building,
+        Scene previous
+    ) throws IOException {
         RoomReservationController controller =
             (RoomReservationController) UsersDisplay.sceneControllerHandler(
                 "/roomReservation.fxml");
-        controller.setup(room, building);
+        controller.setup(room, building, previous);
         controller.changeTopBtn();
     }
 
@@ -196,10 +212,6 @@ public class MainSceneController {
      * Changes the login button when logged in.
      */
     public void changeTopBtn() {
-        System.out.println(topbtn);
-        System.out.println(topbar);
-        System.out.println(loggedIn);
-
         if (loggedIn) {
             MenuButton myaccount = new MenuButton(user.getUsername());
             MenuItem myres = new MenuItem("My Reservations");
@@ -226,8 +238,8 @@ public class MainSceneController {
             if (user.getRole().equals("ADMIN")) {
                 myaccount.getItems().add(admin);
             }
-            topbar.getChildren().add(myaccount);
-            topbar.getChildren().remove(topbtn);
+            topBox.getChildren().add(myaccount);
+            topBox.getChildren().remove(topbtn);
         } else {
             topbtn.setText("Login");
             topbtn.setOnAction(e -> {
@@ -287,6 +299,66 @@ public class MainSceneController {
             sidebar.getChildren().clear();
             sidebarShown = false;
         }
+    }
+
+    /**
+     * Sets the capacity Slider for filtering in rooms and buildings.
+     *
+     * @param capacityPicker the Slider with which you can select the capacity
+     * @param max            the max capacity that can be selected
+     */
+    public void setCapacityPicker(Slider capacityPicker, int max) {
+        capacityPicker.setMin(0);
+        capacityPicker.setMax(max);
+        capacityPicker.setValue(0);
+        capacityPicker.setValue(0);
+        capacityPicker.setMajorTickUnit(1);
+        capacityPicker.setMinorTickCount(0);
+        capacityPicker.setSnapToTicks(true);
+    }
+
+    /**
+     * Retrieves the events in a set.
+     *
+     * @return Set representation of all the events
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public Set<Event> getEventList() throws JsonProcessingException {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        String eventString = ServerCommunication.get(ServerCommunication.event);
+        System.out.println(eventString);
+        ArrayNode body = (ArrayNode) mapper.readTree(eventString).get("body");
+        Set<Event> events = new HashSet<>();
+        for (JsonNode eventJson : body) {
+            String eventAsString = mapper.writeValueAsString(eventJson);
+            Event event = mapper.readValue(eventAsString, Event.class);
+            events.add(event);
+        }
+        return events;
+    }
+
+    /**
+     * Checks if the given date is not during an event.
+     *
+     * @param date the selected date
+     * @return boolean true if date is not an event, false if date is on an event
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public boolean checkDate(String date) throws JsonProcessingException {
+        Set<Event> events = getEventList();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        for (Event event : events) {
+            LocalDate start = LocalDate.parse(event.getStartDate(), formatter);
+            LocalDate end = LocalDate.parse(event.getEndDate(), formatter);
+            LocalDate check = LocalDate.parse(date, formatter);
+            if ((check.isBefore(end) && check.isAfter(start))
+                || check.isEqual(start)
+                || check.isEqual(end)) {
+                createAlert("There is an event on this date");
+                return false;
+            }
+        }
+        return true;
     }
 
 }

@@ -2,8 +2,12 @@
     -fx-background-color: #00A6D6;
 }
 
-.hyperlink:hover{
+.hyperlink:hover {
     -fx-underline: false;
+}
+
+.hyperlink {
+    -fx-border-color: transparent;
 }
 
 .button:hover {
@@ -12,7 +16,6 @@
 
 #title {
     -fx-font-size: 22;
-    /*-fx-font-weight: bold;*/
     -fx-text-fill: white;
 }
 
@@ -31,6 +34,10 @@
     -fx-font-size: 12;
 }
 
+.buttons:hover {
+    -fx-background-color: #007ba0;
+}
+
 #big {
     -fx-font-size: 16;
     -fx-pref-width: 90;
@@ -46,12 +53,14 @@
     -fx-font-weight: bold;
 }
 
-#backbtn {
+#backBtn {
     -fx-background-color: none;
-    -fx-font-size: 18;
-    -fx-font-weight: bold;
-    -fx-text-fill: white;
-    -fx-padding: 0;
+    -fx-background-radius: 5em;
+    -fx-padding: 12;
+}
+
+#backBtn:hover {
+    -fx-background-color: rgba(106, 123, 127, 0.18);
 }
 
 #loginbtn {
@@ -62,8 +71,7 @@
 
 #loginbtn:hover {
     -fx-background-radius: 4%;
-
-    -fx-background-color: #00607b;
+    -fx-background-color: #007ba0;
 }
 
 #errorfield {
@@ -83,7 +91,7 @@
 }
 
 .sidebar-item {
-    -fx-pref-width: 100;
+    -fx-pref-width: 120;
     -fx-text-fill: black;
     -fx-font-size: 14;
     -fx-padding: 10 0 10 10;
@@ -123,7 +131,7 @@
 
 .menu-button:hover {
     -fx-background-radius: 4%;
-    -fx-background-color: #00607b;
+    -fx-background-color: #007ba0;
     -fx-cursor: hand;
 }
 
@@ -143,42 +151,27 @@
 
 .gridblock {
     -fx-background-color: rgba(106, 123, 127, 0.18);
-    -fx-border-radius: 3%;
-    -fx-background-radius: 3%;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
 }
 
 .gridblock:hover {
+    -fx-cursor: hand;
     -fx-background-color: rgba(106, 123, 127, 0.3);
 }
 
 .fooditem {
     -fx-background-color: rgba(106, 123, 127, 0.18);
-}
-
-
-#getMenuBtn {
-    -fx-background-color: #00A6D6;
-    -fx-text-fill: white;
-}
-
-#getMenuBtn:hover {
-    -fx-background-color: #00607b;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
 }
 
 .scroll-pane {
     -fx-background-color: transparent;
 }
 
-.buildingLink {
-    -fx-background-color: rgba(106, 123, 127, 0.18);
-}
-
-.buildingLink:hover {
-    -fx-background-color: rgba(106, 123, 127, 0.3);
-}
-
 #orderbtn {
-    -fx-pref-width: 200;
+    -fx-pref-width: 300;
     -fx-pref-height: 50;
     -fx-background-color: #00A6D6;
     -fx-text-fill: white;
@@ -186,7 +179,7 @@
 }
 
 #orderbtn:hover {
-    -fx-background-color: #00607b;
+    -fx-background-color: #007ba0;
 }
 
 #carttitle {
@@ -195,28 +188,50 @@
 
 .buildingList {
     -fx-text-fill: black;
+    -fx-font-size: 14;
+    -fx-border-color: rgba(106, 123, 127, 0.18);
+    -fx-border-width: 1;
+    -fx-padding: 10;
+    -fx-pref-width: 200;
 }
 
 .buildingList:focused {
-    -fx-text-fill: black;
+    -fx-underline: false;
+    -fx-background-color: #00A6D6;
+    -fx-text-fill: white;
+}
+
+.buildingList:hover {
+    -fx-border-color: #00A6D6;
+}
+
+.selectedBuilding {
+    -fx-underline: false;
+    -fx-background-color: #00A6D6;
+    -fx-text-fill: white;
+}
+
+.buildingList:visited {
+    -fx-underline: false;
 }
 
 #backButton {
-    -fx-background-color: none;
-    -fx-font-size: 20;
-    -fx-text-fill: white;
-    -fx-padding: 0;
+    -fx-background-color: rgba(106, 123, 127, 0.18);
+    -fx-background-radius: 5em;
+    -fx-padding: 12;
+}
+
+#backButton:hover {
+    -fx-background-color: rgba(106, 123, 127, 0.3);
 }
 
 #text {
     -fx-font-size: 14;
-    -fx-font-weight: bold;
     -fx-fill: black;
 }
 
 #roomRName {
     -fx-font-size: 16;
-    -fx-font-weight: bold;
 }
 
 #roomRDetails {
@@ -227,8 +242,68 @@
     -fx-background-color: #00A6D6;
     -fx-text-fill: white;
     -fx-font-size: 18;
+    -fx-padding: 15;
 }
 
 #reserveButton:hover {
-    -fx-background-color: #00607b;
+    -fx-background-color: #007ba0;
 }
+
+#toggleFilter {
+    -fx-background-color: transparent;
+    -fx-font-size: 12;
+    -fx-background-radius: 5%;
+    -fx-padding: 8 10;
+}
+
+#toggleFilter:hover {
+    -fx-background-color: rgba(106, 123, 127, 0.18);
+}
+
+#filterBar {
+    -fx-background-color: rgba(106, 123, 127, 0.18);
+}
+
+#removeFilters {
+    -fx-padding: 0;
+    -fx-text-fill: #00A6D6;
+}
+
+#removeFilters:hover {
+    -fx-text-fill: #007ba0;
+}
+
+#filterBtn {
+    -fx-padding: 7 20;
+    -fx-font-size: 14;
+    -fx-pref-width: 100;
+}
+
+#onlyStaff {
+    -fx-font-style: italic;
+}
+
+#searchButton {
+    -fx-background-color: none;
+}
+
+#searchField {
+    -fx-text-fill: white;
+    -fx-background-color: white, #00A6D6;
+}
+
+#searchField:focused {
+    -fx-text-fill: white;
+    -fx-background-color: white, #00A6D6;
+}
+
+.addToCart {
+    -fx-background-color: none;
+    -fx-background-radius: 5em;
+    -fx-padding: 10;
+}
+
+.addToCart:hover {
+    -fx-background-color: rgba(139, 162, 167, 0.3);
+}
+
