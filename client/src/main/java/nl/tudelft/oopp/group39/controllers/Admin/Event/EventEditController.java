@@ -54,8 +54,6 @@ public class EventEditController extends EventListController implements Initiali
         typeBox.setPromptText(cEvent.getType());
         String types = ServerCommunication.getEventTypes();
 
-        System.out.println(types);
-
         ArrayNode body = (ArrayNode) mapper.readTree(types).get("body");
         types = mapper.writeValueAsString(body);
         String[] list = mapper.readValue(types, String[].class);
@@ -64,17 +62,6 @@ public class EventEditController extends EventListController implements Initiali
         typeBox.setItems(data);
         startField.setPromptText(cEvent.getStartDate());
         endField.setPromptText(cEvent.getEndDate());
-    }
-
-    /**
-     * Doc. TODO
-     */
-    public String getTime(String time, boolean open) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.US);
-        if (open) {
-            return time.contentEquals("") ? formatter.format(LocalTime.MAX) : time;
-        }
-        return time.contentEquals("") ? formatter.format(LocalTime.MIN) : time;
     }
 
     /**

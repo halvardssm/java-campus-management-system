@@ -1,7 +1,11 @@
 package nl.tudelft.oopp.group39.user.controllers;
 
+import java.util.Arrays;
+import java.util.List;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.repositories.UserRepository;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +42,14 @@ public class UserController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<RestResponse<Object>> filterUsersTemp(@RequestParam String name) {
-        return RestResponse.create(repository.filterUsers(name));
+    public ResponseEntity<RestResponse<Object>> filterUsersTemp(@RequestParam String name, @RequestParam String role) {
+        return RestResponse.create(repository.filterUsers(name, role));
+    }
+
+    @GetMapping("/roles")
+    public ResponseEntity<RestResponse<Object>> listUserRoles() {
+        List<Role> enums = Arrays.asList(Role.values());
+        return RestResponse.create(enums);
     }
 
 

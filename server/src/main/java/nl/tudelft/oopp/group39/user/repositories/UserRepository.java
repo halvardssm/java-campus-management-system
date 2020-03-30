@@ -12,6 +12,6 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     User findUserByUsername(String userName);
 
-    @Query("SELECT u FROM User u WHERE u.username LIKE CONCAT('%',:name,'%')")
-    List<User> filterUsers(@Param("name") String name);
+    @Query("SELECT u FROM User u WHERE u.username LIKE CONCAT('%',:name,'%') AND u.role Like CONCAT('%',:role,'%')")
+    List<User> filterUsers(@Param("name") String name, @Param("role") String role);
 }

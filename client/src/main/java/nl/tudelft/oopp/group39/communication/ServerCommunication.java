@@ -88,6 +88,14 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
+    public static String getUserRoles() {
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create(url + "user/roles"))
+            .build();
+        return httpRequest(request);
+    }
+
     /**
      * Retrieves the room from the server based on the room id.
      *
@@ -137,9 +145,10 @@ public class ServerCommunication {
     }
 
     public static String getFilteredUsers(
-        String name
+        String name,
+        String role
     ) {
-        String urlString = url + "user/filter?name=" + name;
+        String urlString = url + "user/filter?name=" + name + "&role="+role;
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
         return httpRequest(request);
     }
@@ -227,6 +236,16 @@ public class ServerCommunication {
                 + "\", \"name\":\"" + name + "\"}");
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
             .uri(URI.create(url + "room/"))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    public static String createUser(String username, String email, String role, String password) {
+        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers
+            .ofString("{\"username\": \"" + username + "\", \"email\":\""
+                + email + "\", \"role\":\"" + role + "\", \"password\":\"" + password + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
+            .uri(URI.create(url + "user/"))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }
@@ -331,6 +350,20 @@ public class ServerCommunication {
         HttpRequest.BodyPublisher newUser = HttpRequest.BodyPublishers
             .ofString("{\"username\": \"" + username + "\", \"email\":\"" + email
                 + "\", \"password\":\"" + password + "\", \"bookings\":\"" + bookings + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().PUT(newUser)
+            .uri(URI.create(url + "user/" + username))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    public static String updateUserAdmin(
+        String username,
+        String email,
+        String role
+    ) {
+        HttpRequest.BodyPublisher newUser = HttpRequest.BodyPublishers
+            .ofString("{\"username\": \"" + username + "\", \"email\":\"" + email
+                + "\", \"role\":\"" + role + "\"}");
         HttpRequest request = HttpRequest.newBuilder().PUT(newUser)
             .uri(URI.create(url + "user/" + username))
             .header("Content-Type", "application/json").build();
