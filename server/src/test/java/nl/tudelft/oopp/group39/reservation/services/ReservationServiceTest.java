@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javassist.NotFoundException;
@@ -50,8 +51,15 @@ class ReservationServiceTest extends AbstractTest {
 
         assertEquals(1, reservations.size());
         assertEquals(testReservation.getId(), reservations.get(0).getId());
-        assertEquals(testReservation.getTimeOfPickup(), reservations.get(0).getTimeOfPickup());
-        assertEquals(testReservation.getTimeOfDelivery(), reservations.get(0).getTimeOfDelivery());
+        assertEquals(testReservation.getTimeOfPickup()
+                .format(DateTimeFormatter.ISO_DATE),
+            reservations.get(0).getTimeOfPickup()
+                .format(DateTimeFormatter.ISO_DATE));
+
+        assertEquals(testReservation.getTimeOfDelivery()
+                .format(DateTimeFormatter.ISO_DATE),
+            reservations.get(0).getTimeOfDelivery()
+                .format(DateTimeFormatter.ISO_DATE));
     }
 
     @Test
