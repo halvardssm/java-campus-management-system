@@ -122,27 +122,26 @@ public class UserPageController extends MainSceneController {
         return duration;
     }
 
+    /**
+     * Deletes the booking
+     */
     public void deleteBooking() {
         ServerCommunication.removeBooking(bookingID.getText());
     }
 
+    /**
+     * Shows the edit fields for editing the booking
+     */
     public void editBooking() throws IOException {
         editStartingTime.setOpacity(1);
         editDuration.setOpacity(1);
         editDate.setOpacity(1);
         doneButton.setOpacity(1);
-
-
-        String inputTimeString = "10:83:00";
-        try {
-            LocalTime.parse(inputTimeString);
-            System.out.println("Valid time string");
-        } catch (DateTimeParseException | NullPointerException e) {
-            System.out.println("Invalid Time String: " + inputTimeString);
-        }
-
     }
 
+    /**
+     * Edits the booking
+     */
     public void finishEditBooking() {
         editStartingTime.setOpacity(0);
         editDuration.setOpacity(0);
@@ -153,6 +152,11 @@ public class UserPageController extends MainSceneController {
             LocalTime sTime = LocalTime.parse(editStartingTime.getText());
             LocalTime dTime = LocalTime.parse(editDuration.getText());
 
+            if(sTime.getMinute() != 00 || sTime.getSecond() != 00 ||
+               dTime.getMinute() != 00 || dTime.getSecond() != 00) {
+                createAlert("You can only book rooms starting at the hour");
+                return;
+            }
             if(sTime.getHour() < 9) {
                 createAlert("You can only book a room after 9");
                 return;
@@ -189,12 +193,15 @@ public class UserPageController extends MainSceneController {
             System.out.println("Error: Wrong IO");
         }
 
-
         LocalTime t1 = LocalTime.parse(editStartingTime.getText());
         LocalTime t2 = LocalTime.parse(editDuration.getText());
         int endTimeHour = t1.getHour() + t2.getHour();
 
-        ServerCommunication.addBooking(editDate.getValue().toString(), t1.toString() + ":00", endTimeHour + ":00:00", user.getUsername(), roomID.getText());
+        ServerCommunication.addBooking(editDate.getValue().toString(),
+                                      t1.toString() + ":00",
+                                      endTimeHour + ":00:00",
+                                       user.getUsername(),
+                                       roomID.getText());
         ServerCommunication.removeBooking(bookingID.getText());
     }
 
@@ -203,9 +210,7 @@ public class UserPageController extends MainSceneController {
     }
 
     /**
-     * Returns the user back to the room page when the back button is clicked.
-     *
-     * @throws IOException when there is an io exception
+     * Returns the user back to the building page when the back button is clicked.
      */
     @FXML
     private void backToRoom() throws IOException {
