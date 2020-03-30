@@ -22,7 +22,8 @@
       <TextField fx:id="editDuration" layoutX="72.0" layoutY="94.0" opacity="0.0" prefHeight="26.0" prefWidth="91.0" />
       <Button fx:id="doneButton" layoutX="267.0" layoutY="94.0" mnemonicParsing="false" onAction="#finishEditBooking" opacity="0.0" text="Done" />
       <Label fx:id="roomID" layoutX="267.0" layoutY="29.0" opacity="0.0" text="room ID" />
-      <DatePicker fx:id="editDate" layoutX="248.0" layoutY="63.0" opacity="0.0" prefHeight="26.0" prefWidth="106.0" />
+      <DatePicker fx:id="editDate" layoutX="231.0" layoutY="63.0" opacity="0.0" prefHeight="26.0" prefWidth="106.0" />
       <Button layoutX="211.0" layoutY="122.0" mnemonicParsing="false" onAction="#viewRoom" style="-fx-background-color: false; -fx-text-fill: blue;" text="View room" />
+      <Label fx:id="bookingDate" layoutX="204.0" layoutY="68.0" text="Date:" />
    </children>
 </AnchorPane>

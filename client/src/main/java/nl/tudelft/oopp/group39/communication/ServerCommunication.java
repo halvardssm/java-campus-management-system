@@ -9,6 +9,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
+import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.models.Room;
 import nl.tudelft.oopp.group39.models.User;
 
@@ -64,6 +65,22 @@ public class ServerCommunication {
         HttpRequest request = HttpRequest.newBuilder()
             .GET().uri(URI.create(url + building + id)).build();
         return httpRequest(request);
+    }
+
+    /**
+     * Retrieves building filtered on id. The difference between the other getBuilding method
+     * is that this method returns it as a building object.
+     *
+     * @param id of wanted building
+     * @return the building.
+     */
+    public static Building getTheBuilding(long id) throws JsonProcessingException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET().uri(URI.create(url + building + id)).build();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        JsonNode roomJson = mapper.readTree(httpRequest(request)).get("body");
+        String roomAsString = mapper.writeValueAsString(roomJson);
+        return mapper.readValue(roomAsString, Building.class);
     }
 
     /**

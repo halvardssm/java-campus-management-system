@@ -41,6 +41,9 @@ public class UserPageController extends MainSceneController {
     private Label roomID;
 
     @FXML
+    private Label bookingDate;
+
+    @FXML
     private TextField editStartingTime;
 
     @FXML
@@ -64,13 +67,17 @@ public class UserPageController extends MainSceneController {
         flowPane.getChildren().clear();
         try {
             String bookingString = ServerCommunication.getAllBookings();
-            System.out.println(bookingString); //This is not necessary, just for checking
             ArrayNode body = (ArrayNode) mapper.readTree(bookingString).get("body");
             bookingString = mapper.writeValueAsString(body);
             BookingDto[] bookingList = mapper.readValue(bookingString, BookingDto[].class);
 
             for (BookingDto booking : bookingList) {
                 newBooking = FXMLLoader.load(getClass().getResource("/bookingCell.fxml"));
+
+                String bookingD = booking.getDate();
+                Label theBookingDate = (Label) newBooking.lookup("#bookingDate");
+                theBookingDate.setText("Date: " + bookingD);
+
                 Integer roomName2 = Math.toIntExact(booking.getRoom());
                 String roomName = ServerCommunication.getRoom(roomName2).getName();
                 Label name = (Label) newBooking.lookup("#rName");
@@ -136,6 +143,7 @@ public class UserPageController extends MainSceneController {
         editDuration.setOpacity(1);
         editDate.setOpacity(1);
         doneButton.setOpacity(1);
+        bookingDate.setOpacity(0);
     }
 
     /**
@@ -146,6 +154,7 @@ public class UserPageController extends MainSceneController {
         editDuration.setOpacity(0);
         editDate.setOpacity(0);
         doneButton.setOpacity(0);
+        bookingDate.setOpacity(1);
 
         try {
             LocalTime startTime = LocalTime.parse(editStartingTime.getText());
@@ -156,40 +165,55 @@ public class UserPageController extends MainSceneController {
                 createAlert("You can only book rooms starting at the hour");
                 return;
             }
-            if (startTime.getHour() < 9) {
-                createAlert("You can only book a room after 9");
-                return;
-            }
             if (durationTime.getHour() > 4) {
                 createAlert("You can't book a room longer than 4 hours");
                 return;
             }
-            if (startTime.getHour() == 17 && durationTime.getHour() == 4
-                || startTime.getHour() == 18 && durationTime.getHour() == 3
-                || startTime.getHour() == 19 && durationTime.getHour() == 2
-                || startTime.getHour() == 20) {
-                createAlert("You can only book a room until 8");
-                return;
-            }
 
             //Looking whether the user already has a booking at the same time and date
+            //And retrieving the opening and closing time of the building
             String bookingString = ServerCommunication.getAllBookings();
             ArrayNode body = (ArrayNode) mapper.readTree(bookingString).get("body");
             bookingString = mapper.writeValueAsString(body);
             BookingDto[] bookingList = mapper.readValue(bookingString, BookingDto[].class);
 
+            String buildingOpenTimeString = "";
+            String buildingCloseTimeString = "";
             for (BookingDto booking : bookingList) {
                 if (booking.getStartTime().equals(editStartingTime.getText())
                         && editDate.getValue().toString().equals(booking.getDate())) {
                     createAlert("You can't have 2 bookings at the same time!");
                     return;
                 }
+
+                buildingOpenTimeString = ServerCommunication
+                        .getTheBuilding(ServerCommunication
+                                .getRoom(Math.toIntExact(booking.getRoom()))
+                                .getBuilding())
+                        .getOpen();
+                buildingCloseTimeString = ServerCommunication
+                        .getTheBuilding(ServerCommunication
+                                .getRoom(Math.toIntExact(booking.getRoom()))
+                                .getBuilding())
+                        .getClosed();
+            }
+
+            LocalTime buildingOpenTime = LocalTime.parse(buildingOpenTimeString);
+            LocalTime buildingCloseTime = LocalTime.parse(buildingCloseTimeString);
+
+            if (startTime.getHour() < buildingOpenTime.getHour()) {
+                createAlert("You can't book a room if the building is closed");
+                return;
+            }
+            if ((startTime.getHour() + durationTime.getHour()) > buildingCloseTime.getHour()) {
+                createAlert("Your booking time exceeds the closing time of the building");
+                return;
             }
 
         } catch (DateTimeParseException | NullPointerException e) {
-            System.out.println("Invalid Time String");
+            createAlert("Invalid Time String");
         } catch (IOException e) {
-            System.out.println("Error: Wrong IO");
+            createAlert("Error: Wrong IO");
         }
 
         LocalTime t1 = LocalTime.parse(editStartingTime.getText());
