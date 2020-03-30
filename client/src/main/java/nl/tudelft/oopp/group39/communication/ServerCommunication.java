@@ -323,13 +323,10 @@ public class ServerCommunication {
      * @param date   the chosen date where you want to get the bookings from
      * @return returns an HTTP request
      */
-    public static String getBookings(int roomId, String date) {
-        System.out.println(roomId);
-        System.out.println(url + "booking?room="
-            + roomId + "&date=" + date);
+    public static String getBookings(String filters) {
+        System.out.println(url + "booking?" + filters);
         HttpRequest request = HttpRequest.newBuilder()
-            .GET().uri(URI.create(url + "booking?room="
-                + roomId + "&date=" + date)).build();
+            .GET().uri(URI.create(url + "booking?" + filters)).build();
         return httpRequest(request);
     }
 

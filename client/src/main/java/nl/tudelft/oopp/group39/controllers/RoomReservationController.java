@@ -149,7 +149,8 @@ public class RoomReservationController extends MainSceneController {
      */
     public List<Integer> getBookedTimes(String date) throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String bookings = ServerCommunication.getBookings((int) room.getId(), date);
+        String roomDate = "room=" + room.getId() + "&date=" + date;
+        String bookings = ServerCommunication.getBookings(roomDate);
         System.out.println(bookings);
         ArrayNode body = (ArrayNode) mapper.readTree(bookings).get("body");
         String bookingString = mapper.writeValueAsString(body);
@@ -159,6 +160,17 @@ public class RoomReservationController extends MainSceneController {
             int startTime = Integer.parseInt(booking.getStartTime().split(":")[0]);
             bookedTimes.add(startTime);
             int endTime = Integer.parseInt(booking.getEndTime().split(":")[0]);
+            bookedTimes.add(endTime);
+        }
+        String userDate = "user=" + user.getUsername() + "&date=" + date;
+        String userBookings = ServerCommunication.getBookings(userDate);
+        ArrayNode bodyBookings = (ArrayNode) mapper.readTree(userBookings).get("body");
+        String userBookingString = mapper.writeValueAsString(bodyBookings);
+        Booking[] userBookingsList = mapper.readValue(userBookingString, Booking[].class);
+        for (Booking userBooking : userBookingsList) {
+            int startTime = Integer.parseInt(userBooking.getStartTime().split(":")[0]);
+            bookedTimes.add(startTime);
+            int endTime = Integer.parseInt(userBooking.getEndTime().split(":")[0]);
             bookedTimes.add(endTime);
         }
         System.out.println(bookedTimes);

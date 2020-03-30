@@ -28,6 +28,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Bike;
+import nl.tudelft.oopp.group39.models.Booking;
 import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.models.Food;
 import nl.tudelft.oopp.group39.models.Reservable;
@@ -241,18 +242,10 @@ public class FoodAndBikeSceneController extends MainSceneController {
      * @param reservable the reservable to be added to the cart
      */
     public void addToCart(String name, Reservable reservable) {
-        if (cartlist.lookup("#" + reservable.getId()) == null) {
+        if (cartlist.lookup("#cart" + reservable.getId()) == null) {
             HBox fooditem = new HBox(10);
+            fooditem.setId("cart" + reservable.getId());
             fooditem.setAlignment(Pos.CENTER_LEFT);
-            Spinner<Integer> amount = new Spinner<>();
-            amount.setPrefWidth(50);
-            amount.setId(String.valueOf(reservable.getId()));
-            SpinnerValueFactory<Integer> valueFactory =
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, 1);
-            amount.setValueFactory(valueFactory);
-            amount.valueProperty().addListener(
-                (obs, oldValue, newValue) -> updateCart(reservable)
-            );
             Label priceLabel = getPriceLabel(reservable);
             priceLabel.setId(reservable.getId() + "price");
             Button delete = new Button();
@@ -267,7 +260,18 @@ public class FoodAndBikeSceneController extends MainSceneController {
             HBox.setHgrow(region, Priority.ALWAYS);
             fooditem.getChildren().add(foodname);
             fooditem.getChildren().add(region);
-            fooditem.getChildren().add(amount);
+            if (type.equals("food")) {
+                Spinner<Integer> amount = new Spinner<>();
+                amount.setPrefWidth(50);
+                amount.setId(String.valueOf(reservable.getId()));
+                SpinnerValueFactory<Integer> valueFactory =
+                    new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, 1);
+                amount.setValueFactory(valueFactory);
+                amount.valueProperty().addListener(
+                    (obs, oldValue, newValue) -> updateCart(reservable)
+                );
+                fooditem.getChildren().add(amount);
+            }
             fooditem.getChildren().add(priceLabel);
             fooditem.getChildren().add(delete);
             cartlist.getChildren().add(fooditem);
@@ -277,10 +281,12 @@ public class FoodAndBikeSceneController extends MainSceneController {
             checkEmptyCart();
             cart.add(reservable);
         } else {
-            Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + reservable.getId());
-            Integer value = amount.getValue() + 1;
-            amount.getValueFactory().setValue(value);
-            updateCart(reservable);
+            if (type.equals("food")) {
+                Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + reservable.getId());
+                Integer value = amount.getValue() + 1;
+                amount.getValueFactory().setValue(value);
+                updateCart(reservable);
+            }
         }
 
     }
@@ -329,8 +335,7 @@ public class FoodAndBikeSceneController extends MainSceneController {
             totalprice = totalprice - price;
             total.setText("$" + totalprice);
         }
-        Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + id);
-        HBox fooditem = (HBox) amount.getParent();
+        HBox fooditem = (HBox) cartlist.lookup("#cart" + id);
         cartlist.getChildren().remove(fooditem);
         cartItems--;
         checkEmptyCart();
@@ -364,7 +369,6 @@ public class FoodAndBikeSceneController extends MainSceneController {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
                 LocalDate today = LocalDate.now();
-
                 setDisable(empty || date.compareTo(today) < 0);
             }
         });
@@ -385,6 +389,23 @@ public class FoodAndBikeSceneController extends MainSceneController {
             }
             timeselector.getChildren().add(roomSelector);
         }
+    }
+
+    public List<Integer> getBikeTimes(String date) throws JsonProcessingException {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        String reservations = ServerCommunication.get(ServerCommunication.reservation);
+        System.out.println(reservations);
+        ArrayNode body = (ArrayNode) mapper.readTree(reservations).get("body");
+        String bookingString = mapper.writeValueAsString(body);
+        Booking[] bookingsList = mapper.readValue(bookingString, Booking[].class);
+        List<Integer> bookedTimes = new ArrayList<>();
+        for (Booking booking : bookingsList) {
+            int startTime = Integer.parseInt(booking.getStartTime().split(":")[0]);
+            bookedTimes.add(startTime);
+            int endTime = Integer.parseInt(booking.getEndTime().split(":")[0]);
+            bookedTimes.add(endTime);
+        }
+        return bookedTimes;
     }
 
     /**
