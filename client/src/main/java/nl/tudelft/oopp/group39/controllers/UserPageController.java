@@ -13,7 +13,6 @@ import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.FlowPane;
@@ -57,7 +56,6 @@ public class UserPageController extends MainSceneController {
     private Button doneButton;
 
     public void showBookings() {
-        //TODO replace these to other method as soon as I know how to load certain methods immediately when scene is loaded
         accountName.setText(MainSceneController.user.getUsername());
         accountRole.setText(MainSceneController.user.getRole());
         accountEmail.setText(MainSceneController.user.getEmail());
@@ -73,8 +71,8 @@ public class UserPageController extends MainSceneController {
 
             for(BookingDTO booking : bookingList) {
                 newBooking = FXMLLoader.load(getClass().getResource("/bookingCell.fxml"));
-//                Integer roomName2 = Math.toIntExact(booking.getRoom());
-//                String roomName = ServerCommunication.getRoom(roomName2).getName();
+                Integer roomName2 = Math.toIntExact(booking.getRoom());
+                String roomName = ServerCommunication.getRoom(roomName2).getName();
                 String bookingID = Long.toString(booking.getId());
                 String roomId = Long.toString(booking.getRoom());
                 String startTime = booking.getStartTime();
@@ -83,7 +81,7 @@ public class UserPageController extends MainSceneController {
                         LocalTime.parse(booking.getEndTime()));
 
                 Label name = (Label) newBooking.lookup("#rName");
-                name.setText("Booking ID #" + booking.getId());
+                name.setText(roomName);
 
                 Label date = (Label) newBooking.lookup("#rDate");
                 date.setText("Starting Time: " + startTime);

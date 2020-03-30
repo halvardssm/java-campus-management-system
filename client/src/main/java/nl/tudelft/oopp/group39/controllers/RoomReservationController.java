@@ -149,7 +149,7 @@ public class RoomReservationController extends MainSceneController {
      */
     public List<Integer> getBookedTimes(String date) throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String bookings = ServerCommunication.getBookings((int) room.getId(), date);
+        String bookings = ServerCommunication.getBookings(room.getId(), date);
         System.out.println(bookings);
         ArrayNode body = (ArrayNode) mapper.readTree(bookings).get("body");
         String bookingString = mapper.writeValueAsString(body);
