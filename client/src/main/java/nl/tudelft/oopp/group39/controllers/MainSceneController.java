@@ -11,11 +11,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -219,6 +216,13 @@ public class MainSceneController {
             logout.setOnAction(event -> {
                 try {
                     logout();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            myacc.setOnAction(event -> {
+                try {
+                    goToUserPageScene();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -3,7 +3,7 @@ package nl.tudelft.oopp.group39.models;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class BookingDTO {
+public class BookingDto {
 
     private Integer id;
     private String date;
@@ -12,7 +12,7 @@ public class BookingDTO {
     private String user;
     private Long room;
 
-    public BookingDTO() {
+    public BookingDto() {
     }
 
     /**
@@ -24,7 +24,7 @@ public class BookingDTO {
      * @param user      user that made the booking
      * @param room      room that is booked
      */
-    public BookingDTO(
+    public BookingDto(
             Integer id,
             String date,
             String startTime,
@@ -39,19 +39,27 @@ public class BookingDTO {
         this.room = room;
     }
 
-    public Integer getId() { return id; }
+    public Integer getId() {
+        return id;
+    }
 
     public String getDate() {
         return date;
     }
 
-    public String getStartTime() { return startTime; }
+    public String getStartTime() {
+        return startTime;
+    }
 
     public String getEndTime() {
         return endTime;
     }
 
-    public String getUser() { return user; }
+    public String getUser() {
+        return user;
+    }
 
-    public Long getRoom() { return room; }
+    public Long getRoom() {
+        return room;
+    }
 }

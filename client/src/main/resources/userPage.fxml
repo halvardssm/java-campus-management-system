@@ -77,7 +77,7 @@
    <center>
       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="392.0" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" minHeight="40.0" text="Your Bookings:" AnchorPane.bottomAnchor="263.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="175.0" AnchorPane.topAnchor="5.0">
+            <Label alignment="TOP_RIGHT" contentDisplay="RIGHT" minHeight="40.0" text="Your Bookings:" AnchorPane.bottomAnchor="263.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="222.0" AnchorPane.topAnchor="5.0">
                <font>
                   <Font size="20.0" />
                </font>

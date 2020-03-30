@@ -56,13 +56,17 @@ public class Room {
         this.bookings = bookings;
     }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
     public Long getBuilding() {
         return building;
     }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
     public Integer getCapacity() {
         return capacity;

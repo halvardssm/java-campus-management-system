@@ -1,4 +1,5 @@
 package nl.tudelft.oopp.group39;
+
 import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 public class MainApp {
