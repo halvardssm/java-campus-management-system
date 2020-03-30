@@ -32,8 +32,8 @@ public class AdminPanel extends Application {
 
     private static Stage window;
     private static Parent root;
-    private static int width = 700;
-    private static int height = 600;
+    private static int width = 900;
+    private static int height = 650;
 
     /**
      * Doc. TODO Sven
@@ -56,7 +56,6 @@ public class AdminPanel extends Application {
 
         FXMLLoader loader = new FXMLLoader(AdminPanel.class.getResource(name));
         root = loader.load();
-        System.out.println("news: d: " + root + " :" + window);
         window.setScene(new Scene(root, width, height));
 
         return loader.getController();

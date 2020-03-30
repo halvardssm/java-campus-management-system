@@ -50,6 +50,7 @@ public class AdminPanelController extends MainAdminController {
 
     public void setNavBar(MenuBar menuBar) {
         Label userListLabel = new Label("User list");
+        userListLabel.setStyle("-fx-text-fill: black");
         userListLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -64,6 +65,7 @@ public class AdminPanelController extends MainAdminController {
         fileMenuButton1.setGraphic(userListLabel);
         menuBar.getMenus().add(fileMenuButton1);
         Label roomListLabel = new Label("Room list");
+        roomListLabel.setStyle("-fx-text-fill: black");
         roomListLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -78,6 +80,7 @@ public class AdminPanelController extends MainAdminController {
         fileMenuButton2.setGraphic(roomListLabel);
         menuBar.getMenus().add(fileMenuButton2);
         Label eventListLabel = new Label("Event list");
+        eventListLabel.setStyle("-fx-text-fill: black");
         eventListLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -92,6 +95,7 @@ public class AdminPanelController extends MainAdminController {
         fileMenuButton3.setGraphic(eventListLabel);
         menuBar.getMenus().add(fileMenuButton3);
         Label buildingListLabel = new Label("Building list");
+        buildingListLabel.setStyle("-fx-text-fill: black");
         buildingListLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
