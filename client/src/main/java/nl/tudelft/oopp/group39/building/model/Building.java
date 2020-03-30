@@ -4,6 +4,11 @@ import java.util.HashSet;
 import java.util.Set;
 import nl.tudelft.oopp.group39.room.model.Room;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
 public class Building {
 
     private Integer id;

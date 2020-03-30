@@ -5,41 +5,86 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <BorderPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" xmlns:fx="http://javafx.com/fxml" fx:controller="nl.tudelft.oopp.group39.room.controller.RoomSceneController">
     <top>
-        <HBox fx:id="topbar" styleClass="bar" spacing="10">
-            <padding><Insets top="12" right="15" bottom="8" left="15"/></padding>
-            <Button onAction="#toggleSidebar" id="menubtn" alignment="CENTER">
-                <graphic>
-                    <ImageView fitHeight="30" fitWidth="30">
-                        <Image url="@../icons/menu-icon.png"/>
-                    </ImageView>
-                </graphic>
-            </Button>
-            <Label id="title" text="ROOMS"/>
-            <Region  HBox.hgrow="ALWAYS" />
-            <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
+        <HBox styleClass="bar" spacing="10">
+            <padding>
+                <Insets top="10" right="15" bottom="10" left="15"/>
+            </padding>
+            <VBox alignment="CENTER">
+                <Button onAction="#toggleSidebar" id="menubtn" alignment="CENTER">
+                    <graphic>
+                        <ImageView fitHeight="30" fitWidth="30">
+                            <Image url="@../icons/menu-icon.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </VBox>
+            <VBox alignment="CENTER">
+                <Label id="title" text="ROOMS" alignment="BOTTOM_CENTER"/>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <GridPane hgap="5" alignment="CENTER">
+                <TextField fx:id="searchField" GridPane.columnIndex="0"/>
+                <Button id="searchButton" onAction="#searchRooms" GridPane.columnIndex="1">
+                    <graphic>
+                        <ImageView fitHeight="20" fitWidth="20">
+                            <Image url="@../icons/search-icon.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </GridPane>
+            <VBox alignment="CENTER" fx:id="topBox">
+                <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
+            </VBox>
         </HBox>
     </top>
     <center>
         <VBox>
-            <VBox fx:id="buildingInfo" alignment="CENTER" >
-                <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
-                <Label id="buildingName" fx:id="buildingName" />
-                <Label id="buildingAddress" fx:id="buildingAddress" />
-            </VBox>
-            <ScrollPane fitToHeight="true" fitToWidth="true" >
-                <FlowPane alignment="TOP_CENTER" fx:id="rooms" hgap="20.0" vgap="20.0"/><padding><Insets top="30" right="20" bottom="30" left="20"/></padding>
+            <HBox>
+                <padding>
+                    <Insets top="10" right="40" left="65"/>
+                </padding>
+                <VBox alignment="CENTER" fx:id="goBack">
+                    <Button onAction="#goToBuildingScene" fx:id="backButton" id="backBtn" alignment="CENTER">
+                        <graphic>
+                            <ImageView fitHeight="20" fitWidth="20">
+                                <Image url="@../icons/back-icon.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </VBox>
+                <Region HBox.hgrow="ALWAYS"/>
+                <VBox fx:id="buildingInfo" alignment="CENTER" GridPane.halignment="CENTER"
+                      GridPane.columnIndex="0"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <VBox alignment="CENTER">
+                    <Button id="toggleFilter" onAction="#toggleFilterBar" text=" Filters"
+                            alignment="BASELINE_CENTER" textAlignment="CENTER">
+                        <graphic>
+                            <ImageView fitHeight="20" fitWidth="20">
+                                <Image url="@../icons/filter-icon.png"/>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </VBox>
+            </HBox>
+            <ScrollPane fitToHeight="true" fitToWidth="true">
+                <FlowPane alignment="TOP_CENTER" fx:id="rooms" hgap="20.0" vgap="20.0"/>
+                <padding>
+                    <Insets top="15" right="20" bottom="10" left="20"/>
+                </padding>
             </ScrollPane>
         </VBox>
-
     </center>
     <stylesheets>
         <URL value="@../style/style.css" />

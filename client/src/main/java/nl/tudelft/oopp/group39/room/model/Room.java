@@ -125,9 +125,9 @@ public class Room {
     public Building getBuildingObject() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String buildingJson = ServerCommunication.getBuilding(building);
-        JsonNode buildingNode = mapper.readTree(buildingJson).get("body");
-        String buildingAsString = mapper.writeValueAsString(buildingNode);
+        String buildingString = ServerCommunication.getBuilding(building);
+        JsonNode body = mapper.readTree(buildingString).get("body");
+        String buildingAsString = mapper.writeValueAsString(body);
         return mapper.readValue(buildingAsString, Building.class);
     }
 

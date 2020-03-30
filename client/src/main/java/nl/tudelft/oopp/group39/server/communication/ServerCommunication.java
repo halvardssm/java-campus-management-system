@@ -23,6 +23,7 @@ public class ServerCommunication {
     public static String reservation = "reservation/";
     public static String food = "food/";
     public static String bike = "bike/";
+    public static String event = "event/";
     private static HttpClient client = HttpClient.newBuilder().build();
     private static String url = "http://localhost:8080/";
     private static ObjectMapper mapper = new ObjectMapper();
@@ -102,15 +103,9 @@ public class ServerCommunication {
      *
      * @return the body of a get request to the server.
      */
-    public static String getFilteredBuildings(
-        String name,
-        String location,
-        String open,
-        String closed,
-        String capacity
-    ) {
-        String urlString = url + "building?capacity=" + capacity + "&building=" + name
-            + "&location=" + location + "&open=" + open + "&closed=" + closed;
+    public static String getFilteredBuildings(String filters) {
+        String urlString = url + "building?" + filters;
+        System.out.println(urlString);
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
         return httpRequest(request);
     }
@@ -390,11 +385,11 @@ public class ServerCommunication {
             + ",\"user\":\"" + user
             + "\",\"reservationAmounts\":" + reservable + "}";
         System.out.println(body);
-        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString(body);
+        HttpRequest.BodyPublisher newOrder = HttpRequest.BodyPublishers.ofString(body);
         HttpRequest request =
             HttpRequest.newBuilder()
-                .POST(newBuilding)
-                .uri(URI.create(url + "reservation"))
+                .POST(newOrder)
+                .uri(URI.create(url + reservation))
                 .header("Content-Type", "application/json")
                 .build();
         HttpResponse<String> response;
