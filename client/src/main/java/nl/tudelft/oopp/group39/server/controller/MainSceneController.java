@@ -3,11 +3,14 @@ package nl.tudelft.oopp.group39.server.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -29,17 +32,25 @@ public class MainSceneController {
 
     public static boolean loggedIn = false;
     public static String jwt;
-    public static boolean sidebarShown = false;
     public static User user;
 
     @FXML
     public VBox sidebar;
 
     @FXML
+    public MenuButton myaccount;
+
+    @FXML
     protected Button topbtn;
 
     @FXML
     protected HBox topbar;
+
+    @FXML
+    protected BorderPane window;
+
+    @FXML
+    private MenuItem admin;
 
     /**
      * Doc. TODO Sven
@@ -188,28 +199,14 @@ public class MainSceneController {
     /**
      * Changes the login button when logged in.
      */
-    public void changeTopBtn() {
-        System.out.println(topbtn);
-        System.out.println(topbar);
-        System.out.println(loggedIn);
-
+    public void changeTopBtn() throws IOException {
         if (loggedIn) {
-            MenuButton myaccount = new MenuButton(user.getUsername());
-            MenuItem myres = new MenuItem("My Reservations");
-            MenuItem myacc = new MenuItem("My Account");
-            MenuItem logout = new MenuItem("Logout");
-            MenuItem admin = new MenuItem("Admin panel");
-            logout.setOnAction(event -> {
-                try {
-                    logout();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            myaccount.getItems().addAll(myres, myacc, logout);
-            if (user.getRole().equals("ADMIN")) {
-                myaccount.getItems().add(admin);
+            myaccount = FXMLLoader.load(getClass().getResource("/menuButton.fxml"));
+
+            if (!user.getRole().equals("ADMIN")) {
+                myaccount.getItems().remove(admin);
             }
+
             myaccount.setText(user.getUsername());
             topbar.getChildren().add(myaccount);
         } else {
@@ -227,49 +224,14 @@ public class MainSceneController {
     /**
      * Toggles the sidebar.
      */
-    public void toggleSidebar() {
-        if (!sidebarShown) {
-            Hyperlink buildings = new Hyperlink("Buildings");
-            buildings.getStyleClass().add("sidebar-item");
-            buildings.setOnAction(event -> {
-                try {
-                    goToBuildingScene();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            Hyperlink rooms = new Hyperlink("Rooms");
-            rooms.getStyleClass().add("sidebar-item");
-            rooms.setOnAction(event -> {
-                try {
-                    goToRoomsScene();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            Hyperlink bikerental = new Hyperlink("Bike rental");
-            bikerental.getStyleClass().add("sidebar-item");
-            bikerental.setOnAction(event -> {
-                try {
-                    goToBikeRentalScene();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            Hyperlink foodorder = new Hyperlink("Order food");
-            foodorder.getStyleClass().add("sidebar-item");
-            foodorder.setOnAction(event -> {
-                try {
-                    goToFoodOrderScene();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            sidebar.getChildren().addAll(buildings, rooms, bikerental, foodorder);
-            sidebarShown = true;
-        } else {
-            sidebar.getChildren().clear();
-            sidebarShown = false;
+    public void toggleSidebar() throws IOException {
+        if (window.getLeft() == null) {
+            sidebar = FXMLLoader.load(
+                getClass().getResource("/sidebar.fxml")
+            );
+            window.setLeft(sidebar);
+            return;
         }
+        window.setLeft(null);
     }
 }

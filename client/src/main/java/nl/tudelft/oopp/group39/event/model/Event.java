@@ -2,7 +2,7 @@ package nl.tudelft.oopp.group39.event.model;
 
 public class Event {
 
-    private int id;
+    private Long id;
     private String type;
     private String startDate;
     private String endDate;
@@ -28,7 +28,7 @@ public class Event {
         this.endDate = endDate;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 

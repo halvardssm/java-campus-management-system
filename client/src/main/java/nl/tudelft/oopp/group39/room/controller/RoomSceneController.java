@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import nl.tudelft.oopp.group39.building.controller.BuildingCellController;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
@@ -43,6 +44,9 @@ public class RoomSceneController extends MainSceneController {
     @FXML
     private VBox buildingInfo;
 
+    @FXML
+    public Label buildingName;
+
     /**
      * Sets up the page to show rooms for selected building.
      *
@@ -57,7 +61,7 @@ public class RoomSceneController extends MainSceneController {
     /**
      * Doc. TODO Sven
      */
-    public void newRoomButton() {
+    public void newRoom() {
         String buildingId = roomBuildingIdField.getText();
 
         String roomCapacity = roomCapacityField.getText();
@@ -70,7 +74,7 @@ public class RoomSceneController extends MainSceneController {
     /**
      * Doc. TODO Sven
      */
-    public void updateRoomButton() {
+    public void updateRoom() {
         String buildingId = roomBuildingIdField.getText();
 
         String roomCap = roomCapacityField.getText();
@@ -95,14 +99,14 @@ public class RoomSceneController extends MainSceneController {
     /**
      * Doc. TODO Sven
      */
-    public void getRoomsButton() {
+    public void getRooms() {
         createAlert(ServerCommunication.get(ServerCommunication.room));
     }
 
     /**
      * Doc. TODO Sven
      */
-    public void deleteRoomButton(ActionEvent actionEvent) {
+    public void deleteRoom() {
         String id = updateRoomField.getText();
 
         id = id.contentEquals("") ? "1" : id;
@@ -124,27 +128,16 @@ public class RoomSceneController extends MainSceneController {
         try {
 
             ArrayNode body = (ArrayNode) mapper.readTree(json).get("body");
+            String roomAsString = mapper.writeValueAsString(body);
 
-            for (JsonNode roomJson : body) {
-                String roomAsString = mapper.writeValueAsString(roomJson);
-                Room room = mapper.readValue(roomAsString, Room.class);
-                newRoom = FXMLLoader.load(getClass().getResource("/room/roomCell.fxml"));
-                newRoom.setOnMouseClicked(e -> {
-                    try {
-                        goToReservationScene(room, room.getBuildingObject());
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
+            Room[] list = mapper.readValue(roomAsString, Room[].class);
 
-                });
-                Label name = (Label) newRoom.lookup("#roomname");
-                name.setText(room.getName());
-                String roomDetails = room.getDescription()
-                    + "\n" + "Capacity: " + room.getCapacity()
-                    + "\n" + "Facilities: " + room.facilitiesToString();
-
-                Label details = (Label) newRoom.lookup("#roomdetails");
-                details.setText(roomDetails);
+            for (Room room : list) {
+                FXMLLoader loader = new FXMLLoader(getClass()
+                    .getResource("/room/roomCell.fxml"));
+                GridPane newRoom = loader.load();
+                RoomCellController controller = loader.getController();
+                controller.createPane(room,building);
                 rooms.getChildren().add(newRoom);
             }
         } catch (IOException e) {
@@ -177,12 +170,10 @@ public class RoomSceneController extends MainSceneController {
      * @param address address of the building
      */
     public void setBuildingDetails(String name, String address) {
-        buildingInfo.setPadding(new Insets(15, 15, 15, 15));
-        Label buildingName = new Label(name);
-        buildingName.getStyleClass().add("buildingName");
-        Label buildingAddress = new Label(address);
-        buildingAddress.getStyleClass().add("buildingAddress");
-        buildingInfo.getChildren().addAll(buildingName, buildingAddress);
+        ((Label) buildingInfo.lookup("buildingName"))
+            .setText(name);
+        ((Label) buildingInfo.lookup("buildingAddress"))
+            .setText(address);
     }
 
 }

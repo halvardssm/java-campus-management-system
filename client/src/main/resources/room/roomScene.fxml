@@ -7,7 +7,7 @@
       fx:controller="nl.tudelft.oopp.group39.room.controller.RoomSceneController">
 
     <Label/>
-    <Button text="Get all rooms." onAction="#getRoomsButton"/>
+    <Button text="Get all rooms." onAction="#getRooms"/>
 
     <Label/>
     <Button text="Go to main scene." onAction="#goToMainScene"/>
@@ -22,12 +22,12 @@
 
     <TextField fx:id="roomDescriptionField" promptText="description"/>
 
-    <Button text="Submit" onAction="#newRoomButton"/>
+    <Button text="Submit" onAction="#newRoom"/>
 
     <Label text="Update a Room."/>
     <TextField fx:id="updateRoomField" promptText="room id"/>
-    <Button text="Submit" onAction="#updateRoomButton"/>
-    <Button text="Delete Room" onAction="#deleteRoomButton"/>
+    <Button text="Submit" onAction="#updateRoom"/>
+    <Button text="Delete Room" onAction="#deleteRoom"/>
     <Label/>
     <Label/>
 

@@ -1,7 +1,7 @@
 package nl.tudelft.oopp.group39.facility.model;
 
 public class Facility {
-    private long id;
+    private Long id;
     private String description;
 
     public Facility() {
@@ -13,7 +13,7 @@ public class Facility {
         this.description = description;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

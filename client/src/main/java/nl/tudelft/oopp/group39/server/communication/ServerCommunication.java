@@ -313,7 +313,7 @@ public class ServerCommunication {
      * @param date   the chosen date where you want to get the bookings from
      * @return returns an HTTP request
      */
-    public static String getBookings(int roomId, String date) {
+    public static String getBookings(Long roomId, String date) {
         System.out.println(roomId);
         System.out.println(url + "booking?room="
             + roomId + "&date=" + date);

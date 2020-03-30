@@ -9,15 +9,15 @@ import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 public class Room {
-    private long id;
-    private int capacity;
+    private Long id;
+    private Integer capacity;
     private String name;
-    private boolean onlyStaff;
+    private Boolean onlyStaff;
     private String description;
     private ArrayNode facilities;
     private ArrayNode events;
     private ArrayNode bookings;
-    private long building;
+    private Long building;
 
     public Room() {
 
@@ -36,12 +36,12 @@ public class Room {
      * @param bookings    ArrayNode of bookings for the room
      */
     public Room(
-        long id,
-        int capacity,
+        Long id,
+        Integer capacity,
         String name,
-        boolean onlyStaff,
+        Boolean onlyStaff,
         String description,
-        long buildingId,
+        Long buildingId,
         ArrayNode facilities,
         ArrayNode events,
         ArrayNode bookings
@@ -57,11 +57,11 @@ public class Room {
         this.bookings = bookings;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public long getBuilding() {
+    public Long getBuilding() {
         return building;
     }
 
@@ -69,11 +69,11 @@ public class Room {
         return name;
     }
 
-    public int getCapacity() {
+    public Integer getCapacity() {
         return capacity;
     }
 
-    public boolean isOnlyStaff() {
+    public Boolean isOnlyStaff() {
         return onlyStaff;
     }
 

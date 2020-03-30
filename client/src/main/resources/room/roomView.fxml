@@ -31,9 +31,9 @@
     <center>
         <VBox>
             <VBox fx:id="buildingInfo" alignment="CENTER" >
-<!--                <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>-->
-<!--                <Label id="buildingName" fx:id="buildingName" />-->
-<!--                <Label id="buildingAddress" fx:id="buildingAddress" />-->
+                <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+                <Label id="buildingName" fx:id="buildingName" />
+                <Label id="buildingAddress" fx:id="buildingAddress" />
             </VBox>
             <ScrollPane fitToHeight="true" fitToWidth="true" >
                 <FlowPane alignment="TOP_CENTER" fx:id="rooms" hgap="20.0" vgap="20.0"/><padding><Insets top="30" right="20" bottom="30" left="20"/></padding>
