@@ -36,23 +36,6 @@ public class BuildingModifierController extends MainSceneController {
     }
 
     /**
-     * Filter. TODO Sven
-     */
-    public void getFilteredBuildings() {
-        String name = nameField.getText();
-        String location = locationField.getText();
-        String capacity = capacityField.getText();
-
-        capacity = capacity.contentEquals("") ? "0" : capacity;
-
-        String open = getTime(timeOpenField.getText(), true);
-        String closed = getTime(timeClosedField.getText(), false);
-        createAlert(
-            ServerCommunication.getFilteredBuildings(name, location, open, closed, capacity)
-        );
-    }
-
-    /**
      * Button. TODO Sven
      */
     public void newBuildingButton() {
