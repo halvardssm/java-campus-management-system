@@ -80,6 +80,15 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
+    public static String getRooms(String filters) {
+        System.out.println(url + "room?" + filters);
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create(url + "room?" + filters))
+            .build();
+        return httpRequest(request);
+    }
+
     public static String getEventTypes() {
         HttpRequest request = HttpRequest.newBuilder()
             .GET()
@@ -114,6 +123,12 @@ public class ServerCommunication {
     }
 
 
+    public static String getFilteredBuildings(String filters) {
+        String urlString = url + "building?" + filters;
+        System.out.println(urlString);
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
+        return httpRequest(request);
+    }
     /**
      * Retrieves filtered list of buildings from the server.
      *
@@ -131,15 +146,6 @@ public class ServerCommunication {
 //            + "&description=" + description;
         String urlString = url + "building?name=" + name
             + "&location=" + location + "&description=" + description;
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
-        return httpRequest(request);
-    }
-
-    public static String getBuildingsByRoom(
-        Room room
-    ) {
-        String urlString = url + "building/room/" + room.getId();
-        System.out.println(urlString);
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
         return httpRequest(request);
     }
@@ -229,11 +235,10 @@ public class ServerCommunication {
      *
      * @return the body of a post request to the server.
      */
-    public static String addRoom(String buildingId, String roomCapacity, String roomDescription, String onlyStaff, String name) {
+    public static String addRoom(String buildingId, String roomCapacity, String roomDescription) {
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers
             .ofString("{\"buildingId\": \"" + buildingId + "\", \"capacity\":\""
-                + roomCapacity + "\", \"description\":\"" + roomDescription + "\", \"onlyStaff\":\"" + onlyStaff
-                + "\", \"name\":\"" + name + "\"}");
+                + roomCapacity + "\", \"description\":\"" + roomDescription + "\"}");
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
             .uri(URI.create(url + "room/"))
             .header("Content-Type", "application/json").build();
@@ -505,11 +510,11 @@ public class ServerCommunication {
             + ",\"user\":\"" + user
             + "\",\"reservationAmounts\":" + reservable + "}";
         System.out.println(body);
-        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers.ofString(body);
+        HttpRequest.BodyPublisher newOrder = HttpRequest.BodyPublishers.ofString(body);
         HttpRequest request =
             HttpRequest.newBuilder()
-                .POST(newBuilding)
-                .uri(URI.create(url + "reservation"))
+                .POST(newOrder)
+                .uri(URI.create(url + reservation))
                 .header("Content-Type", "application/json")
                 .build();
         HttpResponse<String> response;

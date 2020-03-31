@@ -86,12 +86,12 @@ public class BookingController {
      */
     @PutMapping("/{id}")
     @ResponseBody
-    public ResponseEntity<RestResponse<Booking>> updateBooking(
+    public ResponseEntity<RestResponse<Object>> updateBooking(
         @RequestBody BookingDto updated,
         @PathVariable Long id
     ) {
         try {
-            return RestResponse.create(bookingService.updateBooking(updated, id));
+            return RestResponse.create(bookingService.updateBooking(updated, id).toDto());
         } catch (Exception e) {
             return RestResponse.error(e);
         }

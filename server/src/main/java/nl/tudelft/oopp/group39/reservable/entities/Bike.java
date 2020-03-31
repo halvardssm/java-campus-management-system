@@ -59,7 +59,7 @@ public class Bike extends Reservable {
             getId(),
             getBikeType(),
             getPrice(),
-            getBuilding().getId(),
+            getBuilding() == null ? null : getBuilding().getId(),
             Utils.setEntityToDto(getReservations())
         );
     }

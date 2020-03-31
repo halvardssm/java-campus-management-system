@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -8,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
@@ -21,6 +22,7 @@ import nl.tudelft.oopp.group39.controllers.MainSceneController;
 import nl.tudelft.oopp.group39.models.Booking;
 import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.models.Room;
+import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 
 public class RoomReservationController extends MainSceneController {
@@ -48,24 +50,14 @@ public class RoomReservationController extends MainSceneController {
     private VBox roomInfo;
     @FXML
     private Label titleLabel;
+    @FXML
+    private Label onlyStaff;
+    @FXML
+    private Label errormsg;
 
     private Building building;
     private Room room;
-
-    /**
-     * Generates an alert when called.
-     *
-     * @param alertType the type of alert
-     * @param title     the title of the alert
-     * @param content   the content of the alert
-     */
-    public static void showAlert(Alert.AlertType alertType, String title, String content) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
+    private Scene previous;
 
     /**
      * Sets the entire scene up, so loading the timeslots, room information and sets up the buttons.
@@ -73,9 +65,11 @@ public class RoomReservationController extends MainSceneController {
      * @param room     the room you've selected
      * @param building the building of the room you've selected
      */
-    public void setup(Room room, Building building) throws JsonProcessingException {
+    public void setup(Room room, Building building, Scene previous) throws JsonProcessingException {
+
         this.building = building;
         this.room = room;
+        this.previous = previous;
         titleLabel.setText(room.getName());
         loadTimeslots();
         loadRoom(room);
@@ -96,34 +90,33 @@ public class RoomReservationController extends MainSceneController {
         LocalDate bookingDate = date.getValue();
         String bookingStart = fromTime.getValue() + ":00";
         String bookingEnd = toTime.getValue() + ":00";
+        if (loggedIn) {
+            String dateString = date.getValue()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            if (checkDate(dateString)) {
+                if (checkEmpty(date, fromTime, toTime)) {
+                    long roomId = room.getId();
+                    String roomIdString = "" + roomId;
+                    String username = MainSceneController.user.getUsername();
+                    ServerCommunication.addBooking(
+                        dateString,
+                        bookingStart,
+                        bookingEnd, username,
+                        roomIdString
+                    );
 
-        if (checkEmpty(date, fromTime, toTime)) {
-            if (loggedIn) {
-                String dateString = date.getValue()
-                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                long roomId = room.getId();
-                String roomIdString = "" + roomId;
-                String username = MainSceneController.user.getUsername();
-                ServerCommunication.addBooking(
-                    dateString,
-                    bookingStart,
-                    bookingEnd, username,
-                    roomIdString
-                );
+                    createAlert("Reservation successful.");
+                    System.out.println(dateString
+                        + bookingStart + bookingEnd
+                        + username + roomIdString);
 
-                showAlert(Alert.AlertType.INFORMATION, "", "Reservation successful.");
-                System.out.println(dateString
-                    + bookingStart + bookingEnd
-                    + username + roomIdString);
-
-                System.out.println(bookingDate);
-                System.out.println(bookingStart + "\n" + bookingEnd);
-                backToRoom();
-            } else {
-                showAlert(Alert.AlertType.ERROR, "",
-                    "Please log in if you want to reserve a room.");
-                goToLoginScene();
+                    System.out.println(bookingDate);
+                    System.out.println(bookingStart + "\n" + bookingEnd);
+                    backToRoom();
+                }
             }
+        } else {
+            errormsg.setText("Please log in to book a room");
         }
     }
 
@@ -141,7 +134,7 @@ public class RoomReservationController extends MainSceneController {
             || start.getSelectionModel().isEmpty()
             || end.getSelectionModel().isEmpty()
         ) {
-            showAlert(Alert.AlertType.ERROR, "", "Please fill in all the fields.");
+            errormsg.setText("Please fill in all the fields");
             return false;
         } else {
             return true;
@@ -156,6 +149,7 @@ public class RoomReservationController extends MainSceneController {
      * @throws JsonProcessingException when there is something wrong with processing
      */
     public List<Integer> getBookedTimes(String date) throws JsonProcessingException {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String bookings = ServerCommunication.getBookings((int) room.getId(), date);
         System.out.println(bookings);
         ArrayNode body = (ArrayNode) mapper.readTree(bookings).get("body");
@@ -264,6 +258,12 @@ public class RoomReservationController extends MainSceneController {
         }
     }
 
+    /**
+     * Updates the timeslots for choosing start time according to booked times on selected date.
+     *
+     * @param date the selected date
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public void updateStartSlots(String date) throws JsonProcessingException {
         fromTime.getItems().clear();
         fromTime.getItems().addAll(initiateTimeslots(date));
@@ -278,12 +278,19 @@ public class RoomReservationController extends MainSceneController {
         String roomDescription = room.getDescription();
         int roomCapacity = room.getCapacity();
         String roomFacilities = room.facilitiesToString();
-
         roomName.setText(name);
-
         roomDetails.setText(roomDescription
             + "\n" + "Capacity: " + roomCapacity
             + "\n" + "Facilities: " + roomFacilities);
+        if (room.isOnlyStaff()) {
+            onlyStaff.setText("This room can only booked by a staff member");
+            reserveButton.setDisable(true);
+            if (loggedIn) {
+                if (!user.getRole().equals("STUDENT")) {
+                    reserveButton.setDisable(false);
+                }
+            }
+        }
     }
 
     /**
@@ -323,35 +330,12 @@ public class RoomReservationController extends MainSceneController {
 
     }
 
-
-    /**
-     * Switches to login page when the Login button is clicked.
-     *
-     * @throws IOException throws an IOException
-     */
-    @FXML
-    private void switchLogin() throws IOException {
-        goToLoginScene();
-    }
-
-    /**
-     * Switches to the homepage when the *SomeName* button is clicked.
-     *
-     * @throws IOException throws an IOException
-     */
-    @FXML
-    private void switchMain() throws IOException {
-        goToBuildingScene();
-    }
-
     /**
      * Returns the user back to the room page when the back button is clicked.
-     *
-     * @throws IOException when there is an io exception
      */
     @FXML
-    private void backToRoom() throws IOException {
-        goToRoomsScene(building);
+    private void backToRoom() {
+        UsersDisplay.backToPrevious(previous);
     }
 
 

@@ -57,14 +57,14 @@ public class FoodDto extends ReservableDto {
     }
 
     @Override
-    public Reservable toEntity() {
-
+    public Food toEntity() {
         return new Food(
             getId(),
             getName(),
             getDescription(),
             getPrice(),
-            Utils.idToEntity(getBuilding(), Building.class),
+            getBuilding() == null
+                ? null : Utils.idToEntity(getBuilding(), Building.class),
             Utils.setDtoToEntity(getReservations())
         );
     }

@@ -46,13 +46,14 @@ public class BikeDto extends ReservableDto {
     }
 
     @Override
-    public Reservable toEntity() {
+    public Bike toEntity() {
 
         return new Bike(
             getId(),
             getBikeType(),
             getPrice(),
-            Utils.idToEntity(getBuilding(), Building.class),
+            getBuilding() == null
+                ? null : Utils.idToEntity(getBuilding(), Building.class),
             Utils.setDtoToEntity(getReservations())
         );
     }

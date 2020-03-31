@@ -1,10 +1,10 @@
 package nl.tudelft.oopp.group39.controllers;
 
 import java.time.LocalTime;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.controllers.MainSceneController;
 
 public class BuildingModifierController extends MainSceneController {
 
@@ -31,7 +31,6 @@ public class BuildingModifierController extends MainSceneController {
     @FXML
     private TextField updateBuildingField;
 
-
     public void getBuildingsButton() {
         createAlert(ServerCommunication.get(ServerCommunication.building));
     }
@@ -48,9 +47,9 @@ public class BuildingModifierController extends MainSceneController {
 
         String open = getTime(timeOpenField.getText(), true);
         String closed = getTime(timeClosedField.getText(), false);
-//        createAlert(
-//            ServerCommunication.getFilteredBuildings(name, location, open, closed, capacity)
-//        );
+        createAlert(
+            ServerCommunication.getFilteredBuildings(name, location, open, closed, capacity)
+        );
     }
 
     /**
@@ -93,7 +92,7 @@ public class BuildingModifierController extends MainSceneController {
     /**
      * Doc. TODO Sven
      */
-    public void removeBuildingButton() {
+    public void removeBuildingButton(ActionEvent actionEvent) {
 
         String id = updateBuildingField.getText();
 

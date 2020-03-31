@@ -75,7 +75,7 @@ public class Food extends Reservable {
             getName(),
             getDescription(),
             getPrice(),
-            getBuilding().getId(),
+            getBuilding() == null ? null : getBuilding().getId(),
             Utils.setEntityToDto(getReservations())
         );
     }

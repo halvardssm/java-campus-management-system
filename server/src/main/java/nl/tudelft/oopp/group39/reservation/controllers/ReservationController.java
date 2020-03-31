@@ -60,9 +60,11 @@ public class ReservationController {
      * @return the requested reservation {@link Reservation}.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<RestResponse<Reservation>> readReservation(@PathVariable Long id) {
+    public ResponseEntity<RestResponse<Object>> readReservation(@PathVariable Long id) {
         try {
-            return RestResponse.create(reservationService.readReservation(id));
+            return RestResponse.create(
+                reservationService.readReservation(id)
+                .toDto());
         } catch (Exception e) {
             return RestResponse.error(e);
         }
@@ -74,12 +76,14 @@ public class ReservationController {
      * @return the updated reservation {@link Reservation}.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<RestResponse<Reservation>> updateReservation(
+    public ResponseEntity<RestResponse<Object>> updateReservation(
         @PathVariable Long id,
         @RequestBody ReservationDto reservation
     ) {
         try {
-            return RestResponse.create(reservationService.updateReservation(id, reservation));
+            return RestResponse.create(
+                reservationService.updateReservation(id, reservation).toDto()
+            );
         } catch (Exception e) {
             return RestResponse.error(e);
         }
