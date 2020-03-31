@@ -113,8 +113,8 @@ public class Booking extends AbstractEntity<Booking, BookingDto> {
             getDate(),
             getStartTime(),
             getEndTime(),
-            getUser().getUsername(),
-            getRoom().getId()
+            user == null ? null : getUser().getUsername(),
+            room == null ? null : getRoom().getId()
         );
     }
 
