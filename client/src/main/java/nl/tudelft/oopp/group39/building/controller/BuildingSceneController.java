@@ -143,7 +143,7 @@ public class BuildingSceneController extends AbstractSceneController implements 
             || !timeOpenPicker.getSelectionModel().isEmpty()
             || !timeClosedPicker.getSelectionModel().isEmpty()
         ) {
-            filterBtn = (Button) filterBar.lookup("#filterBtn");
+            filterBtn = (Button) filterBarTemplate.lookup("#filterBtn");
             filterBtn.setDisable(false);
             filterBtn.setOnAction(event -> filterBuildings());
         } else {
