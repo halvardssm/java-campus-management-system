@@ -252,7 +252,6 @@ public class RoomListController extends AdminPanelController implements Initiali
             this.facilitiesByName.put(facility.getDescription(), (int) facility.getId());
             this.facilitiesById.put((int) facility.getId(), facility.getDescription());
             a.add(facility.getDescription());
-            System.out.println("------------news: " + facility.getDescription());
         }
         return a;
     }

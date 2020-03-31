@@ -82,11 +82,12 @@ public class BookingService {
         return bookingRepository.findById(id)
             .map(booking -> {
                 booking.setDate(newBooking.getDate());
+                booking.setId(id);
                 booking.setStartTime(newBooking.getStartTime());
                 booking.setEndTime(newBooking.getEndTime());
                 booking.setUser(newBooking.getUser());
                 booking.setRoom(newBooking.getRoom());
-                return bookingRepository.save(newBooking);
+                return bookingRepository.save(booking);
             })
             .orElseThrow(() -> new BookingNotFoundException(id));
     }

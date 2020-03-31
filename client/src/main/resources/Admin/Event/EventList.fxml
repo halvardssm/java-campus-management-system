@@ -29,11 +29,6 @@
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <!--            <ImageView fitHeight="485.0" fitWidth="700.0" layoutY="-2.0" opacity="0.25" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">-->
-                <!--               <image>-->
-                <!--                  <Image url="@../../../../../../../../TuDelft/download.png" />-->
-                <!--               </image>-->
-                <!--            </ImageView>-->
                 <Text layoutX="209.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Events" underline="true">
                     <font>
                         <Font name="System Bold" size="33.0" />
@@ -54,17 +49,6 @@
                     <center>
                         <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-padding: 4px;" BorderPane.alignment="CENTER">
                             <children>
-                                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="160.0" style="-fx-underline: true;" text="Filter Events">
-                                    <font>
-                                        <Font size="20.0" />
-                                    </font>
-                                </Label>
-                                <Label text="Type:" />
-                                <ComboBox fx:id="typeFilter" />
-                                <Label text="Start date:" />
-                                <ComboBox fx:id="startFilter" />
-                                <Label text="End date:" />
-                                <ComboBox fx:id="endFilter" />
                             </children>
                         </VBox>
                     </center>
