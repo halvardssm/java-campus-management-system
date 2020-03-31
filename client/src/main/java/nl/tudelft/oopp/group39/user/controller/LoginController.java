@@ -48,8 +48,4 @@ public class LoginController extends AbstractSceneController {
             return false;
         }
     }
-
-    public void toggleFilter() {
-
-    }
 }

@@ -58,9 +58,6 @@ public abstract class AbstractSceneController {
     @FXML
     protected BorderPane window;
 
-    @FXML
-    private MenuItem admin;
-
     /**
      * Creates a simple alert that has the content specified.
      *
@@ -206,7 +203,7 @@ public abstract class AbstractSceneController {
             myaccount = FXMLLoader.load(getClass().getResource("/menuButton.fxml"));
 
             if (!user.getRole().equals("ADMIN")) {
-                myaccount.getItems().remove(admin);
+                myaccount.getItems().remove(3);
             }
 
             myaccount.setText(user.getUsername());

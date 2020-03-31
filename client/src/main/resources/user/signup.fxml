@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
-<BorderPane fx:controller="nl.tudelft.oopp.group39.user.controller.SignupController" xmlns:fx="http://javafx.com/fxml">
+<BorderPane fx:id="window" fx:controller="nl.tudelft.oopp.group39.user.controller.SignupController" xmlns:fx="http://javafx.com/fxml">
     <top>
         <HBox fx:id="topBar" styleClass="bar" spacing="10">
             <padding>

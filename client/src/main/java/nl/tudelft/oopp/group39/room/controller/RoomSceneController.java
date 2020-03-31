@@ -232,7 +232,7 @@ public class RoomSceneController extends AbstractSceneController {
                     .getResource("/room/roomCell.fxml"));
                 GridPane newRoom = loader.load();
                 RoomCellController controller = loader.getController();
-                controller.createPane(room,building);
+                controller.createPane(room, room.getBuildingObject());
                 rooms.getChildren().add(newRoom);
             }
         } catch (IOException e) {
