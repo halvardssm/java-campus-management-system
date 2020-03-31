@@ -46,9 +46,10 @@ public class RoomServiceTest extends AbstractTest {
     @Test
     void listRoomsTest() {
         List<Room> rooms = roomService.listRooms();
+        int id = Math.toIntExact(testRoom.getId());
 
         assertEquals(1, rooms.size());
-        assertEquals(testRoom, rooms.get(0));
+        assertEquals(testRoom, rooms.get(id));
     }
 
     @Test

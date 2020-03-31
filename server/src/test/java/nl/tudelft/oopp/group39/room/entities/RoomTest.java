@@ -12,23 +12,18 @@ import java.util.Set;
 import nl.tudelft.oopp.group39.AbstractTest;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.building.entities.Building;
-import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
-import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class RoomTest extends AbstractTest {
-    private long id;
     private String name;
     private Building building;
     private int capacity;
     private boolean onlyStaff;
     private String description;
     private Set<Facility> facilities = new HashSet<>();
-    private Set<Event> events = new HashSet<>();
     private Set<Booking> bookings = new HashSet<>();
-    private Set<Reservation> reservations = new HashSet<>();
     private Set<Room> rooms = new HashSet<>();
     private Room room1;
     private Room room2;
@@ -40,12 +35,13 @@ class RoomTest extends AbstractTest {
             LocalDate.now(), LocalTime.now(), LocalTime.now(),
             null, null));
         facilityService.createFacility(new Facility(
-            "smartboard", rooms));
+            "smartboard", rooms
+        ));
         facilityService.createFacility(new Facility(
-            "whiteboard", rooms));
-
-        bookings.add(bookingService.readBooking(1));
-        facilities.add(facilityService.readFacility(1));
+            "whiteboard", rooms
+        ));
+        bookings.add(bookingService.readBooking((long) 1));
+        facilities.add(facilityService.readFacility((long) 1));
 
         this.building = new Building(
             "EEMCS",
@@ -54,7 +50,8 @@ class RoomTest extends AbstractTest {
             LocalTime.of(7, 0),
             LocalTime.of(18, 0),
             null,
-            null);
+            null
+        );
         this.name = "Lecture Hall Ampere";
         this.capacity = 200;
         this.onlyStaff = false;
@@ -84,17 +81,6 @@ class RoomTest extends AbstractTest {
             bookings
         );
     }
-
-    /*
-    @Test
-    void getIdTest() {
-        System.out.println(room1.getId());
-        System.out.println(room3.getId());
-        assertEquals(0, room1.getId());
-        assertNotEquals(1, room3.getId());
-        assertEquals(room1.getId(), room2.getId());
-        assertNotEquals(room1.getId(), room3.getId());
-    } */
 
     @Test
     void getBuildingTest() {

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import nl.tudelft.oopp.group39.AbstractTest;
 import nl.tudelft.oopp.group39.building.entities.Building;
@@ -34,7 +35,7 @@ public class BuildingServiceTest extends AbstractTest {
 
     @Test
     void listBuildingsTest() {
-        List<Building> buildings = buildingService.listBuildings();
+        List<Building> buildings = buildingService.listBuildings(new HashMap<>());
         assertEquals(1, buildings.size());
         assertEquals(testBuilding, buildings.get(0));
     }
@@ -43,7 +44,7 @@ public class BuildingServiceTest extends AbstractTest {
     void deleteAndCreateBuildingTest() {
         buildingService.deleteBuilding((int) testBuilding.getId());
 
-        assertEquals(new ArrayList<>(), buildingService.listBuildings());
+        assertEquals(new ArrayList<>(), buildingService.listBuildings(new HashMap<>()));
 
         Building building = buildingService.createBuilding(testBuilding);
 

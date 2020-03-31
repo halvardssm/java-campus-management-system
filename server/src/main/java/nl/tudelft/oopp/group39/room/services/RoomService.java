@@ -24,7 +24,8 @@ public class RoomService {
     private FacilityService facilityService;
 
     public Room readRoom(Long id) throws RoomNotFoundException {
-        return roomRepository.findById(id).orElseThrow(() -> new RoomNotFoundException(id));
+        return roomRepository.findById(id)
+            .orElseThrow(() -> new RoomNotFoundException(id));
     }
 
     public List<Room> listRooms() {

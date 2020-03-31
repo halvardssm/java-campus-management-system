@@ -14,7 +14,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class BuildingTest extends AbstractTest {
-    private long id;
     private String name;
     private String location;
     private String description;
@@ -61,15 +60,9 @@ public class BuildingTest extends AbstractTest {
             LocalTime.of(6, 0),
             LocalTime.of(17, 30),
             null,
-            null);
+            null
+        );
     }
-    /*
-    @Test
-    void getIdTest() {
-        assertEquals(0, building1.getId());
-        assertEquals(building1.getId(), building2.getId());
-        assertNotEquals(building1.getId(), building3.getId());
-    } */
 
     @Test
     void getNameTest() {
