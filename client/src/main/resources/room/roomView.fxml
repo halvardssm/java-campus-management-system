@@ -86,6 +86,9 @@
             </ScrollPane>
         </VBox>
     </center>
+    <right>
+        <VBox fx:id="filterBar" id="filterBar"/>
+    </right>
     <stylesheets>
         <URL value="@../style/style.css" />
     </stylesheets>

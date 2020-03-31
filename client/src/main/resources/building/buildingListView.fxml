@@ -45,7 +45,7 @@
           </GridPane>
 
           <VBox alignment="CENTER" fx:id="userBox">
-              <Button id="loginbtn" text="Login" onAction="#goToLoginScene"/>
+              <Button fx:id="userButton" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
           </VBox>
       </HBox>
    </top>
@@ -57,7 +57,7 @@
                </padding>
                <Region HBox.hgrow="ALWAYS"/>
                <VBox alignment="CENTER">
-                   <Button id="toggleFilter" onAction="#toggleFilter" text=" Filters"
+                   <Button id="toggleFilter" onAction="#toggleFilterBar" text=" Filters"
                            alignment="BASELINE_CENTER" textAlignment="CENTER">
                        <graphic>
                            <ImageView fitHeight="20" fitWidth="20">
@@ -75,7 +75,10 @@
            </ScrollPane>
        </VBox>
    </center>
-   <stylesheets>
+    <right>
+        <VBox fx:id="filterBar" id="filterBar"/>
+    </right>
+    <stylesheets>
       <URL value="@../style/style.css" />
    </stylesheets>
 </BorderPane>

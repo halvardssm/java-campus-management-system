@@ -90,10 +90,6 @@
         </BorderPane>
 
     </center>
-    <left>
-        <VBox fx:id="sidebar" id="sidebar">
-        </VBox>
-    </left>
     <stylesheets>
         <URL value="@../style/style.css"/>
     </stylesheets>

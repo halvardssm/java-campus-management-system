@@ -16,8 +16,12 @@ public class BuildingCellController extends AbstractSceneController {
     @FXML
     private Label details;
 
+    /**
+     * Creates a Pane.
+     *
+     * @param building building to create pane from
+     */
     public void createPane(Building building) {
-
         this.building = building;
         String buildingName = building.getName();
         String address = building.getLocation();
@@ -27,7 +31,7 @@ public class BuildingCellController extends AbstractSceneController {
 
         String newDetails = (address
             + "\n" + desc
-            + "\n" + "Max. Capacity"
+            + "\n" + "Max. Capacity: " + building.getMaxCapacity()
             + "\n" + "Opening times: " + building.getOpen()
             + " - " + building.getClosed());
 

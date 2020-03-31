@@ -87,7 +87,15 @@ public class Building {
         this.rooms = rooms;
     }
 
+    /**
+     * Returns the capacity of the largest room inside the building.
+     *
+     * @return the max capacity of a room in the building
+     */
     public int getMaxCapacity() {
+        if (rooms.size() == 0) {
+            return 0;
+        }
         Room max = Collections.max(rooms, new RoomCapacityComparator());
         return max.getCapacity();
     }

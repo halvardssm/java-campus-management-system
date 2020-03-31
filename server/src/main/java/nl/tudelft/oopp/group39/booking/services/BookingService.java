@@ -81,12 +81,13 @@ public class BookingService {
     public Booking updateBooking(Booking newBooking, Long id) throws BookingNotFoundException {
         return bookingRepository.findById(id)
             .map(booking -> {
+                booking.setId(id);
                 booking.setDate(newBooking.getDate());
                 booking.setStartTime(newBooking.getStartTime());
                 booking.setEndTime(newBooking.getEndTime());
                 booking.setUser(newBooking.getUser());
                 booking.setRoom(newBooking.getRoom());
-                return bookingRepository.save(newBooking);
+                return bookingRepository.save(booking);
             })
             .orElseThrow(() -> new BookingNotFoundException(id));
     }

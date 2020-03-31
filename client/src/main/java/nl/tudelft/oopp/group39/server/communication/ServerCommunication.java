@@ -69,13 +69,13 @@ public class ServerCommunication {
     /**
      * Retrieves rooms from the server based on building id.
      *
-     * @param building id of the building
+     * @param input filter parameters
      * @return the body of a get request to the server.
      */
-    public static String getRooms(String building) {
+    public static String getRooms(String input) {
         HttpRequest request = HttpRequest.newBuilder()
             .GET()
-            .uri(URI.create(url + "room?building=" + building))
+            .uri(URI.create(url + "room?" + input))
             .build();
         return httpRequest(request);
     }

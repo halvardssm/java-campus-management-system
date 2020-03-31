@@ -459,7 +459,4 @@ public class RoomSceneController extends AbstractSceneController {
         });
     }
 
-    public void toggleFilter() {
-
-    }
 }

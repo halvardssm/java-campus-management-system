@@ -79,6 +79,10 @@ public class BuildingSceneController extends AbstractSceneController implements 
             FXMLLoader loader;
 
             for (Building building : list) {
+                if (building.getMaxCapacity() < selectedCapacity) {
+                    continue;
+                }
+
                 loader = new FXMLLoader(getClass()
                     .getResource("/building/buildingCell.fxml"));
                 GridPane newBuilding = loader.load();
@@ -103,7 +107,9 @@ public class BuildingSceneController extends AbstractSceneController implements 
      */
     public void toggleFilterBar() throws IOException {
         if (!filterBarShown) {
-            filterBarTemplate = FXMLLoader.load(getClass().getResource("/building/buildingFilterBar.fxml"));
+            filterBarTemplate = FXMLLoader.load(
+                getClass().getResource("/building/buildingFilterBar.fxml")
+            );
             capacityPicker = (Slider) filterBarTemplate.lookup("#capacityPicker");
             setCapacityPicker(capacityPicker, getMaxCapacity());
             capacityPicker.valueProperty().addListener((ov, oldVal, newVal) -> {
@@ -134,7 +140,7 @@ public class BuildingSceneController extends AbstractSceneController implements 
             || !timeOpenPicker.getSelectionModel().isEmpty()
             || !timeClosedPicker.getSelectionModel().isEmpty()
         ) {
-            filterBtn = (Button) filterBarTemplate.lookup("#filterBtn");
+            filterBtn = (Button) filterBar.lookup("#filterBtn");
             filterBtn.setDisable(false);
             filterBtn.setOnAction(event -> filterBuildings());
         } else {
@@ -186,8 +192,7 @@ public class BuildingSceneController extends AbstractSceneController implements 
      */
     public void filterBuildings() {
         String request = "";
-        int capacity = (int) capacityPicker.getValue();
-        selectedCapacity = capacity;
+        selectedCapacity = ((Double) capacityPicker.getValue()).intValue();
         if (!timeOpenPicker.getSelectionModel().isEmpty()) {
             String open = timeOpenPicker.getValue() + ":00";
             selectedOpenTime = timeOpenPicker.getValue();
@@ -220,6 +225,8 @@ public class BuildingSceneController extends AbstractSceneController implements 
             timeClosedPicker.getSelectionModel().clearSelection();
             timeOpenPicker.getSelectionModel().clearSelection();
             checkFiltersSelected();
+            selectedCapacity = 0;
+            getAllBuildings();
             try {
                 toggleFilterBar();
             } catch (IOException e) {
@@ -247,6 +254,4 @@ public class BuildingSceneController extends AbstractSceneController implements 
         getAllBuildings();
     }
 
-    public void toggleFilter() {
-    }
 }
