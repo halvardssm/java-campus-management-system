@@ -109,7 +109,7 @@ public class Event extends AbstractEntity<Event, IEntity> {
             && getType() == event.getType()
             && Objects.equals(getStartDate(), event.getStartDate())
             && Objects.equals(getEndDate(), event.getEndDate())
-            && getRooms().equals(event.getRooms());
+            && Objects.equals(getRooms(),event.getRooms());
     }
 
     @Override
