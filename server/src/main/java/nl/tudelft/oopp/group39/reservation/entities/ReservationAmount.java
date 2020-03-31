@@ -80,7 +80,8 @@ public class ReservationAmount extends AbstractEntity<ReservationAmount, Reserva
         return new ReservationAmountDto(
             getId(),
             getAmount(),
-            getReservable().getId()
+            getReservable() == null
+                ? null : getReservable().getId()
         );
     }
 
