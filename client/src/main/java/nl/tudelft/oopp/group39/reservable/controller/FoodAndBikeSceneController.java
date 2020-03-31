@@ -150,20 +150,25 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
         total.setText("0.00");
         System.out.println(json);
         ArrayNode body = (ArrayNode) mapper.readTree(json).get("body");
-        for (JsonNode itemNode : body) {
-            String itemAsString = mapper.writeValueAsString(itemNode);
-            if (itemAsString.contains("id")) {
-                HBox item;
-                if (type.equals("bike")) {
-                    Bike bike = mapper.readValue(itemAsString, Bike.class);
-                    item = createItemBox(bike.getBikeType(), null, bike);
+        if (body.isEmpty()) {
+            Label label = new Label("No results found");
+            itemList.getChildren().add(label);
+        } else {
+            for (JsonNode itemNode : body) {
+                String itemAsString = mapper.writeValueAsString(itemNode);
+                if (itemAsString.contains("id")) {
+                    HBox item;
+                    if (type.equals("bike")) {
+                        Bike bike = mapper.readValue(itemAsString, Bike.class);
+                        item = createItemBox(bike.getBikeType(), null, bike);
+                    } else {
+                        Food food = mapper.readValue(itemAsString, Food.class);
+                        item = createItemBox(food.getName(), food.getDescription(), food);
+                    }
+                    itemList.getChildren().add(item);
                 } else {
-                    Food food = mapper.readValue(itemAsString, Food.class);
-                    item = createItemBox(food.getName(), food.getDescription(), food);
+                    break;
                 }
-                itemList.getChildren().add(item);
-            } else {
-                break;
             }
         }
         checkEmptyCart();
