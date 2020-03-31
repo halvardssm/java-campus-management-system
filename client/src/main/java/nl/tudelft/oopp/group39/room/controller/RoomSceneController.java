@@ -223,7 +223,10 @@ public class RoomSceneController extends AbstractSceneController {
             String roomAsString = mapper.writeValueAsString(body);
 
             Room[] list = mapper.readValue(roomAsString, Room[].class);
-
+            if (list.length == 0) {
+                rooms.getChildren().add(new Label("No Results Found."));
+                return;
+            }
             for (Room room : list) {
                 FXMLLoader loader = new FXMLLoader(getClass()
                     .getResource("/room/roomCell.fxml"));

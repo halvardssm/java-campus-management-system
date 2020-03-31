@@ -75,7 +75,10 @@ public class BuildingSceneController extends AbstractSceneController implements 
 
             json = mapper.writeValueAsString(body);
             Building[] list = mapper.readValue(json, Building[].class);
-
+            if (list.length == 0) {
+                flowPane.getChildren().add(new Label("No Results Found."));
+                return;
+            }
             FXMLLoader loader;
 
             for (Building building : list) {
