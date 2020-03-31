@@ -319,8 +319,7 @@ public class ServerCommunication {
     /**
      * Retrieves all bookings from the server.
      *
-     * @param roomId the ID of the room
-     * @param date   the chosen date where you want to get the bookings from
+     * @param filters String of filters
      * @return returns an HTTP request
      */
     public static String getBookings(String filters) {
@@ -417,6 +416,19 @@ public class ServerCommunication {
         } else {
             return "Order is placed";
         }
+    }
+
+    /**
+     * Retrieves reservations based on given filters.
+     *
+     * @param filters String of filters
+     * @return @return the body of a get request to the server.
+     */
+    public static String getReservation(String filters) {
+        System.out.println(url + "reservation?" + filters);
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET().uri(URI.create(url + "reservation?" + filters)).build();
+        return httpRequest(request);
     }
 
     /**

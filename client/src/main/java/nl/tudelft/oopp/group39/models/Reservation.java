@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.group39.models;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 public class Reservation {
@@ -13,7 +12,20 @@ public class Reservation {
 
     }
 
-    public Reservation(Integer id, String timeOfDelivery, String timeOfPickup, ArrayNode reservationAmounts) {
+    /**
+     * Creates a reservation.
+     *
+     * @param id                 the id of the reservation
+     * @param timeOfDelivery     the time of delivery of the reservation
+     * @param timeOfPickup       the time of pickup of the reservation
+     * @param reservationAmounts an ArrayNode containing the reservable and corresponding amounts
+     */
+    public Reservation(
+        Integer id,
+        String timeOfDelivery,
+        String timeOfPickup,
+        ArrayNode reservationAmounts
+    ) {
         this.id = id;
         this.timeOfDelivery = timeOfDelivery;
         this.timeOfPickup = timeOfPickup;
@@ -34,14 +46,5 @@ public class Reservation {
 
     public ArrayNode getReservationAmounts() {
         return reservationAmounts;
-    }
-
-    public boolean isBike(int bikeId) {
-        for (JsonNode reservationAmount : reservationAmounts) {
-            if (reservationAmount.get("reservable").get("id").asInt() == bikeId) {
-                return true;
-            }
-        }
-        return false;
     }
 }

@@ -308,7 +308,8 @@ public class FoodAndBikeSceneController extends MainSceneController {
             }
         } else {
             if (type.equals("food")) {
-                Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + reservable.getId());
+                Spinner<Integer> amount =
+                    (Spinner<Integer>) cartlist.lookup("#" + reservable.getId());
                 Integer value = amount.getValue() + 1;
                 amount.getValueFactory().setValue(value);
                 updateCart(reservable);
@@ -404,7 +405,10 @@ public class FoodAndBikeSceneController extends MainSceneController {
         if (type.equals("bike")) {
             datePicker.setOnAction(event -> {
                 try {
-                    updateBikeTimePicker(dateTimeFormatter.format(datePicker.getValue()), cart.get(0).getId());
+                    updateBikeTimePicker(
+                        dateTimeFormatter.format(datePicker.getValue()),
+                        cart.get(0).getId()
+                    );
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
@@ -432,26 +436,39 @@ public class FoodAndBikeSceneController extends MainSceneController {
         }
     }
 
+    /**
+     * Retrieves the booked times for the bike on a given date.
+     *
+     * @param date   the selected date
+     * @param bikeId the selected bike
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public void getBikeTimes(String date, int bikeId) throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String reservations = ServerCommunication.get(ServerCommunication.reservation);
+        String filters = "timeOfPickup=" + date + "T00:00:00" + "&reservable=" + bikeId;
+        String reservations = ServerCommunication.getReservation(filters);
         System.out.println(reservations);
         ArrayNode body = (ArrayNode) mapper.readTree(reservations).get("body");
         String reservationString = mapper.writeValueAsString(body);
         Reservation[] reservationsArray = mapper.readValue(reservationString, Reservation[].class);
         for (Reservation reservation : reservationsArray) {
-            System.out.println(reservation.isBike(bikeId) + " " + bikeId);
-            if (reservation.getTimeOfDelivery().contains(date) && reservation.isBike(bikeId)) {
-                int startTime = Integer.parseInt(reservation.getTimeOfPickup().split(" ")[1].split(":")[0]);
-                bookedBikeTimes.add(startTime);
-                int endTime = Integer.parseInt(reservation.getTimeOfDelivery().split(" ")[1].split(":")[0]);
-                bookedBikeTimes.add(endTime);
-            }
-
+            int startTime =
+                Integer.parseInt(reservation.getTimeOfPickup().split(" ")[1].split(":")[0]);
+            bookedBikeTimes.add(startTime);
+            int endTime =
+                Integer.parseInt(reservation.getTimeOfDelivery().split(" ")[1].split(":")[0]);
+            bookedBikeTimes.add(endTime);
         }
         System.out.println(bookedBikeTimes);
     }
 
+    /**
+     * Updates the start time picker for the bikes based on selected date.
+     *
+     * @param date   the selected date
+     * @param bikeId the selected bike
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public void updateBikeTimePicker(String date, int bikeId) throws JsonProcessingException {
         startTimePicker.getItems().clear();
         getBikeTimes(date, bikeId);
@@ -487,7 +504,7 @@ public class FoodAndBikeSceneController extends MainSceneController {
     }
 
     /**
-     * Creates a start/delivery time picker.
+     * Creates a delivery time picker.
      *
      * @return ComboBox for picking the time
      */
@@ -497,13 +514,13 @@ public class FoodAndBikeSceneController extends MainSceneController {
         ComboBox<String> timePicker = new ComboBox<>();
         timePicker.setPromptText("Select delivery time");
         timePicker.setId("timePicker");
-            for (int i = open; i <= closed; i++) {
-                if (i < 10) {
-                    timePicker.getItems().add("0" + i + ":00");
-                } else {
-                    timePicker.getItems().add(i + ":00");
-                }
+        for (int i = open; i <= closed; i++) {
+            if (i < 10) {
+                timePicker.getItems().add("0" + i + ":00");
+            } else {
+                timePicker.getItems().add(i + ":00");
             }
+        }
         return timePicker;
     }
 
