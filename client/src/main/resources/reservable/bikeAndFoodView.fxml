@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ComboBox?>
 <BorderPane fx:id="window" xmlns:fx="http://javafx.com/fxml" maxHeight="-Infinity" maxWidth="-Infinity"
             fx:controller="nl.tudelft.oopp.group39.reservable.controller.FoodAndBikeSceneController">
     <top>
@@ -43,7 +44,7 @@
                 <Insets top="20" left="30" bottom="20" right="50"/>
             </padding>
             <ScrollPane fitToHeight="true" fitToWidth="true" prefWidth="200">
-                <VBox fx:id="buildingslist" spacing="10" prefWidth="200">
+                <VBox fx:id="buildingList" spacing="10" prefWidth="200">
                     <Label text="Select building:" style="-fx-font-size: 14"/>
                     <padding>
                         <Insets top="15" bottom="15"/>

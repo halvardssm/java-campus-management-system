@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -36,7 +37,7 @@ import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 public class FoodAndBikeSceneController extends AbstractSceneController {
 
     @FXML
-    protected ComboBox<Label> buildingList;
+    protected VBox buildingList;
     @FXML
     private FlowPane itemList;
     @FXML
@@ -105,11 +106,10 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
         String body = mapper.writeValueAsString(mapper.readTree(buildingString).get("body"));
 
         for (Building building : mapper.readValue(body, Building[].class)) {
-            Label buildingName = new Label(building.getName());
+            Hyperlink buildingName = new Hyperlink(building.getName());
             buildingName.getStyleClass().add("buildingList");
             buildingName.setId(building.getId().toString());
-            buildingList.getItems().add(buildingName);
-            buildingList.setOnAction(event -> {
+            buildingName.setOnAction(event -> {
                 if (type.equals("bike")) {
                     try {
                         getBikes(building.getId());
@@ -125,7 +125,12 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
                     }
                 }
             });
+            buildingName.getStyleClass().add("buildingList");
+            buildingName.setId(String.valueOf(building.getId()));
+            buildingList.getChildren().add(buildingName);
+
         }
+
     }
 
     /**
