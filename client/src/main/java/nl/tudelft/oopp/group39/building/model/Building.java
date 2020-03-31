@@ -28,13 +28,14 @@ public class Building {
     }
 
     /**
-     * Doc. TODO Sven
+     * Creates a building model object.
      *
-     * @param name        name
-     * @param location    location
-     * @param description description
-     * @param open        open
-     * @param closed      closed
+     * @param id          id of the building
+     * @param name        name of the building
+     * @param location    location of the building
+     * @param description description of the building
+     * @param open        opening time of the building
+     * @param closed      closing time of the building
      */
     public Building(
         Long id,

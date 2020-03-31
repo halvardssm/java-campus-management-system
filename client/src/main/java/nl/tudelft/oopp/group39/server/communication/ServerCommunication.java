@@ -271,7 +271,9 @@ public class ServerCommunication {
     }
 
     /**
-     * Doc. TODO Sven
+     * Removes a building based on the id.
+     *
+     * @param id the id of the building
      */
     public static void removeBuilding(String id) {
         HttpRequest request = HttpRequest.newBuilder().DELETE()
@@ -280,7 +282,9 @@ public class ServerCommunication {
     }
 
     /**
-     * Doc. TODO Sven
+     * Removes a room based on the id.
+     *
+     * @param id the id of the room in String.
      */
     public static void removeRoom(String id) {
         HttpRequest request = HttpRequest.newBuilder()
@@ -408,9 +412,10 @@ public class ServerCommunication {
     }
 
     /**
-     * Doc. TODO Sven
+     * Sends an http request and receives string based on the request.
      *
-     * @return the body of a get request to the server.
+     * @param req the request to be send
+     * @return the body of a get request to the server, response code if not successful
      */
     public static String httpRequest(HttpRequest req) {
         HttpResponse<String> response;

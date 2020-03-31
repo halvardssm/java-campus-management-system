@@ -16,9 +16,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.control.Slider;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.building.model.Building;
@@ -61,17 +61,20 @@ public abstract class AbstractSceneController {
     @FXML
     private MenuItem admin;
 
-    protected Set<Event> events;
-
     /**
-     * Doc. TODO Sven
+     * Creates a simple alert that has the content specified.
+     *
+     * @param content the content to be displayed
      */
     public void createAlert(String content) {
         createAlert(null, content);
     }
 
     /**
-     * Doc. TODO Sven
+     * Creates an alert that contains a title.
+     *
+     * @param title the title of the alert
+     * @param content content to be displayed
      */
     public void createAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -82,6 +85,13 @@ public abstract class AbstractSceneController {
         alert.showAndWait();
     }
 
+    /**
+     * Method to go to a specific screen.
+     *
+     * @param location location of the xml file
+     * @return the controller for said xml file(for additional purposes)
+     * @throws IOException if said xml file does not exist.
+     */
     public AbstractSceneController goTo(String location) throws IOException {
         AbstractSceneController controller = UsersDisplay.sceneControllerHandler(location);
         controller.changeUserBox();
@@ -89,14 +99,18 @@ public abstract class AbstractSceneController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Switches view to the building scene.
+     *
+     * @throws IOException if the scene wasn't found
      */
     public void goToBuildingScene() throws IOException {
         goTo("/building/buildingListView.fxml");
     }
 
     /**
-     * Doc. TODO Sven
+     * Switches view to the login scene.
+     *
+     * @throws IOException if the scene wasn't found
      */
     public void goToLoginScene() throws IOException {
         goTo("/user/login.fxml");
@@ -104,7 +118,9 @@ public abstract class AbstractSceneController {
 
 
     /**
-     * Doc. TODO Sven
+     * Switches view to the Signup scene.
+     *
+     * @throws IOException if the scene wasn't found
      */
     public void goToSignupScene() throws IOException {
         SignupController controller =
@@ -113,7 +129,10 @@ public abstract class AbstractSceneController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Switches view to the room scene, and filters the rooms that are in the building specified.
+     *
+     * @param building the building that the rooms will be filtered with
+     * @throws IOException if the scene wasn't found
      */
     public void goToRoomsScene(Building building) throws IOException {
         RoomSceneController controller = (RoomSceneController) goTo("/room/roomView.fxml");
@@ -121,7 +140,9 @@ public abstract class AbstractSceneController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Switches view to the rooms scene.
+     *
+     * @throws IOException if the scene wasn't found
      */
     public void goToRoomsScene() throws IOException {
         RoomSceneController controller = (RoomSceneController) goTo("/room/roomView.fxml");
@@ -142,7 +163,9 @@ public abstract class AbstractSceneController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Switches view to the bike rental scene.
+     *
+     * @throws IOException if the scene wasn't found
      */
     public void goToBikeRentalScene() throws IOException {
         FoodAndBikeSceneController controller =
@@ -151,7 +174,9 @@ public abstract class AbstractSceneController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Switches view to the food order scene.
+     *
+     * @throws IOException if the scene wasn't found
      */
     public void goToFoodOrderScene() throws IOException {
         FoodAndBikeSceneController controller =
@@ -161,6 +186,8 @@ public abstract class AbstractSceneController {
 
     /**
      * Logs the user out.
+     *
+     * @throws IOException if view wasn't found.
      */
     public void logout() throws IOException {
         loggedIn = false;
@@ -170,8 +197,11 @@ public abstract class AbstractSceneController {
 
     /**
      * Changes the login button when logged in.
+     *
+     * @throws IOException if view wasn't found.
      */
     public void changeUserBox() throws IOException {
+        userBox.getChildren().clear();
         if (loggedIn) {
             myaccount = FXMLLoader.load(getClass().getResource("/menuButton.fxml"));
 
@@ -190,11 +220,14 @@ public abstract class AbstractSceneController {
                     ex.printStackTrace();
                 }
             });
+            userBox.getChildren().add(userButton);
         }
     }
 
     /**
      * Toggles the sidebar.
+     *
+     * @throws IOException if view wasn't found.
      */
     public void toggleSidebar() throws IOException {
         if (window.getLeft() == null) {
@@ -229,12 +262,12 @@ public abstract class AbstractSceneController {
      * @return Set representation of all the events
      * @throws JsonProcessingException when there is a processing exception
      */
-    public void getEventList() throws JsonProcessingException {
+    public Set<Event> getEventList() throws JsonProcessingException {
         String json = ServerCommunication.get(ServerCommunication.event);
         ArrayNode body = (ArrayNode) mapper.readTree(json).get("body");
         json = mapper.writeValueAsString(body);
 
-        events =  new HashSet<>(Arrays.asList(mapper.readValue(json, Event[].class)));
+        return new HashSet<>(Arrays.asList(mapper.readValue(json, Event[].class)));
     }
 
     /**
@@ -243,12 +276,13 @@ public abstract class AbstractSceneController {
      * @param date the selected date
      * @return boolean true if date is not an event, false if date is on an event
      */
-    public boolean checkDate(String date) {
+    public boolean checkDate(String date) throws JsonProcessingException {
         LocalDate check = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        for (Event event : events) {
+        for (Event event : getEventList()) {
             LocalDate start = event.getStartDate();
             LocalDate end = event.getEndDate() == null ? start : event.getEndDate();
-            if (check.compareTo(start) + check.compareTo(end) == 0) {
+            int checkInt = check.compareTo(start) + check.compareTo(end);
+            if (-1 >= checkInt & checkInt <= 1) {
                 createAlert("There is an event on this date");
                 return false;
             }

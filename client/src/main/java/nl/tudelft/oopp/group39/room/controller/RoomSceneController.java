@@ -159,7 +159,8 @@ public class RoomSceneController extends AbstractSceneController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Creates a new room.
+     * TODO
      */
     public void newRoom() {
         String buildingId = roomBuildingIdField.getText();
@@ -194,13 +195,6 @@ public class RoomSceneController extends AbstractSceneController {
             roomID,
             roomReservations
         ));
-    }
-
-    /**
-     * Doc. TODO Sven
-     */
-    public void getRooms() {
-        createAlert(ServerCommunication.get(ServerCommunication.room));
     }
 
     /**

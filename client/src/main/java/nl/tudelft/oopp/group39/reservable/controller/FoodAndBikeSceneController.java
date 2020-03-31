@@ -106,6 +106,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
         String body = mapper.writeValueAsString(mapper.readTree(buildingString).get("body"));
 
         for (Building building : mapper.readValue(body, Building[].class)) {
+            this.building = building;
             Hyperlink buildingName = new Hyperlink(building.getName());
             buildingName.getStyleClass().add("buildingList");
             buildingName.setId(building.getId().toString());
@@ -364,7 +365,6 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
                 LocalDate today = LocalDate.now();
-
                 setDisable(empty || date.compareTo(today) < 0);
             }
         });

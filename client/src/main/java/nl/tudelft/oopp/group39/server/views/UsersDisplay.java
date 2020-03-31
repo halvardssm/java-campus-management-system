@@ -25,25 +25,29 @@ public class UsersDisplay extends Application {
     private static Scene previous;
 
     /**
-     * Doc. TODO Sven
+     * Switches view to a new scene.
+     *
+     * @param location the location of the scene fxml
+     * @throws IOException if view wasn't found.
      */
     @FXML
-    public static void sceneHandler(String name) throws IOException {
-        sceneControllerHandler(name);
+    public static void sceneHandler(String location) throws IOException {
+        sceneControllerHandler(location);
     }
 
     /**
      * Changes scenes and returns controller of the new scene.
      *
-     * @param name name of the scene we want
+     * @param location location of the scene we want
      * @return controller of the new scene
      * @throws IOException if there is something wrong
      */
     @FXML
-    public static AbstractSceneController sceneControllerHandler(String name) throws IOException {
+    public static AbstractSceneController sceneControllerHandler(String location)
+        throws IOException {
         System.out.println("Scene changing...");
 
-        FXMLLoader loader = new FXMLLoader(UsersDisplay.class.getResource(name));
+        FXMLLoader loader = new FXMLLoader(UsersDisplay.class.getResource(location));
         root = loader.load();
         previous = window.getScene();
         window.setScene(new Scene(root, previous.getWidth(), previous.getHeight()));
