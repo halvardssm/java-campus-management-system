@@ -1,17 +1,15 @@
 package nl.tudelft.oopp.group39.building.model;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import nl.tudelft.oopp.group39.room.model.Room;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import nl.tudelft.oopp.group39.room.model.RoomCapacityComparator;
 
 public class Building {
 
-    private Integer id;
+    private Long id;
 
     private String name;
 
@@ -39,7 +37,7 @@ public class Building {
      * @param closed      closed
      */
     public Building(
-        Integer id,
+        Long id,
         String name,
         String location,
         String description,
@@ -56,7 +54,7 @@ public class Building {
         this.rooms.addAll(rooms);
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -86,5 +84,10 @@ public class Building {
 
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    public int getMaxCapacity() {
+        Room max = Collections.max(rooms, new RoomCapacityComparator());
+        return max.getCapacity();
     }
 }

@@ -9,7 +9,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
@@ -21,10 +20,11 @@ import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.server.controller.MainSceneController;
+import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
+import nl.tudelft.oopp.group39.server.views.UsersDisplay;
 
 
-public class RoomReservationController extends MainSceneController {
+public class RoomReservationController extends AbstractSceneController {
     @FXML
     private DatePicker date;
     @FXML
@@ -56,7 +56,6 @@ public class RoomReservationController extends MainSceneController {
 
     private Building building;
     private Room room;
-    private Scene previous;
 
     /**
      * Sets the entire scene up, so loading the timeslots, room information and sets up the buttons.
@@ -64,11 +63,10 @@ public class RoomReservationController extends MainSceneController {
      * @param room     the room you've selected
      * @param building the building of the room you've selected
      */
-    public void setup(Room room, Building building, Scene previous) throws JsonProcessingException {
+    public void setup(Room room, Building building) throws JsonProcessingException {
 
         this.building = building;
         this.room = room;
-        this.previous = previous;
         titleLabel.setText(room.getName());
         loadTimeslots();
         loadRoom(room);
@@ -96,7 +94,7 @@ public class RoomReservationController extends MainSceneController {
                 if (checkEmpty(date, fromTime, toTime)) {
                     long roomId = room.getId();
                     String roomIdString = "" + roomId;
-                    String username = MainSceneController.user.getUsername();
+                    String username = AbstractSceneController.user.getUsername();
                     ServerCommunication.addBooking(
                         dateString,
                         bookingStart,
@@ -334,6 +332,10 @@ public class RoomReservationController extends MainSceneController {
      */
     @FXML
     private void backToRoom() {
-        UsersDisplay.backToPrevious(previous);
+        UsersDisplay.backToPrevious();
+    }
+
+    public void toggleFilter() {
+
     }
 }

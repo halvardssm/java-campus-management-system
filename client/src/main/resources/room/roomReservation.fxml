@@ -17,7 +17,7 @@
             minWidth="600.0" prefHeight="480.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1"
             fx:controller="nl.tudelft.oopp.group39.room.controller.RoomReservationController">
     <top>
-        <HBox fx:id="topbar" styleClass="bar" spacing="10">
+        <HBox fx:id="topBar" styleClass="bar" spacing="10">
             <padding>
                 <Insets top="10" right="15" bottom="10" left="15"/>
             </padding>
@@ -34,8 +34,8 @@
                 <Label id="title" fx:id="titleLabel" alignment="BOTTOM_CENTER"/>
             </VBox>
             <Region HBox.hgrow="ALWAYS"/>
-            <VBox alignment="CENTER" fx:id="topBox">
-                <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
+            <VBox alignment="CENTER" fx:id="userBox">
+                <Button fx:id="userButton" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
             </VBox>
         </HBox>
     </top>
@@ -49,7 +49,7 @@
                     <VBox fx:id="roomInfo" BorderPane.alignment="CENTER" spacing="10">
                         <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true"
                                    preserveRatio="true">
-                            <Image url="@../testimage.jpg"/>
+                            <Image url="@../icons/testimage.jpg"/>
                         </ImageView>
                         <Label fx:id="roomName" id="roomRName" text="Room Name"/>
                         <Label fx:id="roomDetails" id="roomRDetails" text="Description:&#10;Capacity:&#10;Facilities:"/>

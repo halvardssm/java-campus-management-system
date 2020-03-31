@@ -43,8 +43,8 @@
                     </graphic>
                 </Button>
             </GridPane>
-            <VBox alignment="CENTER" fx:id="topBox">
-                <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
+            <VBox alignment="CENTER" fx:id="userBox">
+                <Button fx:id="userButton" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
             </VBox>
         </HBox>
     </top>

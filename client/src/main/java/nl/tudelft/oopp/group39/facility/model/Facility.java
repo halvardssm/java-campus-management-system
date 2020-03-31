@@ -8,7 +8,7 @@ public class Facility {
 
     }
 
-    public Facility(long id, String description) {
+    public Facility(Long id, String description) {
         this.id = id;
         this.description = description;
     }

@@ -4,9 +4,9 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import nl.tudelft.oopp.group39.building.model.Building;
-import nl.tudelft.oopp.group39.server.controller.MainSceneController;
+import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
-public class BuildingCellController extends MainSceneController {
+public class BuildingCellController extends AbstractSceneController {
 
     private Building building;
 

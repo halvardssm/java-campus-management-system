@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <BorderPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" xmlns:fx="http://javafx.com/fxml" fx:controller="nl.tudelft.oopp.group39.building.controller.BuildingSceneController">
    <top>
-      <HBox fx:id="topbar" styleClass="bar" spacing="10">
+      <HBox fx:id="topBar" styleClass="bar" spacing="10">
          <padding>
             <Insets top="12" right="15" bottom="8" left="15"/>
          </padding>
@@ -52,7 +52,7 @@
               </Button>
           </GridPane>
 
-          <VBox alignment="CENTER" fx:id="topBox">
+          <VBox alignment="CENTER" fx:id="userBox">
               <Button fx:id="topButton" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
           </VBox>
       </HBox>
@@ -82,7 +82,6 @@
                </padding>
            </ScrollPane>
        </VBox>
-
    </center>
    <stylesheets>
       <URL value="@../style/style.css" />

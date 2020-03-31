@@ -3,7 +3,7 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 
-<MenuButton fx:id="myaccount" mnemonicParsing="false" text="MenuButton" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.server.controller.MainSceneController">
+<MenuButton fx:id="myaccount" mnemonicParsing="false" text="MenuButton" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.server.controller.BarController">
   <items>
       <MenuItem fx:id="myres" mnemonicParsing="false" text="My Reservations" />
       <MenuItem fx:id="myacc" mnemonicParsing="false" text="My Account" />

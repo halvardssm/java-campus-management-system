@@ -5,7 +5,7 @@
 
 
 <?import java.net.URL?>
-<VBox fx:controller="nl.tudelft.oopp.group39.server.controller.MainSceneController" xmlns:fx="http://javafx.com/fxml/1"
+<VBox fx:controller="nl.tudelft.oopp.group39.server.controller.BarController" xmlns:fx="http://javafx.com/fxml/1"
       fx:id="sidebar"
       id="sidebar">
     <Hyperlink onAction="#goToBuildingScene" styleClass="sidebar-item" text="Buildings"/>

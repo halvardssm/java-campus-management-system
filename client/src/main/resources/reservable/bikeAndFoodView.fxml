@@ -32,8 +32,8 @@
                 <Label id="title" fx:id="titleLabel" alignment="BOTTOM_CENTER"/>
             </VBox>
             <Region HBox.hgrow="ALWAYS"/>
-            <VBox alignment="CENTER" fx:id="topBox">
-                <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
+            <VBox alignment="CENTER" fx:id="userBox">
+                <Button fx:id="userButton" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
             </VBox>
         </HBox>
     </top>
@@ -52,7 +52,7 @@
             </ScrollPane>
             <Region HBox.hgrow="SOMETIMES"/>
             <ScrollPane fitToHeight="true" fitToWidth="true" HBox.hgrow="ALWAYS">
-                <FlowPane fx:id="itemlist" vgap="20" hgap="20" HBox.hgrow="ALWAYS">
+                <FlowPane fx:id="itemList" vgap="20" hgap="20" HBox.hgrow="ALWAYS">
                     <padding>
                         <Insets top="15" bottom="15"/>
                     </padding>

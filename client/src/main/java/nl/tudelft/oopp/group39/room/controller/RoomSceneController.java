@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -21,14 +20,13 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import nl.tudelft.oopp.group39.building.controller.BuildingCellController;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.facility.model.Facility;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.server.controller.MainSceneController;
+import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
-public class RoomSceneController extends MainSceneController {
+public class RoomSceneController extends AbstractSceneController {
 
     private Building building;
     private boolean filterBarShown = false;
@@ -251,8 +249,8 @@ public class RoomSceneController extends MainSceneController {
      *
      * @param buildingId id of the selected building
      */
-    public void getRooms(long buildingId) {
-        String roomString = ServerCommunication.getRooms(buildingId);
+    public void getRooms(Long buildingId) {
+        String roomString = ServerCommunication.getRooms(buildingId.toString());
         showRooms(roomString);
     }
 
@@ -271,10 +269,11 @@ public class RoomSceneController extends MainSceneController {
      * @param address address of the building
      */
     public void setBuildingDetails(String name, String address) {
-        ((Label) buildingInfo.lookup("buildingName"))
-            .setText(name);
-        ((Label) buildingInfo.lookup("buildingAddress"))
-            .setText(address);
+        Label buildingName = new Label(name);
+        buildingName.getStyleClass().add("buildingName");
+        Label buildingAddress = new Label(address);
+        buildingAddress.getStyleClass().add("buildingAddress");
+        buildingInfo.getChildren().addAll(buildingName, buildingAddress);
     }
 
     /**
@@ -284,7 +283,7 @@ public class RoomSceneController extends MainSceneController {
      */
     public void toggleFilterBar() throws IOException {
         if (!filterBarShown) {
-            filterBarTemplate = FXMLLoader.load(getClass().getResource("/roomFilterBar.fxml"));
+            filterBarTemplate = FXMLLoader.load(getClass().getResource("/room/roomFilterBar.fxml"));
             capacityPicker = (Slider) filterBarTemplate.lookup("#capacityPicker");
             setCapacityPicker(capacityPicker, maxCapacity);
             capacityPicker.valueProperty().addListener((ov, oldVal, newVal) -> {
@@ -466,4 +465,7 @@ public class RoomSceneController extends MainSceneController {
         });
     }
 
+    public void toggleFilter() {
+
+    }
 }

@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Text?>
 <BorderPane fx:controller="nl.tudelft.oopp.group39.user.controller.SignupController" xmlns:fx="http://javafx.com/fxml">
     <top>
-        <HBox fx:id="topbar" styleClass="bar" spacing="10">
+        <HBox fx:id="topBar" styleClass="bar" spacing="10">
             <padding>
                 <Insets top="10" right="15" bottom="10" left="15"/>
             </padding>
@@ -33,8 +33,8 @@
                 <Label id="title" fx:id="SIGNUP" alignment="BOTTOM_CENTER"/>
             </VBox>
             <Region HBox.hgrow="ALWAYS"/>
-            <VBox alignment="CENTER" fx:id="topBox">
-                <Button fx:id="topbtn" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
+            <VBox alignment="CENTER" fx:id="userBox">
+                <Button fx:id="userButton" id="loginbtn" text="Login" onAction="#goToLoginScene"/>
             </VBox>
         </HBox>
     </top>

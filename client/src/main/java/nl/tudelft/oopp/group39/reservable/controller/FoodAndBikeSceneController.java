@@ -15,7 +15,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -32,14 +31,14 @@ import nl.tudelft.oopp.group39.reservable.model.Food;
 import nl.tudelft.oopp.group39.reservable.model.Reservable;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.server.controller.MainSceneController;
+import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
-public class FoodAndBikeSceneController extends MainSceneController {
+public class FoodAndBikeSceneController extends AbstractSceneController {
 
     @FXML
-    protected ComboBox<Label> buildinglist;
+    protected ComboBox<Label> buildingList;
     @FXML
-    private VBox itemlist;
+    private FlowPane itemList;
     @FXML
     private VBox cartlist;
     @FXML
@@ -100,31 +99,33 @@ public class FoodAndBikeSceneController extends MainSceneController {
      * @throws JsonProcessingException when there is a parsing exception
      */
     public void getBuildingsList() throws JsonProcessingException {
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         String buildingString = ServerCommunication.get(ServerCommunication.building);
         System.out.println(buildingString);
-        ArrayNode body = (ArrayNode) mapper.readTree(buildingString).get("body");
-        for (JsonNode building : body) {
-            Label buildingName = new Label(building.get("name").asText());
+        String body = mapper.writeValueAsString(mapper.readTree(buildingString).get("body"));
+
+        for (Building building : mapper.readValue(body, Building[].class)) {
+            Label buildingName = new Label(building.getName());
             buildingName.getStyleClass().add("buildingList");
-            buildingName.setId(building.get("id").asText());
-            buildinglist.getItems().add(buildingName);
+            buildingName.setId(building.getId().toString());
+            buildingList.getItems().add(buildingName);
+            buildingList.setOnAction(event -> {
+                if (type.equals("bike")) {
+                    try {
+                        getBikes(building.getId());
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        getMenu(building.getId());
+                        getRoomsList(building.getId());
+                    } catch (JsonProcessingException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
-        buildinglist.setOnAction(event -> {
-            if (type.equals("bike")) {
-                try {
-                    getBikes(Integer.parseInt(buildinglist.getValue().getId()));
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    getMenu(Integer.parseInt(buildinglist.getValue().getId()));
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     /**
@@ -135,7 +136,7 @@ public class FoodAndBikeSceneController extends MainSceneController {
      */
     public void showItems(String json) throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        itemlist.getChildren().clear();
+        itemList.getChildren().clear();
         cartlist.getChildren().clear();
         timeselector.getChildren().clear();
         cartItems = 0;
@@ -155,7 +156,7 @@ public class FoodAndBikeSceneController extends MainSceneController {
                     Food food = mapper.readValue(itemAsString, Food.class);
                     item = createItemBox(food.getName(), food.getDescription(), food);
                 }
-                itemlist.getChildren().add(item);
+                itemList.getChildren().add(item);
             } else {
                 break;
             }
@@ -185,7 +186,13 @@ public class FoodAndBikeSceneController extends MainSceneController {
             Label desc = new Label(description);
             namedesc.getChildren().add(desc);
         }
-        Button addToCart = new Button("+");
+        Image plus = new Image(getClass().getResourceAsStream("/icons/plus-icon.png"));
+        ImageView plusicon = new ImageView(plus);
+        plusicon.setFitWidth(15);
+        plusicon.setFitHeight(15);
+        Button addToCart = new Button();
+        addToCart.setGraphic(plusicon);
+        addToCart.getStyleClass().add("addToCart");
         addToCart.setOnAction(event -> addToCart(name, reservable));
         Region region = new Region();
         HBox.setHgrow(region, Priority.ALWAYS);
@@ -203,7 +210,7 @@ public class FoodAndBikeSceneController extends MainSceneController {
      * @param buildingId the id of the selected building
      * @throws JsonProcessingException when there is a parsing exception
      */
-    public void getBikes(int buildingId) throws JsonProcessingException {
+    public void getBikes(Long buildingId) throws JsonProcessingException {
         showItems(ServerCommunication.getBikes(buildingId));
     }
 
@@ -213,7 +220,7 @@ public class FoodAndBikeSceneController extends MainSceneController {
      * @param buildingId the id of the selected building
      * @throws JsonProcessingException when there is a parsing exception
      */
-    public void getMenu(int buildingId) throws JsonProcessingException {
+    public void getMenu(Long buildingId) throws JsonProcessingException {
         showItems(ServerCommunication.getFood(buildingId));
     }
 
@@ -430,9 +437,9 @@ public class FoodAndBikeSceneController extends MainSceneController {
      * @param id of the selected building
      * @throws JsonProcessingException when there is a parsing exception
      */
-    public void getRoomsList(long id) throws JsonProcessingException {
+    public void getRoomsList(Long id) throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String roomsString = ServerCommunication.getRooms(id);
+        String roomsString = ServerCommunication.getRooms(id.toString());
         System.out.println(roomsString);
         ArrayNode body = (ArrayNode) mapper.readTree(roomsString).get("body");
         for (JsonNode roomJson : body) {
@@ -543,7 +550,7 @@ public class FoodAndBikeSceneController extends MainSceneController {
                         .append(ending);
                 }
                 System.out.println(orderString);
-                String username = MainSceneController.user.getUsername();
+                String username = AbstractSceneController.user.getUsername();
                 String result = ServerCommunication
                     .orderFoodBike(
                         timeOfPickup,
@@ -556,5 +563,9 @@ public class FoodAndBikeSceneController extends MainSceneController {
                 createAlert("Please log in to place an order");
             }
         }
+    }
+
+    public void toggleFilter() {
+
     }
 }

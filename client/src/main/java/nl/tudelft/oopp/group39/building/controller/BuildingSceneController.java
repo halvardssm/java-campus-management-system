@@ -1,10 +1,11 @@
 package nl.tudelft.oopp.group39.building.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,12 +18,13 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import nl.tudelft.oopp.group39.building.model.Building;
-import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.server.controller.MainSceneController;
 import javafx.scene.layout.VBox;
+import nl.tudelft.oopp.group39.building.model.Building;
+import nl.tudelft.oopp.group39.building.model.BuildingCapacityComparator;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
-public class BuildingSceneController extends MainSceneController implements Initializable {
+public class BuildingSceneController extends AbstractSceneController implements Initializable {
 
     private boolean filterBarShown;
     private int selectedCapacity = 0;
@@ -65,7 +67,6 @@ public class BuildingSceneController extends MainSceneController implements Init
      * Retrieves buildings from the server and shows them.
      */
     public void showBuildings(String json) {
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         flowPane.getChildren().clear();
         try {
             System.out.println(json);
@@ -78,13 +79,10 @@ public class BuildingSceneController extends MainSceneController implements Init
             FXMLLoader loader;
 
             for (Building building : list) {
-
                 loader = new FXMLLoader(getClass()
                     .getResource("/building/buildingCell.fxml"));
-
                 GridPane newBuilding = loader.load();
                 BuildingCellController controller = loader.getController();
-
                 controller.createPane(building);
 
                 flowPane.getChildren().add(newBuilding);
@@ -105,7 +103,7 @@ public class BuildingSceneController extends MainSceneController implements Init
      */
     public void toggleFilterBar() throws IOException {
         if (!filterBarShown) {
-            filterBarTemplate = FXMLLoader.load(getClass().getResource("/buildingFilterBar.fxml"));
+            filterBarTemplate = FXMLLoader.load(getClass().getResource("/building/buildingFilterBar.fxml"));
             capacityPicker = (Slider) filterBarTemplate.lookup("#capacityPicker");
             setCapacityPicker(capacityPicker, getMaxCapacity());
             capacityPicker.valueProperty().addListener((ov, oldVal, newVal) -> {
@@ -155,14 +153,11 @@ public class BuildingSceneController extends MainSceneController implements Init
         ArrayNode body = (ArrayNode) mapper.readTree(json).get("body");
         String buildingString = mapper.writeValueAsString(body);
         Building[] buildingsArray = mapper.readValue(buildingString, Building[].class);
-        int maxCapacity = buildingsArray[0].getMaxCapacity();
-        for (Building building : buildingsArray) {
-            if (building.getMaxCapacity() > maxCapacity) {
-                maxCapacity = building.getMaxCapacity();
-            }
-        }
-        return maxCapacity;
+
+        return Collections.max(Arrays.asList(buildingsArray), new BuildingCapacityComparator())
+            .getMaxCapacity();
     }
+
 
     /**
      * Sets the comboboxes to pick closing and opening time for filtering.
@@ -252,5 +247,6 @@ public class BuildingSceneController extends MainSceneController implements Init
         getAllBuildings();
     }
 
-
+    public void toggleFilter() {
+    }
 }

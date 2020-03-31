@@ -1,11 +1,21 @@
 package nl.tudelft.oopp.group39.event.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import java.time.LocalDate;
+
 public class Event {
 
     private Long id;
     private String type;
-    private String startDate;
-    private String endDate;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate startDate;
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate endDate;
 
     public Event() {
 
@@ -20,8 +30,8 @@ public class Event {
      */
     public Event(
         String type,
-        String startDate,
-        String endDate
+        LocalDate startDate,
+        LocalDate endDate
     ) {
         this.type = type;
         this.startDate = startDate;
@@ -36,11 +46,11 @@ public class Event {
         return type;
     }
 
-    public String getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public String getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 

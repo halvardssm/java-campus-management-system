@@ -1,14 +1,17 @@
 package nl.tudelft.oopp.group39.server.views;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.server.controller.MainSceneController;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 public class UsersDisplay extends Application {
 
@@ -18,8 +21,8 @@ public class UsersDisplay extends Application {
 
     public static Stage window;
     private static Parent root;
-    private static int width = 900;
-    private static int height = 600;
+
+    private static Scene previous;
 
     /**
      * Doc. TODO Sven
@@ -37,31 +40,39 @@ public class UsersDisplay extends Application {
      * @throws IOException if there is something wrong
      */
     @FXML
-    public static MainSceneController sceneControllerHandler(String name) throws IOException {
+    public static AbstractSceneController sceneControllerHandler(String name) throws IOException {
         System.out.println("Scene changing...");
 
         FXMLLoader loader = new FXMLLoader(UsersDisplay.class.getResource(name));
         root = loader.load();
-        Scene previous = window.getScene();
+        previous = window.getScene();
         window.setScene(new Scene(root, previous.getWidth(), previous.getHeight()));
-
         return loader.getController();
     }
 
     @FXML
-    public static void backToPrevious(Scene previous) {
+    public static void backToPrevious() {
         window.setScene(previous);
     }
 
-
     @Override
     public void start(Stage primaryStage) throws IOException {
+
+        Properties properties = new Properties();
+        properties.load(new FileInputStream("client/src/main/resources/program.properties"));
+        ServerCommunication.url = properties.getProperty("connection.url") + ":"
+            + properties.getProperty("connection.port") + "/";
+
         FXMLLoader loader = new FXMLLoader();
         URL xmlUrl = getClass().getResource("/building/buildingListView.fxml");
         loader.setLocation(xmlUrl);
         root = loader.load();
+        AbstractSceneController controller = loader.getController();
+        controller.getEventList();
 
         window = primaryStage;
+        int width = Integer.parseInt(properties.getProperty("pref.width"));
+        int height = Integer.parseInt(properties.getProperty("pref.height"));
         primaryStage.setScene(new Scene(root, width, height));
         primaryStage.setTitle("Campus Management");
         primaryStage.show();

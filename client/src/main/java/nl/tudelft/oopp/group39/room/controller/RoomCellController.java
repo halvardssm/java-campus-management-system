@@ -2,14 +2,12 @@ package nl.tudelft.oopp.group39.room.controller;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
-import nl.tudelft.oopp.group39.server.controller.MainSceneController;
+import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
-public class RoomCellController extends MainSceneController {
+public class RoomCellController extends AbstractSceneController {
 
     @FXML
     private Label name;
@@ -36,5 +34,8 @@ public class RoomCellController extends MainSceneController {
 
     public void goToReservationScene() throws IOException {
         super.goToReservationScene(room,building);
+    }
+    public void toggleFilter() {
+
     }
 }

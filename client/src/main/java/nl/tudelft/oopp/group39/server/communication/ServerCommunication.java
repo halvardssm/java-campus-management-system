@@ -9,7 +9,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import nl.tudelft.oopp.group39.room.model.Room;
-import nl.tudelft.oopp.group39.server.controller.MainSceneController;
+import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 import nl.tudelft.oopp.group39.user.model.User;
 
 public class ServerCommunication {
@@ -25,7 +25,7 @@ public class ServerCommunication {
     public static String bike = "bike/";
     public static String event = "event/";
     private static HttpClient client = HttpClient.newBuilder().build();
-    private static String url = "http://localhost:8080/";
+    public static String url;
     private static ObjectMapper mapper = new ObjectMapper();
 
     /**
@@ -69,13 +69,13 @@ public class ServerCommunication {
     /**
      * Retrieves rooms from the server based on building id.
      *
-     * @param buildingId id of the building
+     * @param building id of the building
      * @return the body of a get request to the server.
      */
-    public static String getRooms(long buildingId) {
+    public static String getRooms(String building) {
         HttpRequest request = HttpRequest.newBuilder()
             .GET()
-            .uri(URI.create(url + "room?building=" + buildingId))
+            .uri(URI.create(url + "room?building=" + building))
             .build();
         return httpRequest(request);
     }
@@ -334,7 +334,7 @@ public class ServerCommunication {
      * @param buildingId the id of the selected building
      * @return the body of a get request to the server.
      */
-    public static String getBikes(int buildingId) {
+    public static String getBikes(Long buildingId) {
         HttpRequest request = HttpRequest.newBuilder()
             .GET()
             .uri(URI.create(url + "bike?building=" + buildingId))
@@ -348,7 +348,7 @@ public class ServerCommunication {
      * @param buildingId the id of the selected building
      * @return the body of a post request to the server.
      */
-    public static String getFood(int buildingId) {
+    public static String getFood(Long buildingId) {
         HttpRequest request = HttpRequest.newBuilder()
             .GET()
             .uri(URI.create(url + "food?building=" + buildingId))
@@ -487,9 +487,9 @@ public class ServerCommunication {
             JsonNode body = mapper.readTree(response.body()).get("body");
             String jwtToken = body.get("token").asText();
             System.out.println(jwtToken);
-            MainSceneController.jwt = jwtToken;
-            MainSceneController.loggedIn = true;
-            MainSceneController.user = getUser(username);
+            AbstractSceneController.jwt = jwtToken;
+            AbstractSceneController.loggedIn = true;
+            AbstractSceneController.user = getUser(username);
             return "Logged in";
         }
     }
