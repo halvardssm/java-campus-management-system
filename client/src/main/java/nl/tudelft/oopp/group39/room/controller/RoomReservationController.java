@@ -334,8 +334,4 @@ public class RoomReservationController extends AbstractSceneController {
     private void backToRoom() {
         UsersDisplay.backToPrevious();
     }
-
-    public void toggleFilter() {
-
-    }
 }

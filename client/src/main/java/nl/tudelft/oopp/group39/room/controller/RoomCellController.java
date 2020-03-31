@@ -19,6 +19,12 @@ public class RoomCellController extends AbstractSceneController {
 
     private Building building;
 
+    /**
+     * Creates a room pane.
+     *
+     * @param room room to create a pane from
+     * @param building building of the room
+     */
     public void createPane(Room room, Building building) {
 
         this.room = room;
@@ -34,8 +40,5 @@ public class RoomCellController extends AbstractSceneController {
 
     public void goToReservationScene() throws IOException {
         super.goToReservationScene(room,building);
-    }
-    public void toggleFilter() {
-
     }
 }

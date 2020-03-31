@@ -139,8 +139,4 @@ public class SignupController extends AbstractSceneController {
             return "STAFF";
         }
     }
-
-    public void toggleFilter() {
-
-    }
 }

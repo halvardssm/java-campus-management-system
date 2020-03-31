@@ -574,8 +574,4 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
             }
         }
     }
-
-    public void toggleFilter() {
-
-    }
 }
