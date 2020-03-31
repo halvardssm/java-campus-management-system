@@ -23,7 +23,7 @@ public interface Utils {
      * @return a set of the component type
      */
     static <E extends AbstractEntity<E, D>, D extends AbstractDto<E, D>> Set<E>
-        idsToComponentSet(List<Long> list, Class<E> clazz) {
+    idsToComponentSet(List<Long> list, Class<E> clazz) {
         Set<E> result = new HashSet<>();
         if (list != null) {
             list.forEach(id -> {
@@ -38,7 +38,7 @@ public interface Utils {
     }
 
     static <E extends AbstractEntity<E, D>, D extends AbstractDto<E, D>> Set<E>
-        idsToComponentSet(Set<Long> set, Class<E> clazz) {
+    idsToComponentSet(Set<Long> set, Class<E> clazz) {
         return idsToComponentSet(new ArrayList<>(set), clazz);
     }
 
@@ -125,14 +125,27 @@ public interface Utils {
     static <E extends IEntity> E idToEntity(Long id, Class<E> clazz) {
         E result = null;
 
-        try {
-            result = clazz.getDeclaredConstructor().newInstance();
-            result.setId(id);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (id != null) {
+            try {
+                result = clazz.getDeclaredConstructor().newInstance();
+                result.setId(id);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         return result;
+    }
+
+    /**
+     * Creates an entity from id.
+     *
+     * @param entity the the entity
+     * @param <E>    the class
+     * @return the id
+     */
+    static <E extends IEntity> Long entityToId(E entity) {
+        return entity != null ? entity.getId() : null;
     }
 
     /**
