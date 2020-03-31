@@ -402,6 +402,14 @@ public class ServerCommunication {
         httpRequest(request);
     }
 
+    public static void removeReservation(String id) {
+        HttpRequest request = HttpRequest.newBuilder()
+            .DELETE()
+            .uri(URI.create(url + "reservation/" + id))
+            .build();
+        httpRequest(request);
+    }
+
     /**
      * Retrieves all bookings from the server.
      *

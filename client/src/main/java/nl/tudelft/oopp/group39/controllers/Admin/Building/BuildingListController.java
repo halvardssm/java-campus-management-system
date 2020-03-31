@@ -23,6 +23,7 @@ import nl.tudelft.oopp.group39.controllers.Admin.AdminPanelController;
 import nl.tudelft.oopp.group39.controllers.Admin.MainAdminController;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
 import nl.tudelft.oopp.group39.models.Building;
+import nl.tudelft.oopp.group39.models.Event;
 
 
 public class BuildingListController extends AdminPanelController implements Initializable {
@@ -123,36 +124,18 @@ public class BuildingListController extends AdminPanelController implements Init
         deleteCol.setCellValueFactory(
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
-        deleteCol.setCellFactory(param -> new TableCell<Building, Building>() {
-            private final Button deleteButton = new Button("Delete");
-
-            @Override
-            protected void updateItem(Building building, boolean empty) {
-                super.updateItem(building, empty);
-
-                if (building == null) {
-                    setGraphic(null);
-                    return;
-                }
-
-                setGraphic(deleteButton);
-                deleteButton.setOnAction(
-                    event -> {
-                        try {
-                            deleteBuilding(building);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                );
-            }
-        });
+        deleteCol.setCellFactory(param -> returnCell("Delete"));
         updateCol.setCellValueFactory(
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
-        updateCol.setCellFactory(param -> new TableCell<Building, Building>() {
-            private final Button updateButton = new Button("Update");
+        updateCol.setCellFactory(param -> returnCell("Update"));
+        buildingTable.setItems(data);
+        buildingTable.getColumns().addAll(idCol, nameCol, locationCol, closingTimeCol, openTimeCol, descriptionCol, deleteCol, updateCol);
+    }
+
+    public TableCell<Building, Building> returnCell(String button) {
+        return new TableCell<Building, Building>() {
+            private final Button updateButton = new Button(button);
 
             @Override
             protected void updateItem(Building building, boolean empty) {
@@ -167,7 +150,16 @@ public class BuildingListController extends AdminPanelController implements Init
                 updateButton.setOnAction(
                     event -> {
                         try {
-                            editBuilding(building);
+                            switch(button){
+                                case "Update":
+                                    editBuilding(building);
+                                    break;
+                                case "Delete":
+                                    deleteBuilding(building);
+                                    break;
+                                default:
+                                    break;
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -175,11 +167,8 @@ public class BuildingListController extends AdminPanelController implements Init
 
                 );
             }
-        });
-        buildingTable.setItems(data);
-        buildingTable.getColumns().addAll(idCol, nameCol, locationCol, closingTimeCol, openTimeCol, descriptionCol, deleteCol, updateCol);
+        };
     }
-
 
     public void createBuilding() throws IOException {
         switchFunc("/Admin/Building/BuildingCreate.fxml");

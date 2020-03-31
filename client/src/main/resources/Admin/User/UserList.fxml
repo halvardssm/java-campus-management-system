@@ -54,7 +54,7 @@
               </columns>
             </TableView>
             <Button layoutX="604.0" layoutY="54.0" mnemonicParsing="false" onMouseClicked="#createUser" text="Add User" />
-            <BorderPane layoutX="716.0" layoutY="7.0" prefHeight="470.0" prefWidth="176.0" style="-fx-background-color: lightgray;">
+            <BorderPane layoutX="716.0" layoutY="39.0" prefHeight="434.0" prefWidth="176.0" style="-fx-background-color: lightgray;">
                <center>
                   <VBox prefHeight="414.0" prefWidth="172.0" style="-fx-padding: 4px;" BorderPane.alignment="CENTER">
                      <children>

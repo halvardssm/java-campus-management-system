@@ -31,6 +31,7 @@ import nl.tudelft.oopp.group39.controllers.Admin.AdminPanelController;
 import nl.tudelft.oopp.group39.controllers.Admin.MainAdminController;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
 import nl.tudelft.oopp.group39.models.Event;
+import nl.tudelft.oopp.group39.models.Room;
 import nl.tudelft.oopp.group39.models.User;
 
 public class EventListController extends AdminPanelController implements Initializable {
@@ -84,42 +85,24 @@ public class EventListController extends AdminPanelController implements Initial
         deleteCol.setCellValueFactory(
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
-        deleteCol.setCellFactory(param -> new TableCell<Event, Event>() {
-            private final Button deleteButton = new Button("Delete");
-
-            @Override
-            protected void updateItem(Event eventItem, boolean empty) {
-                super.updateItem(eventItem, empty);
-
-                if (eventItem == null) {
-                    setGraphic(null);
-                    return;
-                }
-
-                setGraphic(deleteButton);
-                deleteButton.setOnAction(
-                    event -> {
-                        try {
-                            deleteEvent(eventItem);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                );
-            }
-        });
+        deleteCol.setCellFactory(param -> returnCell("Delete"));
         updateCol.setCellValueFactory(
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
-        updateCol.setCellFactory(param -> new TableCell<Event, Event>() {
-            private final Button updateButton = new Button("Update");
+        updateCol.setCellFactory(param -> returnCell("Update"));
+        eventTable.setItems(data);
+        eventTable.getColumns().addAll(idCol, typeCol, startCol, endCol, deleteCol, updateCol);
+    }
+
+    public TableCell<Event, Event> returnCell(String button) {
+        return new TableCell<Event, Event>() {
+            private final Button updateButton = new Button(button);
 
             @Override
-            protected void updateItem(Event eventItem, boolean empty) {
-                super.updateItem(eventItem, empty);
+            protected void updateItem(Event nEvent, boolean empty) {
+                super.updateItem(nEvent, empty);
 
-                if (eventItem == null) {
+                if (nEvent == null) {
                     setGraphic(null);
                     return;
                 }
@@ -128,7 +111,16 @@ public class EventListController extends AdminPanelController implements Initial
                 updateButton.setOnAction(
                     event -> {
                         try {
-                            editEvent(eventItem);
+                            switch(button){
+                                case "Update":
+                                    editEvent(nEvent);
+                                    break;
+                                case "Delete":
+                                    deleteEvent(nEvent);
+                                    break;
+                                default:
+                                    break;
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -136,11 +128,8 @@ public class EventListController extends AdminPanelController implements Initial
 
                 );
             }
-        });
-        eventTable.setItems(data);
-        eventTable.getColumns().addAll(idCol, typeCol, startCol, endCol, deleteCol, updateCol);
+        };
     }
-
 
     public void createEvent() throws IOException {
         switchFunc("/Admin/Event/EventCreate.fxml");

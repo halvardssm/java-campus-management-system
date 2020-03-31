@@ -1,10 +1,8 @@
 package nl.tudelft.oopp.group39.controllers.Admin;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,9 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.views.AdminPanel;
-import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 
 public class AdminPanelController extends MainAdminController implements Initializable {
@@ -96,6 +92,21 @@ public class AdminPanelController extends MainAdminController implements Initial
         Menu fileMenuButton4 = new Menu();
         fileMenuButton4.setGraphic(buildingListLabel);
         menuBar.getMenus().add(fileMenuButton4);
+        Label reservationListLabel = new Label("Reservation list");
+        reservationListLabel.setStyle("-fx-text-fill: black");
+        reservationListLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    AdminPanel.sceneHandler("/Admin/Booking/BookingList.fxml");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        Menu fileMenuButton5 = new Menu();
+        fileMenuButton5.setGraphic(reservationListLabel);
+        menuBar.getMenus().add(fileMenuButton5);
     }
 
 }

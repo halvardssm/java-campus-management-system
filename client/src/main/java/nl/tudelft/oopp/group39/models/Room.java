@@ -7,6 +7,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+import javax.annotation.processing.SupportedOptions;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
 @JsonIgnoreProperties(value = { "reservations" })
@@ -21,10 +24,16 @@ public class Room {
     private ArrayNode bookings;
     private long building;
 
-//    @JsonProperty("building")
-//    public void setBuildingId(Building building){
-//        this.buildingId = building.getId();
-//    }
+    @JsonProperty("building")
+    public void setBuildingId(JsonNode building) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        if(building.canConvertToLong()) {
+            this.building = building.asLong();
+            return;
+        }
+        Building nBuilding = mapper.reader().forType(Building.class).readValue(building);
+        this.building = nBuilding.getId();
+    }
 
     public Room() {
 

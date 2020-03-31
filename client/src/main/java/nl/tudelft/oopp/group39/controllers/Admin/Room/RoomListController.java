@@ -43,29 +43,23 @@ public class RoomListController extends AdminPanelController implements Initiali
     @FXML
     private Button backbtn;
     @FXML
-    private TextField nameFieldNew;
-    @FXML
-    private TextField locationFieldNew;
-    @FXML
-    private TextField descriptionFieldNew;
-    @FXML
     private TableView<Room> roomTable = new TableView<>();
     @FXML
     private TableColumn<Room, String> roomIdCol = new TableColumn<>("ID");
     @FXML
-    private TableColumn<Room, String> roomBuildingIdCol = new TableColumn<>("Building ID");
+    private TableColumn<Room, String> buildingIdCol = new TableColumn<>("Building ID");
     @FXML
-    private TableColumn<Room, String> roomCapacityCol = new TableColumn<>("Capacity");
+    private TableColumn<Room, String> capacityCol = new TableColumn<>("Capacity");
     @FXML
-    private TableColumn<Room, String> roomFacilityCol = new TableColumn<>("Facilities");
+    private TableColumn<Room, String> onlyStaffCol = new TableColumn<>("Only staff");
     @FXML
-    private TableColumn<Room, String> roomStaffCol = new TableColumn<>("Only staff");
+    private TableColumn<Room, String> nameCol = new TableColumn<>("Name");
     @FXML
-    private TableColumn<Room, String> roomNameCol = new TableColumn<>("Name");
+    private TableColumn<Room, Room> deleteCol = new TableColumn<>("Delete");
     @FXML
-    private TableColumn<Room, Room> roomDelCol = new TableColumn<>("Delete");
+    private TableColumn<Room, Room> viewCol = new TableColumn<>("View");
     @FXML
-    private TableColumn<Room, Room> roomUpdateCol = new TableColumn<>("Update");
+    private TableColumn<Room, Room> updateCol = new TableColumn<>("Update");
     private HashMap<String, Integer> buildingsByName = new HashMap();
     private HashMap<Integer, String> buildingsById = new HashMap();
     private HashMap<String, Integer> facilitiesByName = new HashMap();
@@ -76,6 +70,8 @@ public class RoomListController extends AdminPanelController implements Initiali
     private ComboBox roomOnlyStaffField;
     @FXML
     private ListView facilitiesList;
+    @FXML
+    private TextField roomNameField;
     @FXML
     private MenuBar navBar;
 
@@ -131,7 +127,7 @@ public class RoomListController extends AdminPanelController implements Initiali
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         List<Room> roomList = new ArrayList<>();
         for (JsonNode roomJson : body) {
-            if(roomJson.toString().contains("{") && roomJson.toString().contains("}")) {
+            if (roomJson.toString().contains("{") && roomJson.toString().contains("}")) {
                 System.out.println(roomJson);
                 String roomAsString = mapper.writeValueAsString(roomJson);
                 Room room = mapper.readValue(roomAsString, Room.class);
@@ -140,45 +136,31 @@ public class RoomListController extends AdminPanelController implements Initiali
         }
 
         ObservableList<Room> data = FXCollections.observableArrayList(roomList);
-        roomBuildingIdCol.setCellValueFactory(new PropertyValueFactory<>("building"));
+        buildingIdCol.setCellValueFactory(new PropertyValueFactory<>("building"));
         roomIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        roomCapacityCol.setCellValueFactory(new PropertyValueFactory<>("capacity"));
-        roomStaffCol.setCellValueFactory(new PropertyValueFactory<>("onlyStaff"));
-        roomNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        capacityCol.setCellValueFactory(new PropertyValueFactory<>("capacity"));
+        onlyStaffCol.setCellValueFactory(new PropertyValueFactory<>("onlyStaff"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-        roomDelCol.setCellValueFactory(
+        deleteCol.setCellValueFactory(
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
-        roomDelCol.setCellFactory(param -> new TableCell<Room, Room>() {
-            private final Button deleteButton = new Button("Delete");
-
-            @Override
-            protected void updateItem(Room room, boolean empty) {
-                super.updateItem(room, empty);
-
-                if (room == null) {
-                    setGraphic(null);
-                    return;
-                }
-
-                setGraphic(deleteButton);
-                deleteButton.setOnAction(
-                    event -> {
-                        try {
-                            deleteRoom(room);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                );
-            }
-        });
-        roomUpdateCol.setCellValueFactory(
+        deleteCol.setCellFactory(param -> returnCell("Delete"));
+        updateCol.setCellValueFactory(
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
-        roomUpdateCol.setCellFactory(param -> new TableCell<Room, Room>() {
-            private final Button updateButton = new Button("Update");
+        updateCol.setCellFactory(param -> returnCell("Update"));
+        viewCol.setCellValueFactory(
+            param -> new ReadOnlyObjectWrapper<>(param.getValue())
+        );
+        viewCol.setCellFactory(param -> returnCell("View"));
+        roomTable.setItems(data);
+        roomTable.getColumns().addAll(roomIdCol, buildingIdCol, capacityCol, onlyStaffCol, nameCol, deleteCol, updateCol, viewCol);
+    }
+
+    public TableCell<Room, Room> returnCell(String button) {
+        return new TableCell<Room, Room>() {
+            private final Button updateButton = new Button(button);
 
             @Override
             protected void updateItem(Room room, boolean empty) {
@@ -193,7 +175,19 @@ public class RoomListController extends AdminPanelController implements Initiali
                 updateButton.setOnAction(
                     event -> {
                         try {
-                            editRoom(room);
+                            switch(button){
+                                case "Update":
+                                    editRoom(room);
+                                    break;
+                                case "Delete":
+                                    deleteRoom(room);
+                                    break;
+                                case "View":
+                                    viewRoom(room);
+                                    break;
+                                default:
+                                    break;
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -201,9 +195,7 @@ public class RoomListController extends AdminPanelController implements Initiali
 
                 );
             }
-        });
-        roomTable.setItems(data);
-        roomTable.getColumns().addAll(roomBuildingIdCol, roomIdCol, roomCapacityCol, roomStaffCol, roomNameCol, roomDelCol, roomUpdateCol);
+        };
     }
 
     public void createRoom() throws IOException {
@@ -220,6 +212,12 @@ public class RoomListController extends AdminPanelController implements Initiali
     public void editRoom(Room room) throws IOException {
         FXMLLoader loader = switchFunc("/Admin/Room/RoomEdit.fxml");
         RoomEditController controller = loader.getController();
+        controller.initData(room);
+    }
+
+    public void viewRoom(Room room) throws IOException {
+        FXMLLoader loader = switchFunc("/Admin/Room/RoomView.fxml");
+        RoomViewController controller = loader.getController();
         controller.initData(room);
     }
 
@@ -259,22 +257,8 @@ public class RoomListController extends AdminPanelController implements Initiali
         return a;
     }
 
-//    public void filterRooms() throws JsonProcessingException {
-//        String name = nameFieldNew.getText();
-//        name = name == null ? "" : name;
-//        String description = descriptionFieldNew.getText();
-//        description = description == null ? "" : description;
-//        String building = (String) roomBuildingIdField.getValue();
-//        location = location == null ? "" : location;
-//        String rooms = ServerCommunication.getFilteredRooms(name, location, open, closed, description);
-//        loadRooms(rooms);
-//    }
-
     public String getOnlyStaff(Room room) {
-        if(room.isOnlyStaff()){
-            return "Only staff members";
-        }
-        return "All users";
+        return room.isOnlyStaff() ? "Only staff" :"All users";
     }
 
     @FXML

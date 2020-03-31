@@ -25,6 +25,7 @@ import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.Admin.AdminPanelController;
 import nl.tudelft.oopp.group39.controllers.Admin.MainAdminController;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
+import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.models.User;
 
 
@@ -115,36 +116,18 @@ public class UserListController extends AdminPanelController implements Initiali
         deleteCol.setCellValueFactory(
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
-        deleteCol.setCellFactory(param -> new TableCell<User, User>() {
-            private final Button deleteButton = new Button("Delete");
-
-            @Override
-            protected void updateItem(User user, boolean empty) {
-                super.updateItem(user, empty);
-
-                if (user == null) {
-                    setGraphic(null);
-                    return;
-                }
-
-                setGraphic(deleteButton);
-                deleteButton.setOnAction(
-                    event -> {
-                        try {
-                            deleteUser(user);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                );
-            }
-        });
+        deleteCol.setCellFactory(param -> returnCell("Delete"));
         updateCol.setCellValueFactory(
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
-        updateCol.setCellFactory(param -> new TableCell<User, User>() {
-            private final Button updateButton = new Button("Update");
+        updateCol.setCellFactory(param -> returnCell("Update"));
+        usertable.setItems(data);
+        usertable.getColumns().addAll(idCol, emailCol, statusCol, deleteCol, updateCol);
+    }
+
+    public TableCell<User, User> returnCell(String button) {
+        return new TableCell<User, User>() {
+            private final Button updateButton = new Button(button);
 
             @Override
             protected void updateItem(User user, boolean empty) {
@@ -159,7 +142,16 @@ public class UserListController extends AdminPanelController implements Initiali
                 updateButton.setOnAction(
                     event -> {
                         try {
-                            updateUser(user);
+                            switch(button){
+                                case "Update":
+                                    editUser(user);
+                                    break;
+                                case "Delete":
+                                    deleteUser(user);
+                                    break;
+                                default:
+                                    break;
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -167,9 +159,7 @@ public class UserListController extends AdminPanelController implements Initiali
 
                 );
             }
-        });
-        usertable.setItems(data);
-        usertable.getColumns().addAll(idCol, emailCol, statusCol, deleteCol, updateCol);
+        };
     }
 
 
@@ -184,7 +174,7 @@ public class UserListController extends AdminPanelController implements Initiali
         loadUsersStandard();
     }
 
-    public void updateUser(User user) throws IOException {
+    public void editUser(User user) throws IOException {
         FXMLLoader loader = switchFunc("/Admin/User/UserEdit.fxml");
         UserEditController controller = loader.getController();
         controller.initData(user);

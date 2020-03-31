@@ -53,12 +53,13 @@
             <TableView fx:id="roomTable" layoutY="81.0" opacity="0.75" prefHeight="418.0" prefWidth="700.0">
                <columns>
                   <TableColumn fx:id="roomIdCol" prefWidth="106.0" text="ID" />
-                  <TableColumn fx:id="roomBuildingIdCol" prefWidth="37.0" text="Building ID" />
-                  <TableColumn fx:id="roomCapacityCol" prefWidth="190.0" text="Capacity" />
-                  <TableColumn fx:id="roomFacilityCol" prefWidth="160.0" text="Name" />
-                  <TableColumn fx:id="roomStaffCol" prefWidth="106.0" text="Only staff" />
-                  <TableColumn fx:id="roomDelCol" prefWidth="50.0" text="Delete" />
-                  <TableColumn fx:id="roomUpdateCol" prefWidth="50.0" text="Update" />
+                  <TableColumn fx:id="buildingIdCol" prefWidth="37.0" text="Building ID" />
+                  <TableColumn fx:id="capacityCol" prefWidth="140.0" text="Capacity" />
+                  <TableColumn fx:id="nameCol" prefWidth="160.0" text="Name" />
+                  <TableColumn fx:id="onlyStaffCol" prefWidth="106.0" text="Only staff" />
+                  <TableColumn fx:id="deleteCol" prefWidth="50.0" text="Delete" />
+                  <TableColumn fx:id="updateCol" prefWidth="50.0" text="Update" />
+                  <TableColumn fx:id="viewCol" prefWidth="50.0" text="View" />
                </columns>
             </TableView>
             <Button layoutX="600.0" layoutY="48.0" mnemonicParsing="false" onMouseClicked="#createRoom" text="Add Room" />

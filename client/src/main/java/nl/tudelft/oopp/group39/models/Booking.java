@@ -1,13 +1,18 @@
 package nl.tudelft.oopp.group39.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.IOException;
+
 public class Booking {
 
     private Integer id;
     private String date;
     private String startTime;
     private String endTime;
-    private User user;
-    private Room room;
+    private String user;
+    private long room;
 
     public Booking() {
 
@@ -20,16 +25,17 @@ public class Booking {
      * @param date      date of booking
      * @param startTime start time of booking
      * @param endTime   end time of booking
-     * @param user      user that made the booking
-     * @param room      room that is booked
+     * @param user start time of booking
+     * @param room   end time of booking
      */
     public Booking(
         Integer id,
         String date,
         String startTime,
         String endTime,
-        User user,
-        Room room) {
+        String user,
+        int room
+    ) {
         this.id = id;
         this.date = date;
         this.startTime = startTime;
@@ -54,11 +60,11 @@ public class Booking {
         return endTime;
     }
 
-    public User getUser() {
+    public String getUser() {
         return user;
     }
 
-    public Room getRoom() {
-        return room;
+    public int getRoom() {
+        return (int) room;
     }
 }
