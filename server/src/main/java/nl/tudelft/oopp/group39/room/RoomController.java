@@ -67,7 +67,7 @@ public class RoomController {
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> readRoom(@PathVariable Long id) {
-        return RestResponse.create(service.readRoom(id));
+        return RestResponse.create(service.readRoom(id).toDto());
     }
 
     @PutMapping("/{id}")
