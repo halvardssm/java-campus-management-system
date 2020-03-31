@@ -1,7 +1,10 @@
 package nl.tudelft.oopp.group39.event.controllers;
 
+import java.util.Arrays;
+import java.util.List;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.event.entities.Event;
+import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.event.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +34,12 @@ public class EventController {
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listEvents() {
         return RestResponse.create(eventService.listEvents());
+    }
+
+    @GetMapping("/types")
+    public ResponseEntity<RestResponse<Object>> listEventTypes() {
+        List<EventTypes> enums = Arrays.asList(EventTypes.values());
+        return RestResponse.create(enums);
     }
 
     /**

@@ -72,9 +72,16 @@ public class BuildingListController extends AdminPanelController implements Init
 
     }
 
-    void loadAllBuildings() throws JsonProcessingException {
+    public void loadAllBuildings() throws JsonProcessingException {
         String buildings = ServerCommunication.get(ServerCommunication.building);
+        loadFiltering();
         loadBuildings(buildings);
+    }
+
+    public void loadFiltering() {
+        nameFilter.clear();
+        descriptionFilter.clear();
+        locationFilter.clear();
     }
 
     public void filterBuildings() throws JsonProcessingException {
@@ -86,8 +93,6 @@ public class BuildingListController extends AdminPanelController implements Init
         location = location == null ? "" : location;
         String open = getTime("00:00:00", true);
         String closed = getTime("23:59:00", false);
-//        String capacity = capacityField.getText();
-//        capacity = capacity == null ? "0" : capacity;
         String buildings = ServerCommunication.getFilteredBuildings(name, location, open, closed, description);
         loadBuildings(buildings);
     }
@@ -106,10 +111,8 @@ public class BuildingListController extends AdminPanelController implements Init
         buildingTable.setVisible(true);
         buildingTable.getItems().clear();
         buildingTable.getColumns().clear();
-        System.out.println(buildings);
         ArrayNode body = (ArrayNode) mapper.readTree(buildings).get("body");
         buildings = mapper.writeValueAsString(body);
-        System.out.println(buildings);
         Building[] list = mapper.readValue(buildings, Building[].class);
         ObservableList<Building> data = FXCollections.observableArrayList(list);
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -176,7 +179,7 @@ public class BuildingListController extends AdminPanelController implements Init
             }
         });
         buildingTable.setItems(data);
-        buildingTable.getColumns().addAll(nameCol, idCol, locationCol, closingTimeCol, openTimeCol, descriptionCol, deleteCol, updateCol);
+        buildingTable.getColumns().addAll(idCol, nameCol, locationCol, closingTimeCol, openTimeCol, descriptionCol, deleteCol, updateCol);
     }
 
 

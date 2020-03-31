@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="600.0" prefWidth="700.0" style="-fx-padding: 4px;" stylesheets="@../../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.Admin.User.UserEditController">
+    <top>
+        <HBox spacing="10" styleClass="bar">
+            <padding>
+                <Insets bottom="15" left="15" right="15" top="15" />
+            </padding>
+            <children>
+                <Text id="title" text="Admin: Room View" />
+            </children>
+        </HBox>
+    </top>
+    <bottom>
+        <HBox spacing="10" styleClass="bar">
+            <padding>
+                <Insets bottom="15" left="15" right="15" top="15" />
+            </padding>
+            <children>
+                <Button id="backbtn" fx:id="backbtn" onAction="#getBack" text="◀ Back" />
+            </children>
+        </HBox>
+    </bottom>
+    <center>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <Text layoutX="209.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update a User" underline="true">
+                    <font>
+                        <Font name="System Bold" size="33.0" />
+                    </font>
+                </Text>
+                <Text layoutX="27.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email:">
+                    <font>
+                        <Font name="System Bold" size="17.0" />
+                    </font>
+                </Text>
+                <TextField fx:id="emailField" layoutX="200.0" layoutY="84.0" prefHeight="31.0" prefWidth="200.0" promptText="email" />
+                <Text layoutX="19.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Building:">
+                    <font>
+                        <Font name="System Bold" size="17.0" />
+                    </font>
+                </Text>
+                <ComboBox fx:id="roleBox" layoutX="200.0" layoutY="138.0" prefHeight="31.0" prefWidth="200.0" promptText="Address" />
+                <Button layoutX="600.0" layoutY="450.0" mnemonicParsing="false" onMouseClicked="#editUser" text="Update User" />
+            </children>
+        </AnchorPane>
+    </center>
+</BorderPane>

@@ -34,7 +34,7 @@
                 <!--                        <Image url="@../../../../../../../../TuDelft/download.png" />-->
                 <!--                    </image>-->
                 <!--                </ImageView>-->
-                <Text layoutX="209.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update an Event" underline="true">
+                <Text layoutX="170.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update an Event" underline="true">
                     <font>
                         <Font name="System Bold" size="33.0" />
                     </font>
@@ -44,24 +44,25 @@
                         <Font name="System Bold" size="17.0" />
                     </font>
                 </Text>
-                <TextField fx:id="typeField" layoutX="200.0" layoutY="94.0" prefHeight="31.0" prefWidth="200.0" promptText="type" />
-                <Text layoutX="20.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Opening time:">
+                <ComboBox fx:id="typeBox" layoutX="200.0" layoutY="94.0" prefHeight="31.0" prefWidth="200.0" promptText="type" />
+                <Text layoutX="20.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start date:">
                     <font>
                         <Font name="System Bold" size="17.0" />
                     </font>
                 </Text>
                 <DatePicker fx:id="startField" layoutX="200.0" layoutY="148.0" prefHeight="31.0" prefWidth="200.0" promptText="23:59:00" />
-                <Text layoutX="18.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Closing time:">
+                <Text layoutX="18.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End date:">
                     <font>
                         <Font name="System Bold" size="17.0" />
                     </font>
                 </Text>
                 <DatePicker fx:id="endField" layoutX="200.0" layoutY="210.0" prefHeight="31.0" prefWidth="200.0" promptText="00:00:00" />
                 <Button layoutX="776.0" layoutY="459.0" mnemonicParsing="false" onMouseClicked="#editEvent" text="Update Event" />
-                <MenuBar layoutY="2.0" prefHeight="33.0" prefWidth="890.0" fx:id="NavBar">
+                <MenuBar fx:id="NavBar" layoutY="2.0" prefHeight="32.0" prefWidth="891.0">
                     <menus>
                     </menus>
                 </MenuBar>
+                <TextArea fx:id="dateMessage" disable="true" layoutX="443.0" layoutY="65.0" prefHeight="200.0" prefWidth="417.0" />
             </children>
         </AnchorPane>
     </center>

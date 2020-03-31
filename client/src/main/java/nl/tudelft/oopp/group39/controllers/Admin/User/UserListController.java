@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -18,6 +19,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -32,7 +34,10 @@ import nl.tudelft.oopp.group39.models.User;
 
 public class UserListController extends MainAdminController implements Initializable {
 
-    private String allRoles = "All Roles";
+    private String lastSelectedRole;
+    private String lastSelectedName;
+    private List<String> roles;
+    private String allRoles = "ALL ROLES";
     @FXML
     private Button backbtn;
     @FXML private TableView<User> usertable;
@@ -40,11 +45,11 @@ public class UserListController extends MainAdminController implements Initializ
     @FXML private TableColumn<User, String> emailCol;
     @FXML private TableColumn<User, String> statusCol;
     @FXML
-    private TableColumn<User, User> userDelCol = new TableColumn<>("Delete");
+    private TableColumn<User, User> deleteCol = new TableColumn<>("Delete");
     @FXML
-    private TableColumn<User, User> userUpCol = new TableColumn<>("Update");
-//    @FXML
-//    private ComboBox<String> roleBox;
+    private TableColumn<User, User> updateCol = new TableColumn<>("Update");
+    @FXML
+    private ComboBox roleBox;
     @FXML
     private TextField usernameField;
 
@@ -58,7 +63,9 @@ public class UserListController extends MainAdminController implements Initializ
 
     }
 
-    void loadUsersStandard() throws JsonProcessingException {
+    public void loadUsersStandard() throws JsonProcessingException {
+        this.lastSelectedRole = allRoles;
+        this.lastSelectedName = "";
         String users = ServerCommunication.get(ServerCommunication.user);
         loadUsers(users);
     }
@@ -66,52 +73,50 @@ public class UserListController extends MainAdminController implements Initializ
     public void filterUsers() throws JsonProcessingException {
         String name = usernameField.getText();
         name = name == null ? "" : name;
-//        String role = roleBox.getValue();
-//        role = role == null ? "" : role;
-//        role = role.contentEquals("") ? role : "";
-        String users = ServerCommunication.getFilteredUsers(name);
-        System.out.println(users);
+        this.lastSelectedName = name;
+        Object roleObj = roleBox.getValue();
+        String role = roleObj == null ? "" : roleObj.toString();
+        this.lastSelectedRole = role.contentEquals("") ? allRoles : role;
+        role = role.contentEquals(allRoles) ? "" : role;
+        String users = ServerCommunication.getFilteredUsers(name, role);
         loadUsers(users);
     }
 
-    public String getTime(String time, boolean open) {
-        if (open) {
-            return time.contentEquals("") ? LocalTime.MAX.toString() : time;
-        }
-        return time.contentEquals("") ? LocalTime.MIN.toString() : time;
-    }
-
-    void loadFiltering(User[] list) {
-        List<String> nList = new ArrayList<>();
-        for(User user : list) {
-            nList.add(user.getRole());
-        }
-        nList.add(allRoles);
-        ObservableList<String> data = FXCollections.observableArrayList(nList);
-//        roleBox.setItems(data);
-//        roleBox.setPromptText(allRoles);
+    void loadFiltering() throws JsonProcessingException {
+        usernameField.clear();
+        usernameField.setText(lastSelectedName);
+        roleBox.getItems().clear();
+        String roles = ServerCommunication.getUserRoles();
+        ArrayNode body = (ArrayNode) mapper.readTree(roles).get("body");
+        roles = mapper.writeValueAsString(body);
+        String[] list = mapper.readValue(roles, String[].class);
+        List<String> roleList = new ArrayList<>();
+        roleList.add(allRoles);
+        roleList.addAll(Arrays.asList(list));
+        this.roles = roleList;
+        ObservableList<String> data = FXCollections.observableArrayList(roleList);
+        roleBox.setItems(data);
+        roleBox.getSelectionModel().select(this.lastSelectedRole);
     }
     /**
      * Display buildings and data in tableView buildingTable. -- Likely doesn't work yet.
      */
     void loadUsers(String users) throws JsonProcessingException {
+        loadFiltering();
         usertable.setVisible(true);
         usertable.getItems().clear();
         usertable.getColumns().clear();
-        System.out.println(users);
         ArrayNode body = (ArrayNode) mapper.readTree(users).get("body");
         users = mapper.writeValueAsString(body);
-        System.out.println(users);
         User[] list = mapper.readValue(users, User[].class);
-        loadFiltering(list);
         ObservableList<User> data = FXCollections.observableArrayList(list);
         idCol.setCellValueFactory(new PropertyValueFactory<>("username"));
         emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
         statusCol.setCellValueFactory(new PropertyValueFactory<>("role"));
-        userDelCol.setCellValueFactory(
+        deleteCol.setCellValueFactory(
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
-        userDelCol.setCellFactory(param -> new TableCell<User, User>() {
+        deleteCol.setCellFactory(param -> new TableCell<User, User>() {
             private final Button deleteButton = new Button("Delete");
 
             @Override
@@ -127,7 +132,7 @@ public class UserListController extends MainAdminController implements Initializ
                 deleteButton.setOnAction(
                     event -> {
                         try {
-                            deleteUserView(user);
+                            deleteUser(user);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -136,10 +141,10 @@ public class UserListController extends MainAdminController implements Initializ
                 );
             }
         });
-        userUpCol.setCellValueFactory(
+        updateCol.setCellValueFactory(
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
-        userUpCol.setCellFactory(param -> new TableCell<User, User>() {
+        updateCol.setCellFactory(param -> new TableCell<User, User>() {
             private final Button updateButton = new Button("Update");
 
             @Override
@@ -155,7 +160,7 @@ public class UserListController extends MainAdminController implements Initializ
                 updateButton.setOnAction(
                     event -> {
                         try {
-                            updateUserView(user);
+                            updateUser(user);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -165,30 +170,25 @@ public class UserListController extends MainAdminController implements Initializ
             }
         });
         usertable.setItems(data);
-        usertable.getColumns().addAll(idCol, emailCol, statusCol, userDelCol, userUpCol);
+        usertable.getColumns().addAll(idCol, emailCol, statusCol, deleteCol, updateCol);
     }
 
 
-    public void adminAddBuilding() throws IOException {
-        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Admin/Building/BuildingCreate.fxml"));
-        currentstage.setScene(new Scene(root, 900, 650));
+    public void createUser() throws IOException {
+        switchFunc("/Admin/User/UserCreate.fxml");
     }
 
-    public void deleteUserView(User user) throws IOException {
+    public void deleteUser(User user) throws IOException {
         String id = user.getUsername();
         ServerCommunication.removeUser(id);
         createAlert("removed: " + user.getUsername());
         loadUsersStandard();
     }
 
-    public void updateUserView(User user) throws IOException {
-//        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminUpdateUser.fxml"));
-//        Parent root = loader.load();
-//        AdminUpdateUserController controller = loader.getController();
-//        controller.initData(user);
-//        currentstage.setScene(new Scene(root, 900, 650));
+    public void updateUser(User user) throws IOException {
+        FXMLLoader loader = switchFunc("/Admin/User/UserEdit.fxml");
+        UserEditController controller = loader.getController();
+        controller.initData(user);
     }
 
     /**
@@ -196,9 +196,12 @@ public class UserListController extends MainAdminController implements Initializ
      */
     @FXML
     private void switchBack(ActionEvent actionEvent) throws IOException {
+        switchFunc("/Admin/AdminPanel.fxml");
+    }
+
+    private FXMLLoader switchFunc(String resource) throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/Admin/AdminPanel.fxml"));
-        currentstage.setScene(new Scene(root, 900, 650));
+        return mainSwitch(resource, currentstage);
     }
 
 }

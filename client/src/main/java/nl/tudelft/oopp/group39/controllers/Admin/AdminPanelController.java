@@ -1,9 +1,13 @@
 package nl.tudelft.oopp.group39.controllers.Admin;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -14,7 +18,7 @@ import nl.tudelft.oopp.group39.views.AdminPanel;
 import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 
-public class AdminPanelController extends MainAdminController {
+public class AdminPanelController extends MainAdminController implements Initializable {
     @FXML
     private Button userlistView;
     @FXML
@@ -23,38 +27,22 @@ public class AdminPanelController extends MainAdminController {
     private Button roomView;
     @FXML
     private Button eventView;
-
     @FXML
-    private void switchUListView(ActionEvent actionEvent) throws IOException {
-        Stage currentstage = (Stage) userlistView.getScene().getWindow();
-        mainSwitch("/Admin/User/UserList.fxml", currentstage);
-    }
+    private MenuBar NavBar;
 
-    @FXML
-    private void switchRoomView(ActionEvent actionEvent) throws IOException {
-        Stage currentstage = (Stage) roomView.getScene().getWindow();
-        mainSwitch("/Admin/Room/RoomList.fxml", currentstage);
-    }
-
-    @FXML
-    private void switchEvents(ActionEvent actionEvent) throws IOException {
-        Stage currentstage = (Stage) buildingView.getScene().getWindow();
-        mainSwitch("/Admin/Event/EventList.fxml", currentstage);
-    }
-
-    @FXML
-    private void switchBuildingView(ActionEvent actionEvent) throws IOException {
-        Stage currentstage = (Stage) buildingView.getScene().getWindow();
-        mainSwitch("/Admin/Building/BuildingList.fxml", currentstage);
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        setNavBar(NavBar);
     }
 
     public void setNavBar(MenuBar menuBar) {
         Label userListLabel = new Label("User list");
+        userListLabel.setStyle("-fx-text-fill: black");
         userListLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    UsersDisplay.sceneHandler("/Admin/User/UserList.fxml");
+                    AdminPanel.sceneHandler("/Admin/User/UserList.fxml");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -64,11 +52,12 @@ public class AdminPanelController extends MainAdminController {
         fileMenuButton1.setGraphic(userListLabel);
         menuBar.getMenus().add(fileMenuButton1);
         Label roomListLabel = new Label("Room list");
+        roomListLabel.setStyle("-fx-text-fill: black");
         roomListLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    UsersDisplay.sceneHandler("/Admin/Room/RoomList.fxml");
+                    AdminPanel.sceneHandler("/Admin/Room/RoomList.fxml");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -78,11 +67,12 @@ public class AdminPanelController extends MainAdminController {
         fileMenuButton2.setGraphic(roomListLabel);
         menuBar.getMenus().add(fileMenuButton2);
         Label eventListLabel = new Label("Event list");
+        eventListLabel.setStyle("-fx-text-fill: black");
         eventListLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    UsersDisplay.sceneHandler("/Admin/Event/EventList.fxml");
+                    AdminPanel.sceneHandler("/Admin/Event/EventList.fxml");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -92,6 +82,7 @@ public class AdminPanelController extends MainAdminController {
         fileMenuButton3.setGraphic(eventListLabel);
         menuBar.getMenus().add(fileMenuButton3);
         Label buildingListLabel = new Label("Building list");
+        buildingListLabel.setStyle("-fx-text-fill: black");
         buildingListLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
