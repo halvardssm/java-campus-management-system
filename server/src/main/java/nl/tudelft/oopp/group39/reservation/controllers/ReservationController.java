@@ -70,7 +70,8 @@ public class ReservationController {
     public ResponseEntity<RestResponse<Object>> readReservation(@PathVariable Long id) {
         try {
             return RestResponse.create(
-                reservationService.readReservation(id).toDto());
+                reservationService.readReservation(id)
+                .toDto());
         } catch (Exception e) {
             return RestResponse.error(e);
         }
