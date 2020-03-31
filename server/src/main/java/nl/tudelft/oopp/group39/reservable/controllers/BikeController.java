@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.group39.reservable.controllers;
 
+import java.util.List;
 import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.reservable.dto.BikeDto;
 import nl.tudelft.oopp.group39.reservable.entities.Bike;
 import nl.tudelft.oopp.group39.reservable.services.BikeService;
@@ -35,7 +37,11 @@ public class BikeController {
     public ResponseEntity<RestResponse<Object>> listBikes(
         @RequestParam Map<String, String> params
     ) {
-        return RestResponse.create(bikeService.listBikes(params));
+        List<Bike> bikes = bikeService.listBikes(params);
+
+        List<BikeDto> bikeDtoList = Utils.listEntityToDto(bikes);
+
+        return RestResponse.create(bikeDtoList);
     }
 
     /**
@@ -62,7 +68,7 @@ public class BikeController {
     @GetMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> readBike(@PathVariable Long id) {
         try {
-            return RestResponse.create(bikeService.readBike(id));
+            return RestResponse.create(bikeService.readBike(id).toDto());
         } catch (Exception e) {
             return RestResponse.error(e);
         }
