@@ -1,15 +1,20 @@
 package nl.tudelft.oopp.group39.controllers.Admin.Booking;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -23,6 +28,7 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.Admin.Event.EventListController;
 import nl.tudelft.oopp.group39.models.Booking;
+import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.models.Reservation;
 import nl.tudelft.oopp.group39.models.Room;
 import nl.tudelft.oopp.group39.models.User;
@@ -30,13 +36,20 @@ import nl.tudelft.oopp.group39.models.User;
 public class BookingEditController extends EventListController implements Initializable {
 
     private Booking booking;
+    private String date;
+    private Room room;
     private HashMap<String, Integer> RoomIdByNameMap = new HashMap<>();
     private HashMap<String, String> UserIdByNameMap = new HashMap<>();
+    private Building building;
 
     @FXML
     private ComboBox userBox;
     @FXML
     private ComboBox roomBox;
+    @FXML
+    private ComboBox startTimeBox;
+    @FXML
+    private ComboBox endTimeBox;
     @FXML
     private DatePicker reservationDate;
     @FXML
@@ -52,6 +65,26 @@ public class BookingEditController extends EventListController implements Initia
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setNavBar(navBar);
+        roomBox.valueProperty().addListener(new ChangeListener<String>() {
+            @Override public void changed(ObservableValue ov, String t, String t1) {
+                String reservationStartString = roomBox.getValue().toString();
+                try {
+                    room = ServerCommunication.getRoom(RoomIdByNameMap.get(reservationStartString));
+                    initiateTimeslots(date);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        reservationDate.valueProperty().addListener((ov, oldValue, newValue) -> {
+            String reservationDateString = reservationDate.getValue().toString();
+            this.date = reservationDateString;
+            try {
+                initiateTimeslots(date);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void initData(Booking booking) throws JsonProcessingException {
@@ -59,6 +92,13 @@ public class BookingEditController extends EventListController implements Initia
         initRooms();
         initUsers();
 
+    }
+
+    private Building getBuilding(Room room) throws JsonProcessingException {
+        String buildingString = ServerCommunication.getBuilding(room.getBuilding());
+        ObjectNode nBody = (ObjectNode) mapper.readTree(buildingString).get("body");
+        buildingString = mapper.writeValueAsString(nBody);
+        return mapper.readValue(buildingString, Building.class);
     }
 
     private void initRooms() throws JsonProcessingException {
@@ -73,8 +113,14 @@ public class BookingEditController extends EventListController implements Initia
             dataList.add(room.getName());
         }
         ObservableList<String> data = FXCollections.observableArrayList(dataList);
-        Room cRoom = ServerCommunication.getRoom(booking.getRoom());
-        roomBox.setPromptText(cRoom.getName());
+        this.room = ServerCommunication.getRoom(booking.getRoom());
+        this.building = getBuilding(room);
+        this.date = booking.getDate();
+        List<String> timeSlots = initiateTimeslots(date);
+        ObservableList<String> listString = FXCollections.observableArrayList(timeSlots);
+        startTimeBox.setItems(listString);
+        endTimeBox.setItems(listString);
+        roomBox.setPromptText(room.getName());
         roomBox.setItems(data);
     }
 
@@ -95,6 +141,56 @@ public class BookingEditController extends EventListController implements Initia
         userBox.setItems(data);
     }
 
+    private List<String> initiateTimeslots(String date) throws JsonProcessingException {
+        List<String> times = new ArrayList<>();
+        int open = Integer.parseInt(building.getOpen().split(":")[0]);
+        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        List<Integer> bookedTimes = getBookedTimes(date);
+        for (int i = open; i < closed; i++) {
+            String time;
+            if (i < 10) {
+                time = "0" + i + ":00";
+            } else {
+                time = i + ":00";
+            }
+            times.add(time);
+        }
+        if (bookedTimes.size() != 0) {
+            for (int j = 0; j < bookedTimes.size(); j = j + 2) {
+                for (int i = open; i < closed; i++) {
+                    if (i >= bookedTimes.get(j) && i < bookedTimes.get(j + 1)) {
+                        String time;
+                        if (i < 10) {
+                            time = "0" + i + ":00";
+                        } else {
+                            time = i + ":00";
+                        }
+                        times.remove(time);
+                    }
+                }
+            }
+        }
+        return times;
+    }
+
+    public List<Integer> getBookedTimes(String date) throws JsonProcessingException {
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        String bookings = ServerCommunication.getBookings((int) room.getId(), date);
+        System.out.println(bookings);
+        ArrayNode body = (ArrayNode) mapper.readTree(bookings).get("body");
+        String bookingString = mapper.writeValueAsString(body);
+        Booking[] bookingsList = mapper.readValue(bookingString, Booking[].class);
+        List<Integer> bookedTimes = new ArrayList<>();
+        for (Booking booking : bookingsList) {
+            int startTime = Integer.parseInt(booking.getStartTime().split(":")[0]);
+            bookedTimes.add(startTime);
+            int endTime = Integer.parseInt(booking.getEndTime().split(":")[0]);
+            bookedTimes.add(endTime);
+        }
+        System.out.println(bookedTimes);
+        return bookedTimes;
+    }
+
     /**
      * Goes back to main admin panel.
      */
@@ -107,38 +203,19 @@ public class BookingEditController extends EventListController implements Initia
 
     public void editBooking() throws IOException {
         Object roomObj = roomBox.getValue();
-        String room = roomBox == null ? Integer.toString(booking.getRoom()) : roomObj.toString();
+        String roomId = roomObj == null ? Integer.toString(booking.getRoom()) : Integer.toString(RoomIdByNameMap.get(roomObj.toString()));
         Object userObj = userBox.getValue();
-        String user = userObj == null ? booking.getUser() : userObj.toString();
-//        LocalDate timeOfPickUp = reservationDate.getValue();
-//        boolean startNull = start == null;
-//        String startDate = startNull ? cEvent.getStartDate() : start.toString();
-//        String id = Integer.toString(cEvent.getId());
-//        checkValidity(id, startDate, endDate, startNull, endNull, type);
-    }
-
-    public void createEventFinal(String id, String type, String startDate, String endDate) throws IOException {
-//        ServerCommunication.updateEvent(id, type, startDate, endDate);
-//        getBack();
-//        createAlert("Updated: " + cEvent.getType());
-    }
-
-    public void checkValidity(String id, String startDate, String endDate, boolean startNull, boolean endNull, String type) throws IOException {
-        if(!endNull || !startNull) {
-            LocalDate start = LocalDate.parse(startDate);
-            LocalDate end = LocalDate.parse(endDate);
-            if (!end.isAfter(start)) {
-                dateMessage.setStyle("-fx-text-fill: Red");
-                dateMessage.setText("The end date needs to be later than the start date!\n(Start date was: " + start.toString() + ", end date was: " + end.toString() + " )");
-                return;
-            }
-            if (!start.isAfter(LocalDate.now())) {
-                dateMessage.setStyle("-fx-text-fill: Red");
-                dateMessage.setText("The start date needs to be later than today!\n(Start date was: " + start.toString() + ", end date was: " + end.toString() + " )");
-                return;
-            }
-            createEventFinal(id, type, start.toString(), end.toString());
-        }
+        String user = userObj == null ? booking.getUser() : UserIdByNameMap.get(userObj.toString());
+        LocalDate reservationDateValue = reservationDate.getValue();
+        String reservationDateString = reservationDateValue == null ? booking.getDate() : reservationDateValue.toString();
+        String id = Integer.toString(booking.getId());
+        Object reservationStartValue = startTimeBox.getValue();
+        String reservationStartString = reservationStartValue == null ? booking.getStartTime() : reservationStartValue.toString();
+        Object reservationEndValue = endTimeBox.getValue();
+        String reservationEndString = reservationEndValue == null ? booking.getEndTime() : reservationEndValue.toString();
+        ServerCommunication.updateBooking(reservationDateString, reservationStartString, reservationEndString, user, roomId, id);
+        getBack();
+        createAlert("Updated the booking!");
     }
 
 }

@@ -1,9 +1,11 @@
 package nl.tudelft.oopp.group39.controllers.Admin.Room;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -87,7 +89,7 @@ public class RoomEditController extends RoomListController implements Initializa
         String name = roomNameField.getText();
         name = name.contentEquals("") ? room.getName() : name;
         Object building = roomBuildingIdField.getValue();
-        String buildingId = building == null ? Integer.toString((int) this.room.getBuilding()) : Integer.toString(this.buildingsByName.get(building));
+        String buildingId = building == null ? Integer.toString((int) this.room.getBuilding()) : Integer.toString(this.buildingsByName.get(building.toString()));
         String roomCap = roomCapacityField.getText();
         String roomDesc = roomDescriptionField.getText();
         String roomID = Integer.toString((int) room.getId());
@@ -98,6 +100,24 @@ public class RoomEditController extends RoomListController implements Initializa
         ServerCommunication.updateRoom(buildingId, roomCap, roomDesc, roomID, onlyStaff, name);
         getBack();
         createAlert("Updated: " + room.getName());
+    }
+
+    public List<Building> getBuildings(String buildings) throws JsonProcessingException {
+        System.out.println(buildings);
+        ArrayNode body = (ArrayNode) mapper.readTree(buildings).get("body");
+        buildings = mapper.writeValueAsString(body);
+        Building[] list = mapper.readValue(buildings, Building[].class);
+        return Arrays.asList(list);
+    }
+
+    public List<String> getBuildingNames(List<Building> buildings) {
+        List<String> a = new ArrayList<>();
+        for(Building building : buildings) {
+            this.buildingsByName.put(building.getName(), building.getId());
+            this.buildingsById.put(building.getId(), building.getName());
+            a.add(building.getName());
+        }
+        return a;
     }
 
 }

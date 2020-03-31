@@ -235,10 +235,11 @@ public class ServerCommunication {
      *
      * @return the body of a post request to the server.
      */
-    public static String addRoom(String buildingId, String roomCapacity, String roomDescription) {
+    public static String addRoom(String buildingId, String roomCapacity, String roomDescription, String onlyStaff, String name) {
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers
             .ofString("{\"buildingId\": \"" + buildingId + "\", \"capacity\":\""
-                + roomCapacity + "\", \"description\":\"" + roomDescription + "\"}");
+                + roomCapacity + "\", \"description\":\"" + roomDescription +
+                "\", \"onlyStaff\":\"" + onlyStaff + "\", \"name\":\"" + name +"\"}");
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
             .uri(URI.create(url + "room/"))
             .header("Content-Type", "application/json").build();

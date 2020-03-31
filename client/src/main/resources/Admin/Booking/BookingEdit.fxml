@@ -34,19 +34,19 @@
                         <Font name="System Bold" size="33.0" />
                     </font>
                 </Text>
-                <Text layoutX="27.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room:">
+                <Text layoutX="18.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room:">
                     <font>
                         <Font name="System Bold" size="17.0" />
                     </font>
                 </Text>
                 <ComboBox fx:id="roomBox" layoutX="200.0" layoutY="94.0" prefHeight="31.0" prefWidth="200.0" promptText="type" />
-                <Text layoutX="20.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User:">
+                <Text layoutX="18.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User:">
                     <font>
                         <Font name="System Bold" size="17.0" />
                     </font>
                 </Text>
                 <ComboBox fx:id="userBox" layoutX="200.0" layoutY="148.0" prefHeight="31.0" prefWidth="200.0" promptText="23:59:00" />
-                <Text layoutX="18.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date of booking:">
+                <Text layoutX="18.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date of booking:">
                     <font>
                         <Font name="System Bold" size="17.0" />
                     </font>
@@ -58,6 +58,18 @@
                     </menus>
                 </MenuBar>
                 <TextArea fx:id="dateMessage" disable="true" layoutX="443.0" layoutY="65.0" prefHeight="200.0" prefWidth="417.0" />
+                <Text layoutX="18.0" layoutY="285.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start time:">
+                    <font>
+                        <Font name="System Bold" size="17.0" />
+                    </font>
+                </Text>
+                <ComboBox layoutX="200.0" layoutY="265.0" prefHeight="31.0" prefWidth="200.0" fx:id="startTimeBox" />
+                <Text layoutX="18.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End time:">
+                    <font>
+                        <Font name="System Bold" size="17.0" />
+                    </font>
+                </Text>
+                <ComboBox layoutX="200.0" layoutY="313.0" prefHeight="31.0" prefWidth="200.0" fx:id="endTimeBox" />
             </children>
         </AnchorPane>
     </center>
