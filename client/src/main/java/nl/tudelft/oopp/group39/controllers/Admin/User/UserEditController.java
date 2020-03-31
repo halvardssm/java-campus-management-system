@@ -16,10 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.Admin.Room.RoomListController;
@@ -40,12 +37,15 @@ public class UserEditController extends RoomListController implements Initializa
     private List<String> roles;
     @FXML
     private TextArea dateMessage;
+    @FXML
+    private MenuBar navBar;
 
     /**
      * Initialize data into tableView.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setNavBar(navBar);
     }
 
     public void initData(User user) throws JsonProcessingException {

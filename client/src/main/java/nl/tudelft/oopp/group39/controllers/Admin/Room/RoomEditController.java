@@ -16,6 +16,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
@@ -41,6 +42,8 @@ public class RoomEditController extends RoomListController implements Initializa
     private ComboBox roomOnlyStaffField;
     @FXML
     private TextField roomCapacityField;
+    @FXML
+    private MenuBar navBar;
 
 
     /**
@@ -48,6 +51,7 @@ public class RoomEditController extends RoomListController implements Initializa
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setNavBar(navBar);
     }
 
 

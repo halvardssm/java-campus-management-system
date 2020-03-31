@@ -16,10 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.Admin.Room.RoomListController;
@@ -44,6 +41,8 @@ public class UserCreateController extends RoomListController implements Initiali
     private TextField passwordField;
     @FXML
     private TextField passwordConfirmField;
+    @FXML
+    private MenuBar navBar;
 
 
     /**
@@ -56,6 +55,7 @@ public class UserCreateController extends RoomListController implements Initiali
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        setNavBar(navBar);
     }
 
     public void initData() throws JsonProcessingException {

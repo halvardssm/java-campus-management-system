@@ -15,11 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
@@ -57,6 +53,8 @@ public class BuildingListController extends AdminPanelController implements Init
     private TableColumn<Building, Building> updateCol = new TableColumn<>("Update");
     @FXML
     private TableView<Building> buildingTable = new TableView<>();
+    @FXML
+    private MenuBar navBar;
 
 
     /**
@@ -69,7 +67,7 @@ public class BuildingListController extends AdminPanelController implements Init
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-
+        setNavBar(navBar);
     }
 
     public void loadAllBuildings() throws JsonProcessingException {

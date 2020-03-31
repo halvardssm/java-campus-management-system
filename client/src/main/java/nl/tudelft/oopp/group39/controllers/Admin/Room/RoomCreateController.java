@@ -18,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
@@ -39,6 +40,8 @@ public class RoomCreateController extends RoomListController implements Initiali
     private ComboBox roomOnlyStaffField;
     @FXML
     private TextField roomCapacityField;
+    @FXML
+    private MenuBar navBar;
 
 
     /**
@@ -51,6 +54,7 @@ public class RoomCreateController extends RoomListController implements Initiali
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        setNavBar(navBar);
     }
 
     public List<Building> getBuildings(String buildings) throws JsonProcessingException {

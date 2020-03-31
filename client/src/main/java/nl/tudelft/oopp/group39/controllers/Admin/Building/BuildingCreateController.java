@@ -11,10 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
@@ -34,6 +31,8 @@ public class BuildingCreateController extends BuildingListController implements 
     private TextField timeOpenFieldNew;
     @FXML
     private TextField timeClosedFieldNew;
+    @FXML
+    private MenuBar navBar;
 
 
     /**
@@ -41,6 +40,7 @@ public class BuildingCreateController extends BuildingListController implements 
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setNavBar(navBar);
     }
     /**
      * Adds a new building with auto-generated ID.

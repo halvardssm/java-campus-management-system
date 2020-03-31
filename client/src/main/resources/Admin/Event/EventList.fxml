@@ -69,7 +69,7 @@
                         </VBox>
                     </center>
                 </BorderPane>
-            <MenuBar layoutY="2.0" prefHeight="33.0" prefWidth="890.0" fx:id="NavBar">
+            <MenuBar fx:id="navBar" layoutY="2.0" prefHeight="33.0" prefWidth="890.0">
                 <menus>
                 </menus>
             </MenuBar>

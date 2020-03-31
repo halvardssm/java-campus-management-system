@@ -18,21 +18,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.controllers.Admin.AdminPanelController;
 import nl.tudelft.oopp.group39.controllers.Admin.MainAdminController;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
 import nl.tudelft.oopp.group39.models.User;
 
 
-public class UserListController extends MainAdminController implements Initializable {
+public class UserListController extends AdminPanelController implements Initializable {
 
     private String lastSelectedRole;
     private String lastSelectedName;
@@ -52,6 +48,8 @@ public class UserListController extends MainAdminController implements Initializ
     private ComboBox roleBox;
     @FXML
     private TextField usernameField;
+    @FXML
+    private MenuBar navBar;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -60,6 +58,7 @@ public class UserListController extends MainAdminController implements Initializ
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        setNavBar(navBar);
 
     }
 

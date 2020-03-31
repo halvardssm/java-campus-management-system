@@ -47,17 +47,16 @@ public class EventListController extends AdminPanelController implements Initial
     @FXML
     private TableColumn<Event, Event> updateCol = new TableColumn<>("Update");
     @FXML
-    private MenuBar NavBar;
+    private MenuBar navBar;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             loadAllEvents();
-            setNavBar(NavBar);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-
+        setNavBar(navBar);
     }
 
     void loadAllEvents() throws JsonProcessingException {

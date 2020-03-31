@@ -11,10 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.Admin.MainAdminController;
@@ -35,13 +32,15 @@ public class BuildingEditController extends BuildingListController implements In
     private TextField timeOpenFieldNew;
     @FXML
     private TextField timeClosedFieldNew;
-
+    @FXML
+    private MenuBar navBar;
 
     /**
      * Initialize data into tableView.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setNavBar(navBar);
     }
 
     public void initData(Building building) {

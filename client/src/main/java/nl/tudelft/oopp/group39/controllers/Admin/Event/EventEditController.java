@@ -37,7 +37,7 @@ public class EventEditController extends EventListController implements Initiali
     @FXML
     private DatePicker endField;
     @FXML
-    private MenuBar NavBar;
+    private MenuBar navBar;
     @FXML
     private TextArea dateMessage;
 
@@ -46,7 +46,7 @@ public class EventEditController extends EventListController implements Initiali
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setNavBar(NavBar);
+        setNavBar(navBar);
     }
 
     public void initData(Event cEvent) throws JsonProcessingException {

@@ -58,7 +58,7 @@
                 </Text>
                 <DatePicker fx:id="endField" layoutX="200.0" layoutY="210.0" prefHeight="31.0" prefWidth="200.0" promptText="00:00:00" />
                 <Button layoutX="776.0" layoutY="459.0" mnemonicParsing="false" onMouseClicked="#editEvent" text="Update Event" />
-                <MenuBar fx:id="NavBar" layoutY="2.0" prefHeight="32.0" prefWidth="891.0">
+                <MenuBar fx:id="navBar" layoutY="2.0" prefHeight="32.0" prefWidth="891.0">
                     <menus>
                     </menus>
                 </MenuBar>

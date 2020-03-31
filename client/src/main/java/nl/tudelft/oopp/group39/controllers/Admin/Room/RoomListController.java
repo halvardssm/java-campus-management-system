@@ -77,7 +77,7 @@ public class RoomListController extends AdminPanelController implements Initiali
     @FXML
     private ListView facilitiesList;
     @FXML
-    private MenuBar NavBar;
+    private MenuBar navBar;
 
     /**
      * Initialize data into tableView.
@@ -86,10 +86,10 @@ public class RoomListController extends AdminPanelController implements Initiali
     public void initialize(URL location, ResourceBundle resources) {
         try {
             loadRooms();
-            setNavBar(NavBar);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        setNavBar(navBar);
     }
 
     public ObservableList<String> getData(String b) throws JsonProcessingException {

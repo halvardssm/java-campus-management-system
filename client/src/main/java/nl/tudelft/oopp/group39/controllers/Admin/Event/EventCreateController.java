@@ -34,7 +34,6 @@ public class EventCreateController extends EventListController implements Initia
     private Event cEvent;
     @FXML
     private Button backbtn;
-
     @FXML
     private ComboBox typeBox;
     @FXML
@@ -42,9 +41,9 @@ public class EventCreateController extends EventListController implements Initia
     @FXML
     private DatePicker endField;
     @FXML
-    private MenuBar NavBar;
-    @FXML
     private TextArea dateMessage;
+    @FXML
+    private MenuBar navBar;
 
 
     /**
@@ -57,6 +56,7 @@ public class EventCreateController extends EventListController implements Initia
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        setNavBar(navBar);
     }
 
     public void initData() throws JsonProcessingException {
