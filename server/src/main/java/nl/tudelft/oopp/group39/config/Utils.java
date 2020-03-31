@@ -13,6 +13,10 @@ public interface Utils {
         return set != null ? set : new HashSet<>();
     }
 
+    static <T> List<T> initList(List<T> list) {
+        return list != null ? list : new ArrayList<>();
+    }
+
     /**
      * List of id to components set.
      *
