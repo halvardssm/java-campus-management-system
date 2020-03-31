@@ -11,7 +11,7 @@ import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 
 @Entity
 @Table(name = Food.TABLE_NAME)
-public class Food extends Reservable {
+public class Food extends Reservable<Food, FoodDto> {
     public static final String TABLE_NAME = "foods";
     public static final String MAPPED_NAME = "food";
     public static final String COL_NAME = "name";
