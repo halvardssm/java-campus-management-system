@@ -1,8 +1,5 @@
 package nl.tudelft.oopp.group39.booking.model;
 
-import nl.tudelft.oopp.group39.room.model.Room;
-import nl.tudelft.oopp.group39.user.model.User;
-
 public class Booking {
 
     private Integer id;

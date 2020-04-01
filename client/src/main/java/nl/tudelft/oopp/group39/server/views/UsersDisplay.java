@@ -63,9 +63,15 @@ public class UsersDisplay extends Application {
     public void start(Stage primaryStage) throws IOException {
 
         Properties properties = new Properties();
-        properties.load(new FileInputStream("client/src/main/resources/program.properties"));
-        ServerCommunication.url = properties.getProperty("connection.url") + ":"
-            + properties.getProperty("connection.port") + "/";
+        try {
+            properties.load(new FileInputStream("client/src/main/resources/program.properties"));
+            ServerCommunication.url = properties.getProperty("connection.url") + ":"
+                + properties.getProperty("connection.port") + "/";
+        } catch (Exception e) {
+            ServerCommunication.url = "http://localhost:8080/";
+            properties.setProperty("pref.width", "900");
+            properties.setProperty("pref.height", "600");
+        }
 
         FXMLLoader loader = new FXMLLoader();
         URL xmlUrl = getClass().getResource("/building/buildingListView.fxml");

@@ -170,8 +170,8 @@ public class RoomReservationController extends AbstractSceneController {
      */
     private List<String> initiateTimeslots(String date) throws JsonProcessingException {
         List<String> times = new ArrayList<>();
-        int open = Integer.parseInt(building.getOpen().split(":")[0]);
-        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        int open = Integer.parseInt(building.getOpen().toString().split(":")[0]);
+        int closed = Integer.parseInt(building.getClosed().toString().split(":")[0]);
         List<Integer> bookedTimes = getBookedTimes(date);
         for (int i = open; i < closed; i++) {
             String time;
@@ -211,7 +211,7 @@ public class RoomReservationController extends AbstractSceneController {
         int timeAsInt = Integer.parseInt(time.split(":")[0]);
         List<Integer> bookedTimes = getBookedTimes(date);
         toTime.getItems().clear();
-        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        int closed = Integer.parseInt(building.getClosed().toString().split(":")[0]);
         List<Integer> times = new ArrayList<>();
         for (int i = timeAsInt + 1; i < timeAsInt + 5; i++) {
             if (bookedTimes.size() != 0) {

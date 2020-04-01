@@ -1,23 +1,24 @@
 package nl.tudelft.oopp.group39.room.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import java.util.Objects;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 public class Room {
     private Long id;
-    private Integer capacity;
-    private String name;
-    private Boolean onlyStaff;
-    private String description;
-    private ArrayNode facilities;
-    private ArrayNode events;
-    private ArrayNode bookings;
     private Long building;
+    private String name;
+    private String description;
+    private Boolean onlyStaff;
+    private Integer capacity;
+    private ArrayNode facilities;
+    private ArrayNode bookings;
 
     public Room() {
 
@@ -32,7 +33,6 @@ public class Room {
      * @param buildingId  the id of the building
      * @param description description of the room
      * @param facilities  ArrayNode of facilities the room has
-     * @param events      ArrayNode of events for the room
      * @param bookings    ArrayNode of bookings for the room
      */
     public Room(
@@ -43,7 +43,6 @@ public class Room {
         String description,
         Long buildingId,
         ArrayNode facilities,
-        ArrayNode events,
         ArrayNode bookings
     ) {
         this.id = id;
@@ -53,7 +52,6 @@ public class Room {
         this.onlyStaff = onlyStaff;
         this.description = description;
         this.facilities = facilities;
-        this.events = events;
         this.bookings = bookings;
     }
 
@@ -85,12 +83,16 @@ public class Room {
         return facilities;
     }
 
-    public ArrayNode getEvents() {
-        return events;
+    public void setFacilities(ArrayNode facilities) {
+        this.facilities = facilities;
     }
 
     public ArrayNode getBookings() {
         return bookings;
+    }
+
+    public void setBookings(ArrayNode bookings) {
+        this.bookings = bookings;
     }
 
     /**
@@ -116,12 +118,30 @@ public class Room {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Room)) {
+            return false;
+        }
+
+        Room room = (Room) o;
+
+        return Objects.equals(id, room.id)
+            && Objects.equals(building, room.building)
+            && Objects.equals(name, room.name)
+            && Objects.equals(onlyStaff, room.onlyStaff)
+            && Objects.equals(description, room.description)
+            && Objects.equals(facilities, room.facilities)
+            && Objects.equals(bookings, room.bookings);
+    }
+
     /**
      * Returns the building where the room is located.
      *
      * @return Building object
      * @throws JsonProcessingException when there is a processing exception
      */
+    @JsonIgnore
     public Building getBuildingObject() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -131,4 +151,8 @@ public class Room {
         return mapper.readValue(buildingAsString, Building.class);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

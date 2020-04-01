@@ -319,7 +319,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
      *
      * @param id of the item that needs to be deleted
      */
-    public void deleteFromCart(int id) {
+    public void deleteFromCart(Long id) {
         Label priceLabel = (Label) cartlist.lookup("#" + id + "price");
         if (type.equals("bike")) {
             double price = Double.parseDouble(priceLabel.getText().split("\\$")[1].split("/")[0]);
@@ -372,7 +372,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
         ComboBox<String> timePicker = createTimePicker();
         timeselector.getChildren().add(timePicker);
         if (type.equals("bike")) {
-            updateEndTimePicker(building.getOpen());
+            updateEndTimePicker(building.getOpen().toString());
             timeselector.getChildren().add(endTimePicker);
         } else {
             ComboBox<Label> roomSelector = new ComboBox<>();
@@ -393,8 +393,8 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
      * @return ComboBox for picking the time
      */
     public ComboBox<String> createTimePicker() {
-        int open = Integer.parseInt(building.getOpen().split(":")[0]);
-        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        int open = Integer.parseInt(building.getOpen().toString().split(":")[0]);
+        int closed = Integer.parseInt(building.getClosed().toString().split(":")[0]);
         ComboBox<String> timePicker = new ComboBox<>();
         timePicker.setPromptText("Select delivery time");
         timePicker.setId("timePicker");
@@ -426,7 +426,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
      */
     public void updateEndTimePicker(String selectedTime) {
         endTimePicker.getItems().clear();
-        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        int closed = Integer.parseInt(building.getClosed().toString().split(":")[0]);
         int start = Integer.parseInt(selectedTime.split(":")[0]);
         endTimePicker.setPromptText("Select end time");
         endTimePicker.setId("durationPicker");
