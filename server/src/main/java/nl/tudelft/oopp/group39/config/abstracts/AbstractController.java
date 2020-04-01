@@ -50,7 +50,8 @@ public abstract class AbstractController {
         String username = getUsernameFromAuthHeader(header);
 
         if (username != null) {
-            return username.equals(user) || userService.readUser(username).getRole() == role;
+            return (username.equals(user))
+                || userService.readUser(username).getRole() == role;
         }
 
         return false;

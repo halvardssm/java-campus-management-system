@@ -25,7 +25,6 @@ import nl.tudelft.oopp.group39.reservation.dto.ReservationDto;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
@@ -34,15 +33,6 @@ import org.springframework.test.annotation.DirtiesContext;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class ReservationControllerTest extends AbstractControllerTest {
-    private final User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.ADMIN,
-        null,
-        null
-    );
     private final Reservation testReservation = new Reservation(
         null,
         LocalDateTime.now(ZoneId.of("Europe/Paris")),
@@ -121,16 +111,16 @@ class ReservationControllerTest extends AbstractControllerTest {
     @Test
     void deleteAndCreateReservation() throws Exception {
         mockMvc.perform(delete(REST_MAPPING + "/" + testReservation.getId())
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
 
         String json = objectMapper.writeValueAsString(testReservationDto);
 
         mockMvc.perform(post(REST_MAPPING)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(json)
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.body." + Reservation.COL_ID).isNumber())
             .andExpect(jsonPath(
@@ -186,20 +176,20 @@ class ReservationControllerTest extends AbstractControllerTest {
         String json = objectMapper.writeValueAsString(testReservationDto);
 
         mockMvc.perform(put(REST_MAPPING + "/" + testReservation.getId())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(json)
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
             .andExpect(jsonPath(
                 "$.body." + Reservation.COL_TIME_OF_PICKUP,
                 is(testReservationDto.getTimeOfPickup()
-                       .format(Constants.FORMATTER_DATE_TIME))
+                    .format(Constants.FORMATTER_DATE_TIME))
             ))
             .andExpect(jsonPath(
                 "$.body." + Reservation.COL_TIME_OF_DELIVERY,
                 is(testReservationDto.getTimeOfDelivery()
-                       .format(Constants.FORMATTER_DATE_TIME))
+                    .format(Constants.FORMATTER_DATE_TIME))
             ));
     }
 

@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.user.controllers;
 
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.services.UserService;
@@ -70,7 +71,7 @@ public class UserController extends AbstractController {
     ) {
         return restHandler(
             header,
-            service.readUser(id).getUsername(),
+            Utils.safeNull((p) -> service.readUser(id).getUsername()),
             (p) -> service.readUser(id)
         );
     }
@@ -89,7 +90,7 @@ public class UserController extends AbstractController {
     ) {
         return restHandler(
             header,
-            service.readUser(id).getUsername(),
+            Utils.safeNull((p) -> service.readUser(id).getUsername()),
             (p) -> service.updateUser(id, user)
         );
     }

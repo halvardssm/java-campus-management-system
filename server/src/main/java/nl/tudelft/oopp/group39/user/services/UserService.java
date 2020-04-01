@@ -1,13 +1,11 @@
 package nl.tudelft.oopp.group39.user.services;
 
 import java.util.List;
-import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.exceptions.UserExistsException;
 import nl.tudelft.oopp.group39.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -71,15 +69,13 @@ public class UserService implements UserDetailsService {
      * @return the updated user {@link User}.
      */
     public User updateUser(String id, User newUser) throws UsernameNotFoundException {
-        if (!id.equals(newUser.getUsername())) {
-            throw new AccessDeniedException(AbstractController.EXCEPTION_ACCESS_DENIED);
-        }
-
         return userRepository.findById(id)
             .map(user -> {
-                newUser.setUsername(id);
                 mapRoleForUser(newUser);
-                return userRepository.save(newUser);
+                user.setEmail(newUser.getEmail());
+                user.setRole(newUser.getRole());
+
+                return userRepository.save(user);
             }).orElseThrow(()
                 -> new UsernameNotFoundException(String.format(EXCEPTION_USER_NOT_FOUND, id)));
     }

@@ -129,12 +129,12 @@ class FoodControllerTest extends AbstractControllerTest {
         );
 
         assertEquals(
-            "Food 0 not found",
+            "Reservable with id 0 wasn't found.",
             foodController.read(0L).getBody().getError()
         );
 
         assertEquals(
-            "Food 0 not found",
+            "Reservable with id 0 wasn't found.",
             foodController.update(0L, null).getBody().getError()
         );
     }

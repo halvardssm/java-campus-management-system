@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.config;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.filters.JwtFilter;
@@ -47,9 +48,9 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
         RoomController.REST_MAPPING
     };
     private static String[] REQUESTS_ONLY_AUTHENTICATED = {
+        UserController.REST_MAPPING,
         BookingController.REST_MAPPING,
         ReservationController.REST_MAPPING,
-        UserController.REST_MAPPING
     };
 
     @Autowired
@@ -82,12 +83,19 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.POST, REQUESTS_AUTHENTICATION).permitAll()
             .antMatchers(HttpMethod.GET, generateRequests(UserController.REST_MAPPING))
             .authenticated()
-            .antMatchers(HttpMethod.POST, REQUESTS_ONLY_AUTHENTICATED).authenticated()
+            .antMatchers(
+                HttpMethod.POST,
+                Arrays.copyOfRange(
+                    REQUESTS_ONLY_AUTHENTICATED,
+                    1,
+                    REQUESTS_ONLY_AUTHENTICATED.length
+                )
+            ).authenticated()
             .antMatchers(HttpMethod.PUT, addIdToRequests(REQUESTS_ONLY_AUTHENTICATED))
             .authenticated()
             .antMatchers(HttpMethod.DELETE, addIdToRequests(REQUESTS_ONLY_AUTHENTICATED))
             .authenticated()
-            .anyRequest().hasRole(Role.ADMIN.name())
+            .anyRequest().hasAuthority(Role.ADMIN.name())
             .and().exceptionHandling()
             .and().sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

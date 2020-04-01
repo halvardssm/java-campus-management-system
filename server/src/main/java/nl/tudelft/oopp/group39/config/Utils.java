@@ -19,7 +19,7 @@ public interface Utils {
     static <T> T safeNull(Function<Object, T> fn) {
         try {
             return fn.apply(null);
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             return null;
         }
     }

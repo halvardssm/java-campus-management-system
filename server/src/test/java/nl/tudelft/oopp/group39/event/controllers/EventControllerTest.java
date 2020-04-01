@@ -73,7 +73,7 @@ class EventControllerTest extends AbstractControllerTest {
     @Test
     void deleteAndCreateEvent() throws Exception {
         mockMvc.perform(delete(REST_MAPPING + "/" + testEvent.getId())
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
 
@@ -82,9 +82,9 @@ class EventControllerTest extends AbstractControllerTest {
         String json = objectMapper.writeValueAsString(testEvent);
 
         mockMvc.perform(post(REST_MAPPING)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(json)
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.body.type", is(EventTypes.EVENT.name())))
             .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartDate().toString())))
@@ -111,9 +111,9 @@ class EventControllerTest extends AbstractControllerTest {
         String json = objectMapper.writeValueAsString(testEvent);
 
         mockMvc.perform(put(REST_MAPPING + "/" + testEvent.getId())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(json)
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
             .andExpect(jsonPath("$.body.type", is(EventTypes.HOLIDAY.name())))
@@ -131,10 +131,13 @@ class EventControllerTest extends AbstractControllerTest {
             eventController.create(null).getBody().getError()
         );
 
-        assertEquals("Event 0 not found", eventController.read(0L).getBody().getError());
+        assertEquals(
+            "Event with id 0 wasn't found.",
+            eventController.read(0L).getBody().getError()
+        );
 
         assertEquals(
-            "Event 0 not found",
+            "Event with id 0 wasn't found.",
             eventController.update(0L, null).getBody().getError()
         );
     }
