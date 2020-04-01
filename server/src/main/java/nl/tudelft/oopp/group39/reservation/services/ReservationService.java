@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javassist.NotFoundException;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservable.services.ReservableService;
 import nl.tudelft.oopp.group39.reservation.dao.ReservationDao;
@@ -19,7 +18,6 @@ import nl.tudelft.oopp.group39.room.services.RoomService;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -124,9 +122,12 @@ public class ReservationService {
             for (ReservationAmountDto reservationAmountDto : newReservation.getReservationAmounts()
             ) {
                 reservationAmounts.add(reservationAmountDto.getId() == null
-                                       ? reservationAmountService.createReservation(reservationAmountDto.toEntity())
-                                       : reservationAmountService.updateReservation(
-                                           reservationAmountDto.getId(), reservationAmountDto.toEntity())
+                    ? reservationAmountService.createReservation(
+                    reservationAmountDto.toEntity())
+                    : reservationAmountService.updateReservation(
+                        reservationAmountDto.getId(),
+                        reservationAmountDto.toEntity()
+                    )
                 );
             }
         }

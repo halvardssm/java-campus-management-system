@@ -4,6 +4,7 @@ import java.util.List;
 import javassist.NotFoundException;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
+import nl.tudelft.oopp.group39.reservation.exceptions.ReservationNotFoundException;
 import nl.tudelft.oopp.group39.reservation.repositories.ReservationAmountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,8 +56,7 @@ public class ReservationAmountService {
     public ReservationAmount updateReservation(
         Long id,
         ReservationAmount newReservation
-    )
-        throws NotFoundException {
+    ) {
         return reservationAmountRepository.findById(id)
             .map(reservation -> {
                 newReservation.setId(id);
@@ -64,10 +64,7 @@ public class ReservationAmountService {
 
                 return reservationAmountRepository.save(reservation);
             })
-            .orElseThrow(() -> new NotFoundException(String.format(
-                EXCEPTION_RESERVATION_NOT_FOUND,
-                id
-            )));
+            .orElseThrow(() -> new ReservationNotFoundException(id));
     }
 
     /**
