@@ -37,7 +37,7 @@ public class Room extends AbstractEntity<Room, RoomDto> {
     public static final String COL_DESCRIPTION = "description";
 
     private String name;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Building.MAPPED_NAME)
     private Building building;
     private Integer capacity;

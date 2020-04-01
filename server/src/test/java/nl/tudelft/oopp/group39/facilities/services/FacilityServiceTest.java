@@ -29,10 +29,10 @@ public class FacilityServiceTest extends AbstractTest {
 
     @Test
     void listFacilitiesTest() {
-        List<Facility> facilitys = facilityService.listFacilities();
+        List<Facility> facilities = facilityService.listFacilities();
 
-        assertEquals(1, facilitys.size());
-        assertEquals(testFacility, facilitys.get(0));
+        assertEquals(1, facilities.size());
+        assertEquals(testFacility, facilities.get(0));
     }
 
     @Test

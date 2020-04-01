@@ -13,6 +13,7 @@ import java.time.LocalTime;
 import java.util.TimeZone;
 import nl.tudelft.oopp.group39.auth.filters.JwtFilter;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
+import nl.tudelft.oopp.group39.booking.controllers.BookingController;
 import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.building.controllers.BuildingController;
 import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
@@ -71,6 +72,8 @@ public abstract class AbstractTest {
     protected JwtService jwtService;
     @Autowired
     protected JwtFilter jwtFilter;
+    @Autowired
+    protected BookingController bookingController;
     @Autowired
     protected BookingService bookingService;
     @Autowired

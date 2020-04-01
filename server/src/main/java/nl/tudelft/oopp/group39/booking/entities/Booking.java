@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -30,7 +31,7 @@ public class Booking extends AbstractEntity<Booking, BookingDto> {
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)//, cascade = CascadeType.ALL)
     @JoinColumn(name = User.MAPPED_NAME)
     private User user;
     @ManyToOne(fetch = FetchType.EAGER)
