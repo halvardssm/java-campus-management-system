@@ -110,6 +110,7 @@ public abstract class AbstractSceneController {
      */
     public void goToUserPageScene() throws IOException {
         UserPageController controller = (UserPageController) UsersDisplay.sceneControllerHandler("/user/userPage.fxml");
+        controller.changeUserBox();
         controller.showBookings();
     }
 
