@@ -1,10 +1,9 @@
 package nl.tudelft.oopp.group39.reservable.controllers;
 
-import java.util.List;
 import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
-import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.reservable.dto.BikeDto;
 import nl.tudelft.oopp.group39.reservable.entities.Bike;
 import nl.tudelft.oopp.group39.reservable.services.BikeService;
