@@ -442,6 +442,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
             roomSelector.setPromptText("Select room");
             for (Room room : rooms) {
                 Label roomName = new Label(room.getName());
+                roomName.getStyleClass().add("roomSelector");
                 roomName.setId(String.valueOf(room.getId()));
                 roomSelector.getItems().add(roomName);
             }

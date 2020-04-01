@@ -1,8 +1,8 @@
 package nl.tudelft.oopp.group39.booking.model;
 
-import javax.print.DocFlavor;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import nl.tudelft.oopp.group39.room.model.Room;
-import nl.tudelft.oopp.group39.user.model.User;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 public class Booking {
 
@@ -64,5 +64,15 @@ public class Booking {
 
     public Long getRoom() {
         return room;
+    }
+
+    public String getRoomName() throws JsonProcessingException {
+        Room roomObject = ServerCommunication.getRoom(room);
+        return roomObject.getName();
+    }
+
+    public String getLocation() throws JsonProcessingException {
+        Room roomObject = ServerCommunication.getRoom(room);
+        return roomObject.getBuildingObject().getLocation();
     }
 }

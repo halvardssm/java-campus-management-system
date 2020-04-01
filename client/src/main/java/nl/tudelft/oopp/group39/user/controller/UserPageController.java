@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers;
+package nl.tudelft.oopp.group39.user.controller;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;

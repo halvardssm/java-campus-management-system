@@ -15,7 +15,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -29,7 +28,9 @@ import nl.tudelft.oopp.group39.room.controller.RoomSceneController;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.views.UsersDisplay;
+import nl.tudelft.oopp.group39.user.controller.CalendarController;
 import nl.tudelft.oopp.group39.user.controller.SignupController;
+import nl.tudelft.oopp.group39.user.controller.UserPageController;
 import nl.tudelft.oopp.group39.user.model.User;
 
 public abstract class AbstractSceneController {
@@ -108,7 +109,8 @@ public abstract class AbstractSceneController {
      * Doc. TODO Sven
      */
     public void goToUserPageScene() throws IOException {
-        UsersDisplay.sceneHandler("/userPage.fxml");
+        UserPageController controller = (UserPageController) UsersDisplay.sceneControllerHandler("/user/userPage.fxml");
+        controller.showBookings();
     }
 
     /**
@@ -186,6 +188,17 @@ public abstract class AbstractSceneController {
         FoodAndBikeSceneController controller =
             (FoodAndBikeSceneController) goTo("/reservable/bikeAndFoodView.fxml");
         controller.setup("food");
+    }
+
+    /**
+     * Switches view to the food order scene.
+     *
+     * @throws IOException if the scene wasn't found
+     */
+    public void goToCalendarScene() throws IOException {
+        CalendarController controller =
+            (CalendarController) goTo("/user/calendarView.fxml");
+        controller.createCalendar();
     }
 
     /**

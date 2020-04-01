@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
@@ -29,6 +28,8 @@ public class LoginController extends AbstractSceneController {
             if (ServerCommunication.userLogin(user, password).equals("Logged in")) {
                 changeUserBox();
                 goToBuildingScene();
+            } else {
+                createAlert("Wrong username or password");
             }
         }
         System.out.println(loggedIn);
