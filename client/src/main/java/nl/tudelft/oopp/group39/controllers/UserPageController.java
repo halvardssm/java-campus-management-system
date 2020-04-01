@@ -13,12 +13,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.models.BookingDto;
-import nl.tudelft.oopp.group39.views.UsersDisplay;
+import nl.tudelft.oopp.group39.booking.model.Booking;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 
-public class UserPageController extends MainSceneController {
+public class UserPageController extends AbstractSceneController {
     @FXML
     private FlowPane flowPane; //The User Page screen
 
@@ -59,26 +59,27 @@ public class UserPageController extends MainSceneController {
      * Updates all the information on the user page.
      */
     public void showBookings() {
-        accountName.setText(MainSceneController.user.getUsername());
-        accountRole.setText(MainSceneController.user.getRole());
-        accountEmail.setText(MainSceneController.user.getEmail());
+        accountName.setText(AbstractSceneController.user.getUsername());
+        accountRole.setText(AbstractSceneController.user.getRole());
+        accountEmail.setText(AbstractSceneController.user.getEmail());
 
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         flowPane.getChildren().clear();
         try {
             String bookingString = ServerCommunication.getAllBookings();
+            System.out.println(bookingString);
             ArrayNode body = (ArrayNode) mapper.readTree(bookingString).get("body");
             bookingString = mapper.writeValueAsString(body);
-            BookingDto[] bookingList = mapper.readValue(bookingString, BookingDto[].class);
+            Booking[] bookingList = mapper.readValue(bookingString, Booking[].class);
 
-            for (BookingDto booking : bookingList) {
+            for (Booking booking : bookingList) {
                 newBooking = FXMLLoader.load(getClass().getResource("/bookingCell.fxml"));
 
                 String bookingD = booking.getDate();
                 Label theBookingDate = (Label) newBooking.lookup("#bookingDate");
                 theBookingDate.setText("Date: " + bookingD);
 
-                Integer roomName2 = Math.toIntExact(booking.getRoom());
+                Long roomName2 = booking.getRoom();
                 String roomName = ServerCommunication.getRoom(roomName2).getName();
                 Label name = (Label) newBooking.lookup("#rName");
                 name.setText(roomName);
@@ -87,9 +88,9 @@ public class UserPageController extends MainSceneController {
                 Label bookID = (Label) newBooking.lookup("#bookingID");
                 bookID.setText(bookingID);
 
-                String roomId = Long.toString(booking.getRoom());
+                Long roomId = booking.getRoom();
                 Label bookedRoom = (Label) newBooking.lookup("#roomID");
-                bookedRoom.setText(roomId);
+                bookedRoom.setText(roomId.toString());
 
                 String startTime = booking.getStartTime();
                 Label date = (Label) newBooking.lookup("#rDate");
@@ -161,7 +162,7 @@ public class UserPageController extends MainSceneController {
             LocalTime durationTime = LocalTime.parse(editDuration.getText());
 
             if (startTime.getMinute() != 00 || startTime.getSecond() != 00
-                || durationTime.getMinute() != 00 || durationTime.getSecond() != 00) {
+                    || durationTime.getMinute() != 00 || durationTime.getSecond() != 00) {
                 createAlert("You can only book rooms starting at the hour");
                 return;
             }
@@ -175,11 +176,11 @@ public class UserPageController extends MainSceneController {
             String bookingString = ServerCommunication.getAllBookings();
             ArrayNode body = (ArrayNode) mapper.readTree(bookingString).get("body");
             bookingString = mapper.writeValueAsString(body);
-            BookingDto[] bookingList = mapper.readValue(bookingString, BookingDto[].class);
+            Booking[] bookingList = mapper.readValue(bookingString, Booking[].class);
 
             String buildingOpenTimeString = "";
             String buildingCloseTimeString = "";
-            for (BookingDto booking : bookingList) {
+            for (Booking booking : bookingList) {
                 if (booking.getStartTime().equals(editStartingTime.getText())
                         && editDate.getValue().toString().equals(booking.getDate())) {
                     createAlert("You can't have 2 bookings at the same time!");
@@ -188,12 +189,12 @@ public class UserPageController extends MainSceneController {
 
                 buildingOpenTimeString = ServerCommunication
                         .getTheBuilding(ServerCommunication
-                                .getRoom(Math.toIntExact(booking.getRoom()))
+                                .getRoom(booking.getRoom())
                                 .getBuilding())
                         .getOpen();
                 buildingCloseTimeString = ServerCommunication
                         .getTheBuilding(ServerCommunication
-                                .getRoom(Math.toIntExact(booking.getRoom()))
+                                .getRoom(booking.getRoom())
                                 .getBuilding())
                         .getClosed();
             }
@@ -221,10 +222,10 @@ public class UserPageController extends MainSceneController {
         int endTimeHour = t1.getHour() + t2.getHour();
 
         ServerCommunication.addBooking(editDate.getValue().toString(),
-                                      t1.toString() + ":00",
-                                      endTimeHour + ":00:00",
-                                       user.getUsername(),
-                                       roomID.getText());
+                t1.toString() + ":00",
+                endTimeHour + ":00:00",
+                user.getUsername(),
+                roomID.getText());
         ServerCommunication.removeBooking(bookingID.getText());
     }
 
