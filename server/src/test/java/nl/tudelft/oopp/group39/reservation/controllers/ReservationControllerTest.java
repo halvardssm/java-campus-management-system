@@ -59,8 +59,6 @@ class ReservationControllerTest extends AbstractControllerTest {
         new HashSet<>(List.of(testReservationAmountDto))
     );
 
-    private String jwt;
-
     @BeforeEach
     void setUp() {
         User user = userService.createUser(testUser);

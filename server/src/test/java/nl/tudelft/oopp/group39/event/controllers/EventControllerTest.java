@@ -19,8 +19,6 @@ import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.event.enums.EventTypes;
-import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,16 +32,6 @@ class EventControllerTest extends AbstractControllerTest {
         LocalDate.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)).plusDays(1),
         null
     );
-    private final User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.ADMIN,
-        null,
-        null
-    );
-    private String jwt;
 
     @BeforeEach
     void setUp() {

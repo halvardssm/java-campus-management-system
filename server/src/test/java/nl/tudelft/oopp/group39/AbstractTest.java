@@ -28,6 +28,8 @@ import nl.tudelft.oopp.group39.reservation.repositories.ReservationRepository;
 import nl.tudelft.oopp.group39.reservation.services.ReservationAmountService;
 import nl.tudelft.oopp.group39.reservation.services.ReservationService;
 import nl.tudelft.oopp.group39.user.controllers.UserController;
+import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,6 +38,25 @@ import org.springframework.test.annotation.DirtiesContext;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public abstract class AbstractTest {
+    protected User testUser = new User(
+        "test",
+        "test@tudelft.nl",
+        "test",
+        null,
+        Role.ADMIN,
+        null,
+        null
+    );
+    protected User testUserStudent = new User(
+        "test",
+        "test@tudelft.nl",
+        "test",
+        null,
+        Role.STUDENT,
+        null,
+        null
+    );
+
     protected final ObjectMapper objectMapper = new ObjectMapper()
         .registerModule(new JavaTimeModule())
         .setTimeZone(TimeZone.getTimeZone(Constants.DEFAULT_TIMEZONE))
