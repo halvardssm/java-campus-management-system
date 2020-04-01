@@ -6,10 +6,9 @@ import java.util.Set;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.reservable.entities.Food;
-import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 
-public class FoodDto extends ReservableDto {
+public class FoodDto extends ReservableDto<Food, FoodDto> {
 
     private String name;
     private String description;

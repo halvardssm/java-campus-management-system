@@ -56,6 +56,7 @@ public class BuildingController {
     @PostMapping("")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createBuilding(@RequestBody BuildingDto building) {
+
         return RestResponse.create(
             buildingService.createBuilding(building.toEntity()).toDto(),
             null,
