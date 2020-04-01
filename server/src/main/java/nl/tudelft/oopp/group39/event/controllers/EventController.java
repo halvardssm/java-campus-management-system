@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.event.controllers;
 
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.event.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(EventController.REST_MAPPING)
-public class EventController {
+public class EventController extends AbstractController {
     public static final String REST_MAPPING = "/event";
 
     @Autowired
@@ -29,8 +31,9 @@ public class EventController {
      * @return a list of events {@link Event}.
      */
     @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listEvents() {
-        return RestResponse.create(eventService.listEvents());
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> list() {
+        return restHandler((p) -> eventService.listEvents());
     }
 
     /**
@@ -39,12 +42,9 @@ public class EventController {
      * @return the created event {@link Event}.
      */
     @PostMapping("")
-    public ResponseEntity<RestResponse<Object>> createEvent(@RequestBody Event event) {
-        try {
-            return RestResponse.create(eventService.createEvent(event), null, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> create(@RequestBody Event event) {
+        return restHandler(HttpStatus.CREATED, (p) -> eventService.createEvent(event));
     }
 
     /**
@@ -53,12 +53,9 @@ public class EventController {
      * @return the requested event {@link Event}.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<RestResponse<Event>> readEvent(@PathVariable Long id) {
-        try {
-            return RestResponse.create(eventService.readEvent(id));
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
+        return restHandler((p) -> eventService.readEvent(id));
     }
 
     /**
@@ -67,24 +64,24 @@ public class EventController {
      * @return the updated event {@link Event}.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<RestResponse<Event>> updateEvent(
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> update(
         @PathVariable Long id,
         @RequestBody Event event
     ) {
-        try {
-            return RestResponse.create(eventService.updateEvent(id, event));
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+        return restHandler((p) -> eventService.updateEvent(id, event));
     }
 
     /**
      * DELETE Endpoint to delete event.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteEvent(@PathVariable Long id) {
-        eventService.deleteEvent(id);
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
+        return restHandler((p) -> {
+            eventService.deleteEvent(id);
 
-        return RestResponse.create(null, null, HttpStatus.OK);
+            return null;
+        });
     }
 }

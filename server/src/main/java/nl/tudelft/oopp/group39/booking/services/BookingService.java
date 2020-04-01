@@ -58,7 +58,8 @@ public class BookingService {
      *
      * @return the created booking {@link Booking}.
      */
-    public Booking createBooking(BookingDto newBooking) throws IllegalArgumentException {
+    public Booking createBooking(BookingDto newBooking)
+        throws IllegalArgumentException {
         User user = userService.readUser(newBooking.getUser());
         Room room = roomService.readRoom(newBooking.getRoom());
         Booking booking = new Booking(

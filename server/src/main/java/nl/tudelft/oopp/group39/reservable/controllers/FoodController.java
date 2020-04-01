@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.reservable.controllers;
 
 import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.reservable.dto.FoodDto;
 import nl.tudelft.oopp.group39.reservable.entities.Food;
 import nl.tudelft.oopp.group39.reservable.services.FoodService;
@@ -16,11 +17,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(FoodController.REST_MAPPING)
-public class FoodController {
+public class FoodController extends AbstractController {
     public static final String REST_MAPPING = "/food";
 
     @Autowired
@@ -32,10 +34,9 @@ public class FoodController {
      * @return a list of foods {@link Food}.
      */
     @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listFoods(
-        @RequestParam Map<String, String> params
-    ) {
-        return RestResponse.create(foodService.listFoods(params));
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
+        return restHandler((p) -> foodService.listFoods(params));
     }
 
     /**
@@ -44,14 +45,12 @@ public class FoodController {
      * @return the created food {@link Food}.
      */
     @PostMapping("")
-    public ResponseEntity<RestResponse<Object>> createFood(@RequestBody FoodDto food) {
-        try {
-            return RestResponse.create(
-                foodService.createFood(food.toEntity()).toDto(),
-                null, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> create(@RequestBody FoodDto food) {
+        return restHandler(
+            HttpStatus.CREATED,
+            (p) -> foodService.createFood(food.toEntity()).toDto()
+        );
     }
 
     /**
@@ -60,12 +59,9 @@ public class FoodController {
      * @return the requested food {@link Food}.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> readFood(@PathVariable Long id) {
-        try {
-            return RestResponse.create(foodService.readFood(id).toDto());
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
+        return restHandler((p) -> foodService.readFood(id).toDto());
     }
 
     /**
@@ -74,24 +70,24 @@ public class FoodController {
      * @return the updated food {@link Food}.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> updateFood(
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> update(
         @PathVariable Long id,
         @RequestBody Food food
     ) {
-        try {
-            return RestResponse.create(foodService.updateFood(id, food).toDto());
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+        return restHandler((p) -> foodService.updateFood(id, food).toDto());
     }
 
     /**
      * DELETE Endpoint to delete am food.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteFood(@PathVariable Long id) {
-        foodService.deleteFood(id);
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
+        return restHandler((p) -> {
+            foodService.deleteFood(id);
 
-        return RestResponse.create(null, null, HttpStatus.OK);
+            return null;
+        });
     }
 }

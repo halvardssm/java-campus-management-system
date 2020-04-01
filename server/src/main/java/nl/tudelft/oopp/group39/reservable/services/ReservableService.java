@@ -5,6 +5,7 @@ import java.util.Map;
 import javassist.NotFoundException;
 import nl.tudelft.oopp.group39.reservable.dao.ReservableDao;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
+import nl.tudelft.oopp.group39.reservable.exceptions.ReservableNotFoundException;
 import nl.tudelft.oopp.group39.reservable.repositories.ReservableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,11 +33,9 @@ public class ReservableService {
      *
      * @return reservable by id {@link Reservable}.
      */
-    public Reservable readReservable(Long id) throws NotFoundException {
+    public Reservable readReservable(Long id) {
         return reservableRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException(
-                String.format(EXCEPTION_RESERVABLE_NOT_FOUND, id)
-            ));
+            .orElseThrow(() -> new ReservableNotFoundException(id));
     }
 
     /**

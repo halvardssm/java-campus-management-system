@@ -2,13 +2,13 @@ package nl.tudelft.oopp.group39.reservation.services;
 
 import java.util.HashSet;
 import java.util.List;
-import javassist.NotFoundException;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservable.services.ReservableService;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationDto;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
+import nl.tudelft.oopp.group39.reservation.exceptions.ReservationNotFoundException;
 import nl.tudelft.oopp.group39.reservation.repositories.ReservationRepository;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
@@ -46,12 +46,9 @@ public class ReservationService {
      *
      * @return reservation by id {@link Reservation}.
      */
-    public Reservation readReservation(Long id) throws NotFoundException {
+    public Reservation readReservation(Long id) {
         return reservationRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException(String.format(
-                EXCEPTION_RESERVATION_NOT_FOUND,
-                id
-            )));
+            .orElseThrow(() -> new ReservationNotFoundException(id));
     }
 
     /**
@@ -68,8 +65,7 @@ public class ReservationService {
      *
      * @return the created reservation {@link Reservation}.
      */
-    public Reservation createReservation(ReservationDto reservation)
-        throws IllegalArgumentException, NotFoundException {
+    public Reservation createReservation(ReservationDto reservation) {
         User user = userService.readUser(reservation.getUser());
 
         Reservation reservation1 = new Reservation(
@@ -110,8 +106,7 @@ public class ReservationService {
      *
      * @return the updated reservation {@link Reservation}.
      */
-    public Reservation updateReservation(Long id, ReservationDto newReservation)
-        throws NotFoundException {
+    public Reservation updateReservation(Long id, ReservationDto newReservation) {
         return reservationRepository.findById(id)
             .map(reservation -> {
                 reservation.setTimeOfPickup(newReservation.getTimeOfPickup());
@@ -119,10 +114,7 @@ public class ReservationService {
 
                 return reservationRepository.save(reservation);
             })
-            .orElseThrow(() -> new NotFoundException(String.format(
-                EXCEPTION_RESERVATION_NOT_FOUND,
-                id
-            )));
+            .orElseThrow(() -> new ReservationNotFoundException(id));
     }
 
     /**

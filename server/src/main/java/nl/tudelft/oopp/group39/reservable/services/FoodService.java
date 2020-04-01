@@ -2,9 +2,9 @@ package nl.tudelft.oopp.group39.reservable.services;
 
 import java.util.List;
 import java.util.Map;
-import javassist.NotFoundException;
 import nl.tudelft.oopp.group39.reservable.dao.ReservableDao;
 import nl.tudelft.oopp.group39.reservable.entities.Food;
+import nl.tudelft.oopp.group39.reservable.exceptions.ReservableNotFoundException;
 import nl.tudelft.oopp.group39.reservable.repositories.FoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,9 +32,8 @@ public class FoodService {
      *
      * @return food by id {@link Food}.
      */
-    public Food readFood(Long id) throws NotFoundException {
-        return foodRepository.findById(id).orElseThrow(()
-            -> new NotFoundException(String.format(EXCEPTION_FOOD_NOT_FOUND, id)));
+    public Food readFood(Long id) {
+        return foodRepository.findById(id).orElseThrow(() -> new ReservableNotFoundException(id));
     }
 
     /**
@@ -51,7 +50,7 @@ public class FoodService {
      *
      * @return the updated food {@link Food}.
      */
-    public Food updateFood(Long id, Food newFood) throws NotFoundException {
+    public Food updateFood(Long id, Food newFood) {
         return foodRepository.findById(id)
             .map(food -> {
                 newFood.setId(id);
@@ -59,7 +58,7 @@ public class FoodService {
 
                 return foodRepository.save(food);
             })
-            .orElseThrow(() -> new NotFoundException(String.format(EXCEPTION_FOOD_NOT_FOUND, id)));
+            .orElseThrow(() -> new ReservableNotFoundException(id));
     }
 
     /**
