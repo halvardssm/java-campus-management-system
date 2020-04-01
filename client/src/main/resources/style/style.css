@@ -307,3 +307,9 @@
     -fx-background-color: rgba(139, 162, 167, 0.3);
 }
 
+.bookingCell {
+    -fx-background-color: false;
+    -fx-text-fill: blue;
+}
+
+
