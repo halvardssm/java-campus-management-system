@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.Optional;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -130,10 +133,18 @@ public class UserPageController extends AbstractSceneController {
     }
 
     /**
-     * Deletes the booking.
+     * Deletes the booking after a 'warning' has been fired.
      */
     public void deleteBooking() {
-        ServerCommunication.removeBooking(bookingID.getText());
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setContentText("Are you sure you want to delete the booking?");
+        confirmation.setTitle("Delete");
+        confirmation.setHeaderText(null);
+
+        Optional<ButtonType> popUpWindow = confirmation.showAndWait();
+        if (popUpWindow.isPresent() && popUpWindow.get() == ButtonType.OK) {
+            ServerCommunication.removeBooking(bookingID.getText());
+        }
     }
 
     /**
