@@ -30,7 +30,7 @@
                 </Button>
             </VBox>
             <VBox alignment="CENTER">
-                <Label id="title" fx:id="SIGNUP" alignment="BOTTOM_CENTER"/>
+                <Label id="title" text="SIGNUP" alignment="BOTTOM_CENTER"/>
             </VBox>
             <Region HBox.hgrow="ALWAYS"/>
             <VBox alignment="CENTER" fx:id="userBox">
@@ -76,8 +76,8 @@
             <Text text="Already have an account?"
                   GridPane.columnIndex="0" GridPane.rowIndex="7"/>
 
-            <Button fx:id="loginbtn" styleClass="buttons" id="small" text="Log In" onAction="#goToLoginScene"
-                    GridPane.columnIndex="1" GridPane.rowIndex = "7"/>
+            <Button styleClass="buttons" id="small" text="Log In" onAction="#goToLoginScene"
+                    GridPane.columnIndex="1" GridPane.rowIndex="7"/>
 
         </GridPane>
     </center>
