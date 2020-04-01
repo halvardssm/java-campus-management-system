@@ -62,6 +62,9 @@ public class UserListController extends AdminPanelController implements Initiali
         setNavBar(navBar);
 
     }
+    /**
+     * Loads users.
+     */
 
     public void loadUsersStandard() throws JsonProcessingException {
         this.lastSelectedRole = allRoles;
@@ -69,6 +72,9 @@ public class UserListController extends AdminPanelController implements Initiali
         String users = ServerCommunication.get(ServerCommunication.user);
         loadUsers(users);
     }
+    /**
+     * Filters users and loads the results into table.
+     */
 
     public void filterUsers() throws JsonProcessingException {
         String name = usernameField.getText();
@@ -99,8 +105,9 @@ public class UserListController extends AdminPanelController implements Initiali
         roleBox.getSelectionModel().select(this.lastSelectedRole);
     }
     /**
-     * Display buildings and data in tableView buildingTable. -- Likely doesn't work yet.
+     * Display users and data into tableView named userTable.
      */
+
     void loadUsers(String users) throws JsonProcessingException {
         loadFiltering();
         usertable.setVisible(true);
@@ -124,6 +131,9 @@ public class UserListController extends AdminPanelController implements Initiali
         usertable.setItems(data);
         usertable.getColumns().addAll(idCol, emailCol, statusCol, deleteCol, updateCol);
     }
+    /**
+     * Inserts the update and delete buttons into table.
+     */
 
     public TableCell<User, User> returnCell(String button) {
         return new TableCell<User, User>() {
@@ -142,7 +152,7 @@ public class UserListController extends AdminPanelController implements Initiali
                 updateButton.setOnAction(
                     event -> {
                         try {
-                            switch(button){
+                            switch(button) {
                                 case "Update":
                                     editUser(user);
                                     break;
@@ -166,6 +176,9 @@ public class UserListController extends AdminPanelController implements Initiali
     public void createUser() throws IOException {
         switchFunc("/Admin/User/UserCreate.fxml");
     }
+    /**
+     * Deletes selected user.
+     */
 
     public void deleteUser(User user) throws IOException {
         String id = user.getUsername();
@@ -173,6 +186,9 @@ public class UserListController extends AdminPanelController implements Initiali
         createAlert("removed: " + user.getUsername());
         loadUsersStandard();
     }
+    /**
+     * Sends user to the user edit page.
+     */
 
     public void editUser(User user) throws IOException {
         FXMLLoader loader = switchFunc("/Admin/User/UserEdit.fxml");

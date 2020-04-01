@@ -45,9 +45,7 @@ public class UserCreateController extends RoomListController implements Initiali
     private MenuBar navBar;
 
 
-    /**
-     * Initialize data into tableView.
-     */
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -57,6 +55,9 @@ public class UserCreateController extends RoomListController implements Initiali
         }
         setNavBar(navBar);
     }
+    /**
+     * TODO sasa.
+     */
 
     public void initData() throws JsonProcessingException {
         userMessage.setText("");
@@ -78,7 +79,7 @@ public class UserCreateController extends RoomListController implements Initiali
     }
 
     /**
-     * Goes back to main admin panel.
+     * Goes back to main User panel.
      */
 
     @FXML
@@ -86,6 +87,9 @@ public class UserCreateController extends RoomListController implements Initiali
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
         mainSwitch("/Admin/User/UserList.fxml", currentstage);
     }
+    /**
+     * Gets the values inputted by admin to be used for creating user.
+     */
 
     @FXML
     public void createUser() throws IOException {
@@ -97,6 +101,9 @@ public class UserCreateController extends RoomListController implements Initiali
         boolean roleNull = roleObj == null;
         verifyInputs(email, roleObj, roleNull, password, passwordConfirmation);
     }
+    /**
+     * Checks to see if input is valid.
+     */
 
     public void verifyInputs(String name, String roleObj, boolean roleNull, String password, String passwordConfirmation) throws IOException {
         if (name == null || name.contentEquals("")) {

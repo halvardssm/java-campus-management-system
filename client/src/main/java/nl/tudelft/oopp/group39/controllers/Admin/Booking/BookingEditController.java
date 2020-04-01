@@ -61,7 +61,7 @@ public class BookingEditController extends EventListController implements Initia
     private TextArea dateMessage;
 
     /**
-     * Initialize data into tableView.
+     * TODO sasa.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -87,6 +87,9 @@ public class BookingEditController extends EventListController implements Initia
             }
         });
     }
+    /**
+     * Initializes the data necessary for bookings.
+     */
 
     public void initData(Booking booking) throws JsonProcessingException {
         this.booking = booking;
@@ -181,6 +184,9 @@ public class BookingEditController extends EventListController implements Initia
         }
         return times;
     }
+    /**
+     * Returns a list containing times that are booked.
+     */
 
     public List<Integer> getBookedTimes(String date) throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -201,7 +207,7 @@ public class BookingEditController extends EventListController implements Initia
     }
 
     /**
-     * Goes back to main admin panel.
+     * Goes back to main bookings panel.
      */
 
     @FXML
@@ -209,6 +215,9 @@ public class BookingEditController extends EventListController implements Initia
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
         mainSwitch("/Admin/Booking/BookingList.fxml", currentstage);
     }
+    /**
+     * Edits values of booking.
+     */
 
     public void editBooking() throws IOException {
         Object roomObj = roomBox.getValue();

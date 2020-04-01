@@ -46,9 +46,7 @@ public class EventCreateController extends EventListController implements Initia
     private MenuBar navBar;
 
 
-    /**
-     * Initialize data into tableView.
-     */
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -58,6 +56,9 @@ public class EventCreateController extends EventListController implements Initia
         }
         setNavBar(navBar);
     }
+    /**
+     * .
+     */
 
     public void initData() throws JsonProcessingException {
         String types = ServerCommunication.getEventTypes();
@@ -74,8 +75,9 @@ public class EventCreateController extends EventListController implements Initia
         endField.setPromptText(LocalDate.now().toString());
     }
     /**
-     * Adds a new building with auto-generated ID.
+     * Gains the information needed to create event.
      */
+
     public void createEvent() throws IOException {
         dateMessage.setText("");
         Object typeObj = typeBox.getValue();
@@ -88,12 +90,18 @@ public class EventCreateController extends EventListController implements Initia
         String endDate = endNull ? LocalDate.now().toString() : end.toString();
         checkValidity(startDate, endDate, startNull, endNull, type);
     }
+    /**
+     * Communicates information to create event to server.
+     */
 
     public void createEventFinal(String type, String startDate, String endDate) throws IOException {
         ServerCommunication.addEvent(type, startDate, endDate);
         getBack();
         createAlert("Created an event of type: " + type);
     }
+    /**
+     * Makes sure that values put into event are valid.
+     */
 
     public void checkValidity(String startDate, String endDate, boolean startNull, boolean endNull, String type) throws IOException {
         if(!endNull || !startNull) {

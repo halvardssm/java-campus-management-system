@@ -19,21 +19,14 @@ import nl.tudelft.oopp.group39.views.AdminPanel;
 
 
 public class AdminPanelController extends MainAdminController implements Initializable {
-    @FXML
-    private Button userView;
-    @FXML
-    private Button buildingView;
-    @FXML
-    private Button roomView;
-    @FXML
-    private Button eventView;
-    @FXML
-    private Button bookingsView;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
+    /**
+     * Creates a navigation bar and inputs buttons which navigate to different parts of admin panel.
+     */
 
     public void setNavBar(MenuBar menuBar) {
         Label userListLabel = new Label("User list");

@@ -41,13 +41,15 @@ public class EventEditController extends EventListController implements Initiali
     @FXML
     private TextArea dateMessage;
 
-    /**
-     * Initialize data into tableView.
-     */
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setNavBar(navBar);
     }
+
+    /**
+     * TODO sasa.
+     */
 
     public void initData(Event cEvent) throws JsonProcessingException {
         this.cEvent = cEvent;
@@ -65,7 +67,7 @@ public class EventEditController extends EventListController implements Initiali
     }
 
     /**
-     * Goes back to main admin panel.
+     * Goes back to main Event panel.
      */
 
     @FXML
@@ -73,6 +75,10 @@ public class EventEditController extends EventListController implements Initiali
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
         mainSwitch("/Admin/Event/EventList.fxml", currentstage);
     }
+
+    /**
+     * Edits the values of an event.
+     */
 
     public void editEvent() throws IOException {
         Object typeObj = typeBox.getValue();
@@ -86,12 +92,18 @@ public class EventEditController extends EventListController implements Initiali
         String id = Integer.toString(cEvent.getId());
         checkValidity(id, startDate, endDate, startNull, endNull, type);
     }
+    /**
+     * Communicates changes to server.
+     */
 
     public void createEventFinal(String id, String type, String startDate, String endDate) throws IOException {
         ServerCommunication.updateEvent(id, type, startDate, endDate);
         getBack();
         createAlert("Updated: " + cEvent.getType());
     }
+    /**
+     * Makes sure that values put into event are valid.
+     */
 
     public void checkValidity(String id, String startDate, String endDate, boolean startNull, boolean endNull, String type) throws IOException {
         if(!endNull || !startNull) {

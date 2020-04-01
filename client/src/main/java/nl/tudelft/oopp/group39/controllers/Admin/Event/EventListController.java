@@ -59,6 +59,9 @@ public class EventListController extends AdminPanelController implements Initial
         }
         setNavBar(navBar);
     }
+    /**
+     * Ensures that all events are put into table view.
+     */
 
     void loadAllEvents() throws JsonProcessingException {
 
@@ -66,8 +69,9 @@ public class EventListController extends AdminPanelController implements Initial
         loadEvents(events);
     }
     /**
-     * Display buildings and data in tableView buildingTable. -- Likely doesn't work yet.
+     * Display events and data in tableView named eventTable.
      */
+
     void loadEvents(String events) throws JsonProcessingException {
         eventTable.setVisible(true);
         eventTable.getItems().clear();
@@ -93,16 +97,19 @@ public class EventListController extends AdminPanelController implements Initial
         eventTable.setItems(data);
         eventTable.getColumns().addAll(idCol, typeCol, startCol, endCol, deleteCol, updateCol);
     }
+    /**
+     * Inserts the update and delete buttons into table.
+     */
 
     public TableCell<Event, Event> returnCell(String button) {
         return new TableCell<Event, Event>() {
             private final Button updateButton = new Button(button);
 
             @Override
-            protected void updateItem(Event nEvent, boolean empty) {
-                super.updateItem(nEvent, empty);
+            protected void updateItem(Event abcEvent, boolean empty) {
+                super.updateItem(abcEvent, empty);
 
-                if (nEvent == null) {
+                if (abcEvent == null) {
                     setGraphic(null);
                     return;
                 }
@@ -111,12 +118,12 @@ public class EventListController extends AdminPanelController implements Initial
                 updateButton.setOnAction(
                     event -> {
                         try {
-                            switch(button){
+                            switch (button) {
                                 case "Update":
-                                    editEvent(nEvent);
+                                    editEvent(abcEvent);
                                     break;
                                 case "Delete":
-                                    deleteEvent(nEvent);
+                                    deleteEvent(abcEvent);
                                     break;
                                 default:
                                     break;
@@ -130,10 +137,17 @@ public class EventListController extends AdminPanelController implements Initial
             }
         };
     }
+    /**
+     * Sends user to Create Event page.
+     */
 
     public void createEvent() throws IOException {
         switchFunc("/Admin/Event/EventCreate.fxml");
     }
+
+    /**
+     * Deletes selected event.
+     */
 
     public void deleteEvent(Event event) throws IOException {
         String id = Integer.toString(event.getId());
@@ -142,6 +156,9 @@ public class EventListController extends AdminPanelController implements Initial
         loadAllEvents();
     }
 
+    /**
+     * Sends user to the event edit page.
+     */
     public void editEvent(Event event) throws IOException {
         FXMLLoader loader = switchFunc("/Admin/Event/EventEdit.fxml");
         EventEditController controller = loader.getController();
@@ -152,10 +169,13 @@ public class EventListController extends AdminPanelController implements Initial
      * Goes back to main admin panel.
      */
     @FXML
-    private void switchBack(ActionEvent actionEvent) throws IOException {
+    private void switchBack() throws IOException {
         switchFunc("/Admin/AdminPanel.fxml");
     }
 
+    /**
+     * Used to switch windows.
+     */
     private FXMLLoader switchFunc(String resource) throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
         return mainSwitch(resource, currentstage);

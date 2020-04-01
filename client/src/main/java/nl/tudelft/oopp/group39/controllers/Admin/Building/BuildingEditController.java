@@ -42,13 +42,15 @@ public class BuildingEditController extends BuildingListController implements In
     @FXML
     private MenuBar navBar;
 
-    /**
-     * Initialize data into tableView.
-     */
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setNavBar(navBar);
     }
+
+    /**
+     * Initializes data into their respective boxes to be used for editing.
+     */
 
     public void initData(Building building) throws JsonProcessingException {
         this.building = building;
@@ -79,7 +81,7 @@ public class BuildingEditController extends BuildingListController implements In
         return times;
     }
     /**
-     * Goes back to main admin panel.
+     * Goes back to main building panel.
      */
 
     @FXML
@@ -87,6 +89,9 @@ public class BuildingEditController extends BuildingListController implements In
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
         mainSwitch("/Admin/Building/BuildingList.fxml", currentstage);
     }
+    /**
+     * Retrieves data from boxes and sends to database.
+     */
 
     public void updateBuilding() throws IOException {
         String name = nameFieldNew.getText();

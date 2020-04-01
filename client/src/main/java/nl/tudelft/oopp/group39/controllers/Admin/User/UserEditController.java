@@ -40,13 +40,14 @@ public class UserEditController extends RoomListController implements Initializa
     @FXML
     private MenuBar navBar;
 
-    /**
-     * Initialize data into tableView.
-     */
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setNavBar(navBar);
     }
+    /**
+     * TODO sasa.
+     */
 
     public void initData(User user) throws JsonProcessingException {
         this.user = user;
@@ -62,7 +63,7 @@ public class UserEditController extends RoomListController implements Initializa
     }
 
     /**
-     * Goes back to main admin panel.
+     * Goes back to main User panel.
      */
 
     @FXML
@@ -70,6 +71,9 @@ public class UserEditController extends RoomListController implements Initializa
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
         mainSwitch("/Admin/User/UserList.fxml", currentstage);
     }
+    /**
+     * Edits user values and sends them to database.
+     */
 
     public void editUser() throws IOException {
         String name = emailField.getText();

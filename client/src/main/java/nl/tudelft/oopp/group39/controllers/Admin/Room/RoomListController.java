@@ -100,8 +100,9 @@ public class RoomListController extends AdminPanelController implements Initiali
         return FXCollections.observableArrayList(facilityNames);
     }
     /**
-     * Display rooms and data in tableView buildingTable. -- Likely doesn't work yet. Need to add nameCol.
+     * Loads the values of rooms and puts them into tableView.
      */
+
     void loadRooms() throws JsonProcessingException {
         String b = ServerCommunication.get(ServerCommunication.building);
         ObservableList<String> nData = getData(b);
@@ -109,7 +110,8 @@ public class RoomListController extends AdminPanelController implements Initiali
         System.out.println("tset: " + f);
         ObservableList<String> fData = getFacilityData(f);
         List<String> options = new ArrayList<>();
-        options.add("All users"); options.add("Only staff members");
+        options.add("All users");
+        options.add("Only staff members");
         ObservableList<String> dataOptions = FXCollections.observableArrayList(options);
         roomBuildingIdField.setItems(nData);
         roomBuildingIdField.setPromptText(nData.get(0));
@@ -157,6 +159,9 @@ public class RoomListController extends AdminPanelController implements Initiali
         roomTable.setItems(data);
         roomTable.getColumns().addAll(roomIdCol, buildingIdCol, capacityCol, onlyStaffCol, nameCol, deleteCol, updateCol, viewCol);
     }
+    /**
+     * Inserts the update and delete buttons into table.
+     */
 
     public TableCell<Room, Room> returnCell(String button) {
         return new TableCell<Room, Room>() {
@@ -175,7 +180,7 @@ public class RoomListController extends AdminPanelController implements Initiali
                 updateButton.setOnAction(
                     event -> {
                         try {
-                            switch(button){
+                            switch(button) {
                                 case "Update":
                                     editRoom(room);
                                     break;
@@ -197,10 +202,15 @@ public class RoomListController extends AdminPanelController implements Initiali
             }
         };
     }
-
+    /**
+     * Sends user to the room create page.
+     */
     public void createRoom() throws IOException {
         switchFunc("/Admin/Room/RoomCreate.fxml");
     }
+    /**
+     * Deletes selected room.
+     */
 
     public void deleteRoom(Room room) throws IOException {
         String id = Integer.toString((int) room.getId());
@@ -208,18 +218,27 @@ public class RoomListController extends AdminPanelController implements Initiali
         createAlert("removed: " + room.getName());
         loadRooms();
     }
+    /**
+     * Sends user to the room edit page.
+     */
 
     public void editRoom(Room room) throws IOException {
         FXMLLoader loader = switchFunc("/Admin/Room/RoomEdit.fxml");
         RoomEditController controller = loader.getController();
         controller.initData(room);
     }
+    /**
+     * Sends user to the room view page.
+     */
 
     public void viewRoom(Room room) throws IOException {
         FXMLLoader loader = switchFunc("/Admin/Room/RoomView.fxml");
         RoomViewController controller = loader.getController();
         controller.initData(room);
     }
+    /**
+     * TODO sasa.
+     */
 
     public List<Building> getBuildings(String buildings) throws JsonProcessingException {
         System.out.println(buildings);
@@ -228,6 +247,9 @@ public class RoomListController extends AdminPanelController implements Initiali
         Building[] list = mapper.readValue(buildings, Building[].class);
         return Arrays.asList(list);
     }
+    /**
+     * TODO sasa.
+     */
 
     public List<String> getBuildingNames(List<Building> buildings) {
         List<String> a = new ArrayList<>();
@@ -238,6 +260,9 @@ public class RoomListController extends AdminPanelController implements Initiali
         }
         return a;
     }
+    /**
+     * TODO sasa.
+     */
 
     public List<Facility> getFacility(String facilities) throws JsonProcessingException {
         ArrayNode body = (ArrayNode) mapper.readTree(facilities).get("body");
@@ -245,6 +270,9 @@ public class RoomListController extends AdminPanelController implements Initiali
         Facility[] list = mapper.readValue(facilities, Facility[].class);
         return Arrays.asList(list);
     }
+    /**
+     * TODO sasa.
+     */
 
     public List<String> getFacilityNames(List<Facility> facilities) {
         List<String> a = new ArrayList<>();
@@ -255,6 +283,9 @@ public class RoomListController extends AdminPanelController implements Initiali
         }
         return a;
     }
+    /**
+     * TODO sasa.
+     */
 
     public String getOnlyStaff(Room room) {
         return room.isOnlyStaff() ? "Only staff" :"All users";

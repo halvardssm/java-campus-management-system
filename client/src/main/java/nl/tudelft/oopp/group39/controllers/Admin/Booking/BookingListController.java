@@ -60,6 +60,9 @@ public class BookingListController extends AdminPanelController implements Initi
         }
         setNavBar(navBar);
     }
+    /**
+     * Creates observable list containing booking data needed for table.
+     */
 
     public ObservableList<Booking> getData() throws JsonProcessingException {
         String b = ServerCommunication.get(ServerCommunication.booking);
@@ -69,7 +72,7 @@ public class BookingListController extends AdminPanelController implements Initi
         return FXCollections.observableArrayList(list);
     }
     /**
-     * Display rooms and data in tableView buildingTable. -- Likely doesn't work yet. Need to add nameCol.
+     * Display bookings and data into tableView named reservationTable.
      */
     void loadReservations() throws JsonProcessingException {
         reservationTable.setVisible(true);
@@ -94,6 +97,9 @@ public class BookingListController extends AdminPanelController implements Initi
         reservationTable.setItems(data);
         reservationTable.getColumns().addAll(reservationIdCol, userIdCol, roomIdCol, reservationDateCol, reservationStartCol, reservationEndCol, deleteCol, updateCol);
     }
+    /**
+     * Inserts the update and delete buttons into table.
+     */
 
     public TableCell<Booking, Booking> returnCell(String button) {
         return new TableCell<Booking, Booking>() {
@@ -112,7 +118,7 @@ public class BookingListController extends AdminPanelController implements Initi
                 updateButton.setOnAction(
                     event -> {
                         try {
-                            switch(button){
+                            switch(button) {
                                 case "Update":
                                     editBooking(booking);
                                     break;
@@ -135,6 +141,9 @@ public class BookingListController extends AdminPanelController implements Initi
     public void createBooking() throws IOException {
         switchFunc("/Admin/Booking/BookingCreate.fxml");
     }
+    /**
+     * Deletes selected booking.
+     */
 
     public void deleteBooking(Booking booking) throws IOException {
         String id = Integer.toString(booking.getId());
@@ -142,6 +151,9 @@ public class BookingListController extends AdminPanelController implements Initi
         createAlert("Removed the booking");
         loadReservations();
     }
+    /**
+     * Sends user to the booking edit page.
+     */
 
     public void editBooking(Booking booking) throws IOException {
         FXMLLoader loader = switchFunc("/Admin/Booking/BookingEdit.fxml");

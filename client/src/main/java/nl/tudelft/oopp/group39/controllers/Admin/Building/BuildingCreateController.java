@@ -98,7 +98,7 @@ public class BuildingCreateController extends BuildingListController implements 
     }
 
     /**
-     * Doc. TODO
+     * Returns string containing times inputted.
      */
     public String getTime(String time, boolean open) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.US);
@@ -109,7 +109,7 @@ public class BuildingCreateController extends BuildingListController implements 
     }
 
     /**
-     * Goes back to main admin panel.
+     * Goes back to main Building panel.
      */
 
     @FXML

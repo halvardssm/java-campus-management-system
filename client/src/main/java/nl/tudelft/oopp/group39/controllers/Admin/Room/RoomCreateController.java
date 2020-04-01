@@ -44,9 +44,7 @@ public class RoomCreateController extends RoomListController implements Initiali
     private MenuBar navBar;
 
 
-    /**
-     * Initialize data into tableView.
-     */
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -57,6 +55,9 @@ public class RoomCreateController extends RoomListController implements Initiali
         setNavBar(navBar);
     }
 
+    /**
+     * TODO Sasa.
+     */
     public List<Building> getBuildings(String buildings) throws JsonProcessingException {
         System.out.println(buildings);
         ArrayNode body = (ArrayNode) mapper.readTree(buildings).get("body");
@@ -65,6 +66,9 @@ public class RoomCreateController extends RoomListController implements Initiali
         return Arrays.asList(list);
     }
 
+    /**
+     * TODO Sasa.
+     */
     public List<String> getBuildingNames(List<Building> buildings) {
         List<String> a = new ArrayList<>();
         for(Building building : buildings) {
@@ -75,12 +79,15 @@ public class RoomCreateController extends RoomListController implements Initiali
         return a;
     }
 
-
+    /**
+     * TODO Sasa.
+     */
     public void initData() throws JsonProcessingException {
         String b = ServerCommunication.get(ServerCommunication.building);
         ObservableList<String> data = getData(b);
         List<String> options = new ArrayList<>();
-        options.add("All users"); options.add("Only staff members");
+        options.add("All users");
+        options.add("Only staff members");
         ObservableList<String> dataOptions = FXCollections.observableArrayList(options);
         roomBuildingIdField.setItems(data);
         roomBuildingIdField.setPromptText(data.get(0));
@@ -90,7 +97,7 @@ public class RoomCreateController extends RoomListController implements Initiali
     }
 
     /**
-     * Goes back to main admin panel.
+     * Goes back to main Room panel.
      */
 
     @FXML
@@ -98,6 +105,10 @@ public class RoomCreateController extends RoomListController implements Initiali
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
         mainSwitch("/Admin/Room/RoomList.fxml", currentstage);
     }
+
+    /**
+     * Creates a room.
+     */
 
     public void createRoom() throws IOException {
         String name = roomNameField.getText();

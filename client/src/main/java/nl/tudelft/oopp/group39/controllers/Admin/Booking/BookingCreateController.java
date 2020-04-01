@@ -59,7 +59,7 @@ public class BookingCreateController extends EventListController implements Init
     private TextArea dateMessage;
 
     /**
-     * Initialize data into tableView.
+     * TODO sasa.
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -180,6 +180,9 @@ public class BookingCreateController extends EventListController implements Init
         }
         return times;
     }
+    /**
+     * Returns a list containing times where there is a booking.
+     */
 
     public List<Integer> getBookedTimes(String date) throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -199,7 +202,7 @@ public class BookingCreateController extends EventListController implements Init
     }
 
     /**
-     * Goes back to main admin panel.
+     * Goes back to main booking panel.
      */
 
     @FXML

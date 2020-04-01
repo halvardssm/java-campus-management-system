@@ -48,15 +48,15 @@ public class RoomEditController extends RoomListController implements Initializa
     private MenuBar navBar;
 
 
-    /**
-     * Initialize data into tableView.
-     */
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setNavBar(navBar);
     }
 
-
+    /**
+     * Initializes data into their respective boxes to be used for editing.
+     */
     public void initData(Room room) throws JsonProcessingException {
         this.room = room;
         String b = ServerCommunication.get(ServerCommunication.building);
@@ -64,7 +64,8 @@ public class RoomEditController extends RoomListController implements Initializa
         System.out.println(room.getBuilding() + " " + this.buildingsById + " " + this.buildingsById.keySet());
         String cName = this.buildingsById.get((int) room.getBuilding());
         List<String> options = new ArrayList<>();
-        options.add("All users"); options.add("Only staff members");
+        options.add("All users");
+        options.add("Only staff members");
         ObservableList<String> dataOptions = FXCollections.observableArrayList(options);
         roomNameField.setPromptText(room.getName());
         roomDescriptionField.setPromptText(room.getDescription());
@@ -76,7 +77,7 @@ public class RoomEditController extends RoomListController implements Initializa
     }
 
     /**
-     * Goes back to main admin panel.
+     * Goes back to main Room panel.
      */
 
     @FXML
@@ -84,6 +85,9 @@ public class RoomEditController extends RoomListController implements Initializa
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
         mainSwitch("/Admin/Room/RoomList.fxml", currentstage);
     }
+    /**
+     * Edits the values of the room and communicates it  to server.
+     */
 
     public void editRoom() throws IOException {
         String name = roomNameField.getText();
@@ -101,6 +105,9 @@ public class RoomEditController extends RoomListController implements Initializa
         getBack();
         createAlert("Updated: " + room.getName());
     }
+    /**
+     * TODO Sasa.
+     */
 
     public List<Building> getBuildings(String buildings) throws JsonProcessingException {
         System.out.println(buildings);
@@ -109,6 +116,9 @@ public class RoomEditController extends RoomListController implements Initializa
         Building[] list = mapper.readValue(buildings, Building[].class);
         return Arrays.asList(list);
     }
+    /**
+     * TODO Sasa.
+     */
 
     public List<String> getBuildingNames(List<Building> buildings) {
         List<String> a = new ArrayList<>();

@@ -58,9 +58,7 @@ public class BuildingListController extends AdminPanelController implements Init
     private MenuBar navBar;
 
 
-    /**
-     * Initialize data into tableView.
-     */
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -71,17 +69,27 @@ public class BuildingListController extends AdminPanelController implements Init
         setNavBar(navBar);
     }
 
+    /**
+     * loads all buildings.
+     */
+
     public void loadAllBuildings() throws JsonProcessingException {
         String buildings = ServerCommunication.get(ServerCommunication.building);
         loadFiltering();
         loadBuildings(buildings);
     }
+    /**
+     * Clears filtering boxes.
+     */
 
     public void loadFiltering() {
         nameFilter.clear();
         descriptionFilter.clear();
         locationFilter.clear();
     }
+    /**
+     * Filters buildings.
+     */
 
     public void filterBuildings() throws JsonProcessingException {
         String name = nameFilter.getText();
@@ -95,6 +103,9 @@ public class BuildingListController extends AdminPanelController implements Init
         String buildings = ServerCommunication.getFilteredBuildings(name, location, open, closed, description);
         loadBuildings(buildings);
     }
+    /**
+     * Returns time as string.
+     */
 
     public String getTime(String time, boolean open) {
         if (open) {
@@ -104,7 +115,7 @@ public class BuildingListController extends AdminPanelController implements Init
     }
 
     /**
-     * Display buildings and data in tableView buildingTable. -- Likely doesn't work yet.
+     * Display buildings and data in tableView buildingTable
      */
     void loadBuildings(String buildings) throws JsonProcessingException {
         buildingTable.setVisible(true);
@@ -132,6 +143,9 @@ public class BuildingListController extends AdminPanelController implements Init
         buildingTable.setItems(data);
         buildingTable.getColumns().addAll(idCol, nameCol, locationCol, closingTimeCol, openTimeCol, descriptionCol, deleteCol, updateCol);
     }
+    /**
+     * Inserts the update and delete buttons into table.
+     */
 
     public TableCell<Building, Building> returnCell(String button) {
         return new TableCell<Building, Building>() {
@@ -150,7 +164,7 @@ public class BuildingListController extends AdminPanelController implements Init
                 updateButton.setOnAction(
                     event -> {
                         try {
-                            switch(button){
+                            switch(button) {
                                 case "Update":
                                     editBuilding(building);
                                     break;
@@ -173,6 +187,9 @@ public class BuildingListController extends AdminPanelController implements Init
     public void createBuilding() throws IOException {
         switchFunc("/Admin/Building/BuildingCreate.fxml");
     }
+    /**
+     * Deletes selected building.
+     */
 
     public void deleteBuilding(Building building) throws IOException {
         String id = Integer.toString(building.getId());
@@ -180,6 +197,9 @@ public class BuildingListController extends AdminPanelController implements Init
         createAlert("removed: " + building.getName());
         loadAllBuildings();
     }
+    /**
+     * Sends user to the building edit page.
+     */
 
     public void editBuilding(Building building) throws IOException {
         FXMLLoader loader = switchFunc("/Admin/Building/BuildingEdit.fxml");

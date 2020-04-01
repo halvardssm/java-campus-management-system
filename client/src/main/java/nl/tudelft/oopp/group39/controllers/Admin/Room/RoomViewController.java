@@ -55,14 +55,15 @@ public class RoomViewController extends RoomListController implements Initializa
     private MenuBar navBar;
 
 
-    /**
-     * Initialize data into tableView.
-     */
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setNavBar(navBar);
     }
 
+    /**
+     * Initialize rooms data into their respective boxes to be used for updating.
+     */
 
     public void initData(Room room) throws JsonProcessingException {
         this.room = room;
@@ -84,6 +85,9 @@ public class RoomViewController extends RoomListController implements Initializa
         facilitiesBox.setText(getFacilitiesString(room));
         facilitiesBox.setDisable(true);
     }
+    /**
+     * Returns the rooms facilities as a string.
+     */
 
     public String getFacilitiesString(Room room) throws JsonProcessingException {
         ArrayNode body = room.getFacilities();
