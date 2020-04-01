@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -26,12 +27,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.models.Bike;
-import nl.tudelft.oopp.group39.models.Building;
-import nl.tudelft.oopp.group39.models.Food;
-import nl.tudelft.oopp.group39.models.Reservable;
-import nl.tudelft.oopp.group39.models.Room;
+import nl.tudelft.oopp.group39.building.model.Building;
+import nl.tudelft.oopp.group39.models.Reservation;
+import nl.tudelft.oopp.group39.reservable.model.Bike;
+import nl.tudelft.oopp.group39.reservable.model.Food;
+import nl.tudelft.oopp.group39.reservable.model.Reservable;
+import nl.tudelft.oopp.group39.room.model.Room;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 public class FoodAndBikeSceneController extends AbstractSceneController {
 
@@ -61,8 +64,8 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
     private String type;
     private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private Building building;
-    private ComboBox<String> endTimePicker = new ComboBox<>();
-    private ComboBox<String> startTimePicker = new ComboBox<>();
+    private ComboBox<String> endTimePicker;
+    private ComboBox<String> startTimePicker;
     private List<Integer> bookedBikeTimes = new ArrayList<>();
 
 
@@ -80,7 +83,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
             orderbtn.setOnAction(event -> {
                 try {
                     placeBikeOrder();
-                } catch (JsonProcessingException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             });
@@ -89,7 +92,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
             orderbtn.setOnAction(event -> {
                 try {
                     placeFoodOrder();
-                } catch (JsonProcessingException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             });
@@ -268,7 +271,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
                 delete.setStyle("-fx-background-color: none");
                 delete.setOnAction(event -> {
                     try {
-                        deleteFromCart(reservable.getId());
+                        deleteFromCart(reservable);
                     } catch (JsonProcessingException e) {
                         e.printStackTrace();
                     }
@@ -301,7 +304,11 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
                 cartlist.getChildren().add(fooditem);
                 cartItems++;
                 totalprice += reservable.getPrice();
-                total.setText("$" + totalprice);
+                if (type.equals("bike")) {
+                    total.setText("$" + totalprice + "/hour");
+                } else {
+                    total.setText("$" + totalprice);
+                }
                 cart.add(reservable);
                 checkEmptyCart();
 
@@ -327,7 +334,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
         Spinner<Integer> amount = (Spinner<Integer>) cartlist.lookup("#" + reservable.getId());
         Integer value = amount.getValue();
         if (value == 0) {
-            deleteFromCart(reservable.getId());
+            deleteFromCart(reservable);
         } else {
             Label priceLabel = (Label) cartlist.lookup("#" + reservable.getId() + "price");
             double newprice = value * reservable.getPrice();
@@ -349,10 +356,10 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
     /**
      * Deletes an item from the cart.
      *
-     * @param id of the item that needs to be deleted
+     * @param reservable the item that needs to be deleted
      */
-    public void deleteFromCart(int id) throws JsonProcessingException {
-        Label priceLabel = (Label) cartlist.lookup("#" + id + "price");
+    public void deleteFromCart(Reservable reservable) throws JsonProcessingException {
+        Label priceLabel = (Label) cartlist.lookup("#" + reservable.getId() + "price");
         if (type.equals("bike")) {
             double price = Double.parseDouble(priceLabel.getText().split("\\$")[1].split("/")[0]);
             totalprice = totalprice - price;
@@ -363,8 +370,9 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
             totalprice = totalprice - price;
             total.setText("$" + totalprice);
         }
-        HBox fooditem = (HBox) cartlist.lookup("#cart" + id);
+        HBox fooditem = (HBox) cartlist.lookup("#cart" + reservable.getId());
         cartlist.getChildren().remove(fooditem);
+        cart.remove(reservable);
         cartItems--;
         checkEmptyCart();
     }
@@ -378,6 +386,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
             timeselector.getChildren().clear();
             orderbtn.setDisable(true);
             total.setText("$0.00");
+            errorfield.setText("");
         } else {
             cartlist.getChildren().remove(emptycart);
             orderbtn.setDisable(false);
@@ -404,15 +413,19 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
 
         if (type.equals("bike")) {
             datePicker.setOnAction(event -> {
+                bookedBikeTimes.clear();
                 try {
                     updateBikeTimePicker(
                         dateTimeFormatter.format(datePicker.getValue()),
                         cart.get(0).getId()
                     );
+                    updateEndTimePicker(building.getOpen());
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
             });
+            endTimePicker = new ComboBox<>();
+            startTimePicker = new ComboBox<>();
             updateBikeTimePicker(dateTimeFormatter.format(LocalDate.now()), cart.get(0).getId());
             startTimePicker.setPromptText("Select start time");
             startTimePicker.setId("timePicker");
@@ -584,7 +597,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
      */
     public void getRoomsList(Long id) throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String roomsString = ServerCommunication.getRooms(id.toString());
+        String roomsString = ServerCommunication.getRooms("building=" + id);
         System.out.println(roomsString);
         ArrayNode body = (ArrayNode) mapper.readTree(roomsString).get("body");
         for (JsonNode roomJson : body) {
@@ -626,7 +639,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
     /**
      * Places a bike order.
      */
-    public void placeBikeOrder() throws JsonProcessingException {
+    public void placeBikeOrder() throws IOException {
         DatePicker datePicker = (DatePicker) timeselector.lookup("#datePicker");
         ComboBox<String> timePicker = (ComboBox<String>) timeselector.lookup("#timePicker");
         ComboBox<String> durationPicker = (ComboBox<String>) timeselector.lookup("#durationPicker");
@@ -646,7 +659,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
     /**
      * Places a food order.
      */
-    public void placeFoodOrder() throws JsonProcessingException {
+    public void placeFoodOrder() throws IOException {
         DatePicker datePicker = (DatePicker) timeselector.lookup("#datePicker");
         ComboBox<String> timePicker = (ComboBox<String>) timeselector.lookup("#timePicker");
         ComboBox<Label> roomSelector = (ComboBox<Label>) timeselector.lookup("#roomSelector");
@@ -692,10 +705,10 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
         String timeOfDelivery,
         Integer roomId,
         String orderString
-    ) throws JsonProcessingException {
+    ) throws IOException {
         DatePicker datePicker = (DatePicker) timeselector.lookup("#datePicker");
-        if (checkDate(dateTimeFormatter.format(datePicker.getValue()))) {
-            if (loggedIn) {
+        if (loggedIn) {
+            if (checkDate(dateTimeFormatter.format(datePicker.getValue()))) {
 
                 System.out.println(orderString);
                 String username = AbstractSceneController.user.getUsername();
@@ -707,9 +720,14 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
                         roomId,
                         orderString);
                 createAlert(result);
-            } else {
-                createAlert("Please log in to place an order");
+                if (type.equals("bike")) {
+                    goToBikeRentalScene();
+                } else {
+                    goToFoodOrderScene();
+                }
             }
+        } else {
+            errorfield.setText("Please log in to place an order");
         }
     }
 }

@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.reservation.dao;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,10 +47,10 @@ public class ReservationDao {
         List<Predicate> allPredicates = new ArrayList<>();
 
         if (keys.contains(Reservation.COL_TIME_OF_PICKUP)) {
-            allPredicates.add(cb.greaterThanOrEqualTo(
-                reservation.get(Reservation.COL_TIME_OF_PICKUP),
-                LocalDateTime.parse(
-                    filters.get(Reservation.COL_TIME_OF_PICKUP).replace(" ","T"))
+            allPredicates.add(cb.equal(
+                reservation.get(Reservation.COL_TIME_OF_PICKUP).as(LocalDate.class),
+                LocalDate.parse(
+                    filters.get(Reservation.COL_TIME_OF_PICKUP).split("T")[0])
             ));
         }
         if (keys.contains(Reservation.COL_TIME_OF_DELIVERY)) {

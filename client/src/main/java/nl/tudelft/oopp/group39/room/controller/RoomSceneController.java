@@ -247,7 +247,7 @@ public class RoomSceneController extends AbstractSceneController {
      * @param buildingId id of the selected building
      */
     public void getRooms(Long buildingId) {
-        String roomString = ServerCommunication.getRooms(buildingId.toString());
+        String roomString = ServerCommunication.getRooms("building=" + buildingId);
         showRooms(roomString);
     }
 
