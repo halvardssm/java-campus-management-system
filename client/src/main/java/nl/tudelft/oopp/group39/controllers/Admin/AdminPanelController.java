@@ -5,18 +5,22 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.views.AdminPanel;
 
 
 public class AdminPanelController extends MainAdminController implements Initializable {
     @FXML
-    private Button userlistView;
+    private Button userView;
     @FXML
     private Button buildingView;
     @FXML
@@ -24,11 +28,11 @@ public class AdminPanelController extends MainAdminController implements Initial
     @FXML
     private Button eventView;
     @FXML
-    private MenuBar NavBar;
+    private Button bookingsView;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setNavBar(NavBar);
     }
 
     public void setNavBar(MenuBar menuBar) {
@@ -108,6 +112,34 @@ public class AdminPanelController extends MainAdminController implements Initial
         fileMenuButton5.setGraphic(reservationListLabel);
         menuBar.getMenus().add(fileMenuButton5);
     }
+
+    @FXML
+    private void switchBookingsView() throws IOException {
+        AdminPanel.sceneHandler("/Admin/Booking/BookingList.fxml");
+    }
+
+    @FXML
+    private void switchBuildingView() throws IOException {
+        AdminPanel.sceneHandler("/Admin/Building/BuildingList.fxml");
+    }
+
+    @FXML
+    private void switchRoomView() throws IOException {
+        AdminPanel.sceneHandler("/Admin/Room/RoomList.fxml");
+    }
+
+
+    @FXML
+    private void switchUserView() throws IOException {
+        AdminPanel.sceneHandler("/Admin/User/UserList.fxml");
+    }
+
+
+    @FXML
+    private void switchEventView() throws IOException {
+        AdminPanel.sceneHandler("/Admin/Event/EventList.fxml");
+    }
+
 
 }
 

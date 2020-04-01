@@ -22,7 +22,7 @@
             <Insets />
         </GridPane.margin>
         <ImageView fx:id="roomimage" fitHeight="100.0" fitWidth="192.0" pickOnBounds="true">
-            <Image url="@testimage.jpg" />
+            <Image url="@icons/testimage.jpg" />
         </ImageView>
         <Label fx:id="roomname" alignment="CENTER_RIGHT" text="Building Name">
             <font>

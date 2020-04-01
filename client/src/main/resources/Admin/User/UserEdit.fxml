@@ -18,7 +18,7 @@
                 <Insets bottom="15" left="15" right="15" top="15" />
             </padding>
             <children>
-                <Text id="title" text="Admin: Room View" />
+                <Text id="title" text="Admin: User View" />
             </children>
         </HBox>
     </top>
@@ -35,7 +35,7 @@
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <Text layoutX="191.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update a User" underline="true">
+                <Text layoutX="27.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update a User" underline="true">
                     <font>
                         <Font name="System Bold" size="33.0" />
                     </font>

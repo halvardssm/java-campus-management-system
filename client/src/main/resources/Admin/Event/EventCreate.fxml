@@ -41,7 +41,7 @@
                 <!--                        <Image url="@../../../../../../../../TuDelft/download.png" />-->
                 <!--                    </image>-->
                 <!--                </ImageView>-->
-                <Text layoutX="193.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add an Event" underline="true">
+                <Text layoutX="20.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add an Event" underline="true">
                     <font>
                         <Font name="System Bold" size="33.0" />
                     </font>
@@ -65,7 +65,7 @@
                 </Text>
                 <DatePicker fx:id="endField" layoutX="200.0" layoutY="266.0" prefHeight="31.0" prefWidth="200.0" />
                 <Button layoutX="507.0" layoutY="445.0" mnemonicParsing="false" onMouseClicked="#createEvent" text="Add Event" />
-            <TextArea fx:id="dateMessage" disable="true" layoutX="446.0" layoutY="97.0" prefHeight="200.0" prefWidth="417.0" />
+            <TextArea fx:id="dateMessage" disable="true" layoutX="446.0" layoutY="124.0" prefHeight="173.0" prefWidth="417.0" />
             <MenuBar fx:id="navBar" prefHeight="33.0" prefWidth="890.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
               <menus>
               </menus>

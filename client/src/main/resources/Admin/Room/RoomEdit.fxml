@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="700.0" style="-fx-padding: 4px;" stylesheets="@../../style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.Admin.Room.RoomEditController">
+<BorderPane prefHeight="600.0" prefWidth="700.0" style="-fx-padding: 4px;" stylesheets="@../../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.Admin.Room.RoomEditController">
     <top>
         <HBox spacing="10" styleClass="bar">
             <padding>
@@ -34,7 +40,7 @@
                 <!--                        <Image url="@../../../../../../../../TuDelft/download.png" />-->
                 <!--                    </image>-->
                 <!--                </ImageView>-->
-                <Text layoutX="200.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update a room" underline="true">
+                <Text layoutX="17.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update a room" underline="true">
                     <font>
                         <Font name="System Bold" size="33.0" />
                     </font>

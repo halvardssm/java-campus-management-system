@@ -19,7 +19,7 @@ public class AdminPanel extends Application {
         loader.setLocation(xmlUrl);
         Parent root = loader.load();
 
-        Scene scene = new Scene(root, 700, 600);
+        Scene scene = new Scene(root, 900, 650);
         window = primaryStage;
         primaryStage.setTitle("Admin Panel");
         primaryStage.setScene(scene);

@@ -5,49 +5,63 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.control.MenuBar?>
-<AnchorPane prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.Admin.AdminPanelController">
-   <children>
-<!--      <ImageView fitHeight="367.0" fitWidth="662.0" layoutX="17.0" layoutY="111.0" opacity="0.75" pickOnBounds="true" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="120.0">-->
-<!--         <image>-->
-<!--            <Image url="@../../../../../../../../TuDelft/download.png" />-->
-<!--         </image>-->
-<!--      </ImageView>-->
-      <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #00A6D6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<BorderPane prefHeight="621.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.Admin.AdminPanelController">
+   <top>
+      <HBox spacing="10" styleClass="bar">
+         <padding>
+            <Insets bottom="15" left="15" right="15" top="15" />
+         </padding>
          <children>
-            <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin Navigation" textAlignment="CENTER" wrappingWidth="438.6708984375">
-               <font>
-                  <Font name="SansSerif Regular" size="52.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="20.0" top="25.0" />
-               </HBox.margin>
-            </Text>
+            <Text id="title" text="Admin Navigation" />
          </children>
       </HBox>
-      <HBox layoutX="10.0" layoutY="678.0" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #00A6D6;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+   </top>
+   <bottom>
+      <HBox prefHeight="80.0" prefWidth="892.0" spacing="10" styleClass="bar">
+         <padding>
+            <Insets bottom="15" left="15" right="15" top="15" />
+         </padding>
+      </HBox>
+   </bottom>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="BackBtn" mnemonicParsing="false" style="-fx-background-color: #00A6D6;" text="◀ Back" textFill="WHITE">
+            <ImageView fitHeight="461.0" fitWidth="860.0" layoutX="340.0" layoutY="150.0" opacity="0.58" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="15.0">
+               <image>
+                  <Image url="@../icons/Library.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="buildingView" layoutX="71.0" layoutY="59.0" mnemonicParsing="false" onAction="#switchBuildingView" prefHeight="112.0" prefWidth="165.0" text="Building View" AnchorPane.leftAnchor="70.0">
                <font>
-                  <Font size="36.0" />
+                  <Font name="System Bold" size="19.0" />
                </font>
-               <padding>
-                  <Insets left="20.0" top="25.0" />
-               </padding>
+            </Button>
+            <Button fx:id="userView" layoutX="650.0" layoutY="70.0" mnemonicParsing="false" onAction="#switchUserView" prefHeight="112.0" prefWidth="165.0" text="User View" AnchorPane.rightAnchor="70.0">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Button>
+            <Button fx:id="roomView" layoutX="71.0" layoutY="298.0" mnemonicParsing="false" onAction="#switchRoomView" prefHeight="112.0" prefWidth="165.0" text="Room View" AnchorPane.leftAnchor="70.0">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Button>
+            <Button fx:id="eventView" layoutX="630.0" layoutY="308.0" mnemonicParsing="false" onAction="#switchEventView" prefHeight="112.0" prefWidth="165.0" text="Event View" AnchorPane.rightAnchor="70.0">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Button>
+            <Button fx:id="bookingsView" layoutX="363.0" layoutY="182.0" mnemonicParsing="false" onAction="#switchBookingsView" prefHeight="112.0" prefWidth="165.0" text="Bookings View">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
             </Button>
          </children>
-      </HBox>
-<!--      <Button id="UListView" fx:id="userlistView" layoutX="24.0" layoutY="116.0" mnemonicParsing="false" onAction="#switchUListView" prefHeight="120.0" prefWidth="250.0" text="User List Overview" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="125.0" />-->
-<!--      <Button id="EventView" fx:id="eventView" layoutX="421.0" layoutY="360.0" mnemonicParsing="false" onAction="#switchEvents" prefHeight="120.0" prefWidth="250.0" text="Overview of Events and Vacations" AnchorPane.bottomAnchor="125.0" AnchorPane.rightAnchor="25.0" />-->
-<!--      <Button id="RoomView" fx:id="roomView" layoutX="24.0" layoutY="367.0" mnemonicParsing="false" onAction="#switchRoomView" prefHeight="120.0" prefWidth="250.0" text="Room Overview" AnchorPane.bottomAnchor="125.0" AnchorPane.leftAnchor="25.0" />-->
-<!--      <Button id="UListView" fx:id="buildingView" layoutX="340.0" layoutY="141.0" mnemonicParsing="false" onAction="#switchBuildingView" prefHeight="120.0" prefWidth="250.0" text="Building Overview" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="125.0" />-->
-       <MenuBar layoutY="102.0" prefHeight="33.0" prefWidth="890.0" fx:id="NavBar">
-           <menus>
-           </menus>
-       </MenuBar>
-   </children>
-</AnchorPane>
+      </AnchorPane>
+   </center>
+</BorderPane>

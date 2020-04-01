@@ -39,7 +39,7 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Text layoutX="238.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Users" underline="true">
+            <Text layoutX="14.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Users" underline="true">
                <font>
                   <Font name="System Bold" size="33.0" />
                </font>
@@ -54,9 +54,9 @@
               </columns>
             </TableView>
             <Button layoutX="604.0" layoutY="54.0" mnemonicParsing="false" onMouseClicked="#createUser" text="Add User" />
-            <BorderPane layoutX="716.0" layoutY="39.0" prefHeight="434.0" prefWidth="176.0" style="-fx-background-color: lightgray;">
+            <BorderPane layoutX="716.0" layoutY="39.0" prefHeight="434.0" prefWidth="176.0" style="-fx-background-color: #ADD8E6;">
                <center>
-                  <VBox prefHeight="414.0" prefWidth="172.0" style="-fx-padding: 4px;" BorderPane.alignment="CENTER">
+                  <VBox prefHeight="414.0" prefWidth="172.0" style="-fx-padding: 4px; -fx-background-color: #ADD8E6;" BorderPane.alignment="CENTER">
                      <children>
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="160.0" style="-fx-underline: true;" text="Filter Users">
                            <font>
