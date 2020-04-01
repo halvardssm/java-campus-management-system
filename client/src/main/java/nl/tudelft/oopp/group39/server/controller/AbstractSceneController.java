@@ -105,6 +105,13 @@ public abstract class AbstractSceneController {
     }
 
     /**
+     * Doc. TODO Sven
+     */
+    public void goToUserPageScene() throws IOException {
+        UsersDisplay.sceneHandler("/userPage.fxml");
+    }
+
+    /**
      * Switches view to the login scene.
      *
      * @throws IOException if the scene wasn't found

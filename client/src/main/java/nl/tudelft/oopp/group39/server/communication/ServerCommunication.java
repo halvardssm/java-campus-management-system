@@ -8,6 +8,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+
+import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 import nl.tudelft.oopp.group39.user.model.User;
@@ -67,6 +69,22 @@ public class ServerCommunication {
     }
 
     /**
+     * Retrieves building filtered on id. The difference between the other getBuilding method
+     * is that this method returns it as a building object.
+     *
+     * @param id of wanted building
+     * @return the building.
+     */
+    public static Building getTheBuilding(long id) throws JsonProcessingException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET().uri(URI.create(url + building + id)).build();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        JsonNode roomJson = mapper.readTree(httpRequest(request)).get("body");
+        String roomAsString = mapper.writeValueAsString(roomJson);
+        return mapper.readValue(roomAsString, Building.class);
+    }
+
+    /**
      * Retrieves rooms from the server based on building id.
      *
      * @param input filter parameters
@@ -86,7 +104,7 @@ public class ServerCommunication {
      * @param roomId id of the room
      * @return the body of a get request to the server.
      */
-    public static Room getRoom(long roomId) throws JsonProcessingException {
+    public static Room getRoom(Long roomId) throws JsonProcessingException {
         HttpRequest request = HttpRequest.newBuilder()
             .GET()
             .uri(URI.create(url + room + roomId))
@@ -96,7 +114,6 @@ public class ServerCommunication {
         String roomAsString = mapper.writeValueAsString(roomJson);
         return mapper.readValue(roomAsString, Room.class);
     }
-
 
     /**
      * Retrieves filtered list of buildings from the server.

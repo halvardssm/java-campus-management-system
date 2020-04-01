@@ -1,39 +1,36 @@
-package nl.tudelft.oopp.group39.booking.model;
+package nl.tudelft.oopp.group39.reservable.model;
 
-import javax.print.DocFlavor;
-import nl.tudelft.oopp.group39.room.model.Room;
-import nl.tudelft.oopp.group39.user.model.User;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
-public class Booking {
+public class BookingDto {
 
     private Integer id;
     private String date;
     private String startTime;
     private String endTime;
     private String user;
-    private Long room;
+    private Integer room;
 
-    public Booking() {
-
+    public BookingDto() {
     }
 
     /**
      * Creates a booking.
      *
-     * @param id        booking id
      * @param date      date of booking
      * @param startTime start time of booking
      * @param endTime   end time of booking
      * @param user      user that made the booking
      * @param room      room that is booked
      */
-    public Booking(
-        Integer id,
-        String date,
-        String startTime,
-        String endTime,
-        String user,
-        Long room) {
+    public BookingDto(
+            Integer id,
+            String date,
+            String startTime,
+            String endTime,
+            String user,
+            Integer room) {
         this.id = id;
         this.date = date;
         this.startTime = startTime;
@@ -62,7 +59,7 @@ public class Booking {
         return user;
     }
 
-    public Long getRoom() {
+    public Integer getRoom() {
         return room;
     }
 }
