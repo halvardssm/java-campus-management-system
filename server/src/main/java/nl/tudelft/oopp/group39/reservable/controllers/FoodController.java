@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.group39.reservable.controllers;
 
+import java.util.List;
 import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.reservable.dto.FoodDto;
 import nl.tudelft.oopp.group39.reservable.entities.Food;
@@ -36,7 +38,7 @@ public class FoodController extends AbstractController {
     @GetMapping("")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
-        return restHandler((p) -> foodService.listFoods(params));
+        return restHandler((p) -> Utils.listEntityToDto(foodService.listFoods(params)));
     }
 
     /**

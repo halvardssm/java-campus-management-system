@@ -39,7 +39,7 @@ public class ReservationController extends AbstractController {
     @GetMapping("")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
-        return restHandler((p) -> reservationService.listReservations());
+        return restHandler((p) -> Utils.listEntityToDto(reservationService.listReservations()));
     }
 
     /**

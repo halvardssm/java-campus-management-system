@@ -79,7 +79,6 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
      */
     public BuildingDto toDto() {
         Set<RoomDto> roomDtoSet = Utils.setEntityToDto(rooms);
-        Set<Long> reservableSet = new HashSet<>(Utils.entitiesToIds(reservables));
 
         return new BuildingDto(
             id,
@@ -88,8 +87,7 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
             description,
             open,
             closed,
-            roomDtoSet,
-            reservableSet
+            roomDtoSet
         );
     }
 

@@ -2,8 +2,12 @@ package nl.tudelft.oopp.group39.reservation.services;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javassist.NotFoundException;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservable.services.ReservableService;
+import nl.tudelft.oopp.group39.reservation.dao.ReservationDao;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationDto;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
@@ -15,6 +19,7 @@ import nl.tudelft.oopp.group39.room.services.RoomService;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,6 +36,8 @@ public class ReservationService {
     private ReservableService reservableService;
     @Autowired
     private RoomService roomService;
+    @Autowired
+    private ReservationDao reservationDao;
 
     /**
      * List all reservations.
@@ -39,6 +46,10 @@ public class ReservationService {
      */
     public List<Reservation> listReservations() {
         return reservationRepository.findAll();
+    }
+
+    public List<Reservation> filterReservations(Map<String, String> filters) {
+        return reservationDao.reservationFilter(filters);
     }
 
     /**
@@ -94,8 +105,8 @@ public class ReservationService {
                 reservation2,
                 reservable
             );
-
-            reservationAmountService.createReservation(reservationAmount);
+            reservation2.getReservationAmounts().add(
+                reservationAmountService.createReservation(reservationAmount));
         }
 
         return readReservation(reservation2.getId());
@@ -107,10 +118,28 @@ public class ReservationService {
      * @return the updated reservation {@link Reservation}.
      */
     public Reservation updateReservation(Long id, ReservationDto newReservation) {
+        Set<ReservationAmount> reservationAmounts = new HashSet<>();
+
+        if (newReservation != null) {
+            for (ReservationAmountDto reservationAmountDto : newReservation.getReservationAmounts()
+            ) {
+                reservationAmounts.add(reservationAmountDto.getId() == null
+                                       ? reservationAmountService.createReservation(reservationAmountDto.toEntity())
+                                       : reservationAmountService.updateReservation(
+                                           reservationAmountDto.getId(), reservationAmountDto.toEntity())
+                );
+            }
+        }
+
         return reservationRepository.findById(id)
             .map(reservation -> {
+                reservation.setRoom(newReservation.getRoom() == null
+                    ? null : roomService.readRoom(newReservation.getRoom()));
+                reservation.setUser(newReservation.getUser() == null
+                    ? null : userService.readUser(newReservation.getUser()));
                 reservation.setTimeOfPickup(newReservation.getTimeOfPickup());
                 reservation.setTimeOfDelivery(newReservation.getTimeOfDelivery());
+                reservation.getReservationAmounts().addAll(reservationAmounts);
 
                 return reservationRepository.save(reservation);
             })

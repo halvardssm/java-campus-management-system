@@ -101,7 +101,7 @@ class ReservationControllerTest extends AbstractControllerTest {
                 is(testReservation.getTimeOfDelivery().format(Constants.FORMATTER_DATE_TIME))
             ))
             .andExpect(jsonPath(
-                "$.body[0]." + Reservation.COL_USER + "." + User.COL_USERNAME,
+                "$.body[0]." + Reservation.COL_USER,
                 is(testUser.getUsername())
             ))
             .andExpect(jsonPath("$.body[0]." + Reservation.COL_RESERVATION_AMOUNTS).isArray())

@@ -8,7 +8,6 @@ import java.util.Set;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
-import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.room.dto.RoomDto;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import org.springframework.stereotype.Component;
@@ -22,7 +21,6 @@ public class BuildingDto extends AbstractDto<Building, BuildingDto> {
     private LocalTime open;
     private LocalTime closed;
     private Set<RoomDto> rooms = new HashSet<>();
-    private Set<Long> reservables = new HashSet<>();
 
     public BuildingDto() {
     }
@@ -36,7 +34,6 @@ public class BuildingDto extends AbstractDto<Building, BuildingDto> {
      * @param open        opening time of the building
      * @param closed      closing time of the building
      * @param rooms       the set of rooms contained in building (in RoomDto form)
-     * @param reservables TODO
      * @see RoomDto
      */
     public BuildingDto(
@@ -46,8 +43,7 @@ public class BuildingDto extends AbstractDto<Building, BuildingDto> {
         String description,
         LocalTime open,
         LocalTime closed,
-        Set<RoomDto> rooms,
-        Set<Long> reservables
+        Set<RoomDto> rooms
     ) {
         setId(id);
         setName(name);
@@ -56,7 +52,6 @@ public class BuildingDto extends AbstractDto<Building, BuildingDto> {
         setOpen(open);
         setClosed(closed);
         getRooms().addAll(initSet(rooms));
-        getReservables().addAll(initSet(reservables));
     }
 
     public String getName() {
@@ -107,25 +102,12 @@ public class BuildingDto extends AbstractDto<Building, BuildingDto> {
         this.rooms = roomDtos;
     }
 
-    public Set<Long> getReservables() {
-        return reservables;
-    }
-
-    public void setReservables(Set<Long> reservables) {
-        this.reservables = reservables;
-    }
-
     @Override
     public Building toEntity() {
         Set<Room> rooms1 = new HashSet<>();
-        Set<Reservable> reservables1 = new HashSet<>();
 
         if (getRooms() != null) {
             rooms1.addAll(Utils.setDtoToEntity(getRooms()));
-        }
-
-        if (getReservables() != null) {
-            reservables1.addAll(Utils.idsToComponentSet(getReservables(), Reservable.class));
         }
 
         return new Building(
@@ -136,7 +118,7 @@ public class BuildingDto extends AbstractDto<Building, BuildingDto> {
             getOpen(),
             getClosed(),
             rooms1,
-            reservables1
+            null
         );
     }
 }
