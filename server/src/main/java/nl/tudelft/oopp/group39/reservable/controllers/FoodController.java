@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.group39.reservable.controllers;
 
+import java.util.List;
 import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.reservable.dto.FoodDto;
 import nl.tudelft.oopp.group39.reservable.entities.Food;
 import nl.tudelft.oopp.group39.reservable.services.FoodService;
@@ -35,7 +37,11 @@ public class FoodController {
     public ResponseEntity<RestResponse<Object>> listFoods(
         @RequestParam Map<String, String> params
     ) {
-        return RestResponse.create(foodService.listFoods(params));
+        List<Food> food = foodService.listFoods(params);
+
+        List<FoodDto> foodDtoList = Utils.listEntityToDto(food);
+
+        return RestResponse.create(foodDtoList);
     }
 
     /**
@@ -48,7 +54,8 @@ public class FoodController {
         try {
             return RestResponse.create(
                 foodService.createFood(food.toEntity()).toDto(),
-                null, HttpStatus.CREATED);
+                null, HttpStatus.CREATED
+            );
         } catch (Exception e) {
             return RestResponse.error(e);
         }

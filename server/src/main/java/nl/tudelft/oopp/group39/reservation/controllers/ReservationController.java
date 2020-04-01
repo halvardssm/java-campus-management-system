@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.group39.reservation.controllers;
 
+import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationDto;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.reservation.services.ReservationService;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -30,8 +33,12 @@ public class ReservationController {
      * @return a list of reservations {@link Reservation}.
      */
     @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listReservations() {
-        return RestResponse.create(reservationService.listReservations());
+    public ResponseEntity<RestResponse<Object>> listReservations(
+        @RequestParam Map<String,String> filters
+    ) {
+        return RestResponse.create(Utils.listEntityToDto(
+            reservationService.filterReservations(filters)
+        ));
     }
 
     /**
@@ -45,7 +52,7 @@ public class ReservationController {
     ) {
         try {
             return RestResponse.create(
-                reservationService.createReservation(reservation),
+                reservationService.createReservation(reservation).toDto(),
                 null,
                 HttpStatus.CREATED
             );
@@ -62,9 +69,8 @@ public class ReservationController {
     @GetMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> readReservation(@PathVariable Long id) {
         try {
-            Reservation test = reservationService.readReservation(id);
-
-            return RestResponse.create(test
+            return RestResponse.create(
+                reservationService.readReservation(id)
                 .toDto());
         } catch (Exception e) {
             return RestResponse.error(e);

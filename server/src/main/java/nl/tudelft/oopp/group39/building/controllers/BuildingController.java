@@ -56,6 +56,7 @@ public class BuildingController {
     @PostMapping("")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createBuilding(@RequestBody BuildingDto building) {
+
         return RestResponse.create(
             buildingService.createBuilding(building.toEntity()).toDto(),
             null,
@@ -66,7 +67,7 @@ public class BuildingController {
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> readBuilding(@PathVariable Long id) {
-        return RestResponse.create(buildingService.readBuilding(id));
+        return RestResponse.create(buildingService.readBuilding(id).toDto());
     }
 
     @PutMapping("/{id}")
