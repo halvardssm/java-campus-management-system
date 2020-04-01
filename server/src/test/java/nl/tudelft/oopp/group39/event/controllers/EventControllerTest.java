@@ -128,14 +128,14 @@ class EventControllerTest extends AbstractControllerTest {
         assertEquals(
             "Target object must not be null; nested exception is "
                 + "java.lang.IllegalArgumentException: Target object must not be null",
-            eventController.createEvent(null).getBody().getError()
+            eventController.create(null).getBody().getError()
         );
 
-        assertEquals("Event 0 not found", eventController.readEvent(0L).getBody().getError());
+        assertEquals("Event 0 not found", eventController.read(0L).getBody().getError());
 
         assertEquals(
             "Event 0 not found",
-            eventController.updateEvent(0L, null).getBody().getError()
+            eventController.update(0L, null).getBody().getError()
         );
     }
 }

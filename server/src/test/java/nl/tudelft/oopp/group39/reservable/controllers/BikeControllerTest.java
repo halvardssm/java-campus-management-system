@@ -123,17 +123,17 @@ class BikeControllerTest extends AbstractControllerTest {
     @Test
     void testError() {
         assertEquals("java.lang.NullPointerException",
-            bikeController.createBike(null).getBody().getError()
+            bikeController.create(null).getBody().getError()
         );
 
         assertEquals(
             "Bike 0 not found",
-            bikeController.readBike(0L).getBody().getError()
+            bikeController.read(0L).getBody().getError()
         );
 
         assertEquals(
             "Bike 0 not found",
-            bikeController.updateBike(0L, null).getBody().getError()
+            bikeController.update(0L, null).getBody().getError()
         );
     }
 }

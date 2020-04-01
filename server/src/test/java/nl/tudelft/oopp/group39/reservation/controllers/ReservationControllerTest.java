@@ -142,7 +142,7 @@ class ReservationControllerTest extends AbstractControllerTest {
                 is(testReservationDto.getTimeOfDelivery().format(Constants.FORMATTER_DATE_TIME))
             ))
             .andExpect(jsonPath(
-                "$.body." + Reservation.COL_USER + "." + User.COL_USERNAME,
+                "$.body." + Reservation.COL_USER,
                 is(testUser.getUsername())
             ))
             .andExpect(jsonPath("$.body." + Reservation.COL_RESERVATION_AMOUNTS).isArray())
@@ -207,17 +207,17 @@ class ReservationControllerTest extends AbstractControllerTest {
     void testError() {
         assertEquals(
             "java.lang.NullPointerException",
-            reservationController.createReservation(null).getBody().getError()
+            reservationController.create(null, null).getBody().getError()
         );
 
         assertEquals(
-            "Reservation 0 not found",
-            reservationController.readReservation(0L).getBody().getError()
+            "Reservation with id 0 wasn't found.",
+            reservationController.read(0L).getBody().getError()
         );
 
         assertEquals(
-            "Reservation 0 not found",
-            reservationController.updateReservation(0L, null).getBody().getError()
+            "Reservation with id 0 wasn't found.",
+            reservationController.update(null, 0L, null).getBody().getError()
         );
     }
 }

@@ -4,11 +4,26 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.config.abstracts.IEntity;
 
 public interface Utils {
+    /**
+     * A wrapper for handling null pointer exceptions.
+     *
+     * @param fn the function
+     * @return the result or null
+     */
+    static <T> T safeNull(Function<Object, T> fn) {
+        try {
+            return fn.apply(null);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
     static <T> Set<T> initSet(Set<T> set) {
         return set != null ? set : new HashSet<>();
     }

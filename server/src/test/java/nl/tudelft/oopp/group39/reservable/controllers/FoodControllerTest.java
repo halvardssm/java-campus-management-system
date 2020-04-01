@@ -125,17 +125,17 @@ class FoodControllerTest extends AbstractControllerTest {
     void testError() {
         assertEquals(
             "java.lang.NullPointerException",
-            foodController.createFood(null).getBody().getError()
+            foodController.create(null).getBody().getError()
         );
 
         assertEquals(
             "Food 0 not found",
-            foodController.readFood(0L).getBody().getError()
+            foodController.read(0L).getBody().getError()
         );
 
         assertEquals(
             "Food 0 not found",
-            foodController.updateFood(0L, null).getBody().getError()
+            foodController.update(0L, null).getBody().getError()
         );
     }
 }
