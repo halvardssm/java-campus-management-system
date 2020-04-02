@@ -154,7 +154,7 @@ public class Event extends AbstractEntity<Event, EventDto> {
             getStartsAt(),
             getEndsAt(),
             getGlobal(),
-            getUser().getUsername(),
+            Utils.safeNull((p) -> getUser().getUsername()),
             Utils.entitiesToIds(getRooms())
         );
     }

@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.config.Constants;
+import nl.tudelft.oopp.group39.event.dto.EventDto;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
@@ -121,8 +122,7 @@ class EventControllerTest extends AbstractControllerTest {
     @Test
     void testError() {
         assertEquals(
-            "Target object must not be null; nested exception is "
-                + "java.lang.IllegalArgumentException: Target object must not be null",
+            "java.lang.NullPointerException",
             eventController.createEvent(null).getBody().getError()
         );
 
@@ -130,7 +130,7 @@ class EventControllerTest extends AbstractControllerTest {
 
         assertEquals(
             "Event 0 not found",
-            eventController.updateEvent(0L, null).getBody().getError()
+            eventController.updateEvent(0L, new EventDto()).getBody().getError()
         );
     }
 }
