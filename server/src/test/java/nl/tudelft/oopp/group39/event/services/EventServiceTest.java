@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javassist.NotFoundException;
 import nl.tudelft.oopp.group39.AbstractTest;
@@ -37,7 +38,7 @@ class EventServiceTest extends AbstractTest {
 
     @Test
     void listEvents() {
-        List<Event> events = eventService.listEvents();
+        List<Event> events = eventService.listEvents(new HashMap<>());
 
         assertEquals(1, events.size());
         assertEquals(testEvent, events.get(0));
@@ -54,7 +55,7 @@ class EventServiceTest extends AbstractTest {
     void deleteAndCreateEvent() {
         eventService.deleteEvent(testEvent.getId());
 
-        assertEquals(new ArrayList<>(), eventService.listEvents());
+        assertEquals(new ArrayList<>(), eventService.listEvents(new HashMap<>()));
 
         Event event = eventService.createEvent(testEvent);
 
