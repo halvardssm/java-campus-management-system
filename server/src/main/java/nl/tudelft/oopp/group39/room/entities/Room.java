@@ -202,7 +202,8 @@ public class Room extends AbstractEntity<Room, RoomDto> {
             return false;
         }
         Room room = (Room) o;
-        return Objects.equals(getName(), room.getName())
+        return Objects.equals(getId(), room.getId())
+            && Objects.equals(getName(), room.getName())
             && Objects.equals(getBuilding(), room.getBuilding())
             && Objects.equals(getCapacity(), room.getCapacity())
             && Objects.equals(getOnlyStaff(), room.getOnlyStaff())

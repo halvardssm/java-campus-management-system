@@ -156,7 +156,8 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
             return false;
         }
         Building building = (Building) o;
-        return Objects.equals(getName(), building.getName())
+        return getId().equals(building.getId())
+            && Objects.equals(getName(), building.getName())
             && Objects.equals(getLocation(), building.getLocation())
             && Objects.equals(getDescription(), building.getDescription())
             && Objects.equals(getOpen(), building.getOpen())
