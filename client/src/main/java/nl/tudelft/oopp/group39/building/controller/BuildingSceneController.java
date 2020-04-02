@@ -25,7 +25,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 public class BuildingSceneController extends AbstractSceneController implements Initializable {
-
     private boolean filterBarShown;
     private int selectedCapacity = 0;
     private String selectedOpenTime;

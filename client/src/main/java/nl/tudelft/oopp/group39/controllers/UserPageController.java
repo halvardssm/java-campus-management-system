@@ -17,9 +17,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import nl.tudelft.oopp.group39.booking.model.Booking;
+import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
-
 
 public class UserPageController extends AbstractSceneController {
     @FXML private FlowPane flowPane;
@@ -217,10 +217,11 @@ public class UserPageController extends AbstractSceneController {
     }
 
     /**
-     * Views the room.
+     * Views the room you have booked.
      */
     public void viewRoom() throws IOException {
-        goToRoomsScene();
+        Room r1 = ServerCommunication.getRoom(Long.parseLong(roomID.getText()));
+        super.goToReservationScene(r1, r1.getBuildingObject());
     }
 
     /**

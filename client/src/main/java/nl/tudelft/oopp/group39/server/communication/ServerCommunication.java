@@ -14,7 +14,6 @@ import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 import nl.tudelft.oopp.group39.user.model.User;
 
 public class ServerCommunication {
-
     public static String user = "user/";
     public static String building = "building/";
     public static String room = "room/";
