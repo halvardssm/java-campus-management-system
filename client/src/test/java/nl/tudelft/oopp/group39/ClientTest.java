@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.group39;
 
-import java.io.File;
-import javafx.application.Platform;
 import nl.tudelft.oopp.group39.server.views.UsersDisplay;
 import org.junit.jupiter.api.Test;
 
