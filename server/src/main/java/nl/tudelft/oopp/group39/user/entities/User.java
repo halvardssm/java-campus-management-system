@@ -231,7 +231,7 @@ public class User implements UserDetails {
     }
 
     /**
-     * Gets the authorities of the user
+     * Gets the authorities of the user.
      *
      * @return a list with the roles of the user
      */

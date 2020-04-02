@@ -90,7 +90,7 @@ public class RoomController {
     }
 
     /**
-     * Delete Endpoint to delete a room
+     * Delete Endpoint to delete a room.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteRoom(@PathVariable Long id) {
