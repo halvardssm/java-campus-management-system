@@ -11,14 +11,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import nl.tudelft.oopp.group39.AbstractControllerTest;
+import nl.tudelft.oopp.group39.booking.dto.BookingDto;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.config.Constants;
+import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
@@ -40,20 +41,34 @@ public class BookingControllerTest extends AbstractControllerTest {
         null,
         null
     );
+    private final Room testRoom = new Room(
+        null,
+        null,
+        "Projectroom 1",
+        8,
+        true,
+        "This is another room for testing purposes",
+        null,
+        null,
+        null
+    );
     private String jwt;
-    private final Booking testBooking = new Booking(
+    private final BookingDto testBooking = new BookingDto(
         null,
         date,
         start,
         end,
-        testUser,
-        null
+        testUser.getUsername(),
+        testRoom.getId()
     );
 
     @BeforeEach
     void setUp() {
-        //userService.createUser(testUser);
+        User user = userService.createUser(testUser);
         jwt = jwtService.encrypt(testUser);
+
+        Room room = roomService.createRoom(testRoom);
+        testBooking.setRoom(room.getId());
 
         Booking booking = bookingService.createBooking(testBooking);
         testBooking.setId(booking.getId());
@@ -62,6 +77,8 @@ public class BookingControllerTest extends AbstractControllerTest {
     @AfterEach
     void tearDown() {
         bookingService.deleteBooking(testBooking.getId());
+        roomService.deleteRoom(testRoom.getId());
+        userService.deleteUser(testUser.getUsername());
     }
 
     @Test
@@ -99,6 +116,7 @@ public class BookingControllerTest extends AbstractControllerTest {
                 testBooking.setId(productNode.get("body").get("id").longValue());
             });
     }
+
     @Test
     void readBookingTest() throws Exception {
         mockMvc.perform(get(REST_MAPPING + "/" + testBooking.getId()))
@@ -129,18 +147,18 @@ public class BookingControllerTest extends AbstractControllerTest {
     @Test
     void errorTest() {
         assertEquals(
-            "Target object must not be null; nested exception is "
-                + "java.lang.IllegalArgumentException: Target object must not be null",
+            "java.lang.NullPointerException",
             bookingController.createBooking(null).getBody().getError()
         );
 
-        assertEquals("Booking 0 not found", bookingController.readBooking(0L).getBody().getError());
+        assertEquals("Booking with id 0 wasn't found.",
+            bookingController.readBooking(0L).getBody().getError());
 
-        /*
         assertEquals(
-            "Booking 0 not found",
-            bookingController.updateBooking(0L, null).getBody().getError()
-        ); */
+            "The given id must not be null!; nested exception is "
+                + "java.lang.IllegalArgumentException: The given id must not be null!",
+            bookingController.updateBooking(testBooking, null).getBody().getError()
+        );
     }
 
 }
