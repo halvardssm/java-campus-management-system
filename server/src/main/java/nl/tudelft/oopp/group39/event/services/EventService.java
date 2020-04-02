@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.group39.event.services;
 
 import java.util.List;
+import java.util.Map;
 import javassist.NotFoundException;
+import nl.tudelft.oopp.group39.event.dao.EventDao;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.event.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +15,16 @@ public class EventService {
 
     @Autowired
     private EventRepository eventRepository;
+    @Autowired
+    private EventDao eventDao;
 
     /**
      * List all events.
      *
      * @return a list of events {@link Event}.
      */
-    public List<Event> listEvents() {
-        return eventRepository.findAll();
+    public List<Event> listEvents(Map<String, String> params) {
+        return eventDao.filter(params);
     }
 
     /**

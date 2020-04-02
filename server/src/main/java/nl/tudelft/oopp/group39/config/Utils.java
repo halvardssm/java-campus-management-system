@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.group39.config;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -10,6 +13,18 @@ import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.config.abstracts.IEntity;
 
 public interface Utils {
+    static LocalDateTime parseDateTime(String string) {
+        return LocalDateTime.parse(string, Constants.FORMATTER_DATE_TIME);
+    }
+
+    static LocalDate parseDate(String string) {
+        return LocalDate.parse(string, Constants.FORMATTER_DATE);
+    }
+
+    static LocalTime parseTime(String string) {
+        return LocalTime.parse(string, Constants.FORMATTER_TIME);
+    }
+
     /**
      * A wrapper for handling null pointer exceptions.
      *
