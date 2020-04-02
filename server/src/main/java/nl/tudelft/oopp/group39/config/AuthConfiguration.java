@@ -20,6 +20,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -32,6 +33,8 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
 
     /**
      * Configures the authentication.
+     *
+     * @throws Exception if there is an exception
      */
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -62,6 +65,9 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
 
     /**
      * Configures the authentication globally.
+     *
+     * @throws Exception if an error occurs when adding the {@link UserDetailsService}
+     *                   based authentication
      */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -70,6 +76,8 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
 
     /**
      * Manages the authentication.
+     *
+     * @throws Exception if there is an exception
      */
     @Bean
     @Override

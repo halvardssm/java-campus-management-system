@@ -20,6 +20,7 @@ public class FacilityService {
      *
      * @param id the id of the facility that you want to get
      * @return the requested facility
+     * @throws FacilityNotFoundException if the facility wasn't found
      */
     public Facility readFacility(Long id) throws FacilityNotFoundException {
         return facilityRepository.findById(id)
@@ -48,6 +49,7 @@ public class FacilityService {
      * Update a facility.
      *
      * @return the updated facility
+     * @throws FacilityNotFoundException if the facility wasn't found
      */
     public Facility updateFacility(Facility newFacility, Long id) throws FacilityNotFoundException {
         return facilityRepository.findById(id)
@@ -57,6 +59,8 @@ public class FacilityService {
 
     /**
      * Delete a facility.
+     *
+     * @throws FacilityNotFoundException if the facility wasn't found
      */
     public Facility deleteFacility(Long id) throws FacilityNotFoundException {
         try {

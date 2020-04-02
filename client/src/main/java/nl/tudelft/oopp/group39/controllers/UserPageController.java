@@ -126,7 +126,7 @@ public class UserPageController extends AbstractSceneController {
     /**
      * Shows the edit fields for editing the booking.
      */
-    public void editBooking() throws IOException {
+    public void editBooking() {
         editStartingTime.setOpacity(1);
         editDuration.setOpacity(1);
         editDate.setOpacity(1);
@@ -218,6 +218,8 @@ public class UserPageController extends AbstractSceneController {
 
     /**
      * Views the room you have booked.
+     *
+     * @throws IOException if the room wasn't found
      */
     public void viewRoom() throws IOException {
         Room r1 = ServerCommunication.getRoom(Long.parseLong(roomID.getText()));
@@ -226,6 +228,8 @@ public class UserPageController extends AbstractSceneController {
 
     /**
      * Returns the user back to the building page when the back button is clicked.
+     *
+     * @throws IOException if the scene wasn't found
      */
     @FXML
     private void backToRoom() throws IOException {

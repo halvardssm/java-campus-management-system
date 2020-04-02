@@ -40,6 +40,7 @@ public class RoomReservationController extends AbstractSceneController {
      *
      * @param room     the room you've selected
      * @param building the building of the room you've selected
+     * @throws JsonProcessingException if the JSON could not be processed
      */
     public void setup(Room room, Building building) throws JsonProcessingException {
         this.building = building;

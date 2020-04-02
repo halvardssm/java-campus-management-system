@@ -64,6 +64,7 @@ public class UsersDisplay extends Application {
      * The start of the application.
      *
      * @param primaryStage the primary stage
+     * @throws IOException if the file wasn't found
      */
     @Override
     public void start(Stage primaryStage) throws IOException {

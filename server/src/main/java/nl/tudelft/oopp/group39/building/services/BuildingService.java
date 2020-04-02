@@ -28,7 +28,7 @@ public class BuildingService {
     /**
      * Reads the building inside the database using its id.
      *
-     * @param id the id of the Building
+     * @param id the id of the building
      * @return the Building that was found.
      * @throws BuildingNotFoundException when no building is found.
      */
@@ -38,7 +38,10 @@ public class BuildingService {
     }
 
     /**
-     * Delete a building.
+     * Deletes a building.
+     *
+     * @param id the id of the building
+     * @throws BuildingNotFoundException if the building wasn't found
      */
     public Building deleteBuilding(Long id) throws BuildingNotFoundException {
         try {
@@ -51,8 +54,9 @@ public class BuildingService {
     }
 
     /**
-     * Create a building.
+     * Creates a building.
      *
+     * @param newBuilding the new building that you want to create
      * @return the created building
      */
     public Building createBuilding(Building newBuilding) {
@@ -60,9 +64,12 @@ public class BuildingService {
     }
 
     /**
-     * Update a building.
+     * Updates a building.
      *
+     * @param id the id of the building that you want to update
+     * @param newBuilding the new building
      * @return the updated booking
+     * @throws BuildingNotFoundException if the building wasn't found
      */
     public Building updateBuilding(Long id, Building newBuilding) throws BuildingNotFoundException {
         return buildingRepository.findById(id)

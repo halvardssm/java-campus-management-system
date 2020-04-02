@@ -27,6 +27,7 @@ public class RoomService {
      *
      * @param id the room to be read
      * @return   the requested room
+     * @throws RoomNotFoundException if the room wasn't found
      */
     public Room readRoom(Long id) throws RoomNotFoundException {
         return roomRepository.findById(id).orElseThrow(() -> new RoomNotFoundException(id));
@@ -54,6 +55,7 @@ public class RoomService {
      * Update a room.
      *
      * @return the updated room
+     * @throws RoomNotFoundException if the room wasn't found
      */
     public Room updateRoom(Room newRoom, Long id) throws RoomNotFoundException {
         return roomRepository.findById(id)
@@ -78,6 +80,8 @@ public class RoomService {
 
     /**
      * Delete a room.
+     *
+     * @throws RoomNotFoundException if the room wasn't found
      */
     public Room deleteRoom(Long id) throws RoomNotFoundException {
         try {

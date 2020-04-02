@@ -35,6 +35,7 @@ public class BuildingCellController extends AbstractSceneController {
 
     /**
      * Goes to the rooms of the building the user clicks on.
+     * @throws IOException if the scene wasn't found
      */
     public void buildingSelected() throws IOException {
         goToRoomsScene(building);

@@ -92,6 +92,8 @@ public abstract class AbstractSceneController {
 
     /**
      * Switches to the user page scene.
+     *
+     * @throws IOException if the scene wasn't found
      */
     public void goToUserPageScene() throws IOException {
         UsersDisplay.sceneHandler("/userPage.fxml");

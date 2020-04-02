@@ -33,6 +33,8 @@ public class RoomCellController extends AbstractSceneController {
 
     /**
      * Goes to the scene where you can book the room.
+     *
+     * @throws IOException if the scene wasn't found
      */
     public void goToReservationScene() throws IOException {
         super.goToReservationScene(room, building);
