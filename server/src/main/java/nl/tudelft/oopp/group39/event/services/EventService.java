@@ -50,9 +50,10 @@ public class EventService {
     public Event updateEvent(Long id, Event newEvent) throws NotFoundException {
         return eventRepository.findById(id)
             .map(event -> {
-                event.setType(newEvent.getType());
-                event.setStartDate(newEvent.getStartDate());
-                event.setEndDate(newEvent.getEndDate());
+                event.setTitle(newEvent.getTitle());
+                event.setStartsAt(newEvent.getStartsAt());
+                event.setEndsAt(newEvent.getEndsAt());
+                event.setUser(newEvent.getUser());
                 event.setRooms(newEvent.getRooms());
                 return eventRepository.save(event);
             })

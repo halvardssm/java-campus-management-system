@@ -25,12 +25,12 @@ public class FacilityController {
     @Autowired
     private FacilityService service;
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<RestResponse<Object>> listFacilities() {
         return RestResponse.create(service.listFacilities());
     }
 
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createFacility(@RequestBody Facility facility) {
         return RestResponse.create(service.createFacility(facility), null, HttpStatus.CREATED);

@@ -39,9 +39,7 @@ class ReservationControllerTest extends AbstractControllerTest {
         "test@tudelft.nl",
         "test",
         null,
-        Role.ADMIN,
-        null,
-        null
+        Role.ADMIN
     );
     private final Reservation testReservation = new Reservation(
         null,

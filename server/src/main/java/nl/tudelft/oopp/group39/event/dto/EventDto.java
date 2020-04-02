@@ -1,60 +1,33 @@
-package nl.tudelft.oopp.group39.event.entities;
+package nl.tudelft.oopp.group39.event.dto;
 
-import static nl.tudelft.oopp.group39.config.Utils.initSet;
+import static nl.tudelft.oopp.group39.config.Utils.initList;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDateTime;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import nl.tudelft.oopp.group39.config.Utils;
-import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
-import nl.tudelft.oopp.group39.event.dto.EventDto;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
+import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.room.entities.Room;
-import nl.tudelft.oopp.group39.user.entities.User;
+import org.springframework.stereotype.Component;
 
-@Entity
-@Table(name = Event.TABLE_NAME)
-@JsonIgnoreProperties(allowSetters = true, value = {Event.COL_ROOMS})
-public class Event extends AbstractEntity<Event, EventDto> {
-    public static final String TABLE_NAME = "events";
-    public static final String MAPPED_NAME = "event";
-    public static final String COL_TITLE = "title";
-    public static final String COL_START_DATE = "startDate";
-    public static final String COL_END_DATE = "endDate";
-    public static final String COL_USER = "user";
-    public static final String COL_ROOMS = "rooms";
+@Component
+public class EventDto extends AbstractDto<Event, EventDto> {
 
     private String title;
     private LocalDateTime startsAt;
     private LocalDateTime endsAt;
     private Boolean isGlobal;
-    @ManyToOne
-    @JoinColumn(name = User.MAPPED_NAME)
-    private User user;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = (TABLE_NAME + "_" + Room.TABLE_NAME),
-        joinColumns = {@JoinColumn(name = TABLE_NAME, referencedColumnName = COL_ID)},
-        inverseJoinColumns = {
-            @JoinColumn(name = Room.TABLE_NAME, referencedColumnName = Room.COL_ID)
-        })
-    private Set<Room> rooms = new HashSet<>();
+    private String user;
+    private List<Long> rooms = new ArrayList<>();
 
-    public Event() {
+    public EventDto() {
     }
 
     /**
      * Creates an event.
      *
-     * @param id       the id
      * @param title    the title of the event
      * @param startsAt the start date yyyy-mm-dd
      * @param endsAt   the end date yyyy-mm-dd, nullable
@@ -62,14 +35,14 @@ public class Event extends AbstractEntity<Event, EventDto> {
      * @param user     the user owning the event, is null if it is global
      * @param rooms    the rooms
      */
-    public Event(
+    public EventDto(
         Long id,
         String title,
         LocalDateTime startsAt,
         LocalDateTime endsAt,
         Boolean isGlobal,
-        User user,
-        Set<Room> rooms
+        String user,
+        List<Long> rooms
     ) {
         setId(id);
         setTitle(title);
@@ -77,7 +50,7 @@ public class Event extends AbstractEntity<Event, EventDto> {
         setEndsAt(endsAt);
         setGlobal(isGlobal != null ? isGlobal : false);
         setUser(user);
-        getRooms().addAll(initSet(rooms));
+        getRooms().addAll(initList(rooms));
     }
 
     public String getTitle() {
@@ -112,19 +85,19 @@ public class Event extends AbstractEntity<Event, EventDto> {
         isGlobal = global;
     }
 
-    public User getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
-    public Set<Room> getRooms() {
+    public List<Long> getRooms() {
         return rooms;
     }
 
-    public void setRooms(Set<Room> rooms) {
+    public void setRooms(List<Long> rooms) {
         this.rooms = rooms;
     }
 
@@ -133,10 +106,10 @@ public class Event extends AbstractEntity<Event, EventDto> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Event)) {
+        if (!(o instanceof EventDto)) {
             return false;
         }
-        Event event = (Event) o;
+        EventDto event = (EventDto) o;
         return Objects.equals(getId(), event.getId())
             && Objects.equals(getTitle(), event.getTitle())
             && Objects.equals(getStartsAt(), event.getStartsAt())
@@ -147,15 +120,15 @@ public class Event extends AbstractEntity<Event, EventDto> {
     }
 
     @Override
-    public EventDto toDto() {
-        return new EventDto(
+    public Event toEntity() {
+        return new Event(
             getId(),
             getTitle(),
             getStartsAt(),
             getEndsAt(),
             getGlobal(),
-            getUser().getUsername(),
-            Utils.entitiesToIds(getRooms())
+            null,
+            Utils.idsToComponentSet(getRooms(), Room.class)
         );
     }
 }

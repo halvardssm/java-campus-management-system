@@ -13,12 +13,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.event.entities.Event;
-import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
@@ -29,9 +28,11 @@ import org.springframework.http.MediaType;
 
 class EventControllerTest extends AbstractControllerTest {
     private final Event testEvent = new Event(
-        EventTypes.EVENT,
-        LocalDate.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)),
-        LocalDate.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)).plusDays(1),
+        null, "test",
+        LocalDateTime.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)),
+        LocalDateTime.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)).plusDays(1),
+        false,
+        null,
         null
     );
     private final User testUser = new User(
@@ -39,9 +40,7 @@ class EventControllerTest extends AbstractControllerTest {
         "test@tudelft.nl",
         "test",
         null,
-        Role.ADMIN,
-        null,
-        null
+        Role.ADMIN
     );
     private String jwt;
 
@@ -65,15 +64,14 @@ class EventControllerTest extends AbstractControllerTest {
         mockMvc.perform(get(REST_MAPPING))
             .andExpect(jsonPath("$.body").isArray())
             .andExpect(jsonPath("$.body", hasSize(1)))
-            .andExpect(jsonPath("$.body[0].type", is(EventTypes.EVENT.name())))
-            .andExpect(jsonPath("$.body[0].startDate", is(testEvent.getStartDate().toString())))
-            .andExpect(jsonPath("$.body[0].endDate", is(testEvent.getEndDate().toString())));
+            .andExpect(jsonPath("$.body[0].startDate", is(testEvent.getStartsAt().toString())))
+            .andExpect(jsonPath("$.body[0].endDate", is(testEvent.getEndsAt().toString())));
     }
 
     @Test
     void deleteAndCreateEvent() throws Exception {
         mockMvc.perform(delete(REST_MAPPING + "/" + testEvent.getId())
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
 
@@ -82,13 +80,12 @@ class EventControllerTest extends AbstractControllerTest {
         String json = objectMapper.writeValueAsString(testEvent);
 
         mockMvc.perform(post(REST_MAPPING)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(json)
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.body.type", is(EventTypes.EVENT.name())))
-            .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartDate().toString())))
-            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndDate().toString())))
+            .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartsAt().toString())))
+            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndsAt().toString())))
             .andDo((event) -> {
                 String responseString = event.getResponse().getContentAsString();
                 JsonNode productNode = new ObjectMapper().readTree(responseString);
@@ -100,27 +97,25 @@ class EventControllerTest extends AbstractControllerTest {
     void readEvent() throws Exception {
         mockMvc.perform(get(REST_MAPPING + "/" + testEvent.getId()))
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body.type", is(EventTypes.EVENT.name())))
-            .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartDate().toString())))
-            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndDate().toString())));
+            .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartsAt().toString())))
+            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndsAt().toString())));
     }
 
     @Test
     void updateEvent() throws Exception {
-        testEvent.setType(EventTypes.HOLIDAY);
+        testEvent.setTitle("test2");
         String json = objectMapper.writeValueAsString(testEvent);
 
         mockMvc.perform(put(REST_MAPPING + "/" + testEvent.getId())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(json)
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body.type", is(EventTypes.HOLIDAY.name())))
-            .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartDate().toString())))
-            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndDate().toString())));
+            .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartsAt().toString())))
+            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndsAt().toString())));
 
-        testEvent.setType(EventTypes.EVENT);
+        testEvent.setTitle("test");
     }
 
     @Test

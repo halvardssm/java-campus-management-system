@@ -12,7 +12,6 @@ import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.event.entities.Event;
-import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.event.services.EventService;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
@@ -85,9 +84,7 @@ public class DbSeeder {
             "admin@tudelft.nl",
             "pwd",
             null,
-            Role.ADMIN,
-            null,
-            null
+            Role.ADMIN
         );
 
         userService.createUser(user);
@@ -97,9 +94,7 @@ public class DbSeeder {
             "student@student.tudelft.nl",
             "student123",
             null,
-            Role.STUDENT,
-            null,
-            null
+            Role.STUDENT
         );
         userService.createUser(user2);
         System.out.println("[SEED] Admin user created");
@@ -209,8 +204,8 @@ public class DbSeeder {
     }
 
     private void initEvents() {
-        LocalDate today = LocalDate.now();
-        LocalDate tomorrow = today.plusDays(1);
+        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime tomorrow = today.plusDays(1);
         Building b1 = buildingService.readBuilding(1L);
         Room room = new Room(
             null,
@@ -224,7 +219,14 @@ public class DbSeeder {
             new HashSet<>()
         );
         HashSet<Room> rooms = new HashSet<>(List.of(room));
-        eventService.createEvent(new Event(EventTypes.EVENT, today, tomorrow, rooms));
+        eventService.createEvent(new Event(
+            null, "Special day",
+            today,
+            tomorrow,
+            false,
+            userService.readUser("admin"),
+            rooms
+        ));
 
         System.out.println("[SEED] Events created");
     }

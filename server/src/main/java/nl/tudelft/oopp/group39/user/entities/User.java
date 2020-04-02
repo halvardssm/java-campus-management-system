@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.group39.user.entities;
 
-import static nl.tudelft.oopp.group39.config.Utils.initSet;
-
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -22,6 +20,7 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import org.hibernate.annotations.LazyGroup;
@@ -39,7 +38,8 @@ import org.springframework.security.core.userdetails.UserDetails;
     User.COL_BOOKINGS,
     User.COL_PASSWORD,
     User.COL_IMAGE,
-    User.COL_RESERVATIONS
+    User.COL_RESERVATIONS,
+    User.COL_EVENTS
 })
 public class User implements UserDetails {
     public static final String TABLE_NAME = "users";
@@ -51,6 +51,7 @@ public class User implements UserDetails {
     public static final String COL_ROLE = "role";
     public static final String COL_BOOKINGS = "bookings";
     public static final String COL_RESERVATIONS = "reservations";
+    public static final String COL_EVENTS = "reservations";
 
     @Id
     private String username;
@@ -66,6 +67,8 @@ public class User implements UserDetails {
     private Set<Booking> bookings = new HashSet<>();
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
     private Set<Reservation> reservations = new HashSet<>();
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
+    private Set<Event> events = new HashSet<>();
 
     public User() {
     }
@@ -73,30 +76,24 @@ public class User implements UserDetails {
     /**
      * Create a new User instance.
      *
-     * @param username     Unique identifier as to be used in the database.
-     * @param email        Email address of the user.
-     * @param password     Encrypted password of the user.
-     * @param role         Role of the user.
-     * @param image        Image of the user.
-     * @param bookings     Bookings of user.
-     * @param reservations Reservations of user.
+     * @param username Unique identifier as to be used in the database.
+     * @param email    Email address of the user.
+     * @param password Encrypted password of the user.
+     * @param image    Image of the user.
+     * @param role     Role of the user.
      */
     public User(
         String username,
         String email,
         String password,
         Blob image,
-        Role role,
-        Set<Booking> bookings,
-        Set<Reservation> reservations
+        Role role
     ) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
         this.image = image;
-        this.bookings.addAll(initSet(bookings));
-        this.reservations.addAll(initSet(reservations));
     }
 
     @Override
@@ -157,6 +154,14 @@ public class User implements UserDetails {
         this.reservations = reservations;
     }
 
+    public Set<Event> getEvents() {
+        return events;
+    }
+
+    public void setEvents(Set<Event> events) {
+        this.events = events;
+    }
+
     @Override
     @Transient
     @JsonIgnore
@@ -207,6 +212,7 @@ public class User implements UserDetails {
             && Objects.equals(getImage(), user.getImage())
             && getRole() == user.getRole()
             && Objects.equals(getBookings(), user.getBookings())
-            && Objects.equals(getReservations(), user.getReservations());
+            && Objects.equals(getReservations(), user.getReservations())
+            && Objects.equals(getEvents(), user.getEvents());
     }
 }
