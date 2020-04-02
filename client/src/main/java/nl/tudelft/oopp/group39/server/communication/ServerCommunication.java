@@ -320,7 +320,6 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
-
     /**
      * Retrieves all bookings from the server.
      *

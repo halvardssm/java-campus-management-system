@@ -22,41 +22,18 @@ import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 
 public class UserPageController extends AbstractSceneController {
-    @FXML
-    private FlowPane flowPane; //The User Page screen
-
-    @FXML
-    private AnchorPane newBooking; //The whole card
-
-    @FXML
-    private Label accountName;
-
-    @FXML
-    private Label accountRole;
-
-    @FXML
-    private Label accountEmail;
-
-    @FXML
-    private Label bookingID;
-
-    @FXML
-    private Label roomID;
-
-    @FXML
-    private Label bookingDate;
-
-    @FXML
-    private TextField editStartingTime;
-
-    @FXML
-    private TextField editDuration;
-
-    @FXML
-    private DatePicker editDate;
-
-    @FXML
-    private Button doneButton;
+    @FXML private FlowPane flowPane;
+    @FXML private AnchorPane newBooking;
+    @FXML private Label accountName;
+    @FXML private Label accountRole;
+    @FXML private Label accountEmail;
+    @FXML private Label bookingID;
+    @FXML private Label roomID;
+    @FXML private Label bookingDate;
+    @FXML private TextField editStartingTime;
+    @FXML private TextField editDuration;
+    @FXML private DatePicker editDate;
+    @FXML private Button doneButton;
 
     /**
      * Updates all the information on the user page.
@@ -70,7 +47,6 @@ public class UserPageController extends AbstractSceneController {
         flowPane.getChildren().clear();
         try {
             String bookingString = ServerCommunication.getAllBookings();
-            System.out.println(bookingString);
             ArrayNode body = (ArrayNode) mapper.readTree(bookingString).get("body");
             bookingString = mapper.writeValueAsString(body);
             Booking[] bookingList = mapper.readValue(bookingString, Booking[].class);

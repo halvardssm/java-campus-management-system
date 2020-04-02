@@ -8,6 +8,9 @@ public class Booking {
     private String user;
     private Long room;
 
+    /**
+     * Creates a booking.
+     */
     public Booking() {
     }
 

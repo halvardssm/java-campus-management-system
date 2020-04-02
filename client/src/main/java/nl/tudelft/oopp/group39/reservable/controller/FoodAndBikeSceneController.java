@@ -35,7 +35,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 public class FoodAndBikeSceneController extends AbstractSceneController {
-
     @FXML
     protected VBox buildingList;
     @FXML
@@ -129,9 +128,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
             buildingName.getStyleClass().add("buildingList");
             buildingName.setId(String.valueOf(building.getId()));
             buildingList.getChildren().add(buildingName);
-
         }
-
     }
 
     /**
@@ -283,7 +280,6 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
             amount.getValueFactory().setValue(value);
             updateCart(reservable);
         }
-
     }
 
     /**

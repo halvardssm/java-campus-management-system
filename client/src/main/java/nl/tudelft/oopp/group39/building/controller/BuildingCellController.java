@@ -38,6 +38,9 @@ public class BuildingCellController extends AbstractSceneController {
         details.setText(newDetails);
     }
 
+    /**
+     * Goes to the rooms of the building the user clicks on.
+     */
     public void buildingSelected() throws IOException {
         goToRoomsScene(building);
     }

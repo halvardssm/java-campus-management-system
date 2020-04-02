@@ -99,6 +99,9 @@ public class BuildingSceneController extends AbstractSceneController implements 
         }
     }
 
+    /**
+     * Gets all the buildings from the server.
+     */
     public void getAllBuildings() {
         showBuildings(ServerCommunication.get(ServerCommunication.building));
     }
@@ -166,7 +169,6 @@ public class BuildingSceneController extends AbstractSceneController implements 
         return Collections.max(Arrays.asList(buildingsArray), new BuildingCapacityComparator())
             .getMaxCapacity();
     }
-
 
     /**
      * Sets the comboboxes to pick closing and opening time for filtering.
@@ -256,5 +258,4 @@ public class BuildingSceneController extends AbstractSceneController implements 
     public void initialize(URL location, ResourceBundle resources) {
         getAllBuildings();
     }
-
 }
