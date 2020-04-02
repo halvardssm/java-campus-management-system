@@ -14,14 +14,11 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 public class UsersDisplay extends Application {
-
     public static void main(String[] args) {
         launch(args);
     }
-
     public static Stage window;
     private static Parent root;
-
     private static Scene previous;
 
     /**
@@ -54,11 +51,19 @@ public class UsersDisplay extends Application {
         return loader.getController();
     }
 
+    /**
+     * Switch to the previous scene.
+     */
     @FXML
     public static void backToPrevious() {
         window.setScene(previous);
     }
 
+    /**
+     * The start of the application.
+     *
+     * @param primaryStage the primary stage
+     */
     @Override
     public void start(Stage primaryStage) throws IOException {
 

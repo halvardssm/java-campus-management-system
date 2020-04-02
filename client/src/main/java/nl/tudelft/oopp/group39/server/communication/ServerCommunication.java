@@ -512,5 +512,4 @@ public class ServerCommunication {
             return "Logged in";
         }
     }
-
 }
