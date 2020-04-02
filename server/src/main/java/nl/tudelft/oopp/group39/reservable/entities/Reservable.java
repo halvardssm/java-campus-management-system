@@ -42,27 +42,14 @@ public class Reservable<E extends Reservable<E, D>, D extends ReservableDto<E, D
     @OneToMany(mappedBy = MAPPED_NAME)
     private Set<ReservationAmount> reservations = new HashSet<>();
 
-    public Building getBuilding() {
-        return building;
-    }
-
-    public void setBuilding(Building building) {
-        this.building = building;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
+    /**
+     * The Reservable constructor.
+     */
     public Reservable() {
     }
 
     /**
-     * The constructor of Reservable.
+     * The Reservable constructor.
      *
      * @param id           the id
      * @param price        the price of the item
@@ -81,10 +68,56 @@ public class Reservable<E extends Reservable<E, D>, D extends ReservableDto<E, D
         getReservations().addAll(initSet(reservations));
     }
 
+    /**
+     * Gets the building of the reservable.
+     *
+     * @return the building of the reservable
+     */
+    public Building getBuilding() {
+        return building;
+    }
+
+    /**
+     * Changes the building of the reservable.
+     *
+     * @param building the new building
+     */
+    public void setBuilding(Building building) {
+        this.building = building;
+    }
+
+    /**
+     * Gets the price of the reservable.
+     *
+     * @return the price of the reservable
+     */
+    public Double getPrice() {
+        return price;
+    }
+
+    /**
+     * Changes the price of the reservable.
+     *
+     * @param price the new price
+     */
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    /**
+     * Gets the reservations for the reservable.
+     *
+     * @return a set with the reservables
+     */
     public Set<ReservationAmount> getReservations() {
         return reservations;
     }
 
+    /**
+     * Changes the reservations of the reservable.
+     *
+     * @param reservations the new set of reservations.
+     */
     public void setReservations(Set<ReservationAmount> reservations) {
         this.reservations = reservations;
     }
@@ -106,6 +139,12 @@ public class Reservable<E extends Reservable<E, D>, D extends ReservableDto<E, D
         );
     }
 
+    /**
+     * Checks whether two reservables are equal.
+     *
+     * @param o the other object
+     * @return  true if the two reservables are equal, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {

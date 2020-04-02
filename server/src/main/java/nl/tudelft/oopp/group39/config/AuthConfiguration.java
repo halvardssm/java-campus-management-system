@@ -27,13 +27,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class AuthConfiguration extends WebSecurityConfigurerAdapter {
+    @Autowired private UserService userService;
+    @Autowired private JwtFilter jwtFilter;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private JwtFilter jwtFilter;
-
+    /**
+     * Configures the authentication.
+     */
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
@@ -61,17 +60,28 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
+    /**
+     * Configures the authentication globally.
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
 
+    /**
+     * Manages the authentication.
+     */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
+    /**
+     * Encodes the password.
+     *
+     * @return the encoded password
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

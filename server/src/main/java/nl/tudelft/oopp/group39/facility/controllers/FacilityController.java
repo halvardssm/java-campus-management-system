@@ -19,29 +19,48 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(FacilityController.REST_MAPPING)
 public class FacilityController {
-
     public static final String REST_MAPPING = "/facility";
 
     @Autowired
     private FacilityService service;
 
+    /**
+     * GET endpoint to retrieve all facilities.
+     *
+     * @return a list of facilities
+     */
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listFacilities() {
         return RestResponse.create(service.listFacilities());
     }
 
+    /**
+     * POST endpoint to create a facility.
+     *
+     * @return the created facility
+     */
     @PostMapping("")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createFacility(@RequestBody Facility facility) {
         return RestResponse.create(service.createFacility(facility), null, HttpStatus.CREATED);
     }
 
+    /**
+     * GET endpoint to retrieve the facility.
+     *
+     * @return the requested facility
+     */
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> readFacility(@PathVariable Long id) {
         return RestResponse.create(service.readFacility(id));
     }
 
+    /**
+     * PUT endpoint to update the facility.
+     *
+     * @return the updated facility
+     */
     @PutMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> updateFacility(
@@ -52,7 +71,7 @@ public class FacilityController {
     }
 
     /**
-     * Doc. TODO Sven
+     * DELETE endpoint to delete the facility.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteFacility(@PathVariable Long id) {
@@ -60,5 +79,4 @@ public class FacilityController {
 
         return RestResponse.create(null, null, HttpStatus.OK);
     }
-
 }

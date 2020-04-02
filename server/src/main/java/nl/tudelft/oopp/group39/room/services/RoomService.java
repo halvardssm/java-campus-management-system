@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RoomService {
-
     @Autowired
     private RoomRepository roomRepository;
     @Autowired
@@ -23,23 +22,38 @@ public class RoomService {
     @Autowired
     private FacilityService facilityService;
 
+    /**
+     * Reads a room.
+     *
+     * @param id the room to be read
+     * @return   the requested room
+     */
     public Room readRoom(Long id) throws RoomNotFoundException {
         return roomRepository.findById(id).orElseThrow(() -> new RoomNotFoundException(id));
     }
 
+    /**
+     * Lists all rooms.
+     *
+     * @return a list of rooms
+     */
     public List<Room> listRooms() {
         return roomRepository.findAll();
     }
 
     /**
-     * Doc. TODO Sven
+     * Create a room.
+     *
+     * @return the created room
      */
     public Room createRoom(Room newRoom) {
         return roomRepository.save(newRoom);
     }
 
     /**
-     * Doc. TODO Sven
+     * Update a room.
+     *
+     * @return the updated room
      */
     public Room updateRoom(Room newRoom, Long id) throws RoomNotFoundException {
         return roomRepository.findById(id)
@@ -53,7 +67,6 @@ public class RoomService {
     }
 
     /**
-     * Doc. TODO Sven
      * Method to filter rooms.
      * Based on capacity, a room being accessible to students or not, the facilities that should
      * be present (if so their facility ids should be in the facilities array), the building name
@@ -64,7 +77,7 @@ public class RoomService {
     }
 
     /**
-     * Doc. TODO Sven
+     * Delete a room.
      */
     public Room deleteRoom(Long id) throws RoomNotFoundException {
         try {

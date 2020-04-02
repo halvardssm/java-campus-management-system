@@ -25,6 +25,9 @@ public class ReservationAmount extends AbstractEntity<ReservationAmount, Reserva
     @JoinColumn(name = Reservable.MAPPED_NAME)
     private Reservable reservable;
 
+    /**
+     * Constructor for ReservationAmount.
+     */
     public ReservationAmount() {
     }
 
@@ -46,26 +49,56 @@ public class ReservationAmount extends AbstractEntity<ReservationAmount, Reserva
         setReservable(reservable);
     }
 
+    /**
+     * Gets the amount of items in the reservation.
+     *
+     * @return the amount of items in the reservation
+     */
     public Integer getAmount() {
         return amount;
     }
 
+    /**
+     * Changes the amount of items in the reservation.
+     *
+     * @param amount the new amount
+     */
     public void setAmount(Integer amount) {
         this.amount = amount;
     }
 
+    /**
+     * Gets the reservation.
+     *
+     * @return the reservation
+     */
     public Reservation getReservation() {
         return reservation;
     }
 
+    /**
+     * Changes the reservation.
+     *
+     * @param reservation the new reservation
+     */
     public void setReservation(Reservation reservation) {
         this.reservation = reservation;
     }
 
+    /**
+     * Gets the reservable of the reservation.
+     *
+     * @return the reservable
+     */
     public Reservable getReservable() {
         return reservable;
     }
 
+    /**
+     * Changes the reservable of the reservation.
+     *
+     * @param reservable the new reservable
+     */
     public void setReservable(Reservable reservable) {
         this.reservable = reservable;
     }
@@ -85,6 +118,12 @@ public class ReservationAmount extends AbstractEntity<ReservationAmount, Reserva
         );
     }
 
+    /**
+     * Checks whether two reservationAmount's are equal.
+     *
+     * @param o the other object
+     * @return true if the two reservationAmount's are equal, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {

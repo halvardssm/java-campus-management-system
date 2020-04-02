@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(BuildingController.REST_MAPPING)
 public class BuildingController {
     public static final String REST_MAPPING = "/building";
-
     public static final String PARAM_CAPACITY = "capacity";
     public static final String PARAM_OPEN = "open";
     public static final String PARAM_CLOSED = "closed";
@@ -36,7 +35,9 @@ public class BuildingController {
     private BuildingService buildingService;
 
     /**
-     * TODO Sven.
+     * GET endpoint to retrieve all buildings.
+     *
+     * @return a list of buildings
      */
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listBuildings(
@@ -48,15 +49,13 @@ public class BuildingController {
     }
 
     /**
-     * Create building. TODO Sven
+     * POST endpoint to create a building.
      *
-     * @param building building
-     * @return building
+     * @return the created building
      */
     @PostMapping("")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createBuilding(@RequestBody BuildingDto building) {
-
         return RestResponse.create(
             buildingService.createBuilding(building.toEntity()).toDto(),
             null,
@@ -64,12 +63,22 @@ public class BuildingController {
         );
     }
 
+    /**
+     * GET endpoint to retrieve a building.
+     *
+     * @return the requested building
+     */
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> readBuilding(@PathVariable Long id) {
         return RestResponse.create(buildingService.readBuilding(id).toDto());
     }
 
+    /**
+     * PUT endpoint to update the building.
+     *
+     * @return the updated building
+     */
     @PutMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> updateBuilding(
@@ -80,10 +89,7 @@ public class BuildingController {
     }
 
     /**
-     * Delete building. TODO Sven
-     *
-     * @param id id
-     * @return nothing
+     * DELETE endpoint to delete a booking.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteBuilding(@PathVariable Long id) {
@@ -91,5 +97,4 @@ public class BuildingController {
 
         return RestResponse.create(null, null, HttpStatus.OK);
     }
-
 }

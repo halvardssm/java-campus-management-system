@@ -17,6 +17,7 @@ public class UsersDisplay extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
     public static Stage window;
     private static Parent root;
     private static Scene previous;
