@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.facility.model;
 
+import java.util.Objects;
+
 public class Facility {
     private Long id;
     private String description;
@@ -21,4 +23,16 @@ public class Facility {
         return description;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Facility facility = (Facility) o;
+        return Objects.equals(id, facility.id)
+            && Objects.equals(description, facility.description);
+    }
 }
