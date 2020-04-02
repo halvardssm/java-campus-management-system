@@ -13,6 +13,8 @@ import java.time.LocalTime;
 import java.util.TimeZone;
 import nl.tudelft.oopp.group39.auth.filters.JwtFilter;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
+import nl.tudelft.oopp.group39.booking.dao.BookingDao;
+import nl.tudelft.oopp.group39.booking.repositories.BookingRepository;
 import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.event.controllers.EventController;
@@ -33,6 +35,7 @@ import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest
@@ -78,37 +81,45 @@ public abstract class AbstractTest {
         .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
     @Autowired
-    protected UserService userService;
+    protected BikeController bikeController;
     @Autowired
-    protected JwtService jwtService;
+    protected EventController eventController;
     @Autowired
-    protected JwtFilter jwtFilter;
+    protected FoodController foodController;
+    @Autowired
+    protected ReservationController reservationController;
+    @Autowired
+    protected UserController userController;
+
+    @Autowired
+    protected BikeService bikeService;
     @Autowired
     protected BookingService bookingService;
     @Autowired
     protected EventService eventService;
     @Autowired
-    protected EventController eventController;
+    protected FoodService foodService;
     @Autowired
-    protected EventRepository eventRepository;
+    protected JwtFilter jwtFilter;
     @Autowired
-    protected UserController userController;
-    @Autowired
-    protected ReservationRepository reservationRepository;
-    @Autowired
-    protected ReservationService reservationService;
-    @Autowired
-    protected ReservationController reservationController;
-    @Autowired
-    protected ReservationAmountService reservationAmountService;
+    protected JwtService jwtService;
     @Autowired
     protected ReservableService reservableService;
     @Autowired
-    protected BikeService bikeService;
+    protected ReservationAmountService reservationAmountService;
     @Autowired
-    protected FoodService foodService;
+    protected ReservationService reservationService;
     @Autowired
-    protected BikeController bikeController;
+    protected UserService userService;
+
     @Autowired
-    protected FoodController foodController;
+    protected BookingRepository bookingRepository;
+    @Autowired
+    protected EventRepository eventRepository;
+    @Autowired
+    protected ReservationRepository reservationRepository;
+
+    @MockBean
+    protected BookingDao mockBookingDao;
+
 }
