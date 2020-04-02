@@ -34,7 +34,7 @@ public class BuildingControllerTest extends AbstractControllerTest {
         "EEMCS",
         "Mekelweg 4",
         "Faculty of Electrical Engineering, Maths and Computer Science",
-        LocalTime.of(7, 0,),
+        LocalTime.of(7, 0),
         LocalTime.of(18, 0),
         null,
         null
