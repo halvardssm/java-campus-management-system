@@ -3,6 +3,7 @@ package nl.tudelft.oopp.group39.event.entities;
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -28,8 +29,8 @@ public class Event extends AbstractEntity<Event, EventDto> {
     public static final String TABLE_NAME = "events";
     public static final String MAPPED_NAME = "event";
     public static final String COL_TITLE = "title";
-    public static final String COL_START_DATE = "startDate";
-    public static final String COL_END_DATE = "endDate";
+    public static final String COL_STARTS_AT = "startsAt";
+    public static final String COL_ENDS_AT = "endsAt";
     public static final String COL_IS_GLOBAL = "isGlobal";
     public static final String COL_USER = "user";
     public static final String COL_ROOMS = "rooms";
@@ -37,6 +38,7 @@ public class Event extends AbstractEntity<Event, EventDto> {
     private String title;
     private LocalDateTime startsAt;
     private LocalDateTime endsAt;
+    @JsonProperty(value = COL_IS_GLOBAL)
     private Boolean isGlobal;
     @ManyToOne
     @JoinColumn(name = User.MAPPED_NAME)

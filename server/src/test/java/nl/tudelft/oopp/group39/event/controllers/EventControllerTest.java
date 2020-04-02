@@ -28,14 +28,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 class EventControllerTest extends AbstractControllerTest {
-    private final Event testEvent = new Event(
-        null, "test",
-        LocalDateTime.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)),
-        LocalDateTime.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)).plusDays(1),
-        false,
-        null,
-        null
-    );
     private final User testUser = new User(
         "test",
         "test@tudelft.nl",
@@ -43,6 +35,16 @@ class EventControllerTest extends AbstractControllerTest {
         null,
         Role.ADMIN
     );
+
+    private final Event testEvent = new Event(
+        null, "test",
+        LocalDateTime.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)),
+        LocalDateTime.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)).plusDays(1),
+        false,
+        testUser,
+        null
+    );
+
     private String jwt;
 
     @BeforeEach
@@ -65,8 +67,7 @@ class EventControllerTest extends AbstractControllerTest {
         mockMvc.perform(get(REST_MAPPING))
             .andExpect(jsonPath("$.body").isArray())
             .andExpect(jsonPath("$.body", hasSize(1)))
-            .andExpect(jsonPath("$.body[0].startDate", is(testEvent.getStartsAt().toString())))
-            .andExpect(jsonPath("$.body[0].endDate", is(testEvent.getEndsAt().toString())));
+            .andExpect(jsonPath("$.body[0]." + Event.COL_TITLE, is(testEvent.getTitle())));
     }
 
     @Test
@@ -78,19 +79,18 @@ class EventControllerTest extends AbstractControllerTest {
 
         testEvent.setId(null);
 
-        String json = objectMapper.writeValueAsString(testEvent);
+        String json = objectMapper.writeValueAsString(testEvent.toDto());
 
         mockMvc.perform(post(REST_MAPPING)
             .contentType(MediaType.APPLICATION_JSON)
             .content(json)
             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartsAt().toString())))
-            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndsAt().toString())))
+            .andExpect(jsonPath("$.body." + Event.COL_TITLE, is(testEvent.getTitle())))
             .andDo((event) -> {
                 String responseString = event.getResponse().getContentAsString();
                 JsonNode productNode = new ObjectMapper().readTree(responseString);
-                testEvent.setId(productNode.get("body").get("id").longValue());
+                testEvent.setId(productNode.get("body").get(Event.COL_ID).longValue());
             });
     }
 
@@ -100,12 +100,12 @@ class EventControllerTest extends AbstractControllerTest {
             .andExpect(jsonPath("$.body").isMap())
             .andExpect(jsonPath("$.body." + Event.COL_TITLE, is(testEvent.getTitle())))
             .andExpect(jsonPath(
-                "$.body." + Event.COL_START_DATE,
-                is(testEvent.getStartsAt().toString())
+                "$.body." + Event.COL_STARTS_AT,
+                is(testEvent.getStartsAt().format(Constants.FORMATTER_DATE_TIME))
             ))
             .andExpect(jsonPath(
-                "$.body." + Event.COL_END_DATE,
-                is(testEvent.getEndsAt().toString())
+                "$.body." + Event.COL_ENDS_AT,
+                is(testEvent.getEndsAt().format(Constants.FORMATTER_DATE_TIME))
             ))
             .andExpect(jsonPath("$.body." + Event.COL_USER, is(testEvent.getUser().getUsername())))
             .andExpect(jsonPath("$.body." + Event.COL_IS_GLOBAL, is(testEvent.getGlobal())));
@@ -114,7 +114,7 @@ class EventControllerTest extends AbstractControllerTest {
     @Test
     void updateEvent() throws Exception {
         testEvent.setTitle("test2");
-        String json = objectMapper.writeValueAsString(testEvent);
+        String json = objectMapper.writeValueAsString(testEvent.toDto());
 
         mockMvc.perform(put(REST_MAPPING + "/" + testEvent.getId())
             .contentType(MediaType.APPLICATION_JSON)
@@ -122,8 +122,7 @@ class EventControllerTest extends AbstractControllerTest {
             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartsAt().toString())))
-            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndsAt().toString())));
+            .andExpect(jsonPath("$.body." + Event.COL_TITLE, is(testEvent.getTitle())));
 
         testEvent.setTitle("test");
     }

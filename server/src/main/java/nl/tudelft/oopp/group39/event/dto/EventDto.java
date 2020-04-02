@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.event.dto;
 
 import static nl.tudelft.oopp.group39.config.Utils.initList;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ public class EventDto extends AbstractDto<Event, EventDto> {
     private String title;
     private LocalDateTime startsAt;
     private LocalDateTime endsAt;
+    @JsonProperty(value = Event.COL_IS_GLOBAL)
     private Boolean isGlobal;
     private String user;
     private List<Long> rooms = new ArrayList<>();
