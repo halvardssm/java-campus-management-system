@@ -30,6 +30,7 @@ public class Event extends AbstractEntity<Event, EventDto> {
     public static final String COL_TITLE = "title";
     public static final String COL_START_DATE = "startDate";
     public static final String COL_END_DATE = "endDate";
+    public static final String COL_IS_GLOBAL = "isGlobal";
     public static final String COL_USER = "user";
     public static final String COL_ROOMS = "rooms";
 

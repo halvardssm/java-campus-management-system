@@ -95,7 +95,7 @@ public class EventController {
         try {
             Set<Room> rooms = new HashSet<>();
 
-            if (event.getRooms() != null) {
+            if (event.getRooms() != null && event.getRooms().size() > 0) {
                 Map<String, String> roomMap = new HashMap<>();
 
                 roomMap.put(

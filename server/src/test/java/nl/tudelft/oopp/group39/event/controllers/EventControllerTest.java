@@ -98,8 +98,17 @@ class EventControllerTest extends AbstractControllerTest {
     void readEvent() throws Exception {
         mockMvc.perform(get(REST_MAPPING + "/" + testEvent.getId()))
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartsAt().toString())))
-            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndsAt().toString())));
+            .andExpect(jsonPath("$.body." + Event.COL_TITLE, is(testEvent.getTitle())))
+            .andExpect(jsonPath(
+                "$.body." + Event.COL_START_DATE,
+                is(testEvent.getStartsAt().toString())
+            ))
+            .andExpect(jsonPath(
+                "$.body." + Event.COL_END_DATE,
+                is(testEvent.getEndsAt().toString())
+            ))
+            .andExpect(jsonPath("$.body." + Event.COL_USER, is(testEvent.getUser().getUsername())))
+            .andExpect(jsonPath("$.body." + Event.COL_IS_GLOBAL, is(testEvent.getGlobal())));
     }
 
     @Test
