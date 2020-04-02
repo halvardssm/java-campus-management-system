@@ -52,7 +52,7 @@ public class BuildingControllerTest extends AbstractControllerTest {
 
     @BeforeEach
     void setUp() {
-        userService.createUser(testUser);
+        User user = userService.createUser(testUser);
         jwt = jwtService.encrypt(testUser);
 
         Building building = buildingService.createBuilding(testBuilding);
@@ -79,7 +79,7 @@ public class BuildingControllerTest extends AbstractControllerTest {
 
     @Test
     void deleteAndCreateBuilding() throws Exception {
-        mockMvc.perform(delete(BuildingController.REST_MAPPING + "/" + testBuilding.getId())
+        mockMvc.perform(delete(REST_MAPPING + "/" + testBuilding.getId())
             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
@@ -88,7 +88,7 @@ public class BuildingControllerTest extends AbstractControllerTest {
 
         String json = objectMapper.writeValueAsString(testBuilding);
 
-        mockMvc.perform(post(BuildingController.REST_MAPPING)
+        mockMvc.perform(post(REST_MAPPING)
             .contentType(MediaType.APPLICATION_JSON)
             .content(json)
             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
@@ -97,12 +97,17 @@ public class BuildingControllerTest extends AbstractControllerTest {
             .andExpect(jsonPath("$.body.location", is(testBuilding.getLocation())))
             .andExpect(jsonPath("$.body.description", is(testBuilding.getDescription())))
             .andExpect(jsonPath("$.body.open", is(testBuilding.getOpen().toString())))
-            .andExpect(jsonPath("$.body.closed", is(testBuilding.getClosed().toString())));
+            .andExpect(jsonPath("$.body.closed", is(testBuilding.getClosed().toString())))
+            .andDo((building) -> {
+                String responseString = building.getResponse().getContentAsString();
+                JsonNode productNode = new ObjectMapper().readTree(responseString);
+                testBuilding.setId(productNode.get("body").get("id").longValue());
+            });
     }
 
     @Test
     void readBuilding() throws Exception {
-        mockMvc.perform(get(BuildingController.REST_MAPPING + "/" + testBuilding.getId()))
+        mockMvc.perform(get(REST_MAPPING + "/" + testBuilding.getId()))
             .andExpect(jsonPath("$.body").isMap())
             .andExpect(jsonPath("$.body.name", is(testBuilding.getName())))
             .andExpect(jsonPath("$.body.location", is(testBuilding.getLocation())))
@@ -116,7 +121,7 @@ public class BuildingControllerTest extends AbstractControllerTest {
         testBuilding.setName("asdasd");
         String json = objectMapper.writeValueAsString(testBuilding);
 
-        mockMvc.perform(put(BuildingController.REST_MAPPING + "/" + testBuilding.getId())
+        mockMvc.perform(put(REST_MAPPING + "/" + testBuilding.getId())
             .contentType(MediaType.APPLICATION_JSON)
             .content(json)
             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))

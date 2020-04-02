@@ -85,7 +85,7 @@ public class BookingControllerTest extends AbstractControllerTest {
 
         String json = objectMapper.writeValueAsString(testBooking);
 
-        mockMvc.perform(post(BookingController.REST_MAPPING)
+        mockMvc.perform(post(REST_MAPPING)
             .contentType(MediaType.APPLICATION_JSON)
             .content(json)
             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
@@ -101,7 +101,7 @@ public class BookingControllerTest extends AbstractControllerTest {
     }
     @Test
     void readBookingTest() throws Exception {
-        mockMvc.perform(get(BookingController.REST_MAPPING + "/" + testBooking.getId()))
+        mockMvc.perform(get(REST_MAPPING + "/" + testBooking.getId()))
             .andExpect(jsonPath("$.body").isMap())
             .andExpect(jsonPath("$.body.date", is(testBooking.getDate().toString())))
             .andExpect(jsonPath("$.body.startTime", is(testBooking.getStartTime().toString())))
@@ -113,7 +113,7 @@ public class BookingControllerTest extends AbstractControllerTest {
         testBooking.setDate(date.plusDays(2));
         String json = objectMapper.writeValueAsString(testBooking);
 
-        mockMvc.perform(put(BookingController.REST_MAPPING + "/" + testBooking.getId())
+        mockMvc.perform(put(REST_MAPPING + "/" + testBooking.getId())
             .contentType(MediaType.APPLICATION_JSON)
             .content(json)
             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
