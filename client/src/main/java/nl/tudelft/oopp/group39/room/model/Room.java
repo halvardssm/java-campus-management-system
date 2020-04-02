@@ -19,8 +19,10 @@ public class Room {
     private ArrayNode bookings;
     private Long building;
 
+    /**
+     * Creates a room.
+     */
     public Room() {
-
     }
 
     /**
@@ -57,38 +59,83 @@ public class Room {
         this.bookings = bookings;
     }
 
+    /**
+     * Gets the id of the room.
+     *
+     * @return the room id
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Gets the building where the room is in.
+     *
+     * @return the building where the room is in
+     */
     public Long getBuilding() {
         return building;
     }
 
+    /**
+     * Gets the name of the of the room.
+     *
+     * @return the name of the room
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the capacity of the room.
+     *
+     * @return the room capacity
+     */
     public Integer getCapacity() {
         return capacity;
     }
 
+    /**
+     * Checks whether the room is only for staff, or also for students.
+     *
+     * @return true if the room is only for staff, false otherwise
+     */
     public Boolean isOnlyStaff() {
         return onlyStaff;
     }
 
+    /**
+     * Gets the description of the room.
+     *
+     * @return the description of the room
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Gets the facilities that the room has to offer.
+     *
+     * @return an ArrayNode with all the facilities
+     */
     public ArrayNode getFacilities() {
         return facilities;
     }
 
+    /**
+     * Gets the events of the room.
+     *
+     * @return an ArrayNode with all the events
+     */
     public ArrayNode getEvents() {
         return events;
     }
 
+    /**
+     * Gets the bookings of the room.
+     *
+     * @return an ArrayNode of all the bookings
+     */
     public ArrayNode getBookings() {
         return bookings;
     }
@@ -130,5 +177,4 @@ public class Room {
         String buildingAsString = mapper.writeValueAsString(body);
         return mapper.readValue(buildingAsString, Building.class);
     }
-
 }
