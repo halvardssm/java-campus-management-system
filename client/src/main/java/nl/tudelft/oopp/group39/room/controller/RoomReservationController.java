@@ -1,12 +1,12 @@
 package nl.tudelft.oopp.group39.room.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -144,51 +144,31 @@ public class RoomReservationController extends AbstractSceneController {
                     bookedTimes.add(endTime);
                 }
             }
-            String eventFilters = "user=" + user.getUsername() + "&startsAt=" + date + "T00:00:00"
-                + "&endsAt=" + date + "T23:59:59";
-            Event[] events = getEvents(eventFilters);
-            if (events.length != 0) {
+            String eventFilters = "user=" + user.getUsername() + "&date=" + date;
+            Set<Event> events = getEvents(eventFilters);
+            if (events.size() != 0) {
                 for (Event event : events) {
-                    if (event.getStartTime().toLocalDate().isEqual(event.getEndTime().toLocalDate())) {
+                    if (event.getStartTime().toLocalDate()
+                        .isEqual(event.getEndTime().toLocalDate())
+                    ) {
                         int start = event.getStartTime().getHour();
                         int end = event.getEndTime().getHour();
                         bookedTimes.add(start);
                         bookedTimes.add(end);
-                    } else {
+                    } else if (event.getStartTime().toLocalDate().isEqual(LocalDate.parse(date))) {
                         int start = event.getStartTime().getHour();
                         bookedTimes.add(start);
                         bookedTimes.add(23);
+                    } else if (event.getEndTime().toLocalDate().isEqual(LocalDate.parse(date))) {
+                        int end = event.getEndTime().getHour();
+                        bookedTimes.add(0);
+                        bookedTimes.add(end);
                     }
                 }
             }
-            eventFilters = "user=" + user.getUsername() + "&startsAt=" + date + "T00:00:00" + "&endsAt=" + date + "T23:59:59";
-            events = getEvents(eventFilters);
-            if (events.length != 0) {
-                for (Event event : events) {
-                    int end = event.getEndTime().getHour();
-                    bookedTimes.add(0);
-                    bookedTimes.add(end);
-                }
-            }
-
         }
         System.out.println(bookedTimes);
         return bookedTimes;
-    }
-
-    public Booking[] getBookings(String filters) throws JsonProcessingException {
-        String userBookings = ServerCommunication.getBookings(filters);
-        ArrayNode bodyBookings = (ArrayNode) mapper.readTree(userBookings).get("body");
-        String userBookingString = mapper.writeValueAsString(bodyBookings);
-        return mapper.readValue(userBookingString, Booking[].class);
-    }
-
-    public Event[] getEvents(String filters) throws JsonProcessingException {
-        String eventString = ServerCommunication.getEvents(filters);
-        System.out.println(eventString);
-        ArrayNode body = (ArrayNode) mapper.readTree(eventString).get("body");
-        eventString = mapper.writeValueAsString(body);
-        return mapper.readValue(eventString, Event[].class);
     }
 
     /**
@@ -242,26 +222,18 @@ public class RoomReservationController extends AbstractSceneController {
         int closed = Integer.parseInt(building.getClosed().toString().split(":")[0]);
         List<Integer> times = new ArrayList<>();
         for (int i = timeAsInt + 1; i < timeAsInt + 5; i++) {
-            if (bookedTimes.size() != 0) {
-                int smallest = bookedTimes.get(0);
-                int biggest = bookedTimes.get(1);
-                for (int j = 0; j < bookedTimes.size(); j = j + 2) {
-                    if (bookedTimes.get(j) < smallest) {
-                        smallest = bookedTimes.get(j);
+            if (i <= closed) {
+                times.add(i);
+            }
+        }
+        if (bookedTimes.size() != 0) {
+            for (int j = 0; j < bookedTimes.size(); j = j + 2) {
+                for (int i = timeAsInt + 1; i < timeAsInt + 5; i++) {
+                    if (i > bookedTimes.get(j) && i <= bookedTimes.get(j + 1)) {
+                        times.remove((Integer) i);
                     }
-                    if (bookedTimes.get(j + 1) > biggest) {
-                        biggest = bookedTimes.get(j + 1);
-                    }
                 }
-                if (i <= smallest && i <= closed) {
-                    times.add(i);
-                } else if (i > biggest && i <= closed) {
-                    times.add(i);
-                }
-            } else {
-                if (i <= closed) {
-                    times.add(i);
-                }
+
             }
         }
         for (int t = timeAsInt + 2; t < timeAsInt + 5; t++) {
@@ -331,22 +303,26 @@ public class RoomReservationController extends AbstractSceneController {
             }
         });
         date.setValue(LocalDate.now());
-        updateStartSlots(date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        updateEndSlots(
-            date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-            fromTime.getItems().get(0));
+        updateStartSlots(date.getValue().format(dateFormatter));
+        updateEndSlots(date.getValue().format(dateFormatter), building.getOpen().toString());
         date.setOnAction(event -> {
             try {
-                updateStartSlots(date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                updateStartSlots(date.getValue().format(dateFormatter));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
         });
         fromTime.setOnAction(event -> {
             try {
+                String fromValue;
+                if (fromTime.getSelectionModel().isEmpty()) {
+                    fromValue = building.getOpen().toString();
+                } else {
+                    fromValue = fromTime.getValue();
+                }
                 updateEndSlots(
                     date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-                    fromTime.getValue()
+                    fromValue
                 );
             } catch (JsonProcessingException e) {
                 e.printStackTrace();

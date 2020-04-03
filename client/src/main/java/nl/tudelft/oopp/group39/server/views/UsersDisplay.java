@@ -84,8 +84,6 @@ public class UsersDisplay extends Application {
         URL xmlUrl = getClass().getResource("/building/buildingListView.fxml");
         loader.setLocation(xmlUrl);
         root = loader.load();
-        AbstractSceneController controller = loader.getController();
-        controller.getEventList();
 
         window = primaryStage;
         int width = Integer.parseInt(properties.getProperty("pref.width"));

@@ -11,40 +11,49 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.event.model.Event;
+import nl.tudelft.oopp.group39.reservable.model.Bike;
+import nl.tudelft.oopp.group39.reservation.model.Reservation;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 public class CalendarController extends AbstractSceneController {
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+    /**
+     * Creates calendarView of events, bookings and food/bike orders and shows it.
+     *
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public void createCalendar() throws JsonProcessingException {
         CalendarView calendarView = new CalendarView();
+        calendarView.setShowAddCalendarButton(false);
         Calendar bookingsCalendar = new Calendar("My bookings");
         bookingsCalendar.setReadOnly(true);
         bookingsCalendar.clear();
         bookingsCalendar.setStyle(Calendar.Style.STYLE2);
-        Calendar eventsCalendar = new Calendar("Public events");
+        Calendar eventsCalendar = new Calendar("Public Events");
         eventsCalendar.setReadOnly(true);
         eventsCalendar.clear();
         eventsCalendar.setStyle(Calendar.Style.STYLE5);
-        Calendar myEventsCalendar = new Calendar("My events");
+        Calendar myEventsCalendar = new Calendar("My Events");
         myEventsCalendar.setReadOnly(false);
         myEventsCalendar.clear();
-
+        Calendar myReservables = new Calendar("My Food and Bike Orders");
+        myReservables.setStyle(Calendar.Style.STYLE3);
+        myReservables.setReadOnly(true);
+        myReservables.clear();
         CalendarSource calendarSource = new CalendarSource("My calendars");
-        calendarSource.getCalendars().addAll(bookingsCalendar, eventsCalendar, myEventsCalendar);
+        calendarSource.getCalendars()
+            .addAll(bookingsCalendar, eventsCalendar, myEventsCalendar, myReservables);
         calendarView.getCalendarSources().clear();
         calendarView.getCalendarSources().add(calendarSource);
         addBookings(bookingsCalendar);
-        addEvents(eventsCalendar);
+        addPublicEvents(eventsCalendar);
         addPersonalEvents(myEventsCalendar);
+        addReservables(myReservables);
         myEventsCalendar.addEventHandler(event -> {
             try {
                 handleEvent(event);
@@ -55,8 +64,14 @@ public class CalendarController extends AbstractSceneController {
         window.setCenter(calendarView);
     }
 
+    /**
+     * Adds bookings to the bookings calendar.
+     *
+     * @param calendar the bookings calendar to which the bookings need to be added.
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public void addBookings(Calendar calendar) throws JsonProcessingException {
-        Booking[] bookings = getBookings();
+        Booking[] bookings = getBookings("user=" + user.getUsername());
         for (Booking booking : bookings) {
             Interval interval =
                 new Interval(
@@ -65,41 +80,90 @@ public class CalendarController extends AbstractSceneController {
                     LocalDate.parse(booking.getDate()),
                     LocalTime.parse(booking.getEndTime())
                 );
-            Entry<String> entry = new Entry<>(booking.getRoomName(), interval);
-            entry.setLocation(booking.getLocation());
+            Entry<String> entry = new Entry<>(booking.getRoomObj().getName(), interval);
+            entry.setLocation(booking.getRoomObj().getBuildingObject().getLocation());
             calendar.addEntry(entry);
         }
     }
 
-    public void addEvents(Calendar calendar) throws JsonProcessingException {
-        Set<Event> events = getEventList();
-        for (Event event : events) {
-            Interval interval = new Interval(event.getStartTime(), event.getEndTime());
-            Entry<String> entry = new Entry<>(event.getTitle(), interval);
-            entry.setFullDay(true);
-            calendar.addEntry(entry);
-        }
+    /**
+     * Adds events to the public events calendar.
+     *
+     * @param calendar the events calendar to which the events need to be added
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public void addPublicEvents(Calendar calendar) throws JsonProcessingException {
+        Set<Event> events = getEvents("isGlobal=true");
+        addEvents(calendar, events);
     }
 
+    /**
+     * Adds personal events to the personal events calender.
+     *
+     * @param calendar the personal events calendar to which the events need to be added
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public void addPersonalEvents(Calendar calendar) throws JsonProcessingException {
-        String eventsString = ServerCommunication.getEvents("user=" + user.getUsername() + "&isGlobal=false");
-        ArrayNode body = (ArrayNode) mapper.readTree(eventsString).get("body");
-        eventsString = mapper.writeValueAsString(body);
-        Event[] events = mapper.readValue(eventsString, Event[].class);
+        Set<Event> events = getEvents("user=" + user.getUsername() + "&isGlobal=false");
+        addEvents(calendar, events);
+    }
+
+    /**
+     * Adds given set of events to given calendar.
+     *
+     * @param calendar the calendar the events need to be added to
+     * @param events   set of events that need to be added
+     */
+    public void addEvents(Calendar calendar, Set<Event> events) {
         for (Event event : events) {
             Interval interval = new Interval(event.getStartTime(), event.getEndTime());
             Entry<String> entry = new Entry<>(event.getTitle(), interval);
+            if (event.isFullDay()) {
+                entry.setFullDay(true);
+            }
             calendar.addEntry(entry);
         }
     }
 
-    public Booking[] getBookings() throws JsonProcessingException {
-        String bookingsString = ServerCommunication.getBookings("user=" + user.getUsername());
-        ArrayNode body = (ArrayNode) mapper.readTree(bookingsString).get("body");
-        bookingsString = mapper.writeValueAsString(body);
-        return mapper.readValue(bookingsString, Booking[].class);
+    /**
+     * Adds the food and bike orders to the reservables calendar.
+     *
+     * @param calendar the reservables calendar to which the orders need to be added
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public void addReservables(Calendar calendar) throws JsonProcessingException {
+        String reservationString = ServerCommunication.getReservation("user=" + user.getUsername());
+        System.out.println(reservationString);
+        ArrayNode body = (ArrayNode) mapper.readTree(reservationString).get("body");
+        reservationString = mapper.writeValueAsString(body);
+        Reservation[] reservations = mapper.readValue(reservationString, Reservation[].class);
+        for (Reservation reservation : reservations) {
+            if (reservation.getTimeOfDelivery() != null && reservation.getRoom() == null) {
+                Bike bike = ServerCommunication.getBike(reservation.getReservable());
+                String location = bike.getBuildingObj().getName();
+                Interval interval =
+                    new Interval(reservation.getPickupTime(), reservation.getDeliveryTime());
+                Entry<String> entry = new Entry<>(bike.getBikeType() + " Bike", interval);
+                entry.setLocation(location);
+                calendar.addEntry(entry);
+            } else if (reservation.getRoom() != null) {
+                Interval interval =
+                    new Interval(reservation.getPickupTime(), reservation.getPickupTime());
+                Room room = ServerCommunication.getRoom(reservation.getRoom());
+                String location = room.getBuildingObject().getName() + room.getName();
+                Entry<String> entry = new Entry<>("Food order", interval);
+                entry.setLocation(location);
+                calendar.addEntry(entry);
+            }
+        }
     }
 
+    /**
+     * Handles a CalendarEvent.
+     *
+     * @param e CalendarEvent that happened
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public void handleEvent(CalendarEvent e) throws JsonProcessingException {
         if (e.isEntryAdded()) {
             System.out.println(e.getEntry());
@@ -111,50 +175,62 @@ public class CalendarController extends AbstractSceneController {
         }
     }
 
+    /**
+     * Changes an event in the database.
+     *
+     * @param event the event that was fired.
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public void changeEntry(CalendarEvent event) throws JsonProcessingException {
         Entry<?> entry = event.getEntry();
         String title = event.getOldText() == null ? entry.getTitle() : event.getOldText();
-        LocalDateTime startsAt = event.getOldInterval() == null ? entry.getStartAsLocalDateTime() : event.getOldInterval().getStartDateTime();
-        LocalDateTime endsAt = event.getOldInterval() == null ? entry.getEndAsLocalDateTime() : event.getOldInterval().getEndDateTime();
+        LocalDateTime startsAt =
+            event.getOldInterval() == null ? entry.getStartAsLocalDateTime()
+                : event.getOldInterval().getStartDateTime();
+        LocalDateTime endsAt =
+            event.getOldInterval() == null ? entry.getEndAsLocalDateTime()
+                : event.getOldInterval().getEndDateTime();
         String filters = "title=" + title.replace(" ", "%20")
             + "&startsAt=" + startsAt
             + "&endsAt=" + endsAt
             + "&user=" + user.getUsername()
             + "&isGlobal=false";
         System.out.println(filters);
-        Event oldEvent = ServerCommunication.getEvent(filters)[0];
+        Event oldEvent = ServerCommunication.getEvents(filters)[0];
+        String start;
+        String end;
+        if (entry.isFullDay()) {
+            start = entry.getStartDate().format(dateFormatter) + " 00:00:00";
+            end = entry.getEndDate().format(dateFormatter) + " 23:59:59";
+        } else {
+            start = entry.getStartAsLocalDateTime().format(dateTimeFormatter);
+            end = entry.getEndAsLocalDateTime().format(dateTimeFormatter);
+        }
         Event newEvent = new Event(
             entry.getTitle(),
-            entry.getStartAsLocalDateTime().format(formatter),
-            entry.getEndAsLocalDateTime().format(formatter),
+            start,
+            end,
             false,
             user.getUsername(),
             null);
         System.out.println(ServerCommunication.updateEvent(newEvent, oldEvent.getId()));
     }
 
+    /**
+     * Adds an event to the database.
+     *
+     * @param entry the entry to be added
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public void addEntry(Entry<?> entry) throws JsonProcessingException {
-        System.out.println(entry.getTitle() + entry.getStartAsLocalDateTime() + entry.getEndAsLocalDateTime());
         Event event = new Event(
             entry.getTitle(),
-            entry.getStartAsLocalDateTime().format(formatter),
-            entry.getEndAsLocalDateTime().format(formatter),
+            entry.getStartAsLocalDateTime().format(dateTimeFormatter),
+            entry.getEndAsLocalDateTime().format(dateTimeFormatter),
             false,
             user.getUsername(),
             null);
-        System.out.println(ServerCommunication.addEvent(event));
-    }
-
-    public List<Long> getAllRooms() throws JsonProcessingException {
-        String roomsString = ServerCommunication.get(ServerCommunication.room);
-        ArrayNode body = (ArrayNode) mapper.readTree(roomsString).get("body");
-        roomsString = mapper.writeValueAsString(body);
-        Room[] rooms = mapper.readValue(roomsString, Room[].class);
-        List<Long> allRooms = new ArrayList<>();
-        for (Room room : rooms) {
-            allRooms.add(room.getId());
-        }
-        return allRooms;
+        ServerCommunication.addEvent(event);
     }
 
 }

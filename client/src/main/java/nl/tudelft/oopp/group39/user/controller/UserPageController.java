@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.group39.user.controller;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalTime;
@@ -14,39 +13,50 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 public class UserPageController extends AbstractSceneController {
-    @FXML private FlowPane flowPane;
-    @FXML private AnchorPane newBooking;
-    @FXML private Label accountName;
-    @FXML private Label accountRole;
-    @FXML private Label accountEmail;
-    @FXML private Label bookingID;
-    @FXML private Label roomID;
-    @FXML private Label bookingDate;
-    @FXML private TextField editStartingTime;
-    @FXML private TextField editDuration;
-    @FXML private DatePicker editDate;
-    @FXML private Button doneButton;
+    @FXML
+    private FlowPane flowPane;
+    @FXML
+    private GridPane newBooking;
+    @FXML
+    private Label accountName;
+    @FXML
+    private Label accountRole;
+    @FXML
+    private Label accountEmail;
+    @FXML
+    private Label bookingID;
+    @FXML
+    private Label roomID;
+    @FXML
+    private Label bookingDate;
+    @FXML
+    private TextField editStartingTime;
+    @FXML
+    private TextField editDuration;
+    @FXML
+    private DatePicker editDate;
+    @FXML
+    private Button doneButton;
 
     /**
      * Updates all the information on the user page.
      */
     public void showBookings() {
-        accountName.setText(AbstractSceneController.user.getUsername());
-        accountRole.setText(AbstractSceneController.user.getRole());
-        accountEmail.setText(AbstractSceneController.user.getEmail());
+        accountName.setText(user.getUsername());
+        accountRole.setText(user.getRole());
+        accountEmail.setText(user.getEmail());
 
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         flowPane.getChildren().clear();
         try {
-            String bookingString = ServerCommunication.getAllBookings();
+            String bookingString = ServerCommunication.getBookings("user=" + user.getUsername());
             ArrayNode body = (ArrayNode) mapper.readTree(bookingString).get("body");
             bookingString = mapper.writeValueAsString(body);
             Booking[] bookingList = mapper.readValue(bookingString, Booking[].class);
@@ -100,7 +110,7 @@ public class UserPageController extends AbstractSceneController {
     /**
      * Deletes the booking after a 'warning' has been fired.
      */
-    public void deleteBooking() {
+    public void deleteBooking() throws IOException {
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setContentText("Are you sure you want to delete the booking?");
         confirmation.setTitle("Delete");
@@ -109,6 +119,7 @@ public class UserPageController extends AbstractSceneController {
         Optional<ButtonType> popUpWindow = confirmation.showAndWait();
         if (popUpWindow.isPresent() && popUpWindow.get() == ButtonType.OK) {
             ServerCommunication.removeBooking(bookingID.getText());
+            goToUserPageScene();
         }
     }
 
@@ -137,8 +148,8 @@ public class UserPageController extends AbstractSceneController {
             LocalTime startTime = LocalTime.parse(editStartingTime.getText());
             LocalTime endTime = LocalTime.parse(editDuration.getText());
 
-            if (startTime.getMinute() != 00 || startTime.getSecond() != 00
-                || endTime.getMinute() != 00 || endTime.getSecond() != 00) {
+            if (startTime.getMinute() != 0 || startTime.getSecond() != 0
+                || endTime.getMinute() != 0 || endTime.getSecond() != 0) {
                 createAlert("You can only book rooms starting at the hour");
                 return;
             }
@@ -164,15 +175,15 @@ public class UserPageController extends AbstractSceneController {
                 }
 
                 buildingOpenTimeString = ServerCommunication
-                        .getTheBuilding(ServerCommunication
-                                .getRoom(booking.getRoom())
-                                .getBuilding())
-                        .getOpen();
+                    .getTheBuilding(ServerCommunication
+                        .getRoom(booking.getRoom())
+                        .getBuilding())
+                    .getOpen().toString();
                 buildingCloseTimeString = ServerCommunication
-                        .getTheBuilding(ServerCommunication
-                                .getRoom(booking.getRoom())
-                                .getBuilding())
-                        .getClosed();
+                    .getTheBuilding(ServerCommunication
+                        .getRoom(booking.getRoom())
+                        .getBuilding())
+                    .getClosed().toString();
             }
 
             LocalTime buildingOpenTime = LocalTime.parse(buildingOpenTimeString);
@@ -193,6 +204,7 @@ public class UserPageController extends AbstractSceneController {
                 user.getUsername(),
                 roomID.getText());
             ServerCommunication.removeBooking(bookingID.getText());
+            goToUserPageScene();
 
         } catch (DateTimeParseException | NullPointerException e) {
             createAlert("Invalid Time String");

@@ -1,13 +1,9 @@
 package nl.tudelft.oopp.group39.booking.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.Objects;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
-
-import java.util.Objects;
-import javax.print.DocFlavor;
-import nl.tudelft.oopp.group39.room.model.Room;
-import nl.tudelft.oopp.group39.user.model.User;
 
 public class Booking {
     private Integer id;
@@ -103,23 +99,12 @@ public class Booking {
     }
 
     /**
-     * Gets the name of the room that is booked.
+     * Gets the room object that is booked.
      *
-     * @return the name of the room
+     * @return the room object
      */
-    public String getRoomName() throws JsonProcessingException {
-        Room roomObject = ServerCommunication.getRoom(room);
-        return roomObject.getName();
-    }
-
-    /**
-     * Gets the location of the room that is booked.
-     *
-     * @return the location of the room
-     */
-    public String getLocation() throws JsonProcessingException {
-        Room roomObject = ServerCommunication.getRoom(room);
-        return roomObject.getBuildingObject().getLocation();
+    public Room getRoomObj() throws JsonProcessingException {
+        return ServerCommunication.getRoom(room);
     }
 
     @Override

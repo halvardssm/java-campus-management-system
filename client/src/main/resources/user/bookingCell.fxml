@@ -5,36 +5,42 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="test" fx:id="newBooking" prefHeight="150.0" prefWidth="436.0"
-            xmlns="http://javafx.com/javafx/10.0.2-internal"
-            fx:controller="nl.tudelft.oopp.group39.user.controller.UserPageController">
-    <children>
-        <Label fx:id="rName" layoutX="23.0" layoutY="24.0" style="-fx-underline: true;" text="Room Name">
-            <font>
-                <Font size="19.0"/>
-            </font>
-        </Label>
-        <Label fx:id="rDate" layoutX="23.0" layoutY="68.0" text="Start time: "/>
-        <Label fx:id="rDuration" layoutX="23.0" layoutY="98.0" text="End time: "/>
-        <Button id="bookingCell" layoutX="150.0" layoutY="122.0" mnemonicParsing="false" onAction="#deleteBooking"
-                prefHeight="26.0" prefWidth="50.0" styleClass="bookingCell" text="Delete"/>
-        <Label fx:id="bookingID" layoutX="175.0" layoutY="16.0" opacity="0.0" text="booking ID"/>
-        <Button id="bookingCell" layoutX="99.0" layoutY="123.0" mnemonicParsing="false" onAction="#editBooking"
-                styleClass="bookingCell" text="Edit"/>
-        <TextField fx:id="editStartingTime" layoutX="82.0" layoutY="63.0" opacity="0.0" prefHeight="26.0"
-                   prefWidth="91.0"/>
-        <TextField fx:id="editDuration" layoutX="72.0" layoutY="94.0" opacity="0.0" prefHeight="26.0" prefWidth="91.0"/>
-        <Button fx:id="doneButton" layoutX="267.0" layoutY="94.0" mnemonicParsing="false" onAction="#finishEditBooking"
-                opacity="0.0" text="Done"/>
-        <Label fx:id="roomID" layoutX="267.0" layoutY="29.0" opacity="0.0" text="room ID"/>
-        <DatePicker fx:id="editDate" layoutX="231.0" layoutY="63.0" opacity="0.0" prefHeight="26.0" prefWidth="106.0"/>
-        <Button id="bookingCell" layoutX="211.0" layoutY="122.0" mnemonicParsing="false" onAction="#viewRoom"
-                styleClass="bookingCell" text="View room"/>
-        <Label fx:id="bookingDate" layoutX="204.0" layoutY="68.0" text="Date:"/>
-    </children>
+<GridPane xmlns:fx="http://javafx.com/fxml/1" hgap="10" vgap="10" id="test" fx:id="newBooking" prefHeight="150.0"
+          prefWidth="436.0"
+          xmlns="http://javafx.com/javafx/10.0.2-internal"
+          fx:controller="nl.tudelft.oopp.group39.user.controller.UserPageController">
     <stylesheets>
         <URL value="@/style/style.css"/>
     </stylesheets>
-</AnchorPane>
+    <Label fx:id="rName" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="3" text="Room Name">
+        <font>
+            <Font size="19.0"/>
+        </font>
+    </Label>
+    <Label fx:id="rDate" GridPane.columnIndex="0" GridPane.rowIndex="1" text="Start time: "/>
+    <Label fx:id="bookingDate" GridPane.columnIndex="1" GridPane.rowIndex="1" text="Date:"/>
+    <Label fx:id="rDuration" GridPane.columnIndex="0" GridPane.rowIndex="2" text="End time: "/>
+
+    <Button id="bookingCell" GridPane.columnIndex="0" GridPane.rowIndex="3" mnemonicParsing="false"
+            onAction="#editBooking"
+            styleClass="bookingCell" text="Edit"/>
+    <Button id="bookingCell" GridPane.columnIndex="1" GridPane.rowIndex="3" mnemonicParsing="false"
+            onAction="#deleteBooking"
+            prefHeight="26.0" prefWidth="50.0" styleClass="bookingCell" text="Delete"/>
+    <Button id="bookingCell" GridPane.columnIndex="2" GridPane.rowIndex="3" mnemonicParsing="false" onAction="#viewRoom"
+            styleClass="bookingCell" text="View room"/>
+    <Label fx:id="bookingID" opacity="0"/>
+
+    <TextField fx:id="editStartingTime" promptText="Start time" GridPane.columnIndex="0" GridPane.rowIndex="1"
+               opacity="0.0" prefHeight="26.0"
+               prefWidth="91.0"/>
+    <DatePicker fx:id="editDate" GridPane.columnIndex="1" GridPane.rowIndex="1" opacity="0.0" prefWidth="106.0"/>
+    <TextField fx:id="editDuration" promptText="End time" GridPane.columnIndex="0" GridPane.rowIndex="2" opacity="0.0"
+               prefHeight="26.0" prefWidth="91.0"/>
+    <Button fx:id="doneButton" GridPane.columnIndex="1" GridPane.rowIndex="2" mnemonicParsing="false"
+            onAction="#finishEditBooking"
+            opacity="0.0" text="Done"/>
+    <Label fx:id="roomID" opacity="0"/>
+</GridPane>

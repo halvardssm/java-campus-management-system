@@ -301,9 +301,10 @@
     -fx-background-color: rgba(139, 162, 167, 0.3);
 }
 
-#bookingCell {
+.bookingCell {
     -fx-background-color: none;
     -fx-text-fill: #00A6D6;
+    -fx-padding: 0;
 }
 
 .roomSelector {

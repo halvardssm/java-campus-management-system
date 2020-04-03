@@ -205,16 +205,16 @@ public class DbSeeder {
      * Initiates the database with events.
      */
     private void initEvents() {
-        LocalDateTime today = LocalDateTime.now();
-        LocalDateTime tomorrow = today.plusDays(1);
+        LocalDateTime today = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0));
+        LocalDateTime tomorrow = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
         Building b1 = buildingService.readBuilding(1L);
         Room room = new Room(
             null,
             b1,
-            "test",
-            0,
+            "room 123",
+            23,
             false,
-            null,
+            "some room",
             null,
             new HashSet<>(),
             new HashSet<>()
@@ -224,7 +224,7 @@ public class DbSeeder {
             null, "Special day",
             today,
             tomorrow,
-            false,
+            true,
             userService.readUser("admin"),
             rooms
         ));
