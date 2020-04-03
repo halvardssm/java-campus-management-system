@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.controllers.admin.event;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
@@ -16,11 +17,12 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.models.Event;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.event.model.Event;
 
 public class EventEditController extends EventListController implements Initializable {
 
+    private ObjectMapper mapper = new ObjectMapper();
     private Event cEvent;
     @FXML
     private Button backbtn;
@@ -57,8 +59,8 @@ public class EventEditController extends EventListController implements Initiali
         ObservableList<String> data = FXCollections.observableArrayList(list);
 
         typeBox.setItems(data);
-        startField.setPromptText(cEvent.getStartDate());
-        endField.setPromptText(cEvent.getEndDate());
+        startField.setPromptText(cEvent.getStartDate().toString());
+        endField.setPromptText(cEvent.getEndDate().toString());
     }
 
     /**
@@ -80,11 +82,11 @@ public class EventEditController extends EventListController implements Initiali
         String type = typeObj == null ? cEvent.getType() : typeObj.toString();
         LocalDate start = startField.getValue();
         boolean startNull = start == null;
-        String startDate = startNull ? cEvent.getStartDate() : start.toString();
+        String startDate = startNull ? cEvent.getStartDate().toString() : start.toString();
         LocalDate end = endField.getValue();
         boolean endNull = end == null;
-        String endDate = endNull ? cEvent.getEndDate() : end.toString();
-        String id = Integer.toString(cEvent.getId());
+        String endDate = endNull ? cEvent.getEndDate().toString() : end.toString();
+        String id = Long.toString(cEvent.getId());
         checkValidity(id, startDate, endDate, startNull, endNull, type);
     }
     /**
@@ -94,7 +96,7 @@ public class EventEditController extends EventListController implements Initiali
     public void createEventFinal(String id, String type, String startDate, String endDate) throws IOException {
         ServerCommunication.updateEvent(id, type, startDate, endDate);
         getBack();
-        createAlert("Updated: " + cEvent.getType());
+//        createAlert("Updated: " + cEvent.getType());
     }
     /**
      * Makes sure that values put into event are valid.

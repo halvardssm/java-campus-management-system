@@ -1,10 +1,13 @@
 package nl.tudelft.oopp.group39.room.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import java.io.IOException;
+//import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
@@ -18,6 +21,17 @@ public class Room {
     private ArrayNode events;
     private ArrayNode bookings;
     private Long building;
+
+    @JsonProperty("building")
+    public void setBuildingId(JsonNode building) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        if(building.canConvertToLong()) {
+            this.building = building.asLong();
+            return;
+        }
+        Building nBuilding = mapper.reader().forType(Building.class).readValue(building);
+        this.building = nBuilding.getId();
+    }
 
     public Room() {
 
@@ -47,7 +61,6 @@ public class Room {
         ArrayNode bookings
     ) {
         this.id = id;
-        this.building = buildingId;
         this.name = name;
         this.capacity = capacity;
         this.onlyStaff = onlyStaff;

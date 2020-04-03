@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.controllers.admin.event;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
@@ -18,12 +19,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.admin.AdminPanelController;
-import nl.tudelft.oopp.group39.models.Event;
+import nl.tudelft.oopp.group39.event.model.Event;
 
 public class EventListController extends AdminPanelController implements Initializable {
 
+
+    private ObjectMapper mapper = new ObjectMapper();
     @FXML
     private Button backbtn;
     @FXML private TableView<Event> eventTable;
@@ -138,9 +141,9 @@ public class EventListController extends AdminPanelController implements Initial
      */
 
     public void deleteEvent(Event event) throws IOException {
-        String id = Integer.toString(event.getId());
+        String id = Long.toString(event.getId());
         ServerCommunication.removeEvent(id);
-        createAlert("removed: " + event.getType());
+//        createAlert("removed: " + event.getType());
         loadAllEvents();
     }
 

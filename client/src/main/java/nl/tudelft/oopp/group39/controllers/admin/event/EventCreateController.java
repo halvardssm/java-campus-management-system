@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.controllers.admin.event;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
@@ -16,11 +17,14 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.models.Event;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.event.model.Event;
+
+
 
 public class EventCreateController extends EventListController implements Initializable {
 
+    private ObjectMapper mapper = new ObjectMapper();
     private String eventType;
     private Event cEvent;
     @FXML
@@ -88,7 +92,7 @@ public class EventCreateController extends EventListController implements Initia
     public void createEventFinal(String type, String startDate, String endDate) throws IOException {
         ServerCommunication.addEvent(type, startDate, endDate);
         getBack();
-        createAlert("Created an event of type: " + type);
+//        createAlert("Created an event of type: " + type);
     }
     /**
      * Makes sure that values put into event are valid.

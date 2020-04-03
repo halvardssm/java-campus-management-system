@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.controllers.admin.booking;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
@@ -23,19 +24,25 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
+//import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.controllers.admin.event.EventListController;
-import nl.tudelft.oopp.group39.models.Booking;
+//import nl.tudelft.oopp.group39.models.Booking;
 import nl.tudelft.oopp.group39.models.Building;
-import nl.tudelft.oopp.group39.models.Room;
-import nl.tudelft.oopp.group39.models.User;
+import nl.tudelft.oopp.group39.room.model.Room;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.user.model.User;
+//import nl.tudelft.oopp.group39.models.Room;
+//import nl.tudelft.oopp.group39.models.User;
 
 public class BookingCreateController extends EventListController implements Initializable {
 
+
+    private ObjectMapper mapper = new ObjectMapper();
     private Booking booking;
     private String date;
     private Room room;
-    private HashMap<String, Integer> RoomIdByNameMap = new HashMap<>();
+    private HashMap<String, Long> RoomIdByNameMap = new HashMap<>();
     private HashMap<String, String> UserIdByNameMap = new HashMap<>();
     private Building building;
     private String start;
@@ -107,7 +114,7 @@ public class BookingCreateController extends EventListController implements Init
         Room[] roomList = list;
         List<String> dataList = new ArrayList<>();
         for (Room room : roomList) {
-            RoomIdByNameMap.put(room.getName(), (int)room.getId());
+            RoomIdByNameMap.put(room.getName(), room.getId());
             dataList.add(room.getName());
         }
         this.room = roomList[0];
@@ -186,7 +193,8 @@ public class BookingCreateController extends EventListController implements Init
 
     public List<Integer> getBookedTimes(String date) throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String bookings = ServerCommunication.getBookings((int) room.getId(), date);
+        String roomDate = "room=" + room.getId() + "&date=" + date;
+        String bookings = ServerCommunication.getBookings(roomDate);
         ArrayNode body = (ArrayNode) mapper.readTree(bookings).get("body");
         String bookingString = mapper.writeValueAsString(body);
         Booking[] bookingsList = mapper.readValue(bookingString, Booking[].class);
@@ -218,7 +226,7 @@ public class BookingCreateController extends EventListController implements Init
 
     public void createBooking() throws IOException {
         Object roomObj = roomBox.getValue();
-        String roomId = roomObj == null ? Integer.toString((int)room.getId()) : Integer.toString(RoomIdByNameMap.get(roomObj.toString()));
+        String roomId = roomObj == null ? Long.toString(room.getId()) : Long.toString(RoomIdByNameMap.get(roomObj.toString()));
         Object userObj = userBox.getValue();
         boolean userNull = userObj == null;
         if (userNull) {

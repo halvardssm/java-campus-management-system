@@ -12,7 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Building;
 
 public class BuildingEditController extends BuildingListController implements Initializable {
@@ -101,7 +101,7 @@ public class BuildingEditController extends BuildingListController implements In
         String id = Integer.toString(building.getId());
         ServerCommunication.updateBuilding(name, location, desc, reservationStartString, reservationEndString, id);
         getBack();
-        createAlert("Updated: " + building.getName());
+//        createAlert("Updated: " + building.getName());
 
         nameFieldNew.clear();
         locationFieldNew.clear();

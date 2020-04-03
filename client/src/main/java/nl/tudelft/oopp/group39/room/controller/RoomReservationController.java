@@ -16,12 +16,16 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javax.swing.text.html.ImageView;
+//import nl.tudelft.oopp.group39.communication.ServerCommunication;
+//import nl.tudelft.oopp.group39.models.Booking;
 import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.building.model.Building;
+//import nl.tudelft.oopp.group39.models.Room;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 import nl.tudelft.oopp.group39.server.views.UsersDisplay;
+//import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 
 public class RoomReservationController extends AbstractSceneController {

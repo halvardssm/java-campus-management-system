@@ -2,9 +2,10 @@ package nl.tudelft.oopp.group39.building.model;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Set;
-import nl.tudelft.oopp.group39.room.model.Room;
 
+import java.util.Set;
+//import nl.tudelft.oopp.group39.models.Room;
+import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.room.model.RoomCapacityComparator;
 
 public class Building {
@@ -93,10 +94,11 @@ public class Building {
      * @return the max capacity of a room in the building
      */
     public int getMaxCapacity() {
-        if (rooms.size() == 0) {
-            return 0;
-        }
-        Room max = Collections.max(rooms, new RoomCapacityComparator());
-        return max.getCapacity();
+//        if (rooms.size() == 0) {
+//            return 0;
+//        }
+//        Room max = (Room) Collections.max(rooms, new RoomCapacityComparator());
+//        return max.getCapacity();
+        return 0;
     }
 }

@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.controllers.admin.booking;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
@@ -23,19 +24,23 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.booking.model.Booking;
+import nl.tudelft.oopp.group39.room.model.Room;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.admin.event.EventListController;
-import nl.tudelft.oopp.group39.models.Booking;
+//import nl.tudelft.oopp.group39.models.Booking;
 import nl.tudelft.oopp.group39.models.Building;
-import nl.tudelft.oopp.group39.models.Room;
-import nl.tudelft.oopp.group39.models.User;
+import nl.tudelft.oopp.group39.user.model.User;
+//import nl.tudelft.oopp.group39.models.Room;
+//import nl.tudelft.oopp.group39.models.User;
 
 public class BookingEditController extends EventListController implements Initializable {
 
+    private ObjectMapper mapper = new ObjectMapper();
     private Booking booking;
     private String date;
     private Room room;
-    private HashMap<String, Integer> RoomIdByNameMap = new HashMap<>();
+    private HashMap<String, Long> RoomIdByNameMap = new HashMap<>();
     private HashMap<String, String> UserIdByNameMap = new HashMap<>();
     private Building building;
 
@@ -109,7 +114,7 @@ public class BookingEditController extends EventListController implements Initia
         Room[] roomList = list;
         List<String> dataList = new ArrayList<>();
         for (Room room : roomList) {
-            RoomIdByNameMap.put(room.getName(), (int)room.getId());
+            RoomIdByNameMap.put(room.getName(), room.getId());
             dataList.add(room.getName());
         }
         ObservableList<String> data = FXCollections.observableArrayList(dataList);
@@ -189,7 +194,8 @@ public class BookingEditController extends EventListController implements Initia
 
     public List<Integer> getBookedTimes(String date) throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        String bookings = ServerCommunication.getBookings((int) room.getId(), date);
+        String roomDate = "room=" + room.getId() + "&date=" + date;
+        String bookings = ServerCommunication.getBookings(roomDate);
         System.out.println(bookings);
         ArrayNode body = (ArrayNode) mapper.readTree(bookings).get("body");
         String bookingString = mapper.writeValueAsString(body);
@@ -220,7 +226,7 @@ public class BookingEditController extends EventListController implements Initia
 
     public void editBooking() throws IOException {
         Object roomObj = roomBox.getValue();
-        String roomId = roomObj == null ? Integer.toString(booking.getRoom()) : Integer.toString(RoomIdByNameMap.get(roomObj.toString()));
+        String roomId = roomObj == null ? Long.toString(booking.getRoom()) : Long.toString(RoomIdByNameMap.get(roomObj.toString()));
         Object userObj = userBox.getValue();
         String user = userObj == null ? booking.getUser() : UserIdByNameMap.get(userObj.toString());
         LocalDate reservationDateValue = reservationDate.getValue();

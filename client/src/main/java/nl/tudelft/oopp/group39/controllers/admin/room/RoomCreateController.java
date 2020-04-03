@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.controllers.admin.room;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
@@ -18,11 +19,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Building;
 
 public class RoomCreateController extends RoomListController implements Initializable {
 
+    private ObjectMapper mapper = new ObjectMapper();
     private HashMap<String, Integer> buildingsByName = new HashMap();
     private HashMap<Integer, Building> buildingById = new HashMap();
     @FXML
@@ -125,7 +127,7 @@ public class RoomCreateController extends RoomListController implements Initiali
         onlyStaff = Boolean.toString((onlyStaff).contentEquals("Only staff members"));
         ServerCommunication.addRoom(buildingId, roomCap, roomDesc, onlyStaff, name);
         getBack();
-        createAlert("Added: " + name);
+//        createAlert("Added: " + name);
     }
 
 }

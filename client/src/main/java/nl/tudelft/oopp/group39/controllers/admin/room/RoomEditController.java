@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.controllers.admin.room;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
@@ -18,12 +19,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Building;
-import nl.tudelft.oopp.group39.models.Room;
+import nl.tudelft.oopp.group39.room.model.Room;
 
 public class RoomEditController extends RoomListController implements Initializable {
 
+    private ObjectMapper mapper = new ObjectMapper();
     private Room room;
     private Building building;
     private HashMap<String, Integer> buildingsByName = new HashMap();
@@ -64,7 +66,7 @@ public class RoomEditController extends RoomListController implements Initializa
         String b = ServerCommunication.get(ServerCommunication.building);
         ObservableList<String> data = getData(b);
         roomBuildingIdField.setItems(data);
-        String roomName = this.buildingsById.get((int) room.getBuilding());
+        String roomName = this.buildingsById.get(Integer.valueOf(Long.toString(room.getBuilding())));
         roomBuildingIdField.setPromptText(roomName);
         ObservableList<String> dataOptions = FXCollections.observableArrayList(options);
         roomOnlyStaffField.setItems(dataOptions);
@@ -89,17 +91,17 @@ public class RoomEditController extends RoomListController implements Initializa
         String name = roomNameField.getText();
         name = name.contentEquals("") ? room.getName() : name;
         Object building = roomBuildingIdField.getValue();
-        String buildingId = building == null ? Integer.toString((int) this.room.getBuilding()) : Integer.toString(this.buildingsByName.get(building.toString()));
+        String buildingId = building == null ? Long.toString(this.room.getBuilding()) : Integer.toString(this.buildingsByName.get(building.toString()));
         String roomCap = roomCapacityField.getText();
         String roomDesc = roomDescriptionField.getText();
-        String roomID = Integer.toString((int) room.getId());
+        String roomID = Long.toString(room.getId());
         Object onlyStaffObj = roomOnlyStaffField.getValue();
         String onlyStaff = onlyStaffObj == null ? getOnlyStaff(room) : (String) onlyStaffObj;
         onlyStaff = Boolean.toString((onlyStaff).contentEquals("Only staff members"));
         System.out.println(building + " " + buildingId + " " + this.room.getBuilding());
         ServerCommunication.updateRoom(buildingId, roomCap, roomDesc, roomID, onlyStaff, name);
         getBack();
-        createAlert("Updated: " + room.getName());
+//        createAlert("Updated: " + room.getName());
     }
     /**
      * Gets a list of buildings.
