@@ -9,9 +9,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.controllers.MainSceneController;
+import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
+//import nl.tudelft.oopp.group39.controllers.MainSceneController;
 
-public class MainAdminController extends MainSceneController implements Initializable {
+public class MainAdminController extends AbstractSceneController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 

@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.controllers.admin.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
@@ -13,12 +14,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.admin.room.RoomListController;
-import nl.tudelft.oopp.group39.models.User;
+import nl.tudelft.oopp.group39.user.model.User;
 
 public class UserEditController extends RoomListController implements Initializable {
 
+    private ObjectMapper mapper = new ObjectMapper();
     private User user;
     @FXML
     private Button backbtn;
@@ -78,7 +80,7 @@ public class UserEditController extends RoomListController implements Initializa
         email = name + "@" + email;
         ServerCommunication.updateUserAdmin(user.getUsername(), email, role);
         getBack();
-        createAlert("Updated: " + user.getEmail());
+//        createAlert("Updated: " + user.getEmail());
     }
 
 }

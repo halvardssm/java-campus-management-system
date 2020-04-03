@@ -1,11 +1,15 @@
-package nl.tudelft.oopp.group39.models;
+package nl.tudelft.oopp.group39.room.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import java.io.IOException;
+//import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.building.model.Building;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 public class Room {
     private Long id;

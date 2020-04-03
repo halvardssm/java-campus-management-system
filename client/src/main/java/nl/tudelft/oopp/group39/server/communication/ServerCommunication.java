@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.communication;
+package nl.tudelft.oopp.group39.server.communication;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -8,9 +8,13 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import nl.tudelft.oopp.group39.controllers.MainSceneController;
-import nl.tudelft.oopp.group39.models.Room;
-import nl.tudelft.oopp.group39.models.User;
+//import nl.tudelft.oopp.group39.controllers.MainSceneController;
+//import nl.tudelft.oopp.group39.models.Room;
+//import nl.tudelft.oopp.group39.models.User;
+import nl.tudelft.oopp.group39.building.model.Building;
+import nl.tudelft.oopp.group39.room.model.Room;
+import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
+import nl.tudelft.oopp.group39.user.model.User;
 
 public class ServerCommunication {
 
@@ -65,6 +69,21 @@ public class ServerCommunication {
             .GET().uri(URI.create(url + building + id)).build();
         return httpRequest(request);
     }
+    /**
+     * Retrieves building filtered on id. The difference between the other getBuilding method
+     * is that this method returns it as a building object.
+     *
+     * @param id of wanted building
+     * @return the building.
+     */
+    public static Building getTheBuilding(long id) throws JsonProcessingException {
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET().uri(URI.create(url + building + id)).build();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        JsonNode roomJson = mapper.readTree(httpRequest(request)).get("body");
+        String roomAsString = mapper.writeValueAsString(roomJson);
+        return mapper.readValue(roomAsString, Building.class);
+    }
 
     /**
      * Retrieves rooms from the server based on building id.
@@ -83,11 +102,11 @@ public class ServerCommunication {
     /**
      * Retrieves the rooms with given filters.
      *
-     * @param filters String representation of all the selected filters
+     * @param input String representation of all the selected filters
      * @return the body of a get request to the server.
      */
-    public static String getRooms(String filters) {
-        System.out.println(url + "room?" + filters);
+    public static String getRooms(String input) {
+        System.out.println(url + "room?" + input);
         HttpRequest request = HttpRequest.newBuilder()
             .GET()
             .uri(URI.create(url + "room?" + input))
@@ -441,8 +460,7 @@ public class ServerCommunication {
     /**
      * Retrieves all bookings from the server.
      *
-     * @param roomId the ID of the room
-     * @param date   the chosen date where you want to get the bookings from
+     * @param filters the ID of the room
      * @return returns an HTTP request
      */
     public static String getBookings(String filters) {

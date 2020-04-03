@@ -10,8 +10,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.models.User;
+//import nl.tudelft.oopp.group39.communication.ServerCommunication;
+//import nl.tudelft.oopp.group39.models.User;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
+import nl.tudelft.oopp.group39.user.model.User;
 
 public class SignupController extends AbstractSceneController {
     @FXML

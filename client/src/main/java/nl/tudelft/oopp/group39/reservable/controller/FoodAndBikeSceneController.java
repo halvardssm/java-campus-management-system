@@ -27,12 +27,18 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.models.Bike;
-import nl.tudelft.oopp.group39.models.Building;
-import nl.tudelft.oopp.group39.models.Food;
-import nl.tudelft.oopp.group39.models.Reservable;
-import nl.tudelft.oopp.group39.models.Room;
+//import nl.tudelft.oopp.group39.communication.ServerCommunication;
+//import nl.tudelft.oopp.group39.models.Bike;
+import nl.tudelft.oopp.group39.building.model.Building;
+import nl.tudelft.oopp.group39.reservable.model.Bike;
+import nl.tudelft.oopp.group39.reservable.model.Food;
+import nl.tudelft.oopp.group39.reservable.model.Reservable;
+import nl.tudelft.oopp.group39.room.model.Room;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
+//import nl.tudelft.oopp.group39.models.Food;
+//import nl.tudelft.oopp.group39.models.Reservable;
+//import nl.tudelft.oopp.group39.models.Room;
 
 public class FoodAndBikeSceneController extends AbstractSceneController {
 
@@ -461,15 +467,15 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
         System.out.println(reservations);
         ArrayNode body = (ArrayNode) mapper.readTree(reservations).get("body");
         String reservationString = mapper.writeValueAsString(body);
-        Reservation[] reservationsArray = mapper.readValue(reservationString, Reservation[].class);
-        for (Reservation reservation : reservationsArray) {
-            int startTime =
-                Integer.parseInt(reservation.getTimeOfPickup().split(" ")[1].split(":")[0]);
-            bookedBikeTimes.add(startTime);
-            int endTime =
-                Integer.parseInt(reservation.getTimeOfDelivery().split(" ")[1].split(":")[0]);
-            bookedBikeTimes.add(endTime);
-        }
+//        Reservation[] reservationsArray = mapper.readValue(reservationString, Reservation[].class);
+//        for (Reservation reservation : reservationsArray) {
+//            int startTime =
+//                Integer.parseInt(reservation.getTimeOfPickup().split(" ")[1].split(":")[0]);
+//            bookedBikeTimes.add(startTime);
+//            int endTime =
+//                Integer.parseInt(reservation.getTimeOfDelivery().split(" ")[1].split(":")[0]);
+//            bookedBikeTimes.add(endTime);
+//        }
         System.out.println(bookedBikeTimes);
     }
 

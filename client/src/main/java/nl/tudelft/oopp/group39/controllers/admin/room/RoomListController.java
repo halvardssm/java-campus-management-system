@@ -3,6 +3,7 @@ package nl.tudelft.oopp.group39.controllers.admin.room;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
@@ -29,16 +30,17 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.admin.AdminPanelController;
 import nl.tudelft.oopp.group39.models.Building;
-import nl.tudelft.oopp.group39.models.Facility;
-import nl.tudelft.oopp.group39.models.Room;
+import nl.tudelft.oopp.group39.facility.model.Facility;
+import nl.tudelft.oopp.group39.room.model.Room;
 
 public class RoomListController extends AdminPanelController implements Initializable {
     /**
      * TODO Sven
      */
+    private ObjectMapper mapper = new ObjectMapper();
     @FXML
     private Button backbtn;
     @FXML
@@ -61,8 +63,8 @@ public class RoomListController extends AdminPanelController implements Initiali
     private TableColumn<Room, Room> updateCol = new TableColumn<>("Update");
     private HashMap<String, Integer> buildingsByName = new HashMap();
     private HashMap<Integer, String> buildingsById = new HashMap();
-    private HashMap<String, Integer> facilitiesByName = new HashMap();
-    private HashMap<Integer, String> facilitiesById = new HashMap();
+    private HashMap<String, Long> facilitiesByName = new HashMap();
+    private HashMap<Long, String> facilitiesById = new HashMap();
     @FXML
     private ComboBox roomBuildingIdField;
     @FXML
@@ -226,9 +228,9 @@ public class RoomListController extends AdminPanelController implements Initiali
      */
 
     public void deleteRoom(Room room) throws IOException {
-        String id = Integer.toString((int) room.getId());
+        String id = Long.toString(room.getId());
         ServerCommunication.removeRoom(id);
-        createAlert("removed: " + room.getName());
+//        createAlert("removed: " + room.getName());
         loadRooms();
     }
     /**
@@ -290,8 +292,8 @@ public class RoomListController extends AdminPanelController implements Initiali
     public List<String> getFacilityNames(List<Facility> facilities) {
         List<String> a = new ArrayList<>();
         for (Facility facility : facilities) {
-            this.facilitiesByName.put(facility.getDescription(), (int) facility.getId());
-            this.facilitiesById.put((int) facility.getId(), facility.getDescription());
+            this.facilitiesByName.put(facility.getDescription(), facility.getId());
+            this.facilitiesById.put(facility.getId(), facility.getDescription());
             a.add(facility.getDescription());
         }
         return a;

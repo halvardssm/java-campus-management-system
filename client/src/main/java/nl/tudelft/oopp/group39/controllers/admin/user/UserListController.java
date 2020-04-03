@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.controllers.admin.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
@@ -17,13 +18,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.admin.AdminPanelController;
-import nl.tudelft.oopp.group39.models.User;
+import nl.tudelft.oopp.group39.user.model.User;
 
 
 public class UserListController extends AdminPanelController implements Initializable {
 
+    private ObjectMapper mapper = new ObjectMapper();
     private String lastSelectedRole;
     private String lastSelectedName;
     /**
@@ -181,7 +183,7 @@ public class UserListController extends AdminPanelController implements Initiali
     public void deleteUser(User user) throws IOException {
         String id = user.getUsername();
         ServerCommunication.removeUser(id);
-        createAlert("removed: " + user.getUsername());
+//        createAlert("removed: " + user.getUsername());
         loadUsersStandard();
     }
     /**

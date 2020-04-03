@@ -19,10 +19,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
+//import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.controllers.admin.AdminPanelController;
-import nl.tudelft.oopp.group39.models.Booking;
-import nl.tudelft.oopp.group39.models.Room;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+//import nl.tudelft.oopp.group39.models.Booking;
+//import nl.tudelft.oopp.group39.models.Room;
 
 public class BookingListController extends AdminPanelController implements Initializable {
     @FXML

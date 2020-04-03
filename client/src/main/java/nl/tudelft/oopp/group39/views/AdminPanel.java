@@ -1,5 +1,7 @@
 package nl.tudelft.oopp.group39.views;
 
+import java.io.FileInputStream;
+import java.util.Properties;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,21 +10,31 @@ import javafx.scene.Scene;
 import java.io.IOException;
 import javafx.stage.Stage;
 import java.net.URL;
-import nl.tudelft.oopp.group39.controllers.MainSceneController;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
+//import nl.tudelft.oopp.group39.controllers.MainSceneController;
 
 public class AdminPanel extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        Properties properties = new Properties();
+        properties.load(new FileInputStream("client/src/main/resources/program.properties"));
+        ServerCommunication.url = properties.getProperty("connection.url") + ":"
+            + properties.getProperty("connection.port") + "/";
+
         FXMLLoader loader = new FXMLLoader();
         URL xmlUrl = getClass().getResource("/admin/AdminPanel.fxml");
         loader.setLocation(xmlUrl);
-        Parent root = loader.load();
+        root = loader.load();
+        AbstractSceneController controller = loader.getController();
+        controller.getEventList();
 
-        Scene scene = new Scene(root, 900, 650);
         window = primaryStage;
-        primaryStage.setTitle("Admin Panel");
-        primaryStage.setScene(scene);
+        int width = Integer.parseInt(properties.getProperty("pref.width"));
+        int height = Integer.parseInt(properties.getProperty("pref.height"));
+        primaryStage.setScene(new Scene(root, width, height));
+        primaryStage.setTitle("Campus Management");
         primaryStage.show();
     }
 
@@ -51,7 +63,7 @@ public class AdminPanel extends Application {
      * @throws IOException if there is something wrong
      */
     @FXML
-    public static MainSceneController sceneControllerHandler(String name) throws IOException {
+    public static AbstractSceneController sceneControllerHandler(String name) throws IOException {
         System.out.println("Scene changing...");
 
         FXMLLoader loader = new FXMLLoader(AdminPanel.class.getResource(name));

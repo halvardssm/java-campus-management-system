@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.controllers.admin.building;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
@@ -16,13 +17,16 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
+//import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.admin.AdminPanelController;
 import nl.tudelft.oopp.group39.models.Building;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 
 public class BuildingListController extends AdminPanelController implements Initializable {
 
+
+    private ObjectMapper mapper = new ObjectMapper();
     @FXML
     private Button backbtn;
     @FXML
@@ -192,7 +196,7 @@ public class BuildingListController extends AdminPanelController implements Init
     public void deleteBuilding(Building building) throws IOException {
         String id = Integer.toString(building.getId());
         ServerCommunication.removeBuilding(id);
-        createAlert("removed: " + building.getName());
+//        createAlert("removed: " + building.getName());
         loadAllBuildings();
     }
     /**

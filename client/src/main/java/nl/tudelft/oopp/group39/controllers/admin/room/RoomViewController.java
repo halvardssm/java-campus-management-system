@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.controllers.admin.room;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
@@ -15,13 +16,15 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
+//import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Building;
-import nl.tudelft.oopp.group39.models.Facility;
-import nl.tudelft.oopp.group39.models.Room;
+import nl.tudelft.oopp.group39.facility.model.Facility;
+import nl.tudelft.oopp.group39.room.model.Room;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 public class RoomViewController extends RoomListController implements Initializable {
 
+    private ObjectMapper mapper = new ObjectMapper();
     private Room room;
     private Building building;
     private HashMap<String, Integer> buildingsByName = new HashMap();

@@ -20,11 +20,15 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.models.Building;
-import nl.tudelft.oopp.group39.models.Facility;
-import nl.tudelft.oopp.group39.models.Room;
-import nl.tudelft.oopp.group39.views.UsersDisplay;
+//import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.facility.model.Facility;
+import nl.tudelft.oopp.group39.building.model.Building;
+import nl.tudelft.oopp.group39.room.model.Room;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
+//import nl.tudelft.oopp.group39.models.Facility;
+//import nl.tudelft.oopp.group39.models.Room;
+//import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 public class RoomSceneController extends AbstractSceneController {
 
@@ -169,7 +173,7 @@ public class RoomSceneController extends AbstractSceneController {
 
         String roomDescription = roomDescriptionField.getText();
 
-        createAlert(ServerCommunication.addRoom(buildingId, roomCapacity, roomDescription));
+//        createAlert(ServerCommunication.addRoom(buildingId, roomCapacity, roomDescription));
     }
 
     /**
@@ -188,13 +192,13 @@ public class RoomSceneController extends AbstractSceneController {
 
         String roomReservations = updateRoomField.getText();
 
-        createAlert(ServerCommunication.updateRoom(
-            buildingId,
-            roomCap,
-            roomDesc,
-            roomID,
-            roomReservations
-        ));
+//        createAlert(ServerCommunication.updateRoom(
+//            buildingId,
+//            roomCap,
+//            roomDesc,
+//            roomID,
+//            roomReservations
+//        ));
     }
 
     /**

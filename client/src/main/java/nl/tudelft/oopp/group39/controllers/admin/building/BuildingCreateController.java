@@ -15,7 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 public class BuildingCreateController extends BuildingListController implements Initializable {
 
@@ -70,7 +70,7 @@ public class BuildingCreateController extends BuildingListController implements 
         String reservationEndString = reservationEndValue == null ? end : reservationEndValue.toString() + ":00";
 
         ServerCommunication.addBuilding(name, location, desc, reservationStartString, reservationEndString);
-        createAlert("Added a new building.");
+//        createAlert("Added a new building.");
         getBack();
         nameFieldNew.clear();
         locationFieldNew.clear();
