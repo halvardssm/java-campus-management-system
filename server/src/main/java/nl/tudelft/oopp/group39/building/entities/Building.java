@@ -35,7 +35,7 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
     private LocalTime closed;
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
     private Set<Room> rooms = new HashSet<>();
-    @OneToMany(mappedBy = MAPPED_NAME) //TODO change to reservable id
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER) //TODO change to reservable id
     private Set<Reservable> reservables = new HashSet<>();
 
     /**

@@ -37,8 +37,7 @@ public class RoomServiceTest extends AbstractTest {
 
     @AfterEach
     void tearDown() {
-        System.out.println((int) testRoom.getId());
-        roomService.deleteRoom((int) testRoom.getId());
+        roomService.deleteRoom(testRoom.getId());
     }
 
     @Test
@@ -52,7 +51,7 @@ public class RoomServiceTest extends AbstractTest {
 
     @Test
     void deleteAndCreateRoomTest() {
-        roomService.deleteRoom((int) testRoom.getId());
+        roomService.deleteRoom(testRoom.getId());
 
         assertEquals(new ArrayList<>(), roomService.listRooms());
 
@@ -74,7 +73,7 @@ public class RoomServiceTest extends AbstractTest {
     void updateRoomTest() {
         testRoom.setCapacity(50);
 
-        Room room = roomService.updateRoom(testRoom, (int) testRoom.getId());
+        Room room = roomService.updateRoom(testRoom, testRoom.getId());
 
         assertEquals(testRoom, room);
 

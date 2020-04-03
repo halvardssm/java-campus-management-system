@@ -28,15 +28,17 @@ public class BuildingTest extends AbstractTest {
     @BeforeEach
     void testBuilding() {
         roomService.createRoom(new Room(
+            null,
             building1,
             "Lecture Hall Ampere",
             50,
             false,
             "Lecture hall in EEMCS",
             null,
-            null));
-
-        rooms.add(roomService.readRoom(1));
+            null,
+            null
+        ));
+        rooms.add(roomService.readRoom(1L));
 
         this.name = "EEMCS";
         this.location = "Mekelweg 4";
@@ -46,14 +48,15 @@ public class BuildingTest extends AbstractTest {
         this.rooms.addAll(initSet(rooms));
         this.reservables.addAll(initSet(reservables));
         this.building1 = new Building(
-            name, location, description,
+            null, name, location, description,
             open, closed, rooms, reservables
         );
         this.building2 = new Building(
-            name, location, description,
+            null, name, location, description,
             open, closed, rooms, reservables
         );
         this.building3 = new Building(
+            null,
             "Drebbelweg",
             "Drebbelweg 5",
             "Drebbelweg",

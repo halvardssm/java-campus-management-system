@@ -14,13 +14,15 @@ import org.junit.jupiter.api.Test;
 
 public class BuildingServiceTest extends AbstractTest {
     private final Building testBuilding = new Building(
+        null,
         "EEMCS",
         "Mekelweg 4",
         "Faculty of Electrical Engineering, Maths and Computer Science",
         LocalTime.of(7, 0),
         LocalTime.of(18, 0),
         null,
-        null);
+        null
+    );
 
     @BeforeEach
     void setUp() {
@@ -30,8 +32,9 @@ public class BuildingServiceTest extends AbstractTest {
 
     @AfterEach
     void tearDown() {
-        buildingService.deleteBuilding((int) testBuilding.getId());
+        buildingService.deleteBuilding(testBuilding.getId());
     }
+
 
     @Test
     void listBuildingsTest() {
@@ -42,7 +45,7 @@ public class BuildingServiceTest extends AbstractTest {
 
     @Test
     void deleteAndCreateBuildingTest() {
-        buildingService.deleteBuilding((int) testBuilding.getId());
+        buildingService.deleteBuilding(testBuilding.getId());
 
         assertEquals(new ArrayList<>(), buildingService.listBuildings(new HashMap<>()));
 
