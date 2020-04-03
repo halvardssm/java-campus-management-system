@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import nl.tudelft.oopp.group39.building.dto.BuildingDto;
 import nl.tudelft.oopp.group39.building.entities.Building;
+import nl.tudelft.oopp.group39.building.exceptions.BuildingNotFoundException;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.config.Utils;
@@ -56,27 +57,52 @@ public class BuildingController {
     @PostMapping("")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createBuilding(@RequestBody BuildingDto building) {
-
-        return RestResponse.create(
-            buildingService.createBuilding(building.toEntity()).toDto(),
-            null,
-            HttpStatus.CREATED
-        );
+        try {
+            return RestResponse.create(
+                buildingService.createBuilding(building.toEntity()).toDto(),
+                null,
+                HttpStatus.CREATED
+            );
+        } catch (Exception e) {
+            return RestResponse.error(e);
+        }
     }
 
+    /**
+     * Read building. TODO Sven
+     * @param id id
+     * @return
+     */
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> readBuilding(@PathVariable Long id) {
-        return RestResponse.create(buildingService.readBuilding(id).toDto());
+        try {
+            return RestResponse.create(buildingService.readBuilding(id).toDto());
+        } catch (Exception e) {
+            return RestResponse.error(e);
+
+        }
     }
 
+    /**
+     * Update building. TODO Sven
+     * @param updated updated
+     * @param id id
+     * @return
+     */
     @PutMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> updateBuilding(
         @RequestBody BuildingDto updated,
         @PathVariable Long id
     ) {
-        return RestResponse.create(buildingService.updateBuilding(id, updated.toEntity()).toDto());
+        try {
+            return RestResponse.create(buildingService.updateBuilding(
+                id, updated.toEntity()).toDto()
+            );
+        } catch (Exception e) {
+            return RestResponse.error(e);
+        }
     }
 
     /**

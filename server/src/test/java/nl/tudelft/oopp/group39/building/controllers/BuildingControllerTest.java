@@ -11,14 +11,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.building.entities.Building;
-import nl.tudelft.oopp.group39.building.controllers.BuildingController;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
@@ -34,8 +32,8 @@ public class BuildingControllerTest extends AbstractControllerTest {
         "EEMCS",
         "Mekelweg 4",
         "Faculty of Electrical Engineering, Maths and Computer Science",
-        LocalTime.of(7, 0),
-        LocalTime.of(18, 0),
+        LocalTime.of(7, 0, 1),
+        LocalTime.of(17, 59, 59),
         null,
         null
     );
@@ -73,8 +71,8 @@ public class BuildingControllerTest extends AbstractControllerTest {
             .andExpect(jsonPath("$.body[0].name", is(testBuilding.getName())))
             .andExpect(jsonPath("$.body[0].location", is(testBuilding.getLocation())))
             .andExpect(jsonPath("$.body[0].description", is(testBuilding.getDescription())))
-            .andExpect(jsonPath("$.body[0].open", is(testBuilding.getOpen().truncatedTo(ChronoUnit.MINUTES))))
-            .andExpect(jsonPath("$.body[0].closed", is(testBuilding.getClosed().truncatedTo(ChronoUnit.MINUTES))));
+            .andExpect(jsonPath("$.body[0].open", is(testBuilding.getOpen().toString())))
+            .andExpect(jsonPath("$.body[0].closed", is(testBuilding.getClosed().toString())));
     }
 
     @Test
@@ -87,6 +85,7 @@ public class BuildingControllerTest extends AbstractControllerTest {
         testBuilding.setId(null);
 
         String json = objectMapper.writeValueAsString(testBuilding);
+        System.out.println(testBuilding.getOpen().truncatedTo(ChronoUnit.MINUTES).toString());
 
         mockMvc.perform(post(REST_MAPPING)
             .contentType(MediaType.APPLICATION_JSON)
@@ -112,8 +111,8 @@ public class BuildingControllerTest extends AbstractControllerTest {
             .andExpect(jsonPath("$.body.name", is(testBuilding.getName())))
             .andExpect(jsonPath("$.body.location", is(testBuilding.getLocation())))
             .andExpect(jsonPath("$.body.description", is(testBuilding.getDescription())))
-            .andExpect(jsonPath("$.body.open", is(testBuilding.getOpen().truncatedTo(ChronoUnit.MINUTES).toString())))
-            .andExpect(jsonPath("$.body.closed", is(testBuilding.getClosed().truncatedTo(ChronoUnit.MINUTES).toString())));
+            .andExpect(jsonPath("$.body.open", is(testBuilding.getOpen().toString())))
+            .andExpect(jsonPath("$.body.closed", is(testBuilding.getClosed().toString())));
     }
 
     @Test
@@ -130,8 +129,8 @@ public class BuildingControllerTest extends AbstractControllerTest {
             .andExpect(jsonPath("$.body.name", is(testBuilding.getName())))
             .andExpect(jsonPath("$.body.location", is(testBuilding.getLocation())))
             .andExpect(jsonPath("$.body.description", is(testBuilding.getDescription())))
-            .andExpect(jsonPath("$.body.open", is(testBuilding.getOpen().truncatedTo(ChronoUnit.MINUTES).toString())))
-            .andExpect(jsonPath("$.body.closed", is(testBuilding.getClosed().truncatedTo(ChronoUnit.MINUTES).toString())));
+            .andExpect(jsonPath("$.body.open", is(testBuilding.getOpen().toString())))
+            .andExpect(jsonPath("$.body.closed", is(testBuilding.getClosed().toString())));
 
         testBuilding.setName("EEMCS");
     }
@@ -139,17 +138,18 @@ public class BuildingControllerTest extends AbstractControllerTest {
     @Test
     void testError() {
         assertEquals(
-            "Target object must not be null; nested exception is "
-                + "java.lang.IllegalArgumentException: Target object must not be null",
+            "java.lang.NullPointerException",
             buildingController.createBuilding(null).getBody().getError()
         );
 
-        assertEquals("Building 0 not found", buildingController.readBuilding(0L).getBody().getError());
+        assertEquals("Building with id 0 wasn't found.",
+            buildingController.readBuilding(0L).getBody().getError());
 
-        /*
         assertEquals(
-            "Building 0 not found",
-            buildingController.updateBuilding(0L, null).getBody().getError()
-        ); */
+            "The given id must not be null!; nested exception is "
+                + "java.lang.IllegalArgumentException: "
+                + "The given id must not be null!",
+            buildingController.updateBuilding(testBuilding.toDto(), null).getBody().getError()
+        );
     }
 }
