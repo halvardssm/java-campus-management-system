@@ -8,14 +8,12 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 import nl.tudelft.oopp.group39.user.model.User;
 
 public class ServerCommunication {
-
     public static String user = "user/";
     public static String building = "building/";
     public static String room = "room/";
@@ -321,7 +319,6 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
-
     /**
      * Retrieves all bookings from the server.
      *
@@ -524,5 +521,4 @@ public class ServerCommunication {
             return "Logged in";
         }
     }
-
 }

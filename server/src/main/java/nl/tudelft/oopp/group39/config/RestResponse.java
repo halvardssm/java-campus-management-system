@@ -12,6 +12,9 @@ public class RestResponse<T> implements Serializable {
     private T body;
     private String error;
 
+    /**
+     * A generic REST response.
+     */
     public RestResponse() {
     }
 
@@ -26,6 +29,11 @@ public class RestResponse<T> implements Serializable {
         this.error = error;
     }
 
+    /**
+     * A generic REST response.
+     *
+     * @param body the body of the REST response
+     */
     public RestResponse(T body) {
         this.body = body;
         this.error = null;
@@ -75,22 +83,48 @@ public class RestResponse<T> implements Serializable {
         return create(null, message, null);
     }
 
+    /**
+     * Gets the body of the REST response.
+     *
+     * @return the body of the rest respone
+     */
     public Object getBody() {
         return body;
     }
 
+    /**
+     * Changes the body of the REST response.
+     *
+     * @param body the new body of the REST response
+     */
     public void setBody(T body) {
         this.body = body;
     }
 
+    /**
+     * Gets the error message of the REST response.
+     *
+     * @return the error message of the REST response
+     */
     public String getError() {
         return error;
     }
 
+    /**
+     * Changes the error of the REST response.
+     *
+     * @param error the new error of the REST response
+     */
     public void setError(String error) {
         this.error = error;
     }
 
+    /**
+     * Checks whether two RestResponses are equal.
+     *
+     * @param o the other object
+     * @return true if the two RestResponses are equal, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {

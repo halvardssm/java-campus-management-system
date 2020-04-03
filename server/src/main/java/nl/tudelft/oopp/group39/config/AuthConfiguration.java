@@ -20,6 +20,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -27,13 +28,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class AuthConfiguration extends WebSecurityConfigurerAdapter {
+    @Autowired private UserService userService;
+    @Autowired private JwtFilter jwtFilter;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private JwtFilter jwtFilter;
-
+    /**
+     * Configures the authentication.
+     *
+     * @throws Exception if there is an exception
+     */
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
@@ -61,17 +63,33 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
+    /**
+     * Configures the authentication globally.
+     *
+     * @throws Exception if an error occurs when adding the {@link UserDetailsService}
+     *                   based authentication
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
 
+    /**
+     * Manages the authentication.
+     *
+     * @throws Exception if there is an exception
+     */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
+    /**
+     * Encodes the password.
+     *
+     * @return the encoded password
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
