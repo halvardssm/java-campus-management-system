@@ -35,7 +35,6 @@ public class Reservable {
         return id;
     }
 
-    public Double getPrice() {
     /**
      * Gets the price of the reservable.
      *
