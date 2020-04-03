@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.booking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Objects;
 import nl.tudelft.oopp.group39.room.model.Room;
@@ -103,6 +104,7 @@ public class Booking {
      *
      * @return the room object
      */
+    @JsonIgnore
     public Room getRoomObj() throws JsonProcessingException {
         return ServerCommunication.getRoom(room);
     }

@@ -1,8 +1,10 @@
 package nl.tudelft.oopp.group39.event.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 
 public class Event {
 
@@ -72,10 +74,12 @@ public class Event {
         return rooms;
     }
 
+    @JsonIgnore
     public LocalDateTime getStartTime() {
         return LocalDateTime.parse(startsAt.replace(" ", "T"));
     }
 
+    @JsonIgnore
     public LocalDateTime getEndTime() {
         return LocalDateTime.parse(endsAt.replace(" ", "T"));
     }
@@ -85,8 +89,26 @@ public class Event {
      *
      * @return boolean true if the event is a full day, false otherwise
      */
+    @JsonIgnore
     public boolean isFullDay() {
         return this.getStartTime().toLocalTime().equals(LocalTime.of(0, 0, 0))
             && this.getEndTime().toLocalTime().equals(LocalTime.of(23, 59, 59));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Event event = (Event) o;
+        return getTitle().equals(event.getTitle())
+            && getStartsAt().equals(event.getStartsAt())
+            && Objects.equals(getEndsAt(), event.getEndsAt())
+            && global.equals(event.global)
+            && getUser().equals(event.getUser())
+            && Objects.equals(getRooms(), event.getRooms());
     }
 }

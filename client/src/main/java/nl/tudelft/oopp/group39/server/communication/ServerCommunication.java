@@ -204,6 +204,7 @@ public class ServerCommunication {
      */
     public static String addEvent(Event eventObj) throws JsonProcessingException {
         String eventJson = mapper.writeValueAsString(eventObj);
+        System.out.println(eventJson);
         HttpRequest.BodyPublisher newEvent = HttpRequest.BodyPublishers
             .ofString(eventJson);
         HttpRequest request = HttpRequest.newBuilder().POST(newEvent)

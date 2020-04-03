@@ -3,6 +3,8 @@ package nl.tudelft.oopp.group39.booking;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.tudelft.oopp.group39.booking.model.Booking;
 import org.junit.jupiter.api.Test;
 
@@ -53,13 +55,13 @@ class BookingTest {
         assertNotEquals(testBooking, new Object());
     }
 
-    //    @Test
-    //    void testJsonConversion() throws JsonProcessingException {
-    //        ObjectMapper mapper = new ObjectMapper();
-    //
-    //        Booking reconvEvent = mapper.readValue(
-    //            mapper.writeValueAsString(testBooking),Booking.class);
-    //
-    //        assertEquals(reconvEvent,testBooking);
-    //    }
+    @Test
+    void testJsonConversion() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        Booking reconvEvent = mapper.readValue(
+            mapper.writeValueAsString(testBooking), Booking.class);
+
+        assertEquals(reconvEvent, testBooking);
+    }
 }
