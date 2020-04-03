@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.group39.room.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -18,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javax.swing.text.html.ImageView;
 import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.building.model.Building;
+import nl.tudelft.oopp.group39.event.model.Event;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
@@ -90,7 +90,7 @@ public class RoomReservationController extends AbstractSceneController {
         if (loggedIn) {
             String dateString = date.getValue()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            if (checkDate(dateString)) {
+            if (checkDate(dateString, room.getId())) {
                 if (checkEmpty(date, fromTime, toTime)) {
                     long roomId = room.getId();
                     String roomIdString = "" + roomId;
@@ -146,13 +146,8 @@ public class RoomReservationController extends AbstractSceneController {
      * @throws JsonProcessingException when there is something wrong with processing
      */
     public List<Integer> getBookedTimes(String date) throws JsonProcessingException {
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String roomDate = "room=" + room.getId() + "&date=" + date;
-        String bookings = ServerCommunication.getBookings(roomDate);
-        System.out.println(bookings);
-        ArrayNode body = (ArrayNode) mapper.readTree(bookings).get("body");
-        String bookingString = mapper.writeValueAsString(body);
-        Booking[] bookingsList = mapper.readValue(bookingString, Booking[].class);
+        Booking[] bookingsList = getBookings(roomDate);
         List<Integer> bookedTimes = new ArrayList<>();
         for (Booking booking : bookingsList) {
             int startTime = Integer.parseInt(booking.getStartTime().split(":")[0]);
@@ -162,19 +157,60 @@ public class RoomReservationController extends AbstractSceneController {
         }
         if (loggedIn) {
             String userDate = "user=" + user.getUsername() + "&date=" + date;
-            String userBookings = ServerCommunication.getBookings(userDate);
-            ArrayNode bodyBookings = (ArrayNode) mapper.readTree(userBookings).get("body");
-            String userBookingString = mapper.writeValueAsString(bodyBookings);
-            Booking[] userBookingsList = mapper.readValue(userBookingString, Booking[].class);
-            for (Booking userBooking : userBookingsList) {
-                int startTime = Integer.parseInt(userBooking.getStartTime().split(":")[0]);
-                bookedTimes.add(startTime);
-                int endTime = Integer.parseInt(userBooking.getEndTime().split(":")[0]);
-                bookedTimes.add(endTime);
+            Booking[] userBookingsList = getBookings(userDate);
+            if (userBookingsList.length != 0) {
+                for (Booking userBooking : userBookingsList) {
+                    int startTime = Integer.parseInt(userBooking.getStartTime().split(":")[0]);
+                    bookedTimes.add(startTime);
+                    int endTime = Integer.parseInt(userBooking.getEndTime().split(":")[0]);
+                    bookedTimes.add(endTime);
+                }
             }
+            String eventFilters = "user=" + user.getUsername() + "&startsAt=" + date + "T00:00:00"
+                + "&endsAt=" + date + "T23:59:59";
+            Event[] events = getEvents(eventFilters);
+            if (events.length != 0) {
+                for (Event event : events) {
+                    if (event.getStartTime().toLocalDate().isEqual(event.getEndTime().toLocalDate())) {
+                        int start = event.getStartTime().getHour();
+                        int end = event.getEndTime().getHour();
+                        bookedTimes.add(start);
+                        bookedTimes.add(end);
+                    } else {
+                        int start = event.getStartTime().getHour();
+                        bookedTimes.add(start);
+                        bookedTimes.add(23);
+                    }
+                }
+            }
+            eventFilters = "user=" + user.getUsername() + "&startsAt=" + date + "T00:00:00" + "&endsAt=" + date + "T23:59:59";
+            events = getEvents(eventFilters);
+            if (events.length != 0) {
+                for (Event event : events) {
+                    int end = event.getEndTime().getHour();
+                    bookedTimes.add(0);
+                    bookedTimes.add(end);
+                }
+            }
+
         }
         System.out.println(bookedTimes);
         return bookedTimes;
+    }
+
+    public Booking[] getBookings(String filters) throws JsonProcessingException {
+        String userBookings = ServerCommunication.getBookings(filters);
+        ArrayNode bodyBookings = (ArrayNode) mapper.readTree(userBookings).get("body");
+        String userBookingString = mapper.writeValueAsString(bodyBookings);
+        return mapper.readValue(userBookingString, Booking[].class);
+    }
+
+    public Event[] getEvents(String filters) throws JsonProcessingException {
+        String eventString = ServerCommunication.getEvents(filters);
+        System.out.println(eventString);
+        ArrayNode body = (ArrayNode) mapper.readTree(eventString).get("body");
+        eventString = mapper.writeValueAsString(body);
+        return mapper.readValue(eventString, Event[].class);
     }
 
     /**

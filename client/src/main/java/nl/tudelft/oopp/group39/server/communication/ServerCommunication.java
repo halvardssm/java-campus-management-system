@@ -4,12 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-
 import nl.tudelft.oopp.group39.building.model.Building;
+import nl.tudelft.oopp.group39.event.model.Event;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 import nl.tudelft.oopp.group39.user.model.User;
@@ -146,7 +147,6 @@ public class ServerCommunication {
         HttpRequest request = HttpRequest.newBuilder().POST(newBooking)
             .uri(URI.create(url + "booking/"))
             .header("Content-Type", "application/json").build();
-        // return httpRequest(request);
 
         HttpResponse<String> response;
         try {
@@ -200,6 +200,48 @@ public class ServerCommunication {
     }
 
     /**
+     * Adds a room on the server.
+     *
+     * @return the body of a post request to the server.
+     */
+    public static String addEvent(Event eventObj) throws JsonProcessingException {
+        String eventJson = mapper.writeValueAsString(eventObj);
+        HttpRequest.BodyPublisher newEvent = HttpRequest.BodyPublishers
+            .ofString(eventJson);
+        HttpRequest request = HttpRequest.newBuilder().POST(newEvent)
+            .uri(URI.create(url + event))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    public static Event[] getEvent(String filters) throws JsonProcessingException {
+        String urlString = url + "event?" + filters;
+        System.out.println(urlString);
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        ArrayNode eventJson = (ArrayNode) mapper.readTree(httpRequest(request)).get("body");
+        String eventAsString = mapper.writeValueAsString(eventJson);
+        return mapper.readValue(eventAsString, Event[].class);
+    }
+
+    public static String getEvents(String filters) {
+        String urlString = url + "event?" + filters;
+        System.out.println(urlString);
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
+        return httpRequest(request);
+    }
+
+    public static String updateEvent(Event eventObj, Long id) throws JsonProcessingException {
+        String eventJson = mapper.writeValueAsString(eventObj);
+        HttpRequest.BodyPublisher newEvent = HttpRequest.BodyPublishers
+            .ofString(eventJson);
+        HttpRequest request = HttpRequest.newBuilder().PUT(newEvent)
+            .uri(URI.create(url + event + id))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    /**
      * Updates bookings on the server.
      *
      * @return the body of a put request to the server.
@@ -217,7 +259,7 @@ public class ServerCommunication {
                 + "\", \"endTime\":\"" + endTime + "\", \"user\":\"" + user
                 + "\", \"room\":\"" + room + "\"}");
         HttpRequest request = HttpRequest.newBuilder().PUT(newBooking)
-            .uri(URI.create(url + "booking/" + id))
+            .uri(URI.create(url + booking + id))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }
@@ -239,7 +281,7 @@ public class ServerCommunication {
                 + roomCapacity + "\", \"description\":\"" + roomDescription
                 + "\", \"bookings\":\"" + bookings + "\"}");
         HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding)
-            .uri(URI.create(url + "room/" + id))
+            .uri(URI.create(url + room + id))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }
@@ -262,7 +304,7 @@ public class ServerCommunication {
                 + "\", \"description\":\"" + description + "\", \"open\":\"" + open
                 + "\", \"closed\":\"" + closed + "\"}");
         HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding)
-            .uri(URI.create(url + "building/" + id))
+            .uri(URI.create(url + building + id))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }

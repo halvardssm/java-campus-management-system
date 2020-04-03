@@ -76,7 +76,7 @@ public class UserPageController extends AbstractSceneController {
             Booking[] bookingList = mapper.readValue(bookingString, Booking[].class);
 
             for (Booking booking : bookingList) {
-                newBooking = FXMLLoader.load(getClass().getResource("/bookingCell.fxml"));
+                newBooking = FXMLLoader.load(getClass().getResource("/user/bookingCell.fxml"));
 
                 String bookingD = booking.getDate();
                 Label theBookingDate = (Label) newBooking.lookup("#bookingDate");
@@ -97,13 +97,11 @@ public class UserPageController extends AbstractSceneController {
 
                 String startTime = booking.getStartTime();
                 Label date = (Label) newBooking.lookup("#rDate");
-                date.setText("Starting Time: " + startTime);
+                date.setText("Start time: " + startTime);
 
-                String duration = differenceBetweenTwoTimes(
-                        LocalTime.parse(booking.getStartTime()),
-                        LocalTime.parse(booking.getEndTime()));
+                String endTime = booking.getEndTime();
                 Label bookingDuration = (Label) newBooking.lookup("#rDuration");
-                bookingDuration.setText("Duration: " + duration);
+                bookingDuration.setText("End time: " + endTime);
 
                 flowPane.getChildren().add(newBooking);
             }
@@ -119,17 +117,8 @@ public class UserPageController extends AbstractSceneController {
      * @param l2 the end time
      * @return a string form of the difference
      */
-    private String differenceBetweenTwoTimes(LocalTime l1, LocalTime l2) {
-        LocalTime result = l2.minusHours(l1.getHour());
-        result = result.minusMinutes(l1.getMinute());
-        result = result.minusSeconds(l1.getSecond());
-        String duration = result.toString();
-
-        //If the seconds are 0, it omits it. So here we put the 00's anyway.
-        if (result.getSecond() == 0) {
-            duration = duration + ":00";
-        }
-        return duration;
+    private int differenceBetweenTwoTimes(LocalTime l1, LocalTime l2) {
+        return l1.getHour() - l2.getHour();
     }
 
     /**
@@ -170,14 +159,14 @@ public class UserPageController extends AbstractSceneController {
 
         try {
             LocalTime startTime = LocalTime.parse(editStartingTime.getText());
-            LocalTime durationTime = LocalTime.parse(editDuration.getText());
+            LocalTime endTime = LocalTime.parse(editDuration.getText());
 
             if (startTime.getMinute() != 00 || startTime.getSecond() != 00
-                    || durationTime.getMinute() != 00 || durationTime.getSecond() != 00) {
+                || endTime.getMinute() != 00 || endTime.getSecond() != 00) {
                 createAlert("You can only book rooms starting at the hour");
                 return;
             }
-            if (durationTime.getHour() > 4) {
+            if (differenceBetweenTwoTimes(endTime, startTime) > 4) {
                 createAlert("You can't book a room longer than 4 hours");
                 return;
             }
@@ -217,10 +206,17 @@ public class UserPageController extends AbstractSceneController {
                 createAlert("You can't book a room if the building is closed");
                 return;
             }
-            if ((startTime.getHour() + durationTime.getHour()) > buildingCloseTime.getHour()) {
+            if (endTime.getHour() > buildingCloseTime.getHour()) {
                 createAlert("Your booking time exceeds the closing time of the building");
                 return;
             }
+
+            ServerCommunication.addBooking(editDate.getValue().toString(),
+                startTime.toString() + ":00",
+                endTime.toString() + ":00",
+                user.getUsername(),
+                roomID.getText());
+            ServerCommunication.removeBooking(bookingID.getText());
 
         } catch (DateTimeParseException | NullPointerException e) {
             createAlert("Invalid Time String");
@@ -228,16 +224,7 @@ public class UserPageController extends AbstractSceneController {
             createAlert("Error: Wrong IO");
         }
 
-        LocalTime t1 = LocalTime.parse(editStartingTime.getText());
-        LocalTime t2 = LocalTime.parse(editDuration.getText());
-        int endTimeHour = t1.getHour() + t2.getHour();
 
-        ServerCommunication.addBooking(editDate.getValue().toString(),
-                t1.toString() + ":00",
-                endTimeHour + ":00:00",
-                user.getUsername(),
-                roomID.getText());
-        ServerCommunication.removeBooking(bookingID.getText());
     }
 
     /**

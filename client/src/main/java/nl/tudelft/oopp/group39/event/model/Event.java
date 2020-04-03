@@ -1,57 +1,65 @@
 package nl.tudelft.oopp.group39.event.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class Event {
 
     private Long id;
-    private String type;
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
-    private LocalDate startDate;
-    @JsonDeserialize(using = LocalDateDeserializer.class)
-    @JsonSerialize(using = LocalDateSerializer.class)
-    private LocalDate endDate;
+    private String title;
+    private String startsAt;
+    private String endsAt;
+    private Boolean isGlobal;
+    private String user;
+    private List<Long> rooms;
 
     public Event() {
 
     }
 
-    /**
-     * Creates an event.
-     *
-     * @param type      type of the event
-     * @param startDate start date of event
-     * @param endDate   end date of event
-     */
-    public Event(
-        String type,
-        LocalDate startDate,
-        LocalDate endDate
-    ) {
-        this.type = type;
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public Event(String title, String startsAt, String endsAt, Boolean isGlobal, String user, List<Long> rooms) {
+        this.title = title;
+        this.startsAt = startsAt;
+        this.endsAt = endsAt;
+        this.isGlobal = isGlobal;
+        this.user = user;
+        this.rooms = rooms;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getType() {
-        return type;
+    public String getTitle() {
+        return title;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
+    public String getStartsAt() {
+        return startsAt;
     }
 
-    public LocalDate getEndDate() {
-        return endDate;
+    public String getEndsAt() {
+        return endsAt;
     }
 
+    public Boolean getGlobal() {
+        return isGlobal;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public List<Long> getRooms() {
+        return rooms;
+    }
+
+    public LocalDateTime getStartTime() {
+        System.out.println(startsAt);
+        return LocalDateTime.parse(startsAt.replace(" ", "T"));
+    }
+
+    public LocalDateTime getEndTime() {
+        return LocalDateTime.parse(endsAt.replace(" ", "T"));
+    }
 }

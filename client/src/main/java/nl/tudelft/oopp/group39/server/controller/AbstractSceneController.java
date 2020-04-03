@@ -281,7 +281,17 @@ public abstract class AbstractSceneController {
      * @throws JsonProcessingException when there is a processing exception
      */
     public Set<Event> getEventList() throws JsonProcessingException {
-        String json = ServerCommunication.get(ServerCommunication.event);
+        String filter = "isGlobal=true";
+        String json = ServerCommunication.getEvents(filter);
+        ArrayNode body = (ArrayNode) mapper.readTree(json).get("body");
+        json = mapper.writeValueAsString(body);
+
+        return new HashSet<>(Arrays.asList(mapper.readValue(json, Event[].class)));
+    }
+
+    public Set<Event> getEventsList(Long room) throws JsonProcessingException {
+        String filter = "rooms=" + room;
+        String json = ServerCommunication.getEvents(filter);
         ArrayNode body = (ArrayNode) mapper.readTree(json).get("body");
         json = mapper.writeValueAsString(body);
 
@@ -294,15 +304,18 @@ public abstract class AbstractSceneController {
      * @param date the selected date
      * @return boolean true if date is not an event, false if date is on an event
      */
-    public boolean checkDate(String date) throws JsonProcessingException {
+    public boolean checkDate(String date, Long room) throws JsonProcessingException {
         LocalDate check = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        for (Event event : getEventList()) {
-            LocalDate start = event.getStartDate();
-            LocalDate end = event.getEndDate() == null ? start : event.getEndDate();
-            int checkInt = check.compareTo(start) + check.compareTo(end);
-            if (-1 >= checkInt & checkInt <= 1) {
-                createAlert("There is an event on this date");
-                return false;
+        Set<Event> events = room == null ? getEventList() : getEventsList(room);
+        if (events.size() != 0) {
+            for (Event event : events) {
+                LocalDate start = event.getStartTime().toLocalDate();
+                LocalDate end = event.getEndsAt() == null ? start : event.getEndTime().toLocalDate();
+                int checkInt = check.compareTo(start) + check.compareTo(end);
+                if (-1 >= checkInt & checkInt <= 1) {
+                    createAlert("There is an event on this date");
+                    return false;
+                }
             }
         }
         return true;

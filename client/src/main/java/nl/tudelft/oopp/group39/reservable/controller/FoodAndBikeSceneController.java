@@ -709,7 +709,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
     ) throws IOException {
         DatePicker datePicker = (DatePicker) timeselector.lookup("#datePicker");
         if (loggedIn) {
-            if (checkDate(dateTimeFormatter.format(datePicker.getValue()))) {
+            if (checkDate(dateTimeFormatter.format(datePicker.getValue()), null)) {
 
                 System.out.println(orderString);
                 String username = AbstractSceneController.user.getUsername();
