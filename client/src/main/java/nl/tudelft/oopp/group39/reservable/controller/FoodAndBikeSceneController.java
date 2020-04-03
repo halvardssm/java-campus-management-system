@@ -37,26 +37,15 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 public class FoodAndBikeSceneController extends AbstractSceneController {
-
-    @FXML
-    protected VBox buildingList;
-    @FXML
-    private FlowPane itemList;
-    @FXML
-    private VBox cartlist;
-    @FXML
-    private Label emptycart;
-    @FXML
-    private VBox timeselector;
-    @FXML
-    private Label errorfield;
-    @FXML
-    private Button orderbtn;
-    @FXML
-    private Label total;
-    @FXML
-    private Label titleLabel;
-
+    @FXML protected VBox buildingList;
+    @FXML private FlowPane itemList;
+    @FXML private VBox cartlist;
+    @FXML private Label emptycart;
+    @FXML private VBox timeselector;
+    @FXML private Label errorfield;
+    @FXML private Button orderbtn;
+    @FXML private Label total;
+    @FXML private Label titleLabel;
     public double totalprice = 0;
     public List<Room> rooms = new ArrayList<>();
     private int cartItems = 0;
@@ -135,9 +124,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
             buildingName.getStyleClass().add("buildingList");
             buildingName.setId(String.valueOf(building.getId()));
             buildingList.getChildren().add(buildingName);
-
         }
-
     }
 
     /**
@@ -322,7 +309,6 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
                 updateCart(reservable);
             }
         }
-
     }
 
     /**

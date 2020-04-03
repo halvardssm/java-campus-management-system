@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.config.abstracts;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -100,6 +101,24 @@ public abstract class AbstractDao<E> {
         Y obj
     ) {
         predicates.add(builder.lessThanOrEqualTo(root.get(col), obj));
+    }
+
+    protected <Y extends Comparable<? super Y>> void predicateDateEqual(
+        String date,
+        String colStart,
+        String colEnd
+    ) {
+        LocalDate localDate = LocalDate.parse(date);
+
+        predicates.add(builder.lessThanOrEqualTo(
+            root.get(colStart).as(LocalDate.class),
+            localDate
+        ));
+
+        predicates.add(builder.greaterThanOrEqualTo(
+            root.get(colEnd).as(LocalDate.class),
+            localDate
+        ));
     }
 
     protected void checkParam(String col, BiConsumer<String, String> function) {

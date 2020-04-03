@@ -1,10 +1,10 @@
 package nl.tudelft.oopp.group39.event.dao;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractDao;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.room.entities.Room;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EventDao extends AbstractDao<Event> {
+    public static final String PARAM_DATE = "date";
 
     @PersistenceContext
     protected EntityManager em;
@@ -34,9 +35,14 @@ public class EventDao extends AbstractDao<Event> {
 
         checkParam(Event.COL_TITLE, this::predicateLike);
 
-        checkParam(Event.COL_STARTS_AT, (c, p) -> predicateGreater(c, LocalDateTime.parse(p)));
+        checkParam(
+            PARAM_DATE,
+            (c, p) -> predicateDateEqual(p, Event.COL_STARTS_AT, Event.COL_ENDS_AT)
+        );
 
-        checkParam(Event.COL_ENDS_AT, (c, p) -> predicateSmaller(c, LocalDateTime.parse(p)));
+        checkParam(Event.COL_STARTS_AT, (c, p) -> predicateGreater(c, Utils.parseDateTime(p)));
+
+        checkParam(Event.COL_ENDS_AT, (c, p) -> predicateSmaller(c, Utils.parseDateTime(p)));
 
         checkParam(Event.COL_IS_GLOBAL, (c, p) -> predicateEqual(c, Boolean.parseBoolean(p)));
 
