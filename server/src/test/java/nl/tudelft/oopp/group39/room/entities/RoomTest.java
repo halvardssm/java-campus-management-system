@@ -138,3 +138,4 @@ class RoomTest extends AbstractTest {
     void getReservationsTest() {
         assertEquals(room1.getReservations(), room2.getReservations());
     }
+}
