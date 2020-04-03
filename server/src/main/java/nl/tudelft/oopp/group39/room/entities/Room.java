@@ -36,10 +36,10 @@ public class Room extends AbstractEntity<Room, RoomDto> {
     public static final String COL_NAME = "name";
     public static final String COL_DESCRIPTION = "description";
 
-    private String name;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Building.MAPPED_NAME)
     private Building building;
+    private String name;
     private Integer capacity;
     private Boolean onlyStaff;
     private String description;

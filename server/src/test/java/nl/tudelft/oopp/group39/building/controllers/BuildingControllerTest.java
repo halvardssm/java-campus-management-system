@@ -14,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.config.Constants;
@@ -76,7 +75,7 @@ public class BuildingControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void deleteAndCreateBuilding() throws Exception {
+    void deleteAndCreateBuildingTest() throws Exception {
         mockMvc.perform(delete(REST_MAPPING + "/" + testBuilding.getId())
             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
@@ -85,7 +84,6 @@ public class BuildingControllerTest extends AbstractControllerTest {
         testBuilding.setId(null);
 
         String json = objectMapper.writeValueAsString(testBuilding);
-        System.out.println(testBuilding.getOpen().truncatedTo(ChronoUnit.MINUTES).toString());
 
         mockMvc.perform(post(REST_MAPPING)
             .contentType(MediaType.APPLICATION_JSON)
@@ -105,7 +103,7 @@ public class BuildingControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void readBuilding() throws Exception {
+    void readBuildingTest() throws Exception {
         mockMvc.perform(get(REST_MAPPING + "/" + testBuilding.getId()))
             .andExpect(jsonPath("$.body").isMap())
             .andExpect(jsonPath("$.body.name", is(testBuilding.getName())))
@@ -116,7 +114,7 @@ public class BuildingControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void updateBuilding() throws Exception {
+    void updateBuildingTest() throws Exception {
         testBuilding.setName("asdasd");
         String json = objectMapper.writeValueAsString(testBuilding);
 
@@ -136,7 +134,7 @@ public class BuildingControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void testError() {
+    void errorTest() {
         assertEquals(
             "java.lang.NullPointerException",
             buildingController.createBuilding(null).getBody().getError()
