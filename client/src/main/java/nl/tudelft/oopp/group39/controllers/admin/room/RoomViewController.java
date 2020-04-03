@@ -6,9 +6,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.ResourceBundle;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -16,22 +14,16 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-//import nl.tudelft.oopp.group39.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.facility.model.Facility;
+import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 public class RoomViewController extends RoomListController implements Initializable {
 
     private ObjectMapper mapper = new ObjectMapper();
-    private Building building;
-    private HashMap<String, Integer> buildingsByName = new HashMap<String, Integer>();
-    private HashMap<Integer, String> buildingsById = new HashMap<Integer, String>();
     @FXML
     private Button backbtn;
-    @FXML
-    private TextField roomIdFieldView;
     @FXML
     private TextField nameFieldView;
     @FXML
