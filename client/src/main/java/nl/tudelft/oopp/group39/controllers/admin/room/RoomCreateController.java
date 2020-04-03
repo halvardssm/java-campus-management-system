@@ -119,7 +119,7 @@ public class RoomCreateController extends RoomListController implements Initiali
         String buildingId = building == null ? Integer.toString(buildingsByName.get(buildingsByName.keySet().toArray()[0])) : Integer.toString(this.buildingsByName.get(building.toString()));
         //        Building nBuilding = buildingById.get(buildingId);
         String roomCap = roomCapacityField.getText();
-        roomCap = roomCap == null ? "0" : roomCap;
+        roomCap = roomCap == null || roomCap.contentEquals("") ? "0" : roomCap;
         String roomDesc = roomDescriptionField.getText();
         roomDesc = roomDesc == null ? "" : roomDesc;
         Object onlyStaffObj = roomOnlyStaffField.getValue();

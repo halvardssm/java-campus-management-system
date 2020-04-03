@@ -65,9 +65,9 @@ public class BuildingCreateController extends BuildingListController implements 
         String location = locationFieldNew.getText();
         String desc = descriptionFieldNew.getText();
         Object reservationStartValue = timeOpenFieldNew.getValue();
-        String reservationStartString = reservationStartValue == null ? start : reservationStartValue.toString() + ":00";
+        String reservationStartString = reservationStartValue == null ? start + ":00" : reservationStartValue.toString() + ":00";
         Object reservationEndValue = timeClosedFieldNew.getValue();
-        String reservationEndString = reservationEndValue == null ? end : reservationEndValue.toString() + ":00";
+        String reservationEndString = reservationEndValue == null ? end + ":00" : reservationEndValue.toString() + ":00";
 
         ServerCommunication.addBuilding(name, location, desc, reservationStartString, reservationEndString);
 //        createAlert("Added a new building.");

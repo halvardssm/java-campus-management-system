@@ -49,7 +49,7 @@ public class BookingCreateController extends EventListController implements Init
     private String end;
 
     @FXML
-    private ComboBox userBox;
+    private ComboBox userBoxN;
     @FXML
     private ComboBox roomBox;
     @FXML
@@ -152,8 +152,8 @@ public class BookingCreateController extends EventListController implements Init
         }
         ObservableList<String> data = FXCollections.observableArrayList(dataList);
         User abcUser = userList[0];
-        userBox.setPromptText(abcUser.getEmail());
-        userBox.setItems(data);
+        userBoxN.setPromptText(abcUser.getEmail());
+        userBoxN.setItems(data);
     }
 
     private List<String> initiateTimeslots(String date) throws JsonProcessingException {
@@ -227,7 +227,7 @@ public class BookingCreateController extends EventListController implements Init
     public void createBooking() throws IOException {
         Object roomObj = roomBox.getValue();
         String roomId = roomObj == null ? Long.toString(room.getId()) : Long.toString(RoomIdByNameMap.get(roomObj.toString()));
-        Object userObj = userBox.getValue();
+        Object userObj = userBoxN.getValue();
         boolean userNull = userObj == null;
         if (userNull) {
             dateMessage.setStyle("-fx-text-fill: Red");
