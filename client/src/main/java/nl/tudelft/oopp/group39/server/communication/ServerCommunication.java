@@ -214,7 +214,6 @@ public class ServerCommunication {
         HttpRequest request = HttpRequest.newBuilder().POST(newBooking)
             .uri(URI.create(url + "booking/"))
             .header("Content-Type", "application/json").build();
-        // return httpRequest(request);
 
         HttpResponse<String> response;
         try {
@@ -391,13 +390,33 @@ public class ServerCommunication {
     }
 
 
+    /**
+     * Updates the user on the server.
+     *
+     * @return the body of a post request to the server.
+     */
+    public static String updateUser(
+            String username,
+            String email,
+            String password,
+            String bookings
+    ) {
+        HttpRequest.BodyPublisher newUser = HttpRequest.BodyPublishers
+                .ofString("{\"username\": \"" + username + "\", \"email\":\"" + email
+                         + "\", \"password\":\"" + password + "\", \"bookings\":\""
+                         + bookings + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().PUT(newUser)
+                .uri(URI.create(url + "user/" + username))
+                .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
 
     /**
      * Updates the user on the server.
      *
      */
 
-    public static void updateUserAdmin(
+    public static String updateUserAdmin(
         String username,
         String email,
         String role
@@ -408,7 +427,7 @@ public class ServerCommunication {
         HttpRequest request = HttpRequest.newBuilder().PUT(newUser)
             .uri(URI.create(url + "user/" + username))
             .header("Content-Type", "application/json").build();
-        httpRequest(request);
+        return httpRequest(request);
     }
 
     /**
