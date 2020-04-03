@@ -1,6 +1,9 @@
 package nl.tudelft.oopp.group39.booking.model;
 
 import java.util.Objects;
+import javax.print.DocFlavor;
+import nl.tudelft.oopp.group39.room.model.Room;
+import nl.tudelft.oopp.group39.user.model.User;
 
 public class Booking {
 
@@ -9,7 +12,7 @@ public class Booking {
     private String startTime;
     private String endTime;
     private String user;
-    private Integer room;
+    private Long room;
 
     public Booking() {
     }
@@ -30,7 +33,7 @@ public class Booking {
         String startTime,
         String endTime,
         String user,
-        Integer room) {
+        Long room) {
         this.id = id;
         this.date = date;
         this.startTime = startTime;
@@ -59,7 +62,7 @@ public class Booking {
         return user;
     }
 
-    public Integer getRoom() {
+    public Long getRoom() {
         return room;
     }
 
