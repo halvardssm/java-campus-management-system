@@ -52,7 +52,7 @@
                         <Font name="System Bold" size="17.0" />
                     </font>
                 </Text>
-                <ComboBox fx:id="userBox" layoutX="200.0" layoutY="148.0" prefHeight="31.0" prefWidth="200.0" promptText="23:59:00" />
+                <ComboBox fx:id="userBoxN" layoutX="200.0" layoutY="148.0" prefHeight="31.0" prefWidth="200.0" promptText="23:59:00" />
                 <Text layoutX="18.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date of booking:">
                     <font>
                         <Font name="System Bold" size="17.0" />

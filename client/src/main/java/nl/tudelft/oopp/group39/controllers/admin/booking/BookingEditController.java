@@ -45,7 +45,7 @@ public class BookingEditController extends EventListController implements Initia
     private Building building;
 
     @FXML
-    private ComboBox userBox;
+    private ComboBox userBoxN;
     @FXML
     private ComboBox roomBox;
     @FXML
@@ -153,8 +153,8 @@ public class BookingEditController extends EventListController implements Initia
         }
         ObservableList<String> data = FXCollections.observableArrayList(dataList);
         User abcUser = ServerCommunication.getUser(booking.getUser());
-        userBox.setPromptText(abcUser.getEmail());
-        userBox.setItems(data);
+        userBoxN.setPromptText(abcUser.getEmail());
+        userBoxN.setItems(data);
     }
 
     private List<String> initiateTimeslots(String date) throws JsonProcessingException {
@@ -227,7 +227,7 @@ public class BookingEditController extends EventListController implements Initia
     public void editBooking() throws IOException {
         Object roomObj = roomBox.getValue();
         String roomId = roomObj == null ? Long.toString(booking.getRoom()) : Long.toString(RoomIdByNameMap.get(roomObj.toString()));
-        Object userObj = userBox.getValue();
+        Object userObj = userBoxN.getValue();
         String user = userObj == null ? booking.getUser() : UserIdByNameMap.get(userObj.toString());
         LocalDate reservationDateValue = reservationDate.getValue();
         String reservationDateString = reservationDateValue == null ? booking.getDate() : reservationDateValue.toString();

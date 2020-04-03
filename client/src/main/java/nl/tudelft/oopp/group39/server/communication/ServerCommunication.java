@@ -267,7 +267,7 @@ public class ServerCommunication {
      */
     public static String addRoom(String buildingId, String roomCapacity, String roomDescription, String onlyStaff, String name) {
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers
-            .ofString("{\"buildingId\": \"" + buildingId + "\", \"capacity\":\""
+            .ofString("{\"building\": \"" + buildingId + "\", \"capacity\":\""
                 + roomCapacity + "\", \"description\":\"" + roomDescription +
                 "\", \"onlyStaff\":\"" + onlyStaff + "\", \"name\":\"" + name +"\"}");
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)

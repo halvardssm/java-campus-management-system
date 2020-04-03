@@ -92,7 +92,7 @@ public class EventCreateController extends EventListController implements Initia
     public void createEventFinal(String type, String startDate, String endDate) throws IOException {
         ServerCommunication.addEvent(type, startDate, endDate);
         getBack();
-//        createAlert("Created an event of type: " + type);
+        createAlert("Created an event of type: " + type);
     }
     /**
      * Makes sure that values put into event are valid.

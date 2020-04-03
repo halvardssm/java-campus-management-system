@@ -96,28 +96,26 @@ public class EventEditController extends EventListController implements Initiali
     public void createEventFinal(String id, String type, String startDate, String endDate) throws IOException {
         ServerCommunication.updateEvent(id, type, startDate, endDate);
         getBack();
-//        createAlert("Updated: " + cEvent.getType());
+        createAlert("Updated: " + cEvent.getType());
     }
     /**
      * Makes sure that values put into event are valid.
      */
 
     public void checkValidity(String id, String startDate, String endDate, boolean startNull, boolean endNull, String type) throws IOException {
-        if (!endNull || !startNull) {
-            LocalDate start = LocalDate.parse(startDate);
-            LocalDate end = LocalDate.parse(endDate);
-            if (!end.isAfter(start)) {
-                dateMessage.setStyle("-fx-text-fill: Red");
-                dateMessage.setText("The end date needs to be later than the start date!\n(Start date was: " + start.toString() + ", end date was: " + end.toString() + " )");
-                return;
-            }
-            if (!start.isAfter(LocalDate.now())) {
-                dateMessage.setStyle("-fx-text-fill: Red");
-                dateMessage.setText("The start date needs to be later than today!\n(Start date was: " + start.toString() + ", end date was: " + end.toString() + " )");
-                return;
-            }
-            createEventFinal(id, type, start.toString(), end.toString());
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+        if (!end.isAfter(start)) {
+            dateMessage.setStyle("-fx-text-fill: Red");
+            dateMessage.setText("The end date needs to be later than the start date!\n(Start date was: " + start.toString() + ", end date was: " + end.toString() + " )");
+            return;
         }
+        if (!start.isAfter(LocalDate.now())) {
+            dateMessage.setStyle("-fx-text-fill: Red");
+            dateMessage.setText("The start date needs to be later than today!\n(Start date was: " + start.toString() + ", end date was: " + end.toString() + " )");
+            return;
+        }
+        createEventFinal(id, type, start.toString(), end.toString());
     }
 
 }

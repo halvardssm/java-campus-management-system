@@ -91,7 +91,6 @@ public class Room extends AbstractEntity<Room, RoomDto> {
         Set<Facility> facilities,
         Set<Booking> bookings
     ) {
-        System.out.println("test2: " + building.toString());
         setId(id);
         setBuilding(building);
         setName(name);
