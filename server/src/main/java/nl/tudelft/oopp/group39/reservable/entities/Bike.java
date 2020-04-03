@@ -13,7 +13,7 @@ import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 
 @Entity
 @Table(name = Bike.TABLE_NAME)
-public class Bike extends Reservable {
+public class Bike extends Reservable<Bike, BikeDto> {
     public static final String TABLE_NAME = "bikes";
     public static final String MAPPED_NAME = "bike";
     public static final String COL_BIKE_TYPE = "bikeType";
@@ -59,7 +59,7 @@ public class Bike extends Reservable {
             getId(),
             getBikeType(),
             getPrice(),
-            getBuilding() == null ? null : getBuilding().getId(),
+            Utils.entityToId(getBuilding()),
             Utils.setEntityToDto(getReservations())
         );
     }

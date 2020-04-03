@@ -12,7 +12,8 @@ import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 
-public class ReservableDto extends AbstractDto<Reservable, ReservableDto> {
+public class ReservableDto<E extends Reservable<E, D>, D extends ReservableDto<E, D>>
+    extends AbstractDto<E, D> {
     private Double price;
     private Long building;
     private Set<ReservationAmountDto> reservations = new HashSet<>();
@@ -66,9 +67,14 @@ public class ReservableDto extends AbstractDto<Reservable, ReservableDto> {
     }
 
     @Override
-    public Reservable toEntity() {
+    public E toEntity() {
         Set<ReservationAmount> reservationAmount = Utils.setDtoToEntity(reservations);
 
-        return new Reservable(null, price, idToEntity(building, Building.class), reservationAmount);
+        return (E) new Reservable(
+            null,
+            price,
+            idToEntity(building, Building.class),
+            reservationAmount
+        );
     }
 }
