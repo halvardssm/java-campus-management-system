@@ -32,8 +32,10 @@ class RoomTest extends AbstractTest {
     @BeforeEach
     void testRoom() {
         bookingService.createBooking(new Booking(
-            LocalDate.now(), LocalTime.now(), LocalTime.now(),
-            null, null));
+            null, LocalDate.now(),
+            LocalTime.now(), LocalTime.now(),
+            null, null
+        ));
         facilityService.createFacility(new Facility(
             "smartboard", rooms
         ));
@@ -44,6 +46,7 @@ class RoomTest extends AbstractTest {
         facilities.add(facilityService.readFacility((long) 1));
 
         this.building = new Building(
+            null,
             "EEMCS",
             "Mekelweg 4",
             "Faculty of Electrical Engineering, Maths and Computer Science",
@@ -58,25 +61,27 @@ class RoomTest extends AbstractTest {
         this.description = "This is a room for testing purposes";
         this.facilities.addAll(initSet(facilities));
         this.bookings.addAll(initSet(bookings));
-        this.room1 = new Room(building, name,
+        this.room1 = new Room(null, building, name,
             capacity, onlyStaff, description,
-            facilities, bookings
+            null, facilities, bookings
         );
-        this.room2 = new Room(building, name,
+        this.room2 = new Room(null, building, name,
             capacity, onlyStaff, description,
-            facilities, bookings
+            null, facilities, bookings
         );
-        this.room3 = new Room(new Building("Drebbelweg",
-            "Drebbelweg 5",
-            "Drebbelweg",
-            LocalTime.of(6, 0),
-            LocalTime.of(17, 30),
-            null,
-            null),
+        this.room3 = new Room(null,
+            new Building(null, "Drebbelweg",
+                "Drebbelweg 5",
+                "Drebbelweg",
+                LocalTime.of(6, 0),
+                LocalTime.of(17, 30),
+                null,
+                null),
             "Projectroom 1",
             8,
             true,
             "This is another room for testing purposes",
+            null,
             facilities,
             bookings
         );
@@ -114,10 +119,10 @@ class RoomTest extends AbstractTest {
     @Test
     void getFacilitiesTest() {
         Set<Facility> facilities2 = new HashSet<>();
-        facilities2.add(facilityService.readFacility(2));
-        Room room4 = new Room(building, name,
+        facilities2.add(facilityService.readFacility((long) 2));
+        Room room4 = new Room(null, building, name,
             capacity, onlyStaff, description,
-            facilities2, bookings);
+            null, facilities2, bookings);
 
         assertEquals(room1.getFacilities(), room2.getFacilities());
         assertNotEquals(room1.getFacilities(), room4.getFacilities());
@@ -126,9 +131,9 @@ class RoomTest extends AbstractTest {
     @Test
     void getBookingsTest() {
         Set<Booking> bookings2 = new HashSet<>();
-        Room room4 = new Room(building, name,
+        Room room4 = new Room(null, building, name,
             capacity, onlyStaff, description,
-            facilities, bookings2);
+            null, facilities, bookings2);
 
         assertEquals(room1.getBookings(), room2.getBookings());
         assertNotEquals(room1.getBookings(), room4.getBookings());
@@ -138,3 +143,11 @@ class RoomTest extends AbstractTest {
     void getReservationsTest() {
         assertEquals(room1.getReservations(), room2.getReservations());
     }
+
+    @Test
+    void equalsTest() {
+        assertEquals(room1, room2);
+        assertNotEquals(room1, room3);
+    }
+}
+
