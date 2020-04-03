@@ -33,8 +33,10 @@ public class Building {
 
     private Set<Room> rooms = new HashSet<>();
 
+    /**
+     * Creates a building.
+     */
     public Building() {
-
     }
 
     /**
@@ -65,30 +67,65 @@ public class Building {
         this.rooms.addAll(rooms);
     }
 
+    /**
+     * Gets the id of the building.
+     *
+     * @return the building id
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Gets the name of the building.
+     *
+     * @return the building name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Get the address of the building.
+     *
+     * @return the building location
+     */
     public String getLocation() {
         return location;
     }
 
+    /**
+     * Gets the description of the building.
+     *
+     * @return the building description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Gets the opening time of the building.
+     *
+     * @return the opening time
+     */
     public LocalTime getOpen() {
         return open;
     }
 
+    /**
+     * Gets the closing time of the building.
+     *
+     * @return the closing time
+     */
     public LocalTime getClosed() {
         return closed;
     }
 
+    /**
+     * Gets the rooms that the building has.
+     *
+     * @return a set of rooms of the building
+     */
     public Set<Room> getRooms() {
         return rooms;
     }
@@ -117,6 +154,11 @@ public class Building {
         this.closed = closed;
     }
 
+    /**
+     * Change the room of the buildings.
+     *
+     * @param rooms the new set of rooms of the building
+     */
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
     }

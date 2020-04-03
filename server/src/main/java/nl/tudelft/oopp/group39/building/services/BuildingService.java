@@ -2,7 +2,6 @@ package nl.tudelft.oopp.group39.building.services;
 
 import java.util.List;
 import java.util.Map;
-
 import nl.tudelft.oopp.group39.building.dao.BuildingDao;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.exceptions.BuildingNotFoundException;
@@ -18,9 +17,10 @@ public class BuildingService {
     private BuildingDao buildingDao;
 
     /**
-     * Doc. TODO Sven
+     * List all buildings.
+     *
+     * @return a list of buildings
      */
-
     public List<Building> listBuildings(Map<String,String> params) {
         return buildingDao.buildingFilter(params);
     }
@@ -28,7 +28,7 @@ public class BuildingService {
     /**
      * Reads the building inside the database using its id.
      *
-     * @param id the id of the Building
+     * @param id the id of the building
      * @return the Building that was found.
      * @throws BuildingNotFoundException when no building is found.
      */
@@ -38,7 +38,10 @@ public class BuildingService {
     }
 
     /**
-     * Doc. TODO Sven
+     * Deletes a building.
+     *
+     * @param id the id of the building
+     * @throws BuildingNotFoundException if the building wasn't found
      */
     public Building deleteBuilding(Long id) throws BuildingNotFoundException {
         try {
@@ -51,14 +54,22 @@ public class BuildingService {
     }
 
     /**
-     * Doc. TODO Sven
+     * Creates a building.
+     *
+     * @param newBuilding the new building that you want to create
+     * @return the created building
      */
     public Building createBuilding(Building newBuilding) {
         return buildingRepository.save(newBuilding);
     }
 
     /**
-     * Doc. TODO Sven
+     * Updates a building.
+     *
+     * @param id the id of the building that you want to update
+     * @param newBuilding the new building
+     * @return the updated booking
+     * @throws BuildingNotFoundException if the building wasn't found
      */
     public Building updateBuilding(Long id, Building newBuilding) throws BuildingNotFoundException {
         return buildingRepository.findById(id)
@@ -68,5 +79,4 @@ public class BuildingService {
                 return buildingRepository.save(building);
             }).orElseThrow(() -> new BuildingNotFoundException(id));
     }
-
 }

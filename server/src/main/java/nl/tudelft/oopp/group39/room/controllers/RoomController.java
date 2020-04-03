@@ -64,12 +64,22 @@ public class RoomController {
         );
     }
 
+    /**
+     * GET Endpoint to get a room.
+     *
+     * @return the requested room
+     */
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> readRoom(@PathVariable Long id) {
         return RestResponse.create(service.readRoom(id).toDto());
     }
 
+    /**
+     * PUT Endpoint to update a room.
+     *
+     * @return the updated room
+     */
     @PutMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> updateRoom(
@@ -80,7 +90,7 @@ public class RoomController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Delete Endpoint to delete a room.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteRoom(@PathVariable Long id) {

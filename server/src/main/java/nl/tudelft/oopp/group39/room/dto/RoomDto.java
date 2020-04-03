@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RoomDto extends AbstractDto<Room, RoomDto> {
-
     private Long building;
     private String name;
     private Integer capacity;
@@ -23,6 +22,9 @@ public class RoomDto extends AbstractDto<Room, RoomDto> {
     private Set<Facility> facilities = new HashSet<>();
     private Set<BookingDto> bookings = new HashSet<>();
 
+    /**
+     * Creates a RoomDto object.
+     */
     public RoomDto() {
     }
 
@@ -59,62 +61,137 @@ public class RoomDto extends AbstractDto<Room, RoomDto> {
 
     }
 
+    /**
+     * Gets the building of the room.
+     *
+     * @return the building of the room
+     */
     public Long getBuilding() {
         return building;
     }
 
+    /**
+     * Changes the building of the room.
+     *
+     * @param building the new building
+     */
     public void setBuilding(Long building) {
         this.building = building;
     }
 
+    /**
+     * Gets the name of the room.
+     *
+     * @return the room name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Changes the name of the room.
+     *
+     * @param name the new room name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets the capacity of the room.
+     *
+     * @return the capacity of the room
+     */
     public Integer getCapacity() {
         return capacity;
     }
 
+    /**
+     * Changes the capacity of the room.
+     *
+     * @param capacity the new capacity
+     */
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
 
+    /**
+     * Checks whether the room is only for staff, or also for students.
+     *
+     * @return true if the room is only for staff, false otherwise
+     */
     public Boolean isOnlyStaff() {
         return onlyStaff;
     }
 
+    /**
+     * Changes the room so that it is accessible for everyone, or only for staff.
+     *
+     * @param onlyStaff true if you want the room to be only for staff, false otherwise
+     */
     public void setOnlyStaff(Boolean onlyStaff) {
         this.onlyStaff = onlyStaff;
     }
 
+    /**
+     * Gets the description of the room.
+     *
+     * @return the description of the room
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Changes the description of the room.
+     *
+     * @param description the new description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Gets the facilities that the room has to offer.
+     *
+     * @return a set with the facilities that the room has to offer
+     */
     public Set<Facility> getFacilities() {
         return facilities;
     }
 
+    /**
+     * Changes the facilities that the room has to offer.
+     *
+     * @param facilities the new set of facilities
+     */
     public void setFacilities(Set<Facility> facilities) {
         this.facilities = facilities;
     }
 
+    /**
+     * Gets the bookings for the room.
+     *
+     * @return a set with bookings for the room
+     */
     public Set<BookingDto> getBookings() {
         return bookings;
     }
 
+    /**
+     * Changes the bookings for the room.
+     *
+     * @param bookings the new set of bookings
+     */
     public void setBookings(Set<BookingDto> bookings) {
         this.bookings = bookings;
     }
 
+    /**
+     * Changes the RoomDto to a Room object.
+     *
+     * @return a Room object
+     */
     @Override
     public Room toEntity() {
         return new Room(

@@ -9,10 +9,12 @@ import nl.tudelft.oopp.group39.reservable.entities.Food;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 
 public class FoodDto extends ReservableDto<Food, FoodDto> {
-
     private String name;
     private String description;
 
+    /**
+     * Creates a FoodDto object.
+     */
     public FoodDto() {
     }
 
@@ -39,22 +41,47 @@ public class FoodDto extends ReservableDto<Food, FoodDto> {
         this.description = description;
     }
 
+    /**
+     * Gets the description of the food.
+     *
+     * @return the description of the food
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Changes the description of the food.
+     *
+     * @param description the new description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Gets the name of the food.
+     *
+     * @return the name of the food
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Changes the name of the food.
+     *
+     * @param name the new name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Changes the FoodDto to a Food object.
+     *
+     * @return a Food object
+     */
     @Override
     public Food toEntity() {
         return new Food(

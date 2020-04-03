@@ -35,7 +35,7 @@ public class ReservationDao {
      * Filter for reservations.
      *
      * @param filters filters to be used.
-     * @return the filtered values.
+     * @return        the filtered values.
      */
     public List<Reservation> reservationFilter(Map<String, String> filters) {
         CriteriaBuilder cb = em.getCriteriaBuilder();

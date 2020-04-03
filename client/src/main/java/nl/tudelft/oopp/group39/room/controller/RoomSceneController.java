@@ -27,7 +27,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 public class RoomSceneController extends AbstractSceneController {
-
     private Building building;
     private boolean filterBarShown = false;
     private boolean filtered = false;
@@ -39,56 +38,23 @@ public class RoomSceneController extends AbstractSceneController {
     private int selectedCapacity = 0;
     private ToggleGroup availability;
     private String selectedAvailability = "none";
-
-    @FXML
-    public TextField roomBuildingIdField;
-
-    @FXML
-    public TextField roomCapacityField;
-
-    @FXML
-    public TextField roomDescriptionField;
-
-    @FXML
-    public TextField updateRoomField;
-
-    @FXML
-    private FlowPane rooms;
-
-    @FXML
-    private GridPane newRoom;
-
-    @FXML
-    private VBox buildingInfo;
-
-    @FXML
-    private VBox filterBar;
-
-    @FXML
-    private Slider capacityPicker;
-
-    @FXML
-    private VBox facilitiesPicker;
-
-    @FXML
-    private Label capacity;
-
-    @FXML
-    private Button filterBtn;
-
-    @FXML
-    private Hyperlink removeFilters;
-
-    @FXML
-    private VBox goBack;
-
-    @FXML
-    private Button backButton;
-    @FXML
-    private TextField searchField;
-    @FXML
-    private VBox availabilityPicker;
-
+    @FXML public TextField roomBuildingIdField;
+    @FXML public TextField roomCapacityField;
+    @FXML public TextField roomDescriptionField;
+    @FXML public TextField updateRoomField;
+    @FXML private FlowPane rooms;
+    @FXML private GridPane newRoom;
+    @FXML private VBox buildingInfo;
+    @FXML private VBox filterBar;
+    @FXML private Slider capacityPicker;
+    @FXML private VBox facilitiesPicker;
+    @FXML private Label capacity;
+    @FXML private Button filterBtn;
+    @FXML private Hyperlink removeFilters;
+    @FXML private VBox goBack;
+    @FXML private Button backButton;
+    @FXML private TextField searchField;
+    @FXML private VBox availabilityPicker;
 
     /**
      * Sets up the page to show rooms for selected building.
@@ -160,7 +126,6 @@ public class RoomSceneController extends AbstractSceneController {
 
     /**
      * Creates a new room.
-     * TODO
      */
     public void newRoom() {
         String buildingId = roomBuildingIdField.getText();
@@ -173,7 +138,7 @@ public class RoomSceneController extends AbstractSceneController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Updates the room.
      */
     public void updateRoom() {
         String buildingId = roomBuildingIdField.getText();
@@ -198,7 +163,7 @@ public class RoomSceneController extends AbstractSceneController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Deletes the room.
      */
     public void deleteRoom() {
         String id = updateRoomField.getText();
@@ -461,5 +426,4 @@ public class RoomSceneController extends AbstractSceneController {
             }
         });
     }
-
 }

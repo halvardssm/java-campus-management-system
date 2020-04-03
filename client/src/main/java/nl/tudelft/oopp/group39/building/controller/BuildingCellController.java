@@ -7,14 +7,9 @@ import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 public class BuildingCellController extends AbstractSceneController {
-
+    @FXML private Label name;
+    @FXML private Label details;
     private Building building;
-
-    @FXML
-    private Label name;
-
-    @FXML
-    private Label details;
 
     /**
      * Creates a Pane.
@@ -38,6 +33,11 @@ public class BuildingCellController extends AbstractSceneController {
         details.setText(newDetails);
     }
 
+    /**
+     * Goes to the rooms of the building the user clicks on.
+     *
+     * @throws IOException if the scene wasn't found
+     */
     public void buildingSelected() throws IOException {
         goToRoomsScene(building);
     }

@@ -20,27 +20,14 @@ public class Food extends Reservable<Food, FoodDto> {
     private String name;
     private String description;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+    /**
+     * The Food constructor.
+     */
     public Food() {
     }
 
     /**
-     * The constructor for Food.
+     * The Food constructor.
      *
      * @param id          of the item
      * @param name        of the item
@@ -50,16 +37,52 @@ public class Food extends Reservable<Food, FoodDto> {
      * @param reservation the reservation
      */
     public Food(
-        Long id,
-        String name,
-        String description,
-        Double price,
-        Building building,
-        Set<ReservationAmount> reservation
+            Long id,
+            String name,
+            String description,
+            Double price,
+            Building building,
+            Set<ReservationAmount> reservation
     ) {
         super(id, price, building, reservation);
         setName(name);
         setDescription(description);
+    }
+
+    /**
+     * Gets the name of the food.
+     *
+     * @return the name of the food
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Changes the name of the food.
+     *
+     * @param name the new name
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Gets the description of the food.
+     *
+     * @return the description of the food
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Changes the description of the food.
+     *
+     * @param description the new description
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -80,6 +103,12 @@ public class Food extends Reservable<Food, FoodDto> {
         );
     }
 
+    /**
+     * Checks whether two foods are equal.
+     *
+     * @param o the other object
+     * @return  true if the two foods are equal, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {

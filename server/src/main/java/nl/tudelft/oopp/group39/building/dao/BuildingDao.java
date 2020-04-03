@@ -19,15 +19,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BuildingDao {
-
     @PersistenceContext
     private EntityManager em;
 
     /**
-     * TODO @Cleanup.
+     * Filter for buildings.
      *
-     * @param filters filters retrieved
-     * @return List rooms
+     * @param filters filters to be used
+     * @return        the filtered values
      */
     public List<Building> buildingFilter(Map<String, String> filters) {
 
@@ -87,5 +86,4 @@ public class BuildingDao {
         rcq.where(cb.and(allPredicates.toArray(new Predicate[0])));
         return em.createQuery(rcq).getResultList();
     }
-
 }

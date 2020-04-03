@@ -7,6 +7,9 @@ public class Reservable {
     private Double price;
     private Long building;
 
+    /**
+     * Creates a reservable.
+     */
     public Reservable() {
     }
 
@@ -23,14 +26,30 @@ public class Reservable {
         this.building = building;
     }
 
+    /**
+     * Gets the id of the reservable.
+     *
+     * @return the id of the reservable
+     */
     public Long getId() {
         return id;
     }
 
     public Double getPrice() {
+    /**
+     * Gets the price of the reservable.
+     *
+     * @return the price of the reservable
+     */
+    public Double getPrice() {
         return price;
     }
 
+    /**
+     * Gets the building id.
+     *
+     * @return the building id
+     */
     public Long getBuilding() {
         return building;
     }

@@ -2,10 +2,12 @@ package nl.tudelft.oopp.group39.reservable.model;
 
 
 public class Food extends Reservable {
-
     private String name;
     private String description;
 
+    /**
+     * Creates food.
+     */
     public Food() {
         super();
     }
@@ -25,12 +27,21 @@ public class Food extends Reservable {
         this.description = desc;
     }
 
+    /**
+     * Gets the name of the food.
+     *
+     * @return the name of the food
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the description of the food.
+     *
+     * @return the description of the food
+     */
     public String getDescription() {
         return description;
     }
-
 }

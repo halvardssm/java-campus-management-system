@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Event {
-
     private Long id;
     private String type;
     @JsonDeserialize(using = LocalDateDeserializer.class)
@@ -18,6 +17,9 @@ public class Event {
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate endDate;
 
+    /**
+     * Creates an event.
+     */
     public Event() {
     }
 
@@ -38,6 +40,11 @@ public class Event {
         this.endDate = endDate;
     }
 
+    /**
+     * Gets the id of the event.
+     *
+     * @return the event id
+     */
     public Long getId() {
         return id;
     }
@@ -46,10 +53,20 @@ public class Event {
         return type;
     }
 
+    /**
+     * Gets the starting date of the event.
+     *
+     * @return the starting date
+     */
     public LocalDate getStartDate() {
         return startDate;
     }
 
+    /**
+     * Gets the end date of the event.
+     *
+     * @return the end date
+     */
     public LocalDate getEndDate() {
         return endDate;
     }
