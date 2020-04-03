@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -36,16 +34,6 @@ class EventTest {
     @Test
     void getId() {
         assertNull(testEvent.getId());
-    }
-
-    @Test
-    void jsonConversionTest() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        String convert = mapper.writeValueAsString(testEvent);
-
-        Event reconvEvent = mapper.readValue(convert, Event.class);
-
-        assertEquals(reconvEvent, testEvent);
     }
 
     @Test
