@@ -69,7 +69,9 @@ public class RoomController {
     }
 
     /**
-     * Doc. TODO Sven
+     * GET Endpoint to get a room.
+     *
+     * @return the requested room
      */
     @GetMapping("/{id}")
     @ResponseBody
@@ -82,7 +84,9 @@ public class RoomController {
     }
 
     /**
-     * Doc. TODO Sven
+     * PUT Endpoint to update a room.
+     *
+     * @return the updated room
      */
     @PutMapping("/{id}")
     @ResponseBody
@@ -98,7 +102,7 @@ public class RoomController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Delete Endpoint to delete a room.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteRoom(@PathVariable Long id) {

@@ -15,5 +15,4 @@ public interface Constants {
     DateFormat DATE_FORMAT_DATE_TIME = new SimpleDateFormat(FORMAT_DATE_TIME);
     String HEADER_BEARER = "Bearer ";
     String DEFAULT_TIMEZONE = "Europe/Paris";
-
 }

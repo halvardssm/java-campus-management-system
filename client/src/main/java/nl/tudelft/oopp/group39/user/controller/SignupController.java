@@ -15,20 +15,11 @@ import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 import nl.tudelft.oopp.group39.user.model.User;
 
 public class SignupController extends AbstractSceneController {
-    @FXML
-    private TextField emailField;
-
-    @FXML
-    private TextField netIdField;
-
-    @FXML
-    private PasswordField passwordField;
-
-    @FXML
-    private PasswordField confirmpasswordField;
-
-    @FXML
-    private Label errormsg;
+    @FXML private TextField emailField;
+    @FXML private TextField netIdField;
+    @FXML private PasswordField passwordField;
+    @FXML private PasswordField confirmpasswordField;
+    @FXML private Label errormsg;
 
     /**
      * User signup.

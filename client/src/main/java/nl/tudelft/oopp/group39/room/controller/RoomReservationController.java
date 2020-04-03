@@ -14,8 +14,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javax.swing.text.html.ImageView;
 import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
@@ -25,35 +23,15 @@ import nl.tudelft.oopp.group39.server.views.UsersDisplay;
 
 
 public class RoomReservationController extends AbstractSceneController {
-    @FXML
-    private DatePicker date;
-    @FXML
-    private ImageView image;
-    @FXML
-    private Button reserveButton;
-    @FXML
-    private Button backButton;
-    @FXML
-    private Button loginButton;
-    @FXML
-    private Button homeButton;
-    @FXML
-    private ComboBox<String> fromTime;
-    @FXML
-    private ComboBox<String> toTime;
-    @FXML
-    private Label roomName;
-    @FXML
-    private Label roomDetails;
-    @FXML
-    private VBox roomInfo;
-    @FXML
-    private Label titleLabel;
-    @FXML
-    private Label onlyStaff;
-    @FXML
-    private Label errormsg;
-
+    @FXML private DatePicker date;
+    @FXML private Button reserveButton;
+    @FXML private ComboBox<String> fromTime;
+    @FXML private ComboBox<String> toTime;
+    @FXML private Label roomName;
+    @FXML private Label roomDetails;
+    @FXML private Label titleLabel;
+    @FXML private Label onlyStaff;
+    @FXML private Label errormsg;
     private Building building;
     private Room room;
 
@@ -62,9 +40,9 @@ public class RoomReservationController extends AbstractSceneController {
      *
      * @param room     the room you've selected
      * @param building the building of the room you've selected
+     * @throws JsonProcessingException if the JSON could not be processed
      */
     public void setup(Room room, Building building) throws JsonProcessingException {
-
         this.building = building;
         this.room = room;
         titleLabel.setText(room.getName());
@@ -184,8 +162,8 @@ public class RoomReservationController extends AbstractSceneController {
      */
     private List<String> initiateTimeslots(String date) throws JsonProcessingException {
         List<String> times = new ArrayList<>();
-        int open = Integer.parseInt(building.getOpen().split(":")[0]);
-        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        int open = Integer.parseInt(building.getOpen().toString().split(":")[0]);
+        int closed = Integer.parseInt(building.getClosed().toString().split(":")[0]);
         List<Integer> bookedTimes = getBookedTimes(date);
         for (int i = open; i < closed; i++) {
             String time;
@@ -225,7 +203,7 @@ public class RoomReservationController extends AbstractSceneController {
         int timeAsInt = Integer.parseInt(time.split(":")[0]);
         List<Integer> bookedTimes = getBookedTimes(date);
         toTime.getItems().clear();
-        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        int closed = Integer.parseInt(building.getClosed().toString().split(":")[0]);
         List<Integer> times = new ArrayList<>();
         for (int i = timeAsInt + 1; i < timeAsInt + 5; i++) {
             if (bookedTimes.size() != 0) {

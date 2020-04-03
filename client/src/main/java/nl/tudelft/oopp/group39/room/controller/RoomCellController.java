@@ -8,15 +8,9 @@ import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 public class RoomCellController extends AbstractSceneController {
-
-    @FXML
-    private Label name;
-
-    @FXML
-    private Label details;
-
+    @FXML private Label name;
+    @FXML private Label details;
     private Room room;
-
     private Building building;
 
     /**
@@ -26,7 +20,6 @@ public class RoomCellController extends AbstractSceneController {
      * @param building building of the room
      */
     public void createPane(Room room, Building building) {
-
         this.room = room;
         this.building = building;
 
@@ -38,7 +31,12 @@ public class RoomCellController extends AbstractSceneController {
         details.setText(roomDetails);
     }
 
+    /**
+     * Goes to the scene where you can book the room.
+     *
+     * @throws IOException if the scene wasn't found
+     */
     public void goToReservationScene() throws IOException {
-        super.goToReservationScene(room,building);
+        super.goToReservationScene(room, building);
     }
 }
