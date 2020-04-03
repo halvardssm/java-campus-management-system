@@ -8,7 +8,6 @@ import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,13 +18,12 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-//import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.controllers.admin.AdminPanelController;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
-//import nl.tudelft.oopp.group39.models.Booking;
-//import nl.tudelft.oopp.group39.models.Room;
 
+
+@SuppressWarnings("unchecked")
 public class BookingListController extends AdminPanelController implements Initializable {
     @FXML
     private Button backbtn;
@@ -82,7 +80,6 @@ public class BookingListController extends AdminPanelController implements Initi
         reservationTable.getItems().clear();
         reservationTable.getColumns().clear();
 
-        ObservableList<Booking> data = getData();
         reservationIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         userIdCol.setCellValueFactory(new PropertyValueFactory<>("user"));
         roomIdCol.setCellValueFactory(new PropertyValueFactory<>("room"));
@@ -97,6 +94,7 @@ public class BookingListController extends AdminPanelController implements Initi
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
         updateCol.setCellFactory(param -> returnCell("Update"));
+        ObservableList<Booking> data = getData();
         reservationTable.setItems(data);
         reservationTable.getColumns().addAll(reservationIdCol, userIdCol, roomIdCol, reservationDateCol, reservationStartCol, reservationEndCol, deleteCol, updateCol);
     }

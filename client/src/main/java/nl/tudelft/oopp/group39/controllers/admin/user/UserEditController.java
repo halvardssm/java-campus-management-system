@@ -5,17 +5,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.admin.room.RoomListController;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
 
 public class UserEditController extends RoomListController implements Initializable {
@@ -25,11 +26,9 @@ public class UserEditController extends RoomListController implements Initializa
     @FXML
     private Button backbtn;
     @FXML
-    private ComboBox roleBox;
+    private ComboBox<String> roleBox;
     @FXML
     private TextField emailField;
-    @FXML
-    private List<String> roles;
     @FXML
     private MenuBar navBar;
 
@@ -50,7 +49,6 @@ public class UserEditController extends RoomListController implements Initializa
         ArrayNode body = (ArrayNode) mapper.readTree(roles).get("body");
         roles = mapper.writeValueAsString(body);
         String[] list = mapper.readValue(roles, String[].class);
-        this.roles = Arrays.asList(list);
         ObservableList<String> data = FXCollections.observableArrayList(list);
         roleBox.setItems(data);
         roleBox.setPromptText(user.getRole());
@@ -80,7 +78,6 @@ public class UserEditController extends RoomListController implements Initializa
         email = name + "@" + email;
         ServerCommunication.updateUserAdmin(user.getUsername(), email, role);
         getBack();
-//        createAlert("Updated: " + user.getEmail());
     }
 
 }

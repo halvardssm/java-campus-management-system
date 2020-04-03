@@ -15,23 +15,25 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.admin.AdminPanelController;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
 
-
+@SuppressWarnings("unchecked")
 public class UserListController extends AdminPanelController implements Initializable {
 
     private ObjectMapper mapper = new ObjectMapper();
     private String lastSelectedRole;
     private String lastSelectedName;
-    /**
-     * TODO SVEN -- This can be removed right? ---- File has problem with combobox to fix/ignore.
-     */
-    private List<String> roles;
     private String allRoles = "ALL ROLES";
     @FXML
     private Button backbtn;
@@ -44,7 +46,7 @@ public class UserListController extends AdminPanelController implements Initiali
     @FXML
     private TableColumn<User, User> updateCol = new TableColumn<>("Update");
     @FXML
-    private ComboBox roleBox;
+    private ComboBox<String> roleBox;
     @FXML
     private TextField usernameField;
     @FXML
@@ -99,7 +101,6 @@ public class UserListController extends AdminPanelController implements Initiali
         List<String> roleList = new ArrayList<>();
         roleList.add(allRoles);
         roleList.addAll(Arrays.asList(list));
-        this.roles = roleList;
         ObservableList<String> data = FXCollections.observableArrayList(roleList);
         roleBox.setItems(data);
         roleBox.getSelectionModel().select(this.lastSelectedRole);
@@ -115,7 +116,7 @@ public class UserListController extends AdminPanelController implements Initiali
         usertable.getColumns().clear();
         ArrayNode body = (ArrayNode) mapper.readTree(users).get("body");
         users = mapper.writeValueAsString(body);
-        User[] list = mapper.readValue(users, User[].class);
+
         idCol.setCellValueFactory(new PropertyValueFactory<>("username"));
         emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
         statusCol.setCellValueFactory(new PropertyValueFactory<>("role"));
@@ -126,6 +127,7 @@ public class UserListController extends AdminPanelController implements Initiali
         updateCol.setCellValueFactory(
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
+        User[] list = mapper.readValue(users, User[].class);
         updateCol.setCellFactory(param -> returnCell("Update"));
         ObservableList<User> data = FXCollections.observableArrayList(list);
         usertable.setItems(data);
@@ -183,7 +185,6 @@ public class UserListController extends AdminPanelController implements Initiali
     public void deleteUser(User user) throws IOException {
         String id = user.getUsername();
         ServerCommunication.removeUser(id);
-//        createAlert("removed: " + user.getUsername());
         loadUsersStandard();
     }
     /**

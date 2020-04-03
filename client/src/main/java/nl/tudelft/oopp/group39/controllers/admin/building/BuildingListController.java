@@ -10,19 +10,22 @@ import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-//import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.admin.AdminPanelController;
 import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
-
+@SuppressWarnings("unchecked")
 public class BuildingListController extends AdminPanelController implements Initializable {
 
 
@@ -125,8 +128,6 @@ public class BuildingListController extends AdminPanelController implements Init
         buildingTable.getColumns().clear();
         ArrayNode body = (ArrayNode) mapper.readTree(buildings).get("body");
         buildings = mapper.writeValueAsString(body);
-        Building[] list = mapper.readValue(buildings, Building[].class);
-        ObservableList<Building> data = FXCollections.observableArrayList(list);
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         locationCol.setCellValueFactory(new PropertyValueFactory<>("location"));
@@ -142,6 +143,8 @@ public class BuildingListController extends AdminPanelController implements Init
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
         updateCol.setCellFactory(param -> returnCell("Update"));
+        Building[] list = mapper.readValue(buildings, Building[].class);
+        ObservableList<Building> data = FXCollections.observableArrayList(list);
         buildingTable.setItems(data);
         buildingTable.getColumns().addAll(idCol, nameCol, locationCol, closingTimeCol, openTimeCol, descriptionCol, deleteCol, updateCol);
     }
@@ -150,7 +153,7 @@ public class BuildingListController extends AdminPanelController implements Init
      */
 
     public TableCell<Building, Building> returnCell(String button) {
-        return new TableCell<Building, Building>() {
+        return new TableCell<>() {
             private final Button updateButton = new Button(button);
 
             @Override
@@ -196,7 +199,6 @@ public class BuildingListController extends AdminPanelController implements Init
     public void deleteBuilding(Building building) throws IOException {
         String id = Integer.toString(building.getId());
         ServerCommunication.removeBuilding(id);
-//        createAlert("removed: " + building.getName());
         loadAllBuildings();
     }
     /**

@@ -12,15 +12,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.admin.booking.BookingCreateController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.admin.booking.BookingCreateController">
     <top>
         <HBox spacing="10" styleClass="bar">
             <padding>
                 <Insets bottom="15" left="15" right="15" top="15" />
             </padding>
-            <children>
                 <Text id="title" text="Admin: Booking View" />
-            </children>
         </HBox>
     </top>
     <bottom>
@@ -28,56 +26,56 @@
             <padding>
                 <Insets bottom="15" left="15" right="15" top="15" />
             </padding>
-            <children>
                 <Button id="backbtn" fx:id="backbtn" onAction="#getBack" text="◀ Back" />
-            </children>
         </HBox>
     </bottom>
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <children>
-                <Text layoutX="14.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create a Booking" underline="true">
-                    <font>
-                        <Font name="System Bold" size="33.0" />
-                    </font>
-                </Text>
-                <Text layoutX="18.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room:">
-                    <font>
-                        <Font name="System Bold" size="17.0" />
-                    </font>
-                </Text>
-                <ComboBox fx:id="roomBox" layoutX="200.0" layoutY="94.0" prefHeight="31.0" prefWidth="200.0" promptText="type" />
-                <Text layoutX="18.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User:">
-                    <font>
-                        <Font name="System Bold" size="17.0" />
-                    </font>
-                </Text>
-                <ComboBox fx:id="userBoxN" layoutX="200.0" layoutY="148.0" prefHeight="31.0" prefWidth="200.0" promptText="23:59:00" />
-                <Text layoutX="18.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date of booking:">
-                    <font>
-                        <Font name="System Bold" size="17.0" />
-                    </font>
-                </Text>
-                <DatePicker fx:id="reservationDate" layoutX="200.0" layoutY="210.0" prefHeight="31.0" prefWidth="200.0" promptText="00:00:00" />
-                <Button layoutX="776.0" layoutY="459.0" mnemonicParsing="false" onMouseClicked="#createBooking" text="Create booking" />
-                <MenuBar fx:id="navBar" layoutY="2.0" prefHeight="32.0" prefWidth="891.0">
-                    <menus>
-                    </menus>
-                </MenuBar>
-                <TextArea fx:id="dateMessage" disable="true" layoutX="438.0" layoutY="94.0" prefHeight="253.0" prefWidth="417.0" style="-fx-background-color: #ADD8E6;" />
-                <Text layoutX="18.0" layoutY="285.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start time:">
-                    <font>
-                        <Font name="System Bold" size="17.0" />
-                    </font>
-                </Text>
-                <ComboBox fx:id="startTimeBox" layoutX="200.0" layoutY="265.0" prefHeight="31.0" prefWidth="200.0" />
-                <Text layoutX="18.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End time:">
-                    <font>
-                        <Font name="System Bold" size="17.0" />
-                    </font>
-                </Text>
-                <ComboBox fx:id="endTimeBox" layoutX="200.0" layoutY="313.0" prefHeight="31.0" prefWidth="200.0" />
-            </children>
+            <Text layoutX="14.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create a Booking"
+                  underline="true">
+                <font>
+                    <Font name="System Bold" size="33.0"/>
+                </font>
+            </Text>
+            <Text layoutX="18.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room:">
+                <font>
+                    <Font name="System Bold" size="17.0"/>
+                </font>
+            </Text>
+            <ComboBox fx:id="roomBox" layoutX="200.0" layoutY="94.0" prefHeight="31.0" prefWidth="200.0"
+                      promptText="type"/>
+            <Text layoutX="18.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User:">
+                <font>
+                    <Font name="System Bold" size="17.0"/>
+                </font>
+            </Text>
+            <ComboBox fx:id="userBoxN" layoutX="200.0" layoutY="148.0" prefHeight="31.0" prefWidth="200.0"
+                      promptText="23:59:00"/>
+            <Text layoutX="18.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date of booking:">
+                <font>
+                    <Font name="System Bold" size="17.0"/>
+                </font>
+            </Text>
+            <DatePicker fx:id="reservationDate" layoutX="200.0" layoutY="210.0" prefHeight="31.0" prefWidth="200.0"
+                        promptText="00:00:00"/>
+            <Button layoutX="776.0" layoutY="459.0" mnemonicParsing="false" onMouseClicked="#createBooking"
+                    text="Create booking"/>
+            <MenuBar fx:id="navBar" layoutY="2.0" prefHeight="32.0" prefWidth="891.0">
+            </MenuBar>
+            <TextArea fx:id="dateMessage" disable="true" layoutX="438.0" layoutY="94.0" prefHeight="253.0"
+                      prefWidth="417.0" style="-fx-background-color: #ADD8E6;"/>
+            <Text layoutX="18.0" layoutY="285.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start time:">
+                <font>
+                    <Font name="System Bold" size="17.0"/>
+                </font>
+            </Text>
+            <ComboBox fx:id="startTimeBox" layoutX="200.0" layoutY="265.0" prefHeight="31.0" prefWidth="200.0"/>
+            <Text layoutX="18.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End time:">
+                <font>
+                    <Font name="System Bold" size="17.0"/>
+                </font>
+            </Text>
+            <ComboBox fx:id="endTimeBox" layoutX="200.0" layoutY="313.0" prefHeight="31.0" prefWidth="200.0"/>
         </AnchorPane>
     </center>
 </BorderPane>

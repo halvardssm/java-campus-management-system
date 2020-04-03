@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.group39.controllers.admin.building;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -10,10 +9,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Building;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+
 
 public class BuildingEditController extends BuildingListController implements Initializable {
 
@@ -29,9 +32,9 @@ public class BuildingEditController extends BuildingListController implements In
     @FXML
     private TextField descriptionFieldNew;
     @FXML
-    private ComboBox timeOpenFieldNew;
+    private ComboBox<String> timeOpenFieldNew;
     @FXML
-    private ComboBox timeClosedFieldNew;
+    private ComboBox<String> timeClosedFieldNew;
     @FXML
     private MenuBar navBar;
 
@@ -101,7 +104,6 @@ public class BuildingEditController extends BuildingListController implements In
         String id = Integer.toString(building.getId());
         ServerCommunication.updateBuilding(name, location, desc, reservationStartString, reservationEndString, id);
         getBack();
-//        createAlert("Updated: " + building.getName());
 
         nameFieldNew.clear();
         locationFieldNew.clear();

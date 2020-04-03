@@ -17,8 +17,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
+
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.event.model.Event;
 
 
 
@@ -26,11 +26,10 @@ public class EventCreateController extends EventListController implements Initia
 
     private ObjectMapper mapper = new ObjectMapper();
     private String eventType;
-    private Event cEvent;
     @FXML
     private Button backbtn;
     @FXML
-    private ComboBox typeBox;
+    private ComboBox<String> typeBox;
     @FXML
     private DatePicker startField;
     @FXML

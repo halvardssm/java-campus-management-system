@@ -15,68 +15,67 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="700.0" style="-fx-padding: 4px;" stylesheets="@../../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.admin.user.UserListController">
+<BorderPane prefHeight="600.0" prefWidth="700.0" style="-fx-padding: 4px;" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.admin.user.UserListController">
    <top>
       <HBox spacing="10" styleClass="bar">
          <padding>
-            <Insets bottom="15" left="15" right="15" top="15" />
+            <Insets bottom="15" left="15" right="15" top="15"/>
          </padding>
-         <children>
-            <Text id="title" text="Admin: User List" />
-         </children>
+         <Text id="title" text="Admin: User List"/>
       </HBox>
    </top>
    <bottom>
       <HBox spacing="10" styleClass="bar">
          <padding>
-            <Insets bottom="15" left="15" right="15" top="15" />
+            <Insets bottom="15" left="15" right="15" top="15"/>
          </padding>
-         <children>
-            <Button id="backbtn" fx:id="backbtn" onAction="#switchBack" text="◀ Back" />
-         </children>
+         <Button id="backbtn" fx:id="backbtn" onAction="#switchBack" text="◀ Back"/>
       </HBox>
    </bottom>
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <Text layoutX="14.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Users" underline="true">
-               <font>
-                  <Font name="System Bold" size="33.0" />
-               </font>
-            </Text>
-            <TableView fx:id="usertable" editable="true" layoutY="92.0" opacity="0.75" prefHeight="395.0" prefWidth="700.0">
-              <columns>
-                 <TableColumn fx:id="idCol" prefWidth="200.0" text="ID" />
-                 <TableColumn fx:id="emailCol" prefWidth="200.0" text="Email" />
-                 <TableColumn fx:id="statusCol" prefWidth="150.0" text="Role" />
-                 <TableColumn fx:id="deleteCol" prefWidth="75.0" text="Delete" />
-                 <TableColumn fx:id="updateCol" prefWidth="75.0" text="Update" />
-              </columns>
-            </TableView>
-            <Button layoutX="604.0" layoutY="54.0" mnemonicParsing="false" onMouseClicked="#createUser" text="Add User" />
-            <BorderPane layoutX="716.0" layoutY="39.0" prefHeight="434.0" prefWidth="176.0" style="-fx-background-color: #ADD8E6;">
-               <center>
-                  <VBox prefHeight="414.0" prefWidth="172.0" style="-fx-padding: 4px; -fx-background-color: #ADD8E6;" BorderPane.alignment="CENTER">
-                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="160.0" style="-fx-underline: true;" text="Filter Users">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label text="Email:" />
-                        <TextField fx:id="usernameField" />
-                        <Label text="Role:" />
-                        <ComboBox fx:id="roleBox" />
-                        <Button mnemonicParsing="false" onMouseClicked="#filterUsers" text="Filter Users" />
-                     </children>
-                  </VBox>
-               </center>
-               <bottom>
-                  <Button mnemonicParsing="false" onMouseClicked="#loadUsersStandard" text="Clear filters" BorderPane.alignment="CENTER" />
-               </bottom>
-            </BorderPane>
-            <MenuBar fx:id="navBar" layoutY="7.0" prefHeight="33.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-         </children>
+         <Text layoutX="14.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Users"
+               underline="true">
+            <font>
+               <Font name="System Bold" size="33.0"/>
+            </font>
+         </Text>
+         <TableView fx:id="usertable" editable="true" layoutY="92.0" opacity="0.75" prefHeight="395.0"
+                    prefWidth="700.0">
+            <columns>
+               <TableColumn fx:id="idCol" prefWidth="200.0" text="ID"/>
+               <TableColumn fx:id="emailCol" prefWidth="200.0" text="Email"/>
+               <TableColumn fx:id="statusCol" prefWidth="150.0" text="Role"/>
+               <TableColumn fx:id="deleteCol" prefWidth="75.0" text="Delete"/>
+               <TableColumn fx:id="updateCol" prefWidth="75.0" text="Update"/>
+            </columns>
+         </TableView>
+         <Button layoutX="604.0" layoutY="54.0" mnemonicParsing="false" onMouseClicked="#createUser" text="Add User"/>
+         <BorderPane layoutX="716.0" layoutY="39.0" prefHeight="434.0" prefWidth="176.0"
+                     style="-fx-background-color: #ADD8E6;">
+            <center>
+               <VBox prefHeight="414.0" prefWidth="172.0" style="-fx-padding: 4px; -fx-background-color: #ADD8E6;"
+                     BorderPane.alignment="CENTER">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="160.0"
+                         style="-fx-underline: true;" text="Filter Users">
+                     <font>
+                        <Font size="20.0"/>
+                     </font>
+                  </Label>
+                  <Label text="Email:"/>
+                  <TextField fx:id="usernameField"/>
+                  <Label text="Role:"/>
+                  <ComboBox fx:id="roleBox"/>
+                  <Button mnemonicParsing="false" onMouseClicked="#filterUsers" text="Filter Users"/>
+               </VBox>
+            </center>
+            <bottom>
+               <Button mnemonicParsing="false" onMouseClicked="#loadUsersStandard" text="Clear filters"
+                       BorderPane.alignment="CENTER"/>
+            </bottom>
+         </BorderPane>
+         <MenuBar fx:id="navBar" layoutY="7.0" prefHeight="33.0" AnchorPane.leftAnchor="0.0"
+                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
       </AnchorPane>
    </center>
 </BorderPane>

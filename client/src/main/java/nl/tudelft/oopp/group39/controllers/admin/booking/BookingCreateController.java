@@ -24,38 +24,33 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-//import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.controllers.admin.event.EventListController;
-//import nl.tudelft.oopp.group39.models.Booking;
 import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
-//import nl.tudelft.oopp.group39.models.Room;
-//import nl.tudelft.oopp.group39.models.User;
 
 public class BookingCreateController extends EventListController implements Initializable {
 
 
     private ObjectMapper mapper = new ObjectMapper();
-    private Booking booking;
     private String date;
     private Room room;
-    private HashMap<String, Long> RoomIdByNameMap = new HashMap<>();
-    private HashMap<String, String> UserIdByNameMap = new HashMap<>();
+    private HashMap<String, Long> roomIdByNameMap = new HashMap<>();
+    private HashMap<String, String> userIdByNameMap = new HashMap<>();
     private Building building;
     private String start;
     private String end;
 
     @FXML
-    private ComboBox userBoxN;
+    private ComboBox<String> userBoxN;
     @FXML
-    private ComboBox roomBox;
+    private ComboBox<String> roomBox;
     @FXML
-    private ComboBox startTimeBox;
+    private ComboBox<String> startTimeBox;
     @FXML
-    private ComboBox endTimeBox;
+    private ComboBox<String> endTimeBox;
     @FXML
     private DatePicker reservationDate;
     @FXML
@@ -65,17 +60,15 @@ public class BookingCreateController extends EventListController implements Init
     @FXML
     private TextArea dateMessage;
 
-    /**
-     * TODO sasa.
-     */
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setNavBar(navBar);
-        roomBox.valueProperty().addListener(new ChangeListener<String>() {
+        roomBox.valueProperty().addListener(new ChangeListener<>() {
             @Override public void changed(ObservableValue ov, String t, String t1) {
-                String reservationStartString = roomBox.getValue().toString();
+                String reservationStartString = roomBox.getValue();
                 try {
-                    room = ServerCommunication.getRoom(RoomIdByNameMap.get(reservationStartString));
+                    room = ServerCommunication.getRoom(roomIdByNameMap.get(reservationStartString));
                     building = getBuilding(room);
                     setTimeSlots(date);
                 } catch (JsonProcessingException e) {
@@ -111,13 +104,12 @@ public class BookingCreateController extends EventListController implements Init
         ArrayNode body = (ArrayNode) mapper.readTree(rooms).get("body");
         rooms = mapper.writeValueAsString(body);
         Room[] list = mapper.readValue(rooms, Room[].class);
-        Room[] roomList = list;
         List<String> dataList = new ArrayList<>();
-        for (Room room : roomList) {
-            RoomIdByNameMap.put(room.getName(), room.getId());
+        for (Room room : list) {
+            roomIdByNameMap.put(room.getName(), room.getId());
             dataList.add(room.getName());
         }
-        this.room = roomList[0];
+        this.room = list[0];
         this.building = getBuilding(room);
         this.date = LocalDate.now().toString();
         setTimeSlots(date);
@@ -144,14 +136,13 @@ public class BookingCreateController extends EventListController implements Init
         ArrayNode body = (ArrayNode) mapper.readTree(users).get("body");
         users = mapper.writeValueAsString(body);
         User[] list = mapper.readValue(users, User[].class);
-        User[] userList = list;
         List<String> dataList = new ArrayList<>();
-        for (User user : userList) {
-            UserIdByNameMap.put(user.getEmail(), user.getUsername());
+        for (User user : list) {
+            userIdByNameMap.put(user.getEmail(), user.getUsername());
             dataList.add(user.getEmail());
         }
         ObservableList<String> data = FXCollections.observableArrayList(dataList);
-        User abcUser = userList[0];
+        User abcUser = list[0];
         userBoxN.setPromptText(abcUser.getEmail());
         userBoxN.setItems(data);
     }
@@ -226,7 +217,7 @@ public class BookingCreateController extends EventListController implements Init
 
     public void createBooking() throws IOException {
         Object roomObj = roomBox.getValue();
-        String roomId = roomObj == null ? Long.toString(room.getId()) : Long.toString(RoomIdByNameMap.get(roomObj.toString()));
+        String roomId = roomObj == null ? Long.toString(room.getId()) : Long.toString(roomIdByNameMap.get(roomObj.toString()));
         Object userObj = userBoxN.getValue();
         boolean userNull = userObj == null;
         if (userNull) {
@@ -234,7 +225,7 @@ public class BookingCreateController extends EventListController implements Init
             dateMessage.setText("The user needs to be filled in!");
             return;
         }
-        String user = UserIdByNameMap.get(userObj.toString());
+        String user = userIdByNameMap.get(userObj.toString());
         LocalDate reservationDateValue = reservationDate.getValue();
         String reservationDateString = reservationDateValue == null ? date : reservationDateValue.toString();
         Object reservationStartValue = startTimeBox.getValue();

@@ -14,78 +14,72 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.admin.building.BuildingListController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.admin.building.BuildingListController">
    <top>
-      <HBox spacing="10" styleClass="bar">
-         <padding>
-            <Insets bottom="15" left="15" right="15" top="15" />
-         </padding>
-         <children>
-            <Text id="title" text="Admin: Building View" />
-         </children>
-      </HBox>
+       <HBox spacing="10" styleClass="bar">
+           <padding>
+               <Insets bottom="15" left="15" right="15" top="15"/>
+           </padding>
+           <Text id="title" text="Admin: Building View"/>
+       </HBox>
    </top>
    <bottom>
-      <HBox spacing="10" styleClass="bar">
-         <padding>
-            <Insets bottom="15" left="15" right="15" top="15" />
-         </padding>
-         <children>
-            <Button id="backbtn" fx:id="backbtn" onAction="#switchBack" text="◀ Back" />
-         </children>
-      </HBox>
+       <HBox spacing="10" styleClass="bar">
+           <padding>
+               <Insets bottom="15" left="15" right="15" top="15"/>
+           </padding>
+           <Button id="backbtn" fx:id="backbtn" onAction="#switchBack" text="◀ Back"/>
+       </HBox>
    </bottom>
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-<!--            <ImageView fitHeight="485.0" fitWidth="700.0" layoutY="-2.0" opacity="0.25" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">-->
-<!--               <image>-->
-<!--                  <Image url="@../../../../../../../../TuDelft/download.png" />-->
-<!--               </image>-->
-<!--            </ImageView>-->
-            <Text layoutX="14.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Buildings" underline="true">
-               <font>
-                  <Font name="System Bold" size="33.0" />
-               </font>
-            </Text>
-            <TableView fx:id="buildingTable" layoutY="89.0" opacity="0.75" prefHeight="383.0" prefWidth="700.0">
-              <columns>
-                  <TableColumn fx:id="idCol" prefWidth="50.0" text="ID" />
-                <TableColumn fx:id="nameCol" prefWidth="100.0" text="Name" />
-                <TableColumn fx:id="locationCol" prefWidth="100.0" text="Address" />
-                  <TableColumn fx:id="openTimeCol" prefWidth="100.0" text="Open Time" />
-                  <TableColumn fx:id="closingTimeCol" prefWidth="100.0" text="Closing Time" />
-                  <TableColumn fx:id="descriptionCol" prefWidth="125.0" text="Description" />
-                 <TableColumn fx:id="deleteCol" prefWidth="60.0" text="Delete" />
-                 <TableColumn fx:id="updateCol" prefWidth="64.0" text="Update" />
-              </columns>
-            </TableView>
-            <Button layoutX="594.0" layoutY="59.0" mnemonicParsing="false" onMouseClicked="#createBuilding" text="Add Building" />
-            <BorderPane layoutX="716.0" layoutY="39.0" prefHeight="426.0" prefWidth="176.0" style="-fx-background-color: #ADD8E6;">
-                <bottom>
-                    <Button mnemonicParsing="false" onMouseClicked="#loadAllBuildings" text="Clear filters" BorderPane.alignment="CENTER" />
-                </bottom>
-               <top>
-                  <VBox prefHeight="376.0" prefWidth="176.0" style="-fx-padding: 4px; -fx-background-color: #ADD8E6;" BorderPane.alignment="CENTER">
-                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="160.0" style="-fx-underline: true;" text="Filter Buildings">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label text="Name:" />
-                        <TextField fx:id="nameFilter" />
-                        <Label text="Address:" />
-                        <TextField fx:id="locationFilter" />
-                        <Label text="Description:" />
-                        <TextField fx:id="descriptionFilter" />
-                        <Button mnemonicParsing="false" onMouseClicked="#filterBuildings" text="Filter Buildings" />
-                     </children>
+       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+           <Text layoutX="14.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Buildings"
+                 underline="true">
+              <font>
+                  <Font name="System Bold" size="33.0"/>
+              </font>
+           </Text>
+           <TableView fx:id="buildingTable" layoutY="89.0" opacity="0.75" prefHeight="383.0" prefWidth="700.0">
+               <columns>
+                   <TableColumn fx:id="idCol" prefWidth="50.0" text="ID"/>
+                   <TableColumn fx:id="nameCol" prefWidth="100.0" text="Name"/>
+                   <TableColumn fx:id="locationCol" prefWidth="100.0" text="Address"/>
+                   <TableColumn fx:id="openTimeCol" prefWidth="100.0" text="Open Time"/>
+                   <TableColumn fx:id="closingTimeCol" prefWidth="100.0" text="Closing Time"/>
+                   <TableColumn fx:id="descriptionCol" prefWidth="125.0" text="Description"/>
+                   <TableColumn fx:id="deleteCol" prefWidth="60.0" text="Delete"/>
+                   <TableColumn fx:id="updateCol" prefWidth="64.0" text="Update"/>
+               </columns>
+           </TableView>
+           <Button layoutX="594.0" layoutY="59.0" mnemonicParsing="false" onMouseClicked="#createBuilding"
+                   text="Add Building"/>
+           <BorderPane layoutX="716.0" layoutY="39.0" prefHeight="426.0" prefWidth="176.0"
+                       style="-fx-background-color: #ADD8E6;">
+               <bottom>
+                   <Button mnemonicParsing="false" onMouseClicked="#loadAllBuildings" text="Clear filters"
+                           BorderPane.alignment="CENTER"/>
+               </bottom>
+              <top>
+                  <VBox prefHeight="376.0" prefWidth="176.0" style="-fx-padding: 4px; -fx-background-color: #ADD8E6;"
+                        BorderPane.alignment="CENTER">
+                      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="160.0"
+                             style="-fx-underline: true;" text="Filter Buildings">
+                          <font>
+                              <Font size="20.0"/>
+                          </font>
+                      </Label>
+                      <Label text="Name:"/>
+                      <TextField fx:id="nameFilter"/>
+                      <Label text="Address:"/>
+                      <TextField fx:id="locationFilter"/>
+                      <Label text="Description:"/>
+                      <TextField fx:id="descriptionFilter"/>
+                      <Button mnemonicParsing="false" onMouseClicked="#filterBuildings" text="Filter Buildings"/>
                   </VBox>
-               </top>
-            </BorderPane>
-            <MenuBar fx:id="navBar" layoutX="-6.0" layoutY="7.0" prefHeight="35.0" prefWidth="892.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-         </children>
-      </AnchorPane>
+              </top>
+           </BorderPane>
+           <MenuBar fx:id="navBar" layoutX="-6.0" layoutY="7.0" prefHeight="35.0" prefWidth="892.0"
+                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+       </AnchorPane>
    </center>
 </BorderPane>

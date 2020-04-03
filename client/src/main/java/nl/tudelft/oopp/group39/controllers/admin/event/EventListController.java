@@ -19,10 +19,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.admin.AdminPanelController;
 import nl.tudelft.oopp.group39.event.model.Event;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
+@SuppressWarnings("unchecked")
 public class EventListController extends AdminPanelController implements Initializable {
 
 
@@ -70,9 +71,6 @@ public class EventListController extends AdminPanelController implements Initial
 
         ArrayNode body = (ArrayNode) mapper.readTree(events).get("body");
         events = mapper.writeValueAsString(body);
-        Event[] list = mapper.readValue(events, Event[].class);
-        ObservableList<Event> data = FXCollections.observableArrayList(list);
-
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         startCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
@@ -85,6 +83,8 @@ public class EventListController extends AdminPanelController implements Initial
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
         updateCol.setCellFactory(param -> returnCell("Update"));
+        Event[] list = mapper.readValue(events, Event[].class);
+        ObservableList<Event> data = FXCollections.observableArrayList(list);
         eventTable.setItems(data);
         eventTable.getColumns().addAll(idCol, typeCol, startCol, endCol, deleteCol, updateCol);
     }
@@ -143,7 +143,6 @@ public class EventListController extends AdminPanelController implements Initial
     public void deleteEvent(Event event) throws IOException {
         String id = Long.toString(event.getId());
         ServerCommunication.removeEvent(id);
-//        createAlert("removed: " + event.getType());
         loadAllEvents();
     }
 

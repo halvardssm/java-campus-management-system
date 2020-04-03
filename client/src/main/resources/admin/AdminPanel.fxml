@@ -10,15 +10,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="621.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.admin.AdminPanelController">
+<BorderPane prefHeight="621.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.admin.AdminPanelController">
    <top>
       <HBox spacing="10" styleClass="bar">
          <padding>
-            <Insets bottom="15" left="15" right="15" top="15" />
+            <Insets bottom="15" left="15" right="15" top="15"/>
          </padding>
-         <children>
-            <Text id="title" text="Admin Navigation" />
-         </children>
+         <Text id="title" text="Admin Navigation"/>
       </HBox>
    </top>
    <bottom>
@@ -30,38 +28,42 @@
    </bottom>
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fitHeight="461.0" fitWidth="860.0" layoutX="340.0" layoutY="150.0" opacity="0.58" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="15.0">
-               <image>
-                  <Image url="@../icons/Library.png" />
-               </image>
-            </ImageView>
-            <Button fx:id="buildingView" layoutX="71.0" layoutY="59.0" mnemonicParsing="false" onAction="#switchBuildingView" prefHeight="112.0" prefWidth="165.0" text="Building View" AnchorPane.leftAnchor="70.0">
-               <font>
-                  <Font name="System Bold" size="19.0" />
-               </font>
-            </Button>
-            <Button fx:id="userView" layoutX="650.0" layoutY="70.0" mnemonicParsing="false" onAction="#switchUserView" prefHeight="112.0" prefWidth="165.0" text="User View" AnchorPane.rightAnchor="70.0">
-               <font>
-                  <Font name="System Bold" size="19.0" />
-               </font>
-            </Button>
-            <Button fx:id="roomView" layoutX="71.0" layoutY="298.0" mnemonicParsing="false" onAction="#switchRoomView" prefHeight="112.0" prefWidth="165.0" text="Room View" AnchorPane.leftAnchor="70.0">
-               <font>
-                  <Font name="System Bold" size="19.0" />
-               </font>
-            </Button>
-            <Button fx:id="eventView" layoutX="630.0" layoutY="308.0" mnemonicParsing="false" onAction="#switchEventView" prefHeight="112.0" prefWidth="165.0" text="Event View" AnchorPane.rightAnchor="70.0">
-               <font>
-                  <Font name="System Bold" size="19.0" />
-               </font>
-            </Button>
-            <Button fx:id="bookingsView" layoutX="363.0" layoutY="182.0" mnemonicParsing="false" onAction="#switchBookingsView" prefHeight="112.0" prefWidth="165.0" text="Bookings View">
-               <font>
-                  <Font name="System Bold" size="19.0" />
-               </font>
-            </Button>
-         </children>
+         <ImageView fitHeight="461.0" fitWidth="860.0" layoutX="340.0" layoutY="150.0" opacity="0.58"
+                    pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="15.0"
+                    AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="15.0">
+            <Image url="@../icons/Library.png"/>
+         </ImageView>
+         <Button layoutX="71.0" layoutY="59.0" mnemonicParsing="false"
+                 onAction="#switchBuildingView" prefHeight="112.0" prefWidth="165.0" text="Building View"
+                 AnchorPane.leftAnchor="70.0">
+            <font>
+               <Font name="System Bold" size="19.0"/>
+            </font>
+         </Button>
+         <Button  layoutX="650.0" layoutY="70.0" mnemonicParsing="false" onAction="#switchUserView"
+                 prefHeight="112.0" prefWidth="165.0" text="User View" AnchorPane.rightAnchor="70.0">
+            <font>
+               <Font name="System Bold" size="19.0"/>
+            </font>
+         </Button>
+         <Button  layoutX="71.0" layoutY="298.0" mnemonicParsing="false" onAction="#switchRoomView"
+                 prefHeight="112.0" prefWidth="165.0" text="Room View" AnchorPane.leftAnchor="70.0">
+            <font>
+               <Font name="System Bold" size="19.0"/>
+            </font>
+         </Button>
+         <Button  layoutX="630.0" layoutY="308.0" mnemonicParsing="false" onAction="#switchEventView"
+                 prefHeight="112.0" prefWidth="165.0" text="Event View" AnchorPane.rightAnchor="70.0">
+            <font>
+               <Font name="System Bold" size="19.0"/>
+            </font>
+         </Button>
+         <Button layoutX="363.0" layoutY="182.0" mnemonicParsing="false"
+                 onAction="#switchBookingsView" prefHeight="112.0" prefWidth="165.0" text="Bookings View">
+            <font>
+               <Font name="System Bold" size="19.0"/>
+            </font>
+         </Button>
       </AnchorPane>
    </center>
 </BorderPane>

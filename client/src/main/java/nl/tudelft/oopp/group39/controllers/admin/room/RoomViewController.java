@@ -6,9 +6,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.ResourceBundle;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -16,9 +14,8 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-//import nl.tudelft.oopp.group39.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.facility.model.Facility;
+import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
@@ -26,13 +23,8 @@ public class RoomViewController extends RoomListController implements Initializa
 
     private ObjectMapper mapper = new ObjectMapper();
     private Room room;
-    private Building building;
-    private HashMap<String, Integer> buildingsByName = new HashMap();
-    private HashMap<Integer, String> buildingsById = new HashMap();
     @FXML
     private Button backbtn;
-    @FXML
-    private TextField roomIdFieldView;
     @FXML
     private TextField nameFieldView;
     @FXML
@@ -97,7 +89,6 @@ public class RoomViewController extends RoomListController implements Initializa
 
     /**
      * Goes back to main Room panel.
-     * TODO -- why doesn't this work?
      */
 
     @FXML

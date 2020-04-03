@@ -15,7 +15,6 @@ import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,16 +29,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.admin.AdminPanelController;
-import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.facility.model.Facility;
+import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
+@SuppressWarnings("unchecked, MismatchedQueryAndUpdateOfCollection")
 public class RoomListController extends AdminPanelController implements Initializable {
-    /**
-     * TODO Sven
-     */
     private ObjectMapper mapper = new ObjectMapper();
     @FXML
     private Button backbtn;
@@ -61,16 +58,16 @@ public class RoomListController extends AdminPanelController implements Initiali
     private TableColumn<Room, Room> viewCol = new TableColumn<>("View");
     @FXML
     private TableColumn<Room, Room> updateCol = new TableColumn<>("Update");
-    private HashMap<String, Integer> buildingsByName = new HashMap();
-    private HashMap<Integer, String> buildingsById = new HashMap();
-    private HashMap<String, Long> facilitiesByName = new HashMap();
-    private HashMap<Long, String> facilitiesById = new HashMap();
+    private HashMap<String, Integer> buildingsByName = new HashMap<>();
+    private HashMap<Integer, String> buildingsById = new HashMap<>();
+    private HashMap<String, Long> facilitiesByName = new HashMap<>();
+    private HashMap<Long, String> facilitiesById = new HashMap<>();
     @FXML
-    private ComboBox roomBuildingIdField;
+    private ComboBox<String> roomBuildingIdField;
     @FXML
-    private ComboBox roomOnlyStaffField;
+    private ComboBox<String> roomOnlyStaffField;
     @FXML
-    private ListView facilitiesList;
+    private ListView<String> facilitiesList;
     @FXML
     private TextField roomNameField;
     @FXML
@@ -118,19 +115,19 @@ public class RoomListController extends AdminPanelController implements Initiali
      */
 
     void loadRooms() throws JsonProcessingException {
-        String b = ServerCommunication.get(ServerCommunication.building);
-        ObservableList<String> buildingData = getData(b);
         String f = ServerCommunication.get(ServerCommunication.facility);
         System.out.println("tset: " + f);
-        ObservableList<String> facData = getFacilityData(f);
         List<String> options = new ArrayList<>();
         options.add("All users");
         options.add("Only staff members");
         ObservableList<String> dataOptions = FXCollections.observableArrayList(options);
+        String b = ServerCommunication.get(ServerCommunication.building);
+        ObservableList<String> buildingData = getData(b);
         roomBuildingIdField.setItems(buildingData);
         roomBuildingIdField.setPromptText(buildingData.get(0));
         roomOnlyStaffField.setItems(dataOptions);
         facilitiesList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        ObservableList<String> facData = getFacilityData(f);
         facilitiesList.setItems(facData);
         roomOnlyStaffField.setPromptText(dataOptions.get(0));
         roomTable.setVisible(true);
@@ -151,7 +148,6 @@ public class RoomListController extends AdminPanelController implements Initiali
             }
         }
 
-        ObservableList<Room> data = FXCollections.observableArrayList(roomList);
         buildingIdCol.setCellValueFactory(new PropertyValueFactory<>("building"));
         roomIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         capacityCol.setCellValueFactory(new PropertyValueFactory<>("capacity"));
@@ -170,6 +166,7 @@ public class RoomListController extends AdminPanelController implements Initiali
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
         viewCol.setCellFactory(param -> returnCell("View"));
+        ObservableList<Room> data = FXCollections.observableArrayList(roomList);
         roomTable.setItems(data);
         roomTable.getColumns().addAll(roomIdCol, buildingIdCol, capacityCol, onlyStaffCol, nameCol, deleteCol, updateCol, viewCol);
     }
@@ -230,7 +227,6 @@ public class RoomListController extends AdminPanelController implements Initiali
     public void deleteRoom(Room room) throws IOException {
         String id = Long.toString(room.getId());
         ServerCommunication.removeRoom(id);
-//        createAlert("removed: " + room.getName());
         loadRooms();
     }
     /**

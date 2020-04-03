@@ -13,7 +13,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
@@ -30,9 +33,9 @@ public class BuildingCreateController extends BuildingListController implements 
     @FXML
     private TextField descriptionFieldNew;
     @FXML
-    private ComboBox timeOpenFieldNew;
+    private ComboBox<String> timeOpenFieldNew;
     @FXML
-    private ComboBox timeClosedFieldNew;
+    private ComboBox<String> timeClosedFieldNew;
     @FXML
     private MenuBar navBar;
 
@@ -60,6 +63,7 @@ public class BuildingCreateController extends BuildingListController implements 
     /**
      * Adds a new building with auto-generated ID.
      */
+
     public void addBuilding() throws IOException {
         String name = nameFieldNew.getText();
         String location = locationFieldNew.getText();
@@ -70,7 +74,6 @@ public class BuildingCreateController extends BuildingListController implements 
         String reservationEndString = reservationEndValue == null ? end + ":00" : reservationEndValue.toString() + ":00";
 
         ServerCommunication.addBuilding(name, location, desc, reservationStartString, reservationEndString);
-//        createAlert("Added a new building.");
         getBack();
         nameFieldNew.clear();
         locationFieldNew.clear();

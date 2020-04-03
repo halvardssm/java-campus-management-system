@@ -19,17 +19,17 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+
 
 public class RoomEditController extends RoomListController implements Initializable {
 
     private ObjectMapper mapper = new ObjectMapper();
     private Room room;
-    private Building building;
-    private HashMap<String, Integer> buildingsByName = new HashMap();
-    private HashMap<Integer, String> buildingsById = new HashMap();
+    private HashMap<String, Integer> buildingsByName = new HashMap<>();
+    private HashMap<Integer, String> buildingsById = new HashMap<>();
     @FXML
     private Button backbtn;
     @FXML
@@ -37,9 +37,9 @@ public class RoomEditController extends RoomListController implements Initializa
     @FXML
     private TextField roomDescriptionField;
     @FXML
-    private ComboBox roomBuildingIdField;
+    private ComboBox<String> roomBuildingIdField;
     @FXML
-    private ComboBox roomOnlyStaffField;
+    private ComboBox<String> roomOnlyStaffField;
     @FXML
     private TextField roomCapacityField;
     @FXML
@@ -66,8 +66,8 @@ public class RoomEditController extends RoomListController implements Initializa
         String b = ServerCommunication.get(ServerCommunication.building);
         ObservableList<String> data = getData(b);
         roomBuildingIdField.setItems(data);
-        String roomName = this.buildingsById.get(Integer.valueOf(Long.toString(room.getBuilding())));
-        roomBuildingIdField.setPromptText(roomName);
+        String romName = this.buildingsById.get(Integer.valueOf(Long.toString(room.getBuilding())));
+        roomBuildingIdField.setPromptText(romName);
         ObservableList<String> dataOptions = FXCollections.observableArrayList(options);
         roomOnlyStaffField.setItems(dataOptions);
         roomOnlyStaffField.setPromptText(getOnlyStaff(room));
@@ -95,13 +95,12 @@ public class RoomEditController extends RoomListController implements Initializa
         String roomCap = roomCapacityField.getText();
         String roomDesc = roomDescriptionField.getText();
         String roomID = Long.toString(room.getId());
-        Object onlyStaffObj = roomOnlyStaffField.getValue();
-        String onlyStaff = onlyStaffObj == null ? getOnlyStaff(room) : (String) onlyStaffObj;
+        String onlyStaffObj = roomOnlyStaffField.getValue();
+        String onlyStaff = onlyStaffObj == null ? getOnlyStaff(room) : onlyStaffObj;
         onlyStaff = Boolean.toString((onlyStaff).contentEquals("Only staff members"));
         System.out.println(building + " " + buildingId + " " + this.room.getBuilding());
         ServerCommunication.updateRoom(buildingId, roomCap, roomDesc, roomID, onlyStaff, name);
         getBack();
-//        createAlert("Updated: " + room.getName());
     }
     /**
      * Gets a list of buildings.

@@ -19,14 +19,16 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.models.Building;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
+// Suppress all only used for Suspicious call to 'HashMap.get' in line 126
+@SuppressWarnings("MismatchedQueryAndUpdateOfCollection, ALL")
 public class RoomCreateController extends RoomListController implements Initializable {
 
     private ObjectMapper mapper = new ObjectMapper();
-    private HashMap<String, Integer> buildingsByName = new HashMap();
-    private HashMap<Integer, Building> buildingById = new HashMap();
+    private HashMap<String, Integer> buildingsByName = new HashMap<>();
+    private HashMap<Integer, Building> buildingById = new HashMap<>();
     @FXML
     private Button backbtn;
     @FXML
@@ -34,9 +36,9 @@ public class RoomCreateController extends RoomListController implements Initiali
     @FXML
     private TextField roomDescriptionField;
     @FXML
-    private ComboBox roomBuildingIdField;
+    private ComboBox<String> roomBuildingIdField;
     @FXML
-    private ComboBox roomOnlyStaffField;
+    private ComboBox<String> roomOnlyStaffField;
     @FXML
     private TextField roomCapacityField;
     @FXML
@@ -109,25 +111,23 @@ public class RoomCreateController extends RoomListController implements Initiali
     }
 
     /**
-     * Creates a room. TODO SVEN Rewrite for checkstyle
+     * Creates a room.
      */
 
     public void createRoom() throws IOException {
         String name = roomNameField.getText();
         name = name == null ? "" : name;
         Object building = roomBuildingIdField.getValue();
-        String buildingId = building == null ? Integer.toString(buildingsByName.get(buildingsByName.keySet().toArray()[0])) : Integer.toString(this.buildingsByName.get(building.toString()));
-        //        Building nBuilding = buildingById.get(buildingId);
         String roomCap = roomCapacityField.getText();
         roomCap = roomCap == null || roomCap.contentEquals("") ? "0" : roomCap;
         String roomDesc = roomDescriptionField.getText();
         roomDesc = roomDesc == null ? "" : roomDesc;
-        Object onlyStaffObj = roomOnlyStaffField.getValue();
-        String onlyStaff = onlyStaffObj == null ? Boolean.toString(false) : (String) onlyStaffObj;
+        String buildingId = building == null ? Integer.toString(buildingsByName.get(buildingsByName.keySet().toArray()[0])) : Integer.toString(this.buildingsByName.get(building.toString()));
+        String onlyStaffObj = roomOnlyStaffField.getValue();
+        String onlyStaff = onlyStaffObj == null ? Boolean.toString(false) : onlyStaffObj;
         onlyStaff = Boolean.toString((onlyStaff).contentEquals("Only staff members"));
         ServerCommunication.addRoom(buildingId, roomCap, roomDesc, onlyStaff, name);
         getBack();
-//        createAlert("Added: " + name);
     }
 
 }

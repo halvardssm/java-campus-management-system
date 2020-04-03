@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../../style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.admin.event.EventEditController">
+<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.admin.event.EventEditController">
     <top>
         <HBox spacing="10" styleClass="bar">
             <padding>
@@ -31,41 +31,33 @@
     </bottom>
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <Text layoutX="27.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update an Event"
-                  underline="true">
+            <Text layoutX="27.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update an Event" underline="true">
                 <font>
-                    <Font name="System Bold" size="33.0"/>
+                    <Font name="System Bold" size="33.0" />
                 </font>
             </Text>
             <Text layoutX="27.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type:">
                 <font>
-                    <Font name="System Bold" size="17.0"/>
+                    <Font name="System Bold" size="17.0" />
                 </font>
             </Text>
-            <ComboBox fx:id="typeBox" layoutX="200.0" layoutY="106.0" prefHeight="31.0" prefWidth="200.0"
-                      promptText="type"/>
+            <ComboBox fx:id="typeBox" layoutX="200.0" layoutY="106.0" prefHeight="31.0" prefWidth="200.0" promptText="type" />
             <Text layoutX="15.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start date:">
                 <font>
-                    <Font name="System Bold" size="17.0"/>
+                    <Font name="System Bold" size="17.0" />
                 </font>
             </Text>
-            <DatePicker fx:id="startField" layoutX="200.0" layoutY="187.0" prefHeight="31.0" prefWidth="200.0"
-                        promptText="23:59:00"/>
+            <DatePicker fx:id="startField" layoutX="200.0" layoutY="187.0" prefHeight="31.0" prefWidth="200.0" promptText="23:59:00" />
             <Text layoutX="20.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End date:">
                 <font>
-                    <Font name="System Bold" size="17.0"/>
+                    <Font name="System Bold" size="17.0" />
                 </font>
             </Text>
-            <DatePicker fx:id="endField" layoutX="200.0" layoutY="276.0" prefHeight="31.0" prefWidth="200.0"
-                        promptText="00:00:00"/>
-            <Button layoutX="776.0" layoutY="459.0" mnemonicParsing="false" onMouseClicked="#editEvent"
-                    text="Update Event"/>
+            <DatePicker fx:id="endField" layoutX="200.0" layoutY="276.0" prefHeight="31.0" prefWidth="200.0" promptText="00:00:00" />
+            <Button layoutX="776.0" layoutY="459.0" mnemonicParsing="false" onMouseClicked="#editEvent" text="Update Event" />
             <MenuBar fx:id="navBar" layoutY="2.0" prefHeight="32.0" prefWidth="891.0">
-                <menus>
-                </menus>
             </MenuBar>
-            <TextArea fx:id="dateMessage" disable="true" layoutX="443.0" layoutY="104.0" prefHeight="212.0"
-                      prefWidth="417.0"/>
+            <TextArea fx:id="dateMessage" disable="true" layoutX="443.0" layoutY="104.0" prefHeight="212.0" prefWidth="417.0" />
         </AnchorPane>
     </center>
 </BorderPane>

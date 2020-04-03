@@ -12,9 +12,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-//import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.admin.room.RoomListController;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
@@ -29,8 +32,6 @@ public class UserCreateController extends RoomListController implements Initiali
     private ComboBox<String> roleBox;
     @FXML
     private TextField usernameField;
-    @FXML
-    private List<String> roles;
     @FXML
     private TextArea userMessage;
     @FXML
@@ -68,7 +69,6 @@ public class UserCreateController extends RoomListController implements Initiali
         User[] listU = mapper.readValue(users, User[].class);
         this.users = Arrays.asList(listU);
 
-        this.roles = Arrays.asList(list);
         ObservableList<String> data = FXCollections.observableArrayList(list);
         roleBox.setItems(data);
         roleBox.setPromptText("Select a role:");
@@ -105,17 +105,20 @@ public class UserCreateController extends RoomListController implements Initiali
      * @param roleNull has a role been picked?
      * @param password and passwordConfirmation the password to be set for user.
      *
-     *                 TODO SVEN - make shorter somehow?
      */
 
-    public void verifyInputs(String name, String roleObj, boolean roleNull, String password, String passwordConfirmation) throws IOException {
+    public void verifyInputs(
+            String name,
+            String roleObj,
+            boolean roleNull,
+            String password,
+            String passwordConfirmation) throws IOException {
+        userMessage.setStyle("-fx-text-fill: Red");
         if (name == null || name.contentEquals("")) {
-            userMessage.setStyle("-fx-text-fill: Red");
             userMessage.setText("Please select a name!\n");
             return;
         }
         if (roleNull) {
-            userMessage.setStyle("-fx-text-fill: Red");
             String abcString = userMessage.getText();
             userMessage.setText(abcString + "Please select a role!\n");
             return;
@@ -123,36 +126,32 @@ public class UserCreateController extends RoomListController implements Initiali
         for (User user : this.users) {
             if (user.getUsername().contentEquals(name)) {
                 String abcString = userMessage.getText();
-                userMessage.setStyle("-fx-text-fill: Red");
                 userMessage.setText(abcString + "This username was already taken!\n");
                 return;
             }
         }
-        if (password == null || passwordConfirmation == null || password.contentEquals("") || passwordConfirmation.contentEquals("")) {
-            userMessage.setStyle("-fx-text-fill: Red");
+        if (password == null || passwordConfirmation == null
+                || password.contentEquals("")
+                || passwordConfirmation.contentEquals("")) {
             String abcString = userMessage.getText();
             userMessage.setText(abcString + "Please input a password and confirmation password!\n");
             return;
         }
         if (password.length() < 8 || passwordConfirmation.length() < 8) {
-            userMessage.setStyle("-fx-text-fill: Red");
             String abcString = userMessage.getText();
             userMessage.setText(abcString + "Password must be longer than 8 characters!\n");
             return;
         }
         if (!password.contentEquals(passwordConfirmation)) {
-            userMessage.setStyle("-fx-text-fill: Red");
             String abcString = userMessage.getText();
             userMessage.setText(abcString + "The password and password confirmation must match!\n");
             return;
         }
-        String role = roleObj;
         String email = "tudelft.nl";
-        email = role.contentEquals("STUDENT") ? "student." + email : email;
+        email = roleObj.contentEquals("STUDENT") ? "student." + email : email;
         email = name + "@" + email;
-        ServerCommunication.createUser(name, email, role, password);
+        ServerCommunication.createUser(name, email, roleObj, password);
         getBack();
-//        createAlert("Created: " + email);
     }
 
 }

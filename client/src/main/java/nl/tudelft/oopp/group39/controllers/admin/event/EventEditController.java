@@ -17,18 +17,18 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.event.model.Event;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+
 
 public class EventEditController extends EventListController implements Initializable {
 
     private ObjectMapper mapper = new ObjectMapper();
-    private Event cEvent;
+    private Event abcEvent;
     @FXML
     private Button backbtn;
-
     @FXML
-    private ComboBox typeBox;
+    private ComboBox<String> typeBox;
     @FXML
     private DatePicker startField;
     @FXML
@@ -48,9 +48,9 @@ public class EventEditController extends EventListController implements Initiali
      * Initializes data for usage in editing event.
      */
 
-    public void initData(Event cEvent) throws JsonProcessingException {
-        this.cEvent = cEvent;
-        typeBox.setPromptText(cEvent.getType());
+    public void initData(Event abcEvent) throws JsonProcessingException {
+        this.abcEvent = abcEvent;
+        typeBox.setPromptText(abcEvent.getType());
         String types = ServerCommunication.getEventTypes();
 
         ArrayNode body = (ArrayNode) mapper.readTree(types).get("body");
@@ -59,8 +59,8 @@ public class EventEditController extends EventListController implements Initiali
         ObservableList<String> data = FXCollections.observableArrayList(list);
 
         typeBox.setItems(data);
-        startField.setPromptText(cEvent.getStartDate().toString());
-        endField.setPromptText(cEvent.getEndDate().toString());
+        startField.setPromptText(abcEvent.getStartDate().toString());
+        endField.setPromptText(abcEvent.getEndDate().toString());
     }
 
     /**
@@ -79,14 +79,14 @@ public class EventEditController extends EventListController implements Initiali
 
     public void editEvent() throws IOException {
         Object typeObj = typeBox.getValue();
-        String type = typeObj == null ? cEvent.getType() : typeObj.toString();
+        String type = typeObj == null ? abcEvent.getType() : typeObj.toString();
         LocalDate start = startField.getValue();
         boolean startNull = start == null;
-        String startDate = startNull ? cEvent.getStartDate().toString() : start.toString();
+        String startDate = startNull ? abcEvent.getStartDate().toString() : start.toString();
         LocalDate end = endField.getValue();
         boolean endNull = end == null;
-        String endDate = endNull ? cEvent.getEndDate().toString() : end.toString();
-        String id = Long.toString(cEvent.getId());
+        String endDate = endNull ? abcEvent.getEndDate().toString() : end.toString();
+        String id = Long.toString(abcEvent.getId());
         checkValidity(id, startDate, endDate, startNull, endNull, type);
     }
     /**
@@ -96,7 +96,7 @@ public class EventEditController extends EventListController implements Initiali
     public void createEventFinal(String id, String type, String startDate, String endDate) throws IOException {
         ServerCommunication.updateEvent(id, type, startDate, endDate);
         getBack();
-        createAlert("Updated: " + cEvent.getType());
+        createAlert("Updated: " + abcEvent.getType());
     }
     /**
      * Makes sure that values put into event are valid.
