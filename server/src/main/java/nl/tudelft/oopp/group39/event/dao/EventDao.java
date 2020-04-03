@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EventDao extends AbstractDao<Event> {
+    public static final String PARAM_DATE = "date";
 
     @PersistenceContext
     protected EntityManager em;
@@ -33,6 +34,11 @@ public class EventDao extends AbstractDao<Event> {
         checkParam(Event.COL_ID, this::predicateLongInList);
 
         checkParam(Event.COL_TITLE, this::predicateLike);
+
+        checkParam(
+            PARAM_DATE,
+            (c, p) -> predicateDateEqual(p, Event.COL_STARTS_AT, Event.COL_ENDS_AT)
+        );
 
         checkParam(Event.COL_STARTS_AT, (c, p) -> predicateGreater(c, Utils.parseDateTime(p)));
 
