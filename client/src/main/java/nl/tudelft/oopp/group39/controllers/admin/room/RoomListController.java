@@ -337,6 +337,10 @@ public class RoomListController extends AdminPanelController {
         return room.isOnlyStaff() ? "Only staff" : "All users";
     }
 
+    public String isOnlyStaff(String string) {
+        return string.contentEquals("Only staff") ? Boolean.toString(true) : Boolean.toString(false) ;
+    }
+
     @FXML
     private void switchBack() throws IOException {
         switchFunc("/admin/AdminPanel.fxml");
@@ -354,7 +358,7 @@ public class RoomListController extends AdminPanelController {
         String description = descriptionFilter.getText();
         Object onlyStaffObj = onlyStaffFilter.getValue();
         String onlyStaff = onlyStaffObj == null ? "" : onlyStaffObj.toString();
-        onlyStaff = onlyStaff.contentEquals("All users") ? "" : onlyStaff;
+        onlyStaff = onlyStaff.contentEquals("All users") ? "" : isOnlyStaff(onlyStaff);
         Object buildingObj = buildingFilter.getValue();
         String building = buildingObj == null ? "" : buildingObj.toString();
         building = building.contentEquals("All buildings") || building.contentEquals("") ? "" : Integer.toString(buildingsByName.get(building));
