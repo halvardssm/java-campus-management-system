@@ -36,6 +36,16 @@ class EventTest {
         assertNull(testEvent.getId());
     }
 
+    //    @Test
+    //    void jsonConversionTest() throws JsonProcessingException {
+    //        ObjectMapper mapper = new ObjectMapper();
+    //        String convert = mapper.writeValueAsString(testEvent);
+    //
+    //        Event reconvEvent = mapper.readValue(convert, Event.class);
+    //
+    //        assertEquals(reconvEvent, testEvent);
+    //    }
+
     @Test
     void getTitle() {
         assertEquals(testEvent.getTitle(), "Christmas");
