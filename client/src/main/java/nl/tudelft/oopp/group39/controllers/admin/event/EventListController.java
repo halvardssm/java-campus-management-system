@@ -24,9 +24,9 @@ import nl.tudelft.oopp.group39.event.model.Event;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 @SuppressWarnings("unchecked")
-public class EventListController extends AdminPanelController implements Initializable {
+public class EventListController extends AdminPanelController {
 
-
+    private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     @FXML
     private Button backbtn;
@@ -42,14 +42,14 @@ public class EventListController extends AdminPanelController implements Initial
     @FXML
     private MenuBar navBar;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void customInit() {
         try {
             loadAllEvents();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        setNavBar(navBar);
+        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
     /**
      * Ensures that all events are put into table view.
@@ -133,7 +133,9 @@ public class EventListController extends AdminPanelController implements Initial
      */
 
     public void createEvent() throws IOException {
-        switchFunc("/admin/event/EventCreate.fxml");
+        FXMLLoader loader = switchFunc("/admin/event/EventCreate.fxml");
+        EventCreateController controller = loader.getController();
+        controller.customInit();
     }
 
     /**

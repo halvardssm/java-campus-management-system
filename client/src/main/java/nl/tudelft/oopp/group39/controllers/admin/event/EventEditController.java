@@ -21,8 +21,9 @@ import nl.tudelft.oopp.group39.event.model.Event;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 
-public class EventEditController extends EventListController implements Initializable {
+public class EventEditController extends EventListController {
 
+    private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     private Event abcEvent;
     @FXML
@@ -38,10 +39,9 @@ public class EventEditController extends EventListController implements Initiali
     @FXML
     private TextArea dateMessage;
 
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        setNavBar(navBar);
+    public void customInit() {
+        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
 
     /**
@@ -49,6 +49,7 @@ public class EventEditController extends EventListController implements Initiali
      */
 
     public void initData(Event abcEvent) throws JsonProcessingException {
+        customInit();
         this.abcEvent = abcEvent;
         typeBox.setPromptText(abcEvent.getType());
         String types = ServerCommunication.getEventTypes();
@@ -69,8 +70,7 @@ public class EventEditController extends EventListController implements Initiali
 
     @FXML
     private void getBack() throws IOException {
-        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        mainSwitch("/admin/event/EventList.fxml", currentstage);
+        switchEventView(currentStage);
     }
 
     /**

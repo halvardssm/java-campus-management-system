@@ -18,8 +18,9 @@ import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 
-public class BuildingEditController extends BuildingListController implements Initializable {
+public class BuildingEditController extends BuildingListController {
 
+    private Stage currentStage;
     private String start;
     private String end;
     private Building building;
@@ -38,10 +39,9 @@ public class BuildingEditController extends BuildingListController implements In
     @FXML
     private MenuBar navBar;
 
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        setNavBar(navBar);
+    public void customInit() {
+        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
 
     /**
@@ -49,6 +49,7 @@ public class BuildingEditController extends BuildingListController implements In
      */
 
     public void initData(Building building) {
+        customInit();
         this.building = building;
         nameFieldNew.setPromptText(building.getName());
         locationFieldNew.setPromptText(building.getLocation());
@@ -82,8 +83,7 @@ public class BuildingEditController extends BuildingListController implements In
 
     @FXML
     private void getBack() throws IOException {
-        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        mainSwitch("/admin/building/BuildingList.fxml", currentstage);
+        switchBuildingView(currentStage);
     }
     /**
      * Retrieves data from boxes and sends to database.

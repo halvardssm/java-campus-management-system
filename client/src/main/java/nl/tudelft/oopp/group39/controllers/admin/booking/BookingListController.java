@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,7 +25,9 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 
 @SuppressWarnings("unchecked")
-public class BookingListController extends AdminPanelController implements Initializable {
+public class BookingListController extends AdminPanelController {
+
+    private Stage currentStage;
     @FXML
     private Button backbtn;
     @FXML
@@ -51,19 +54,19 @@ public class BookingListController extends AdminPanelController implements Initi
     /**
      * Initialize data into tableView.
      */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void customInit() {
         try {
             loadReservations();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        setNavBar(navBar);
+        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
+
     /**
      * Creates observable list containing booking data needed for table.
      */
-
     public ObservableList<Booking> getData() throws JsonProcessingException {
         String b = ServerCommunication.get(ServerCommunication.booking);
         ArrayNode body = (ArrayNode) mapper.readTree(b).get("body");
@@ -140,7 +143,9 @@ public class BookingListController extends AdminPanelController implements Initi
     }
 
     public void createBooking() throws IOException {
-        switchFunc("/admin/booking/BookingCreate.fxml");
+        FXMLLoader loader = switchFunc("/admin/booking/BookingCreate.fxml");
+        BookingCreateController controller = loader.getController();
+        controller.customInit();
     }
     /**
      * Deletes selected booking.

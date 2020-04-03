@@ -19,8 +19,9 @@ import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
-public class RoomViewController extends RoomListController implements Initializable {
+public class RoomViewController extends RoomListController {
 
+    private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     @FXML
     private Button backbtn;
@@ -39,19 +40,17 @@ public class RoomViewController extends RoomListController implements Initializa
     @FXML
     private MenuBar navBar;
 
-
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        setNavBar(navBar);
+    public void customInit() {
+        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
-
     /**
      * Initialize rooms data into their respective boxes to be used for updating.
      * @throws JsonProcessingException when there is a processing exception.
      */
 
     public void initData(Room room) throws JsonProcessingException {
+        customInit();
         String nnnBuilding = ServerCommunication.getBuilding(room.getBuilding());
         System.out.println(nnnBuilding);
         ObjectNode body = (ObjectNode) mapper.readTree(nnnBuilding).get("body");
@@ -92,8 +91,7 @@ public class RoomViewController extends RoomListController implements Initializa
 
     @FXML
     private void getBack() throws IOException {
-        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        mainSwitch("/admin/event/RoomList.fxml", currentstage);
+        switchRoomView(currentStage);
     }
 
 }

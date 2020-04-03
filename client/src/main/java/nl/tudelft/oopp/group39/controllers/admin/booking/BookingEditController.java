@@ -25,15 +25,18 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.booking.model.Booking;
-import nl.tudelft.oopp.group39.controllers.admin.event.EventListController;
-import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.controllers.admin.event.EventListController;
+//import nl.tudelft.oopp.group39.models.Booking;
+import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.user.model.User;
+//import nl.tudelft.oopp.group39.models.Room;
+//import nl.tudelft.oopp.group39.models.User;
 
+public class BookingEditController extends EventListController {
 
-public class BookingEditController extends EventListController implements Initializable {
-
+    private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     private Booking booking;
     private String date;
@@ -59,11 +62,13 @@ public class BookingEditController extends EventListController implements Initia
     @FXML
     private TextArea dateMessage;
 
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        setNavBar(navBar);
-        roomBox.valueProperty().addListener(new ChangeListener<>() {
+    /**
+     * TODO sasa.
+     */
+    public void customInit() {
+        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
+        roomBox.valueProperty().addListener(new ChangeListener<String>() {
             @Override public void changed(ObservableValue ov, String t, String t1) {
                 String reservationStartString = roomBox.getValue();
                 try {
@@ -84,15 +89,15 @@ public class BookingEditController extends EventListController implements Initia
             }
         });
     }
+
     /**
      * Initializes the data necessary for bookings.
      */
-
     public void initData(Booking booking) throws JsonProcessingException {
         this.booking = booking;
+        customInit();
         initRooms();
         initUsers();
-
     }
 
     private Building getBuilding(Room room) throws JsonProcessingException {
@@ -212,8 +217,7 @@ public class BookingEditController extends EventListController implements Initia
 
     @FXML
     private void getBack() throws IOException {
-        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        mainSwitch("/admin/booking/BookingList.fxml", currentstage);
+        switchBookingsView(currentStage);
     }
     /**
      * Edits values of booking.

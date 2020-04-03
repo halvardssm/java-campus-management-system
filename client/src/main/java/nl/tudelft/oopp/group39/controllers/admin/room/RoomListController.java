@@ -36,7 +36,7 @@ import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 @SuppressWarnings("unchecked, MismatchedQueryAndUpdateOfCollection")
-public class RoomListController extends AdminPanelController implements Initializable {
+public class RoomListController extends AdminPanelController {
     private ObjectMapper mapper = new ObjectMapper();
     @FXML
     private Button backbtn;
@@ -72,16 +72,16 @@ public class RoomListController extends AdminPanelController implements Initiali
     private TextField roomNameField;
     @FXML
     private MenuBar navBar;
+    private Stage currentStage;
 
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void customInit() {
         try {
             loadRooms();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        setNavBar(navBar);
+        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
 
     /**
@@ -218,7 +218,9 @@ public class RoomListController extends AdminPanelController implements Initiali
      */
 
     public void createRoom() throws IOException {
-        switchFunc("/admin/room/RoomCreate.fxml");
+        FXMLLoader loader = switchFunc("/admin/room/RoomCreate.fxml");
+        RoomCreateController controller = loader.getController();
+        controller.customInit();
     }
     /**
      * Deletes selected room.

@@ -5,16 +5,26 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import nl.tudelft.oopp.group39.controllers.admin.booking.BookingListController;
+import nl.tudelft.oopp.group39.controllers.admin.building.BuildingListController;
+import nl.tudelft.oopp.group39.controllers.admin.event.EventListController;
+import nl.tudelft.oopp.group39.controllers.admin.room.RoomListController;
+import nl.tudelft.oopp.group39.controllers.admin.user.UserListController;
 import nl.tudelft.oopp.group39.views.AdminPanel;
 
 
 public class AdminPanelController extends MainAdminController implements Initializable {
 
+    @FXML
+    private Button buildingView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -22,15 +32,14 @@ public class AdminPanelController extends MainAdminController implements Initial
     /**
      * Creates a navigation bar and inputs buttons which navigate to different parts of admin panel.
      */
-
-    public void setNavBar(MenuBar menuBar) {
+    public void setNavBar(MenuBar menuBar, Stage currentstage) {
         Label userListLabel = new Label("User list");
         userListLabel.setStyle("-fx-text-fill: black");
         userListLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    AdminPanel.sceneHandler("/admin/user/UserList.fxml");
+                    switchUserView(currentstage);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -45,7 +54,7 @@ public class AdminPanelController extends MainAdminController implements Initial
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    AdminPanel.sceneHandler("/admin/room/RoomList.fxml");
+                    switchRoomView(currentstage);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -60,7 +69,7 @@ public class AdminPanelController extends MainAdminController implements Initial
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    AdminPanel.sceneHandler("/admin/event/EventList.fxml");
+                    switchEventView(currentstage);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -75,7 +84,7 @@ public class AdminPanelController extends MainAdminController implements Initial
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    AdminPanel.sceneHandler("/admin/building/BuildingList.fxml");
+                    switchBuildingView(currentstage);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -90,7 +99,7 @@ public class AdminPanelController extends MainAdminController implements Initial
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    AdminPanel.sceneHandler("/admin/booking/BookingList.fxml");
+                    switchBookingsView(currentstage);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -101,33 +110,64 @@ public class AdminPanelController extends MainAdminController implements Initial
         menuBar.getMenus().add(fileMenuButton5);
     }
 
+    public void switchBookingsView(Stage currentstage) throws IOException {
+        FXMLLoader loader = mainSwitch("/admin/booking/BookingList.fxml", currentstage);
+        BookingListController controller = loader.getController();
+        controller.customInit();
+    }
+
+    public void switchBuildingView(Stage currentstage) throws IOException {
+        FXMLLoader loader = mainSwitch("/admin/building/BuildingList.fxml", currentstage);
+        BuildingListController controller = loader.getController();
+        controller.customInit();
+    }
+
+    public void switchRoomView(Stage currentstage) throws IOException {
+        FXMLLoader loader = mainSwitch("/admin/room/RoomList.fxml", currentstage);
+        RoomListController controller = loader.getController();
+        controller.customInit();
+    }
+
+    public void switchUserView(Stage currentstage) throws IOException {
+        FXMLLoader loader = mainSwitch("/admin/user/UserList.fxml", currentstage);
+        UserListController controller = loader.getController();
+        controller.customInit();
+    }
+
+    public void switchEventView(Stage currentstage) throws IOException {
+        FXMLLoader loader = mainSwitch("/admin/event/EventList.fxml", currentstage);
+        EventListController controller = loader.getController();
+        controller.customInit();
+    }
+    @FXML
+    private void switchEventView() throws IOException {
+        Stage currentStage = (Stage) buildingView.getScene().getWindow();
+        switchEventView(currentStage);
+    }
+
     @FXML
     private void switchBookingsView() throws IOException {
-        AdminPanel.sceneHandler("/admin/booking/BookingList.fxml");
+        Stage currentStage = (Stage) buildingView.getScene().getWindow();
+        switchBookingsView(currentStage);
     }
 
     @FXML
     private void switchBuildingView() throws IOException {
-        AdminPanel.sceneHandler("/admin/building/BuildingList.fxml");
+        Stage currentStage = (Stage) buildingView.getScene().getWindow();
+        switchBuildingView(currentStage);
     }
 
     @FXML
     private void switchRoomView() throws IOException {
-        AdminPanel.sceneHandler("/admin/room/RoomList.fxml");
+        Stage currentStage = (Stage) buildingView.getScene().getWindow();
+        switchRoomView(currentStage);
     }
-
 
     @FXML
     private void switchUserView() throws IOException {
-        AdminPanel.sceneHandler("/admin/user/UserList.fxml");
+        Stage currentStage = (Stage) buildingView.getScene().getWindow();
+        switchEventView(currentStage);
     }
-
-
-    @FXML
-    private void switchEventView() throws IOException {
-        AdminPanel.sceneHandler("/admin/event/EventList.fxml");
-    }
-
 
 }
 

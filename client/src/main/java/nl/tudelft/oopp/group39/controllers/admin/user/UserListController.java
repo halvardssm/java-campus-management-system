@@ -29,8 +29,9 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
 
 @SuppressWarnings("unchecked")
-public class UserListController extends AdminPanelController implements Initializable {
+public class UserListController extends AdminPanelController {
 
+    private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     private String lastSelectedRole;
     private String lastSelectedName;
@@ -52,15 +53,14 @@ public class UserListController extends AdminPanelController implements Initiali
     @FXML
     private MenuBar navBar;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void customInit() {
         try {
             loadUsersStandard();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        setNavBar(navBar);
-
+        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
     /**
      * Loads users when no filtering is enabled.
@@ -176,7 +176,9 @@ public class UserListController extends AdminPanelController implements Initiali
 
 
     public void createUser() throws IOException {
-        switchFunc("/admin/user/UserCreate.fxml");
+        FXMLLoader loader = switchFunc("/admin/user/UserCreate.fxml");
+        UserCreateController controller = loader.getController();
+        controller.customInit();
     }
     /**
      * Deletes selected user.

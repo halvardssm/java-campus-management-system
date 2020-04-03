@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.models.Building;
@@ -24,8 +25,9 @@ import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 
-public class RoomEditController extends RoomListController implements Initializable {
+public class RoomEditController extends RoomListController {
 
+    private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     private Room room;
     private HashMap<String, Integer> buildingsByName = new HashMap<>();
@@ -44,18 +46,18 @@ public class RoomEditController extends RoomListController implements Initializa
     private TextField roomCapacityField;
     @FXML
     private MenuBar navBar;
+    @FXML
+    private TextArea dateMessage;
 
-
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        setNavBar(navBar);
+    public void customInit() {
+        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
-
     /**
      * Initializes data into their respective boxes to be used for editing.
      */
     public void initData(Room room) throws JsonProcessingException {
+        customInit();
         this.room = room;
         System.out.println(room.getBuilding() + " " + this.buildingsById + " " + this.buildingsById.keySet());
         List<String> options = new ArrayList<>();
@@ -80,8 +82,7 @@ public class RoomEditController extends RoomListController implements Initializa
 
     @FXML
     private void getBack() throws IOException {
-        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        mainSwitch("/admin/room/RoomList.fxml", currentstage);
+        switchRoomView(currentStage);
     }
     /**
      * Edits the values of the room and communicates it  to server.
@@ -93,6 +94,12 @@ public class RoomEditController extends RoomListController implements Initializa
         Object building = roomBuildingIdField.getValue();
         String buildingId = building == null ? Long.toString(this.room.getBuilding()) : Integer.toString(this.buildingsByName.get(building.toString()));
         String roomCap = roomCapacityField.getText();
+        if(isValidNumb(roomCap)){
+            dateMessage.setStyle("-fx-text-fill: Red");
+            dateMessage.setText("Please input a valid number as capacity!");
+            return;
+        }
+        roomCap = roomCap.contentEquals("") ? Integer.toString(room.getCapacity()) : roomCap;
         String roomDesc = roomDescriptionField.getText();
         String roomID = Long.toString(room.getId());
         String onlyStaffObj = roomOnlyStaffField.getValue();
@@ -101,6 +108,16 @@ public class RoomEditController extends RoomListController implements Initializa
         System.out.println(building + " " + buildingId + " " + this.room.getBuilding());
         ServerCommunication.updateRoom(buildingId, roomCap, roomDesc, roomID, onlyStaff, name);
         getBack();
+    }
+
+    public boolean isValidNumb(String str) {
+        try {
+            Integer.valueOf(str);
+        }
+        catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
     }
     /**
      * Gets a list of buildings.

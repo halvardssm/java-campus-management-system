@@ -24,8 +24,9 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 // Suppress all only used for Suspicious call to 'HashMap.get' in line 126
 @SuppressWarnings("MismatchedQueryAndUpdateOfCollection, ALL")
-public class RoomCreateController extends RoomListController implements Initializable {
+public class RoomCreateController extends RoomListController {
 
+    private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     private HashMap<String, Integer> buildingsByName = new HashMap<>();
     private HashMap<Integer, Building> buildingById = new HashMap<>();
@@ -45,15 +46,14 @@ public class RoomCreateController extends RoomListController implements Initiali
     private MenuBar navBar;
 
 
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void customInit() {
         try {
             initData();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        setNavBar(navBar);
+        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
 
     /**
@@ -106,8 +106,7 @@ public class RoomCreateController extends RoomListController implements Initiali
 
     @FXML
     private void getBack() throws IOException {
-        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        mainSwitch("/admin/room/RoomList.fxml", currentstage);
+        switchRoomView(currentStage);
     }
 
     /**

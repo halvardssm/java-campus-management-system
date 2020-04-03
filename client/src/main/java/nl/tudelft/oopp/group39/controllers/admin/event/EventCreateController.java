@@ -22,8 +22,9 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 
 
-public class EventCreateController extends EventListController implements Initializable {
+public class EventCreateController extends EventListController {
 
+    private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     private String eventType;
     @FXML
@@ -40,15 +41,14 @@ public class EventCreateController extends EventListController implements Initia
     private MenuBar navBar;
 
 
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void customInit() {
         try {
             initData();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        setNavBar(navBar);
+        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
     /**
      * .
@@ -144,8 +144,7 @@ public class EventCreateController extends EventListController implements Initia
 
     @FXML
     private void getBack() throws IOException {
-        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        mainSwitch("/admin/event/EventList.fxml", currentstage);
+        switchEventView(currentStage);
     }
 
 }

@@ -26,9 +26,9 @@ import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 @SuppressWarnings("unchecked")
-public class BuildingListController extends AdminPanelController implements Initializable {
+public class BuildingListController extends AdminPanelController {
 
-
+    private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     @FXML
     private Button backbtn;
@@ -60,15 +60,14 @@ public class BuildingListController extends AdminPanelController implements Init
     private MenuBar navBar;
 
 
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void customInit() {
         try {
             loadAllBuildings();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        setNavBar(navBar);
+        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
 
     /**
@@ -190,7 +189,9 @@ public class BuildingListController extends AdminPanelController implements Init
     }
 
     public void createBuilding() throws IOException {
-        switchFunc("/admin/building/BuildingCreate.fxml");
+        FXMLLoader loader = switchFunc("/admin/building/BuildingCreate.fxml");
+        BuildingCreateController controller = loader.getController();
+        controller.customInit();
     }
     /**
      * Deletes selected building.

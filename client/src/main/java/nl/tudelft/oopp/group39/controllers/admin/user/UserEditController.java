@@ -19,8 +19,9 @@ import nl.tudelft.oopp.group39.controllers.admin.room.RoomListController;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
 
-public class UserEditController extends RoomListController implements Initializable {
+public class UserEditController extends RoomListController {
 
+    private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     private User user;
     @FXML
@@ -33,10 +34,6 @@ public class UserEditController extends RoomListController implements Initializa
     private MenuBar navBar;
 
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        setNavBar(navBar);
-    }
     /**
      * Initializes the data of a User and makes it usable.
      * @param user Object user
@@ -44,6 +41,8 @@ public class UserEditController extends RoomListController implements Initializa
      */
 
     public void initData(User user) throws JsonProcessingException {
+        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
         this.user = user;
         String roles = ServerCommunication.getUserRoles();
         ArrayNode body = (ArrayNode) mapper.readTree(roles).get("body");
@@ -61,8 +60,7 @@ public class UserEditController extends RoomListController implements Initializa
 
     @FXML
     private void getBack() throws IOException {
-        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        mainSwitch("/admin/user/UserList.fxml", currentstage);
+        switchUserView(currentStage);
     }
     /**
      * Edits user values and sends them to database.

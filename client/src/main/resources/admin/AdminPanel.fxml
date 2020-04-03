@@ -35,7 +35,7 @@
          </ImageView>
          <Button layoutX="71.0" layoutY="59.0" mnemonicParsing="false"
                  onAction="#switchBuildingView" prefHeight="112.0" prefWidth="165.0" text="Building View"
-                 AnchorPane.leftAnchor="70.0">
+                 AnchorPane.leftAnchor="70.0" fx:id="buildingView">
             <font>
                <Font name="System Bold" size="19.0"/>
             </font>

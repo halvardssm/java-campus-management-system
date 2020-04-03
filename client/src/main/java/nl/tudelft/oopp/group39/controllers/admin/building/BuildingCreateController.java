@@ -20,8 +20,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
-public class BuildingCreateController extends BuildingListController implements Initializable {
+public class BuildingCreateController extends BuildingListController {
 
+    private Stage currentStage;
     private String start;
     private String end;
     @FXML
@@ -43,9 +44,9 @@ public class BuildingCreateController extends BuildingListController implements 
     /**
      * Initialize data into tableView.
      */
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        setNavBar(navBar);
+    public void customInit() {
+        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
         List<String> timeSlots = null;
         try {
             timeSlots = initiateTimeslots();
@@ -115,8 +116,7 @@ public class BuildingCreateController extends BuildingListController implements 
 
     @FXML
     private void getBack() throws IOException {
-        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        mainSwitch("/admin/building/BuildingList.fxml", currentstage);
+        switchBuildingView(currentStage);
     }
 
 }

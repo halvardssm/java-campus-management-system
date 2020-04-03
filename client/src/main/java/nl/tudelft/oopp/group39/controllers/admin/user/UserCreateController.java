@@ -22,8 +22,9 @@ import nl.tudelft.oopp.group39.controllers.admin.room.RoomListController;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
 
-public class UserCreateController extends RoomListController implements Initializable {
+public class UserCreateController extends RoomListController {
 
+    private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     private List<User> users;
     @FXML
@@ -44,15 +45,14 @@ public class UserCreateController extends RoomListController implements Initiali
     private MenuBar navBar;
 
 
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void customInit() {
         try {
             initData();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        setNavBar(navBar);
+        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
     /**
      * Initializes data needed for user.
@@ -84,8 +84,7 @@ public class UserCreateController extends RoomListController implements Initiali
 
     @FXML
     private void getBack() throws IOException {
-        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        mainSwitch("/admin/user/UserList.fxml", currentstage);
+        switchUserView(currentStage);
     }
     /**
      * Gets the values inputted by admin to be used for creating user.

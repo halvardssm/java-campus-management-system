@@ -31,9 +31,9 @@ import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
 
-public class BookingCreateController extends EventListController implements Initializable {
+public class BookingCreateController extends EventListController {
 
-
+    private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     private String date;
     private Room room;
@@ -60,11 +60,13 @@ public class BookingCreateController extends EventListController implements Init
     @FXML
     private TextArea dateMessage;
 
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        setNavBar(navBar);
-        roomBox.valueProperty().addListener(new ChangeListener<>() {
+    /**
+     * TODO sasa.
+     */
+    public void customInit() {
+        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
+        roomBox.valueProperty().addListener(new ChangeListener<String>() {
             @Override public void changed(ObservableValue ov, String t, String t1) {
                 String reservationStartString = roomBox.getValue();
                 try {
@@ -206,8 +208,7 @@ public class BookingCreateController extends EventListController implements Init
 
     @FXML
     private void getBack() throws IOException {
-        Stage currentstage = (Stage) backbtn.getScene().getWindow();
-        mainSwitch("/admin/booking/BookingList.fxml", currentstage);
+        switchBookingsView(currentStage);
     }
 
     /**
