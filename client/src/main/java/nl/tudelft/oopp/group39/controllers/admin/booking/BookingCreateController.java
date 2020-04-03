@@ -6,18 +6,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -66,7 +63,7 @@ public class BookingCreateController extends EventListController {
     public void customInit() {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
         setNavBar(navBar, currentStage);
-        roomBox.valueProperty().addListener(new ChangeListener<String>() {
+        roomBox.valueProperty().addListener(new ChangeListener<>() {
             @Override public void changed(ObservableValue ov, String t, String t1) {
                 String reservationStartString = roomBox.getValue();
                 try {
@@ -218,7 +215,8 @@ public class BookingCreateController extends EventListController {
 
     public void createBooking() throws IOException {
         Object roomObj = roomBox.getValue();
-        String roomId = roomObj == null ? Long.toString(room.getId()) : Long.toString(roomIdByNameMap.get(roomObj.toString()));
+        String roomId = roomObj == null ? Long.toString(
+                room.getId()) : Long.toString(roomIdByNameMap.get(roomObj.toString()));
         Object userObj = userBoxN.getValue();
         boolean userNull = userObj == null;
         if (userNull) {
@@ -228,12 +226,16 @@ public class BookingCreateController extends EventListController {
         }
         String user = userIdByNameMap.get(userObj.toString());
         LocalDate reservationDateValue = reservationDate.getValue();
-        String reservationDateString = reservationDateValue == null ? date : reservationDateValue.toString();
+        String reservationDateString = reservationDateValue
+                == null ? date : reservationDateValue.toString();
         Object reservationStartValue = startTimeBox.getValue();
-        String reservationStartString = reservationStartValue == null ? start + ":00" : reservationStartValue.toString() + ":00";
+        String reservationStartString = reservationStartValue
+                == null ? start + ":00" : reservationStartValue.toString() + ":00";
         Object reservationEndValue = endTimeBox.getValue();
-        String reservationEndString = reservationEndValue == null ? end + ":00" : reservationEndValue.toString() + ":00";
-        ServerCommunication.addBooking(reservationDateString, reservationStartString, reservationEndString, user, roomId);
+        String reservationEndString = reservationEndValue
+                == null ? end + ":00" : reservationEndValue.toString() + ":00";
+        ServerCommunication.addBooking(
+                reservationDateString, reservationStartString, reservationEndString, user, roomId);
         getBack();
         createAlert("Updated the booking!");
     }

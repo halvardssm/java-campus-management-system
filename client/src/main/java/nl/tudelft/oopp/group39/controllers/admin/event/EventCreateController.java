@@ -4,13 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDate;
-import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -40,7 +37,9 @@ public class EventCreateController extends EventListController {
     @FXML
     private MenuBar navBar;
 
-
+    /**
+     * Initializes scene.
+     */
     public void customInit() {
         try {
             initData();
@@ -97,7 +96,12 @@ public class EventCreateController extends EventListController {
      * Makes sure that values put into event are valid.
      */
 
-    public void checkValidity(String startDate, String endDate, boolean startNull, boolean endNull, String type) throws IOException {
+    public void checkValidity(
+          String startDate,
+          String endDate,
+          boolean startNull,
+          boolean endNull,
+          String type) throws IOException {
         if (!endNull || !startNull) {
             if (!endNull && !startNull) {
                 LocalDate start = LocalDate.parse(startDate);
@@ -109,7 +113,9 @@ public class EventCreateController extends EventListController {
                 }
                 if (!start.isAfter(LocalDate.now())) {
                     dateMessage.setStyle("-fx-text-fill: Red");
-                    dateMessage.setText("The start date needs to be later than today!\n(Imputted start date was: " + start.toString() + ", Imputted end date was: " + end.toString() + " )");
+                    dateMessage.setText("The start date needs to be later than today!\n"
+                            + "(Inputted start date was: "
+                            + start.toString() + ", Inputted end date was:" + end.toString() + ")");
                     return;
                 }
                 createEventFinal(type, start.toString(), end.toString());
@@ -119,7 +125,8 @@ public class EventCreateController extends EventListController {
                 LocalDate start = end.minusDays(1);
                 if (!start.isAfter(LocalDate.now())) {
                     dateMessage.setStyle("-fx-text-fill: Red");
-                    dateMessage.setText("The start date needs to be later than today!\n(Automatically generated start date was: " + start.toString() + " )");
+                    dateMessage.setText("The start date needs to be later than today!\n"
+                            + "(Automatically generated start date was: " + start.toString() + ")");
                     return;
                 }
                 createEventFinal(type, start.toString(), end.toString());
@@ -129,7 +136,9 @@ public class EventCreateController extends EventListController {
                 LocalDate end = start.plusDays(1);
                 if (!start.isAfter(LocalDate.now())) {
                     dateMessage.setStyle("-fx-text-fill: Red");
-                    dateMessage.setText("The start date needs to be later than today!\n(Imputted start date was: " + start.toString() + " )");
+                    dateMessage.setText("The start date needs to be later than today!"
+                            + "\n(Inputted start date was: "
+                        + start.toString() + " )");
                     return;
                 }
                 createEventFinal(type, start.toString(), end.toString());

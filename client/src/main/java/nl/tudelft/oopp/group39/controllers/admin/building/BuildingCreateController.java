@@ -2,17 +2,14 @@ package nl.tudelft.oopp.group39.controllers.admin.building;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
@@ -53,6 +50,7 @@ public class BuildingCreateController extends BuildingListController {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+        assert timeSlots != null;
         ObservableList<String> list = FXCollections.observableList(timeSlots);
         this.start = list.get(0);
         this.end = list.get(1);
@@ -70,16 +68,33 @@ public class BuildingCreateController extends BuildingListController {
         String location = locationFieldNew.getText();
         String desc = descriptionFieldNew.getText();
         Object reservationStartValue = timeOpenFieldNew.getValue();
-        String reservationStartString = reservationStartValue == null ? start + ":00" : reservationStartValue.toString() + ":00";
+        String reservationStartString = reservationStartValue == null ? start
+            + ":00" : reservationStartValue.toString() + ":00";
         Object reservationEndValue = timeClosedFieldNew.getValue();
-        String reservationEndString = reservationEndValue == null ? end + ":00" : reservationEndValue.toString() + ":00";
+        String reservationEndString = reservationEndValue == null ? end
+            + ":00" : reservationEndValue.toString() + ":00";
 
-        ServerCommunication.addBuilding(name, location, desc, reservationStartString, reservationEndString);
+        ServerCommunication.addBuilding(
+                name, location, desc, reservationStartString, reservationEndString);
         getBack();
         nameFieldNew.clear();
         locationFieldNew.clear();
         descriptionFieldNew.clear();
 
+    }
+
+    private List<String> initiateTimeslots() throws JsonProcessingException {
+        List<String> times = new ArrayList<>();
+        for (int i = 0; i < 24; i++) {
+            String time;
+            if (i < 10) {
+                time = "0" + i + ":00";
+            } else {
+                time = i + ":00";
+            }
+            times.add(time);
+        }
+        return times;
     }
 
     /**

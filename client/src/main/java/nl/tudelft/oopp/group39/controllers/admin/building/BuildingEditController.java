@@ -2,14 +2,11 @@ package nl.tudelft.oopp.group39.controllers.admin.building;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
@@ -86,11 +83,14 @@ public class BuildingEditController extends BuildingListController {
         String desc = descriptionFieldNew.getText();
         desc = desc.contentEquals("") ? building.getDescription() : desc;
         Object reservationStartValue = timeOpenFieldNew.getValue();
-        String reservationStartString = reservationStartValue == null ? start + ":00" : reservationStartValue.toString() + ":00";
+        String reservationStartString = reservationStartValue == null ? start
+                : reservationStartValue.toString() + ":00";
         Object reservationEndValue = timeClosedFieldNew.getValue();
-        String reservationEndString = reservationEndValue == null ? end + ":00" : reservationEndValue.toString() + ":00";
+        String reservationEndString = reservationEndValue == null ? end
+              : reservationEndValue.toString() + ":00";
         String id = Integer.toString(building.getId());
-        ServerCommunication.updateBuilding(name, location, desc, reservationStartString, reservationEndString, id);
+        ServerCommunication.updateBuilding(
+                name, location, desc, reservationStartString, reservationEndString, id);
         getBack();
 
         nameFieldNew.clear();

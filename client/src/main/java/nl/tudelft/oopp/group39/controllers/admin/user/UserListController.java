@@ -4,17 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
@@ -31,7 +28,6 @@ import nl.tudelft.oopp.group39.user.model.User;
 @SuppressWarnings("unchecked")
 public class UserListController extends AdminPanelController {
 
-    private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     private String lastSelectedRole;
     private String lastSelectedName;
@@ -53,13 +49,16 @@ public class UserListController extends AdminPanelController {
     @FXML
     private MenuBar navBar;
 
+    /**
+     * Initializes scene.
+     */
     public void customInit() {
         try {
             loadUsersStandard();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        Stage currentStage = (Stage) backbtn.getScene().getWindow();
         setNavBar(navBar, currentStage);
     }
     /**
@@ -174,7 +173,9 @@ public class UserListController extends AdminPanelController {
         };
     }
 
-
+    /**
+     * Switches scene to the createUser one.
+     */
     public void createUser() throws IOException {
         FXMLLoader loader = switchFunc("/admin/user/UserCreate.fxml");
         UserCreateController controller = loader.getController();

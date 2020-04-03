@@ -4,16 +4,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
@@ -56,10 +53,12 @@ public class RoomEditController extends RoomListController {
     /**
      * Initializes data into their respective boxes to be used for editing.
      */
+
     public void initData(Room room) throws JsonProcessingException {
         customInit();
         this.room = room;
-        System.out.println(room.getBuilding() + " " + this.buildingsById + " " + this.buildingsById.keySet());
+        System.out.println(
+                room.getBuilding() + " " + this.buildingsById + " " + this.buildingsById.keySet());
         List<String> options = new ArrayList<>();
         options.add("All users");
         options.add("Only staff members");
@@ -92,13 +91,15 @@ public class RoomEditController extends RoomListController {
         String name = roomNameField.getText();
         name = name.contentEquals("") ? room.getName() : name;
         Object building = roomBuildingIdField.getValue();
-        String buildingId = building == null ? Long.toString(this.room.getBuilding()) : Integer.toString(this.buildingsByName.get(building.toString()));
         String roomCap = roomCapacityField.getText();
-        if(isValidNumb(roomCap)){
+        if (isValidNumb(roomCap)) {
             dateMessage.setStyle("-fx-text-fill: Red");
             dateMessage.setText("Please input a valid number as capacity!");
             return;
         }
+        String buildingId = building == null ? Long.toString(
+                this.room.getBuilding()) : Integer.toString(
+                        this.buildingsByName.get(building.toString()));
         roomCap = roomCap.contentEquals("") ? Integer.toString(room.getCapacity()) : roomCap;
         String roomDesc = roomDescriptionField.getText();
         String roomID = Long.toString(room.getId());
@@ -110,11 +111,14 @@ public class RoomEditController extends RoomListController {
         getBack();
     }
 
+    /**
+     * Checks is string is a number.
+     */
+
     public boolean isValidNumb(String str) {
         try {
             Integer.valueOf(str);
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             return false;
         }
         return true;

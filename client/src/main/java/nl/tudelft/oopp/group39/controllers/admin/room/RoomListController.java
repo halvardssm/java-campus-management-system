@@ -79,6 +79,10 @@ public class RoomListController extends AdminPanelController {
 
     private Stage currentStage;
 
+
+    /**
+     * Initialize function.
+     */
     public void customInit() {
         try {
             loadAllRooms();
@@ -116,6 +120,10 @@ public class RoomListController extends AdminPanelController {
         return FXCollections.observableArrayList(facilityNames);
     }
 
+    /**
+     * Loads the values of rooms and puts them into tableView.
+     * @throws JsonProcessingException when there is a processing exception.
+     */
     public void loadAllRooms() throws JsonProcessingException {
         facilitiesList.getSelectionModel().clearSelection();
         buildingFilter.getSelectionModel().clearAndSelect(0);
@@ -187,7 +195,13 @@ public class RoomListController extends AdminPanelController {
         viewCol.setCellFactory(param -> returnCell("View"));
         ObservableList<Room> data = FXCollections.observableArrayList(roomList);
         roomTable.setItems(data);
-        roomTable.getColumns().addAll(roomIdCol, buildingIdCol, capacityCol, onlyStaffCol, nameCol, deleteCol, updateCol, viewCol);
+        roomTable.getColumns().addAll(
+             roomIdCol,
+              buildingIdCol,
+              capacityCol,
+              onlyStaffCol,
+              nameCol,
+              deleteCol, updateCol, viewCol);
     }
     /**
      * Inserts the update and delete buttons into table.

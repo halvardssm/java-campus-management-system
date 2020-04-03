@@ -6,18 +6,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -25,14 +22,11 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.booking.model.Booking;
+import nl.tudelft.oopp.group39.controllers.admin.event.EventListController;
+import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.controllers.admin.event.EventListController;
-//import nl.tudelft.oopp.group39.models.Booking;
-import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.user.model.User;
-//import nl.tudelft.oopp.group39.models.Room;
-//import nl.tudelft.oopp.group39.models.User;
 
 public class BookingEditController extends EventListController {
 
@@ -63,7 +57,7 @@ public class BookingEditController extends EventListController {
     private TextArea dateMessage;
 
     /**
-     * TODO sasa.
+     * Initializes scene.
      */
     public void customInit() {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
@@ -225,18 +219,28 @@ public class BookingEditController extends EventListController {
 
     public void editBooking() throws IOException {
         Object roomObj = roomBox.getValue();
-        String roomId = roomObj == null ? Long.toString(booking.getRoom()) : Long.toString(roomIdByNameMap.get(roomObj.toString()));
+        String roomId = roomObj == null ? Long.toString(
+                booking.getRoom()) : Long.toString(roomIdByNameMap.get(roomObj.toString()));
         Object userObj = userBoxN.getValue();
         String user = userObj == null ? booking.getUser() : userIdByNameMap.get(userObj.toString());
         LocalDate reservationDateValue = reservationDate.getValue();
-        String reservationDateString = reservationDateValue == null ? booking.getDate() : reservationDateValue.toString();
+        String reservationDateString = reservationDateValue
+                == null ? booking.getDate() : reservationDateValue.toString();
         String id = Integer.toString(booking.getId());
         Object reservationStartValue = startTimeBox.getValue();
-        String reservationStartString = reservationStartValue == null ? booking.getStartTime() : reservationStartValue.toString() + ":00";
+        String reservationStartString = reservationStartValue
+                == null ? booking.getStartTime() : reservationStartValue.toString() + ":00";
         Object reservationEndValue = endTimeBox.getValue();
-        String reservationEndString = reservationEndValue == null ? booking.getEndTime() : reservationEndValue.toString() + ":00";
+        String reservationEndString = reservationEndValue
+                == null ? booking.getEndTime() : reservationEndValue.toString() + ":00";
         System.out.println(reservationStartString + " : " + reservationEndString);
-        ServerCommunication.updateBooking(reservationDateString, reservationStartString, reservationEndString, user, roomId, id);
+        ServerCommunication.updateBooking(
+               reservationDateString,
+               reservationStartString,
+               reservationEndString,
+               user,
+               roomId,
+               id);
         getBack();
         createAlert("Updated the booking!");
     }
