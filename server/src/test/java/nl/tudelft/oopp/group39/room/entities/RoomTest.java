@@ -42,8 +42,8 @@ class RoomTest extends AbstractTest {
         facilityService.createFacility(new Facility(
             "whiteboard", rooms
         ));
-        bookings.add(bookingService.readBooking((long) 1));
-        facilities.add(facilityService.readFacility((long) 1));
+        bookings.add(bookingService.readBooking(1L));
+        facilities.add(facilityService.readFacility(1L));
 
         this.building = new Building(
             null,
@@ -119,7 +119,7 @@ class RoomTest extends AbstractTest {
     @Test
     void getFacilitiesTest() {
         Set<Facility> facilities2 = new HashSet<>();
-        facilities2.add(facilityService.readFacility((long) 2));
+        facilities2.add(facilityService.readFacility(2L));
         Room room4 = new Room(null, building, name,
             capacity, onlyStaff, description,
             null, facilities2, bookings);
