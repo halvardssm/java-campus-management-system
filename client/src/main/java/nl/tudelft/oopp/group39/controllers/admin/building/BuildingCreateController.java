@@ -2,11 +2,8 @@ package nl.tudelft.oopp.group39.controllers.admin.building;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -100,17 +97,6 @@ public class BuildingCreateController extends BuildingListController {
             times.add(time);
         }
         return times;
-    }
-
-    /**
-     * Returns string containing times inputted.
-     */
-    public String getTime(String time, boolean open) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.US);
-        if (open) {
-            return time.contentEquals("") ? formatter.format(LocalTime.MAX) : time;
-        }
-        return time.contentEquals("") ? formatter.format(LocalTime.MIN) : time;
     }
 
     /**
