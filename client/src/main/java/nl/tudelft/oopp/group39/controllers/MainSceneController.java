@@ -45,16 +45,15 @@ public class MainSceneController {
     @FXML
     protected VBox topBox;
 
-    /**
-     * Doc. TODO Sven
-     */
+
     public void createAlert(String content) {
         createAlert(null, content);
     }
 
     /**
-     * Doc. TODO Sven
+     * Doc. TODO SVEN
      */
+
     public void createAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);

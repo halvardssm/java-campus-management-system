@@ -5,8 +5,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 import java.io.IOException;
+import javafx.stage.Stage;
 import java.net.URL;
 import nl.tudelft.oopp.group39.controllers.MainSceneController;
 
@@ -15,7 +15,7 @@ public class AdminPanel extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        URL xmlUrl = getClass().getResource("/Admin/AdminPanel.fxml");
+        URL xmlUrl = getClass().getResource("/admin/AdminPanel.fxml");
         loader.setLocation(xmlUrl);
         Parent root = loader.load();
 
