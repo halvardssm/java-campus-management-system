@@ -10,7 +10,7 @@ public class Event {
     private String title;
     private String startsAt;
     private String endsAt;
-    private Boolean isGlobal;
+    private Boolean global;
     private String user;
     private List<Long> rooms;
 
@@ -24,7 +24,7 @@ public class Event {
      * @param title    name of event
      * @param startsAt start date and time of event
      * @param endsAt   end date and time of event
-     * @param isGlobal whether event is global
+     * @param global   whether event is global
      * @param user     netid of user that created the event
      * @param rooms    rooms the event is applicable to
      */
@@ -32,14 +32,14 @@ public class Event {
         String title,
         String startsAt,
         String endsAt,
-        Boolean isGlobal,
+        Boolean global,
         String user,
         List<Long> rooms
     ) {
         this.title = title;
         this.startsAt = startsAt;
         this.endsAt = endsAt;
-        this.isGlobal = isGlobal;
+        this.global = global;
         this.user = user;
         this.rooms = rooms;
     }
@@ -60,8 +60,8 @@ public class Event {
         return endsAt;
     }
 
-    public Boolean getGlobal() {
-        return isGlobal;
+    public Boolean isGlobal() {
+        return global;
     }
 
     public String getUser() {
