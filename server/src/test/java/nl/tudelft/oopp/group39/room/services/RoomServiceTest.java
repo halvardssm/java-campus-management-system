@@ -1,31 +1,22 @@
 package nl.tudelft.oopp.group39.room.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import nl.tudelft.oopp.group39.AbstractTest;
-import nl.tudelft.oopp.group39.building.entities.Building;
+import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.room.entities.Room;
+import nl.tudelft.oopp.group39.room.exceptions.RoomNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class RoomServiceTest extends AbstractTest {
-    Set<Room> rooms = new HashSet<>();
-    Building testBuilding = new Building(
-        null,
-        "EEMCS",
-        "Mekelweg 4",
-        "Faculty of Electrical Engineering, Maths and Computer Science",
-        LocalTime.of(7, 0),
-        LocalTime.of(18, 0),
-        rooms,
-        null
-    );
+    Set<Facility> facilities = new HashSet<>();
     private final Room testRoom = new Room(
         null,
         null,
@@ -34,20 +25,12 @@ public class RoomServiceTest extends AbstractTest {
         true,
         "This is another room for testing purposes",
         null,
-        null,
+        facilities,
         null
     );
 
     @BeforeEach
     void setUp() {
-        //rooms.add(testRoom);
-        //testBuilding.setRooms(rooms);
-
-        //Building building = buildingService.createBuilding(testBuilding);
-        //testBuilding.setId(building.getId());
-
-        //testRoom.setBuilding(testBuilding);
-
         Room room = roomService.createRoom(testRoom);
         testRoom.setId(room.getId());
     }
@@ -96,5 +79,22 @@ public class RoomServiceTest extends AbstractTest {
         assertEquals(testRoom, room);
 
         testRoom.setCapacity(8);
+    }
+
+    @Test
+    void mapFacilitiesForRoomsTest() {
+        Room room = testRoom;
+        room.setFacilities(null);
+        roomService.mapFacilitiesForRooms(room);
+
+        assertEquals(testRoom, room);
+        assertEquals(room.getFacilities(), facilities);
+    }
+
+    @Test
+    void errorTest() {
+        assertThrows(RoomNotFoundException.class, () -> {
+            roomService.deleteRoom(0L);
+        });
     }
 }

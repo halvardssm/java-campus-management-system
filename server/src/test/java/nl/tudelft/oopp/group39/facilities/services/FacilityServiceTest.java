@@ -1,12 +1,13 @@
 package nl.tudelft.oopp.group39.facilities.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import nl.tudelft.oopp.group39.AbstractTest;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
+import nl.tudelft.oopp.group39.facility.exceptions.FacilityNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,5 +66,12 @@ public class FacilityServiceTest extends AbstractTest {
         assertEquals(testFacility, facility);
 
         testFacility.setDescription("Facility");
+    }
+
+    @Test
+    void errorTest() {
+        assertThrows(FacilityNotFoundException.class, () -> {
+            facilityService.deleteFacility(0L);
+        });
     }
 }
