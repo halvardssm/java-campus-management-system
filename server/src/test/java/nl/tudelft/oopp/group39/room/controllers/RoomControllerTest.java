@@ -84,9 +84,6 @@ public class RoomControllerTest extends AbstractControllerTest {
 
     @Test
     void listRoomsTest() throws Exception {
-        System.out.println(testRoom.getName());
-        System.out.println(testRoom.getBuilding());
-
         mockMvc.perform(get(REST_MAPPING))
             .andExpect(jsonPath("$.body").isArray())
             .andExpect(jsonPath("$.body", hasSize(1)))
