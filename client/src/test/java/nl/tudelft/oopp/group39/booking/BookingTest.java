@@ -15,7 +15,7 @@ class BookingTest {
         "00:00:00",
         "09:05:00",
         "f.oft.1938",
-        1);
+        1L);
 
     @Test
     void getId() {
@@ -44,7 +44,7 @@ class BookingTest {
 
     @Test
     void getRoom() {
-        assertEquals(testBooking.getRoom(), 1);
+        assertEquals(testBooking.getRoom(), 1L);
     }
 
     @Test

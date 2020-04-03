@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.models;
+package nl.tudelft.oopp.group39.reservation.model;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
 

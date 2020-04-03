@@ -31,6 +31,7 @@ import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.reservable.model.Bike;
 import nl.tudelft.oopp.group39.reservable.model.Food;
 import nl.tudelft.oopp.group39.reservable.model.Reservable;
+import nl.tudelft.oopp.group39.reservation.model.Reservation;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
@@ -416,20 +417,21 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
                 try {
                     updateBikeTimePicker(
                         dateTimeFormatter.format(datePicker.getValue()),
-                        cart.get(0).getId()
+                        cart.get(0).getId().intValue()
                     );
-                    updateEndTimePicker(building.getOpen());
+                    updateEndTimePicker(building.getOpen().toString());
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
             });
             endTimePicker = new ComboBox<>();
             startTimePicker = new ComboBox<>();
-            updateBikeTimePicker(dateTimeFormatter.format(LocalDate.now()), cart.get(0).getId());
+            updateBikeTimePicker(dateTimeFormatter.format(
+                LocalDate.now()), cart.get(0).getId().intValue());
             startTimePicker.setPromptText("Select start time");
             startTimePicker.setId("timePicker");
             timeselector.getChildren().add(startTimePicker);
-            updateEndTimePicker(building.getOpen());
+            updateEndTimePicker(building.getOpen().toString());
             endTimePicker.setPromptText("Select end time");
             endTimePicker.setId("durationPicker");
             timeselector.getChildren().add(endTimePicker);
@@ -485,8 +487,8 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
         startTimePicker.getItems().clear();
         getBikeTimes(date, bikeId);
         List<String> times = new ArrayList<>();
-        int open = Integer.parseInt(building.getOpen().split(":")[0]);
-        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        int open = Integer.parseInt(building.getOpen().toString().split(":")[0]);
+        int closed = Integer.parseInt(building.getClosed().toString().split(":")[0]);
         for (int i = open; i < closed; i++) {
             String time;
             if (i < 10) {
