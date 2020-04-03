@@ -108,7 +108,7 @@ class EventControllerTest extends AbstractControllerTest {
                 is(testEvent.getEndsAt().format(Constants.FORMATTER_DATE_TIME))
             ))
             .andExpect(jsonPath("$.body." + Event.COL_USER, is(testEvent.getUser().getUsername())))
-            .andExpect(jsonPath("$.body." + Event.COL_IS_GLOBAL, is(testEvent.getGlobal())));
+            .andExpect(jsonPath("$.body." + Event.COL_IS_GLOBAL, is(testEvent.getIsGlobal())));
     }
 
     @Test

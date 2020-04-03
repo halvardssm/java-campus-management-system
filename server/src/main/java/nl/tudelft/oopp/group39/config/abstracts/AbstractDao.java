@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -12,7 +12,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import nl.tudelft.oopp.group39.room.entities.Room;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -73,16 +72,18 @@ public abstract class AbstractDao<E> {
     }
 
     protected <C> void predicateInRelation(
-        String col,
+        String table,
         Class<C> subClazz,
-        Object search
+        String search
     ) {
+        List<Long> idList = stringLongToList(search);
+
         CriteriaQuery<C> subBuilder = builder.createQuery(subClazz);
         Root<C> subRoot = subBuilder.from(subClazz);
 
         subBuilder
-            .select(subRoot.get(col))
-            .where(builder.equal(subRoot.get(Room.COL_ID), search));
+            .select(subRoot.get(table))
+            .where(subRoot.get(AbstractEntity.COL_ID).in(idList));
 
         predicates.add(subRoot.in(entityManager.createQuery(subBuilder).getResultList()));
     }
@@ -101,9 +102,9 @@ public abstract class AbstractDao<E> {
         predicates.add(builder.lessThanOrEqualTo(root.get(col), obj));
     }
 
-    protected void checkParam(String col, Consumer<String> function) {
+    protected void checkParam(String col, BiConsumer<String, String> function) {
         if (params.containsKey(col)) {
-            function.accept(col);
+            function.accept(col, params.get(col));
         }
     }
 }

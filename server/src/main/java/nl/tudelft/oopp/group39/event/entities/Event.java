@@ -3,7 +3,6 @@ package nl.tudelft.oopp.group39.event.entities;
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -38,7 +37,6 @@ public class Event extends AbstractEntity<Event, EventDto> {
     private String title;
     private LocalDateTime startsAt;
     private LocalDateTime endsAt;
-    @JsonProperty(value = COL_IS_GLOBAL)
     private Boolean isGlobal;
     @ManyToOne
     @JoinColumn(name = User.MAPPED_NAME)
@@ -78,7 +76,7 @@ public class Event extends AbstractEntity<Event, EventDto> {
         setTitle(title);
         setStartsAt(startsAt);
         setEndsAt(endsAt);
-        setGlobal(isGlobal != null ? isGlobal : false);
+        setIsGlobal(isGlobal != null ? isGlobal : false);
         setUser(user);
         getRooms().addAll(initSet(rooms));
     }
@@ -107,12 +105,12 @@ public class Event extends AbstractEntity<Event, EventDto> {
         this.endsAt = endDate;
     }
 
-    public Boolean getGlobal() {
+    public Boolean getIsGlobal() {
         return isGlobal;
     }
 
-    public void setGlobal(Boolean global) {
-        isGlobal = global;
+    public void setIsGlobal(Boolean isGlobal) {
+        this.isGlobal = isGlobal;
     }
 
     public User getUser() {
@@ -144,7 +142,7 @@ public class Event extends AbstractEntity<Event, EventDto> {
             && Objects.equals(getTitle(), event.getTitle())
             && Objects.equals(getStartsAt(), event.getStartsAt())
             && Objects.equals(getEndsAt(), event.getEndsAt())
-            && Objects.equals(getGlobal(), event.getGlobal())
+            && Objects.equals(getIsGlobal(), event.getIsGlobal())
             && Objects.equals(getUser(), event.getUser())
             && Objects.equals(getRooms(), event.getRooms());
     }
@@ -156,7 +154,7 @@ public class Event extends AbstractEntity<Event, EventDto> {
             getTitle(),
             getStartsAt(),
             getEndsAt(),
-            getGlobal(),
+            getIsGlobal(),
             Utils.safeNull((p) -> getUser().getUsername()),
             Utils.entitiesToIds(getRooms())
         );

@@ -2,7 +2,6 @@ package nl.tudelft.oopp.group39.event.dto;
 
 import static nl.tudelft.oopp.group39.config.Utils.initList;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,6 @@ public class EventDto extends AbstractDto<Event, EventDto> {
     private String title;
     private LocalDateTime startsAt;
     private LocalDateTime endsAt;
-    @JsonProperty(value = Event.COL_IS_GLOBAL)
     private Boolean isGlobal;
     private String user;
     private List<Long> rooms = new ArrayList<>();
@@ -50,7 +48,7 @@ public class EventDto extends AbstractDto<Event, EventDto> {
         setTitle(title);
         setStartsAt(startsAt);
         setEndsAt(endsAt);
-        setGlobal(isGlobal != null ? isGlobal : false);
+        setIsGlobal(isGlobal != null ? isGlobal : false);
         setUser(user);
         getRooms().addAll(initList(rooms));
     }
@@ -79,12 +77,12 @@ public class EventDto extends AbstractDto<Event, EventDto> {
         this.endsAt = endDate;
     }
 
-    public Boolean getGlobal() {
+    public Boolean getIsGlobal() {
         return isGlobal;
     }
 
-    public void setGlobal(Boolean global) {
-        isGlobal = global;
+    public void setIsGlobal(Boolean isGlobal) {
+        this.isGlobal = isGlobal;
     }
 
     public String getUser() {
@@ -116,7 +114,7 @@ public class EventDto extends AbstractDto<Event, EventDto> {
             && Objects.equals(getTitle(), event.getTitle())
             && Objects.equals(getStartsAt(), event.getStartsAt())
             && Objects.equals(getEndsAt(), event.getEndsAt())
-            && Objects.equals(getGlobal(), event.getGlobal())
+            && Objects.equals(getIsGlobal(), event.getIsGlobal())
             && Objects.equals(getUser(), event.getUser())
             && Objects.equals(getRooms(), event.getRooms());
     }
@@ -128,7 +126,7 @@ public class EventDto extends AbstractDto<Event, EventDto> {
             getTitle(),
             getStartsAt(),
             getEndsAt(),
-            getGlobal(),
+            getIsGlobal(),
             null,
             Utils.idsToComponentSet(getRooms(), Room.class)
         );

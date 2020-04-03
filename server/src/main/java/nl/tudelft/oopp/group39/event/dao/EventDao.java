@@ -30,36 +30,19 @@ public class EventDao extends AbstractDao<Event> {
     public List<Event> filter(Map<String, String> newParams) {
         init(em, Event.class, newParams);
 
-        checkParam(Event.COL_ID, (c) -> predicateLongInList(c, params.get(Event.COL_ID)));
+        checkParam(Event.COL_ID, this::predicateLongInList);
 
-        checkParam(Event.COL_TITLE, (c) -> predicateLike(c, params.get(Event.COL_TITLE)));
+        checkParam(Event.COL_TITLE, this::predicateLike);
 
-        checkParam(Event.COL_STARTS_AT, (c) -> predicateGreater(
-            c,
-            Utils.parseDateTime(params.get(Event.COL_STARTS_AT))
-        ));
+        checkParam(Event.COL_STARTS_AT, (c, p) -> predicateGreater(c, Utils.parseDateTime(p)));
 
-        checkParam(
-            Event.COL_ENDS_AT,
-            (c) -> predicateSmaller(c, Utils.parseDateTime(params.get(Event.COL_ENDS_AT)))
-        );
+        checkParam(Event.COL_ENDS_AT, (c, p) -> predicateSmaller(c, Utils.parseDateTime(p)));
 
-        checkParam(
-            Event.COL_IS_GLOBAL,
-            (c) -> predicateEqual(c, Boolean.parseBoolean(params.get(Event.COL_IS_GLOBAL)))
-        );
+        checkParam(Event.COL_IS_GLOBAL, (c, p) -> predicateEqual(c, Boolean.parseBoolean(p)));
 
-        checkParam(
-            Event.COL_USER,
-            (c) -> predicateEqual(c, userRepository.getOne(params.get(Event.COL_USER)))
-        );
+        checkParam(Event.COL_USER, (c, p) -> predicateEqual(c, userRepository.getOne(p)));
 
-        checkParam(Event.COL_TITLE, (c) -> predicateInRelation(
-            c,
-            Room.class,
-            params.get(Room.MAPPED_NAME)
-            )
-        );
+        checkParam(Event.COL_ROOMS, (c, p) -> predicateInRelation(Event.TABLE_NAME, Room.class, p));
 
         return result();
     }
