@@ -1,6 +1,5 @@
 package nl.tudelft.oopp.group39.reservable.model;
 
-import com.fasterxml.jackson.databind.JsonNode;
 
 public class Food extends Reservable {
     private String name;
@@ -14,15 +13,16 @@ public class Food extends Reservable {
     }
 
     /**
-     * Creates food.
+     * Creates a food entity.
      *
-     * @param id       the id of the food
-     * @param name     the name of the food
-     * @param desc     a (small) description of the food
-     * @param price    the price of the food
-     * @param building the building where the food is
+     * @param id id of the food
+     * @param name name of the food
+     * @param desc description of the food
+     * @param price price of the food
+     * @param building the building this food is available in
      */
-    public Food(Integer id, String name, String desc, double price, JsonNode building) {
+    public Food(Long id, String name, String desc, double price, Long building) {
+        super(id,price,building);
         this.name = name;
         this.description = desc;
     }

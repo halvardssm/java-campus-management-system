@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers;
+package nl.tudelft.oopp.group39.user.controller;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -148,8 +148,8 @@ public class UserPageController extends AbstractSceneController {
             LocalTime startTime = LocalTime.parse(editStartingTime.getText());
             LocalTime durationTime = LocalTime.parse(editDuration.getText());
 
-            if (startTime.getMinute() != 00 || startTime.getSecond() != 00
-                    || durationTime.getMinute() != 00 || durationTime.getSecond() != 00) {
+            if (startTime.getMinute() != 0 || startTime.getSecond() != 0
+                    || durationTime.getMinute() != 0 || durationTime.getSecond() != 0) {
                 createAlert("You can only book rooms starting at the hour");
                 return;
             }
@@ -178,12 +178,12 @@ public class UserPageController extends AbstractSceneController {
                         .getTheBuilding(ServerCommunication
                                 .getRoom(booking.getRoom())
                                 .getBuilding())
-                        .getOpen();
+                        .getOpen().toString();
                 buildingCloseTimeString = ServerCommunication
                         .getTheBuilding(ServerCommunication
                                 .getRoom(booking.getRoom())
                                 .getBuilding())
-                        .getClosed();
+                        .getClosed().toString();
             }
 
             LocalTime buildingOpenTime = LocalTime.parse(buildingOpenTimeString);
@@ -200,8 +200,10 @@ public class UserPageController extends AbstractSceneController {
 
         } catch (DateTimeParseException | NullPointerException e) {
             createAlert("Invalid Time String");
+            return;
         } catch (IOException e) {
             createAlert("Error: Wrong IO");
+            return;
         }
 
         LocalTime t1 = LocalTime.parse(editStartingTime.getText());

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Event {
     private Long id;
@@ -68,5 +69,20 @@ public class Event {
      */
     public LocalDate getEndDate() {
         return endDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Event event = (Event) o;
+        return Objects.equals(id, event.id)
+            && Objects.equals(type, event.type)
+            && Objects.equals(startDate, event.startDate)
+            && Objects.equals(endDate, event.endDate);
     }
 }

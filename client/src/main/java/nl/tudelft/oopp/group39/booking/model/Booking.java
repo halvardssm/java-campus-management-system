@@ -1,5 +1,10 @@
 package nl.tudelft.oopp.group39.booking.model;
 
+import java.util.Objects;
+import javax.print.DocFlavor;
+import nl.tudelft.oopp.group39.room.model.Room;
+import nl.tudelft.oopp.group39.user.model.User;
+
 public class Booking {
     private Integer id;
     private String date;
@@ -91,5 +96,22 @@ public class Booking {
      */
     public Long getRoom() {
         return room;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Booking booking = (Booking) o;
+        return Objects.equals(id, booking.id)
+            && Objects.equals(date, booking.date)
+            && Objects.equals(startTime, booking.startTime)
+            && Objects.equals(endTime, booking.endTime)
+            && Objects.equals(user, booking.user)
+            && Objects.equals(room, booking.room);
     }
 }

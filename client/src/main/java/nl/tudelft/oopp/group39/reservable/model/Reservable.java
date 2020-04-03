@@ -3,9 +3,9 @@ package nl.tudelft.oopp.group39.reservable.model;
 import com.fasterxml.jackson.databind.JsonNode;
 
 public class Reservable {
-    private Integer id;
-    private double price;
-    private JsonNode building;
+    private Long id;
+    private Double price;
+    private Long building;
 
     /**
      * Creates a reservable.
@@ -20,7 +20,7 @@ public class Reservable {
      * @param price    of the reservable
      * @param building where the reservable is available
      */
-    public Reservable(Integer id, double price, JsonNode building) {
+    public Reservable(Long id, double price, Long building) {
         this.id = id;
         this.price = price;
         this.building = building;
@@ -31,7 +31,7 @@ public class Reservable {
      *
      * @return the id of the reservable
      */
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -40,17 +40,8 @@ public class Reservable {
      *
      * @return the price of the reservable
      */
-    public double getPrice() {
+    public Double getPrice() {
         return price;
-    }
-
-    /**
-     * Gets the building where the reservable is.
-     *
-     * @return the building
-     */
-    public JsonNode getBuilding() {
-        return building;
     }
 
     /**
@@ -58,7 +49,7 @@ public class Reservable {
      *
      * @return the building id
      */
-    public long getBuildingId() {
-        return this.getBuilding().get("id").asInt();
+    public Long getBuilding() {
+        return building;
     }
 }
