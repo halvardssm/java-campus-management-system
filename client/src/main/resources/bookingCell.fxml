@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="test" fx:id="newBooking" prefHeight="150.0" prefWidth="436.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.UserPageController">
+<AnchorPane id="test" fx:id="newBooking" prefHeight="150.0" prefWidth="436.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.user.controller.UserPageController">
    <children>
       <Label fx:id="rName" layoutX="23.0" layoutY="24.0" style="-fx-underline: true;" text="Room Name">
          <font>

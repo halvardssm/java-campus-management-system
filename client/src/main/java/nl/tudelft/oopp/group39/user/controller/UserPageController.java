@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers;
+package nl.tudelft.oopp.group39.user.controller;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -224,8 +224,10 @@ public class UserPageController extends AbstractSceneController {
 
         } catch (DateTimeParseException | NullPointerException e) {
             createAlert("Invalid Time String");
+            return;
         } catch (IOException e) {
             createAlert("Error: Wrong IO");
+            return;
         }
 
         LocalTime t1 = LocalTime.parse(editStartingTime.getText());
