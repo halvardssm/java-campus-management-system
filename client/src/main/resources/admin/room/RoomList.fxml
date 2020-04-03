@@ -1,22 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="621.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.admin.room.RoomListController">
+<BorderPane prefHeight="621.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.admin.room.RoomListController">
    <top>
       <HBox spacing="10" styleClass="bar">
          <padding>
@@ -53,24 +42,26 @@
             </columns>
          </TableView>
          <Button layoutX="600.0" layoutY="48.0" mnemonicParsing="false" onMouseClicked="#createRoom" text="Add Room" />
-         <BorderPane layoutX="716.0" layoutY="39.0" prefHeight="438.0" prefWidth="176.0" style="-fx-background-color: lightgray;">
+         <BorderPane layoutX="716.0" layoutY="39.0" prefHeight="450.0" prefWidth="176.0" style="-fx-background-color: lightgray;">
             <center>
-               <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #ADD8E6; -fx-padding: 4px;" BorderPane.alignment="CENTER">
+               <VBox prefHeight="460.0" prefWidth="176.0" style="-fx-background-color: #ADD8E6; -fx-padding: 4px;" BorderPane.alignment="CENTER">
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="160.0" style="-fx-underline: true;" text="Filter Rooms">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Label>
                   <Label text="Name:" />
-                  <TextField fx:id="roomNameField" />
+                  <TextField fx:id="nameFilter" />
                   <Label text="Building:" />
-                  <ComboBox fx:id="roomBuildingIdField" />
+                  <ComboBox fx:id="buildingFilter" />
                   <Label text="Description:" />
-                  <TextField />
+                  <TextField fx:id="descriptionFilter"/>
                   <Label text="Only Staff:" />
-                  <ComboBox fx:id="roomOnlyStaffField" />
+                  <ComboBox fx:id="onlyStaffFilter" />
                   <Label text="Facilities:" />
                   <ListView fx:id="facilitiesList" prefHeight="200.0" prefWidth="200.0" />
+                  <Button mnemonicParsing="false" text="Filter" onMouseClicked="#filterRooms"/>
+                  <Button mnemonicParsing="false" text="Clear filters" onMouseClicked="#loadAllRooms"/>
                </VBox>
             </center>
          </BorderPane>

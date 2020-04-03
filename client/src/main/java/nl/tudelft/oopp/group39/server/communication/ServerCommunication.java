@@ -171,11 +171,11 @@ public class ServerCommunication {
         String closed,
         String description
     ) {
-//        String urlString = url + "building?name=" + name
-//            + "&location=" + location + "&open=" + open + "&closed=" + closed
-//            + "&description=" + description;
         String urlString = url + "building?name=" + name
-            + "&location=" + location + "&description=" + description;
+            + "&location=" + location + "&open=" + open + "&closed=" + closed
+            + "&description=" + description;
+//        String urlString = url + "building?name=" + name
+//            + "&location=" + location + "&description=" + description;
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
         return httpRequest(request);
     }

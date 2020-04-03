@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(UserController.REST_MAPPING)
 public class UserController {
     public static final String REST_MAPPING = "/user";
+    public static final String REST_MAPPING_ROLE = "/roles";
 
     @Autowired
     private UserService service;
@@ -46,7 +47,7 @@ public class UserController {
         return RestResponse.create(repository.filterUsers(name, role));
     }
 
-    @GetMapping("/roles")
+    @GetMapping(REST_MAPPING_ROLE)
     public ResponseEntity<RestResponse<Object>> listUserRoles() {
         List<Role> enums = Arrays.asList(Role.values());
         return RestResponse.create(enums);

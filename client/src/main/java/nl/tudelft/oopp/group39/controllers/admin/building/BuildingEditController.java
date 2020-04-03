@@ -1,5 +1,6 @@
 package nl.tudelft.oopp.group39.controllers.admin.building;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class BuildingEditController extends BuildingListController {
      * Initializes data into their respective boxes to be used for editing.
      */
 
-    public void initData(Building building) {
+    public void initData(Building building) throws JsonProcessingException {
         customInit();
         this.building = building;
         nameFieldNew.setPromptText(building.getName());
@@ -64,19 +65,6 @@ public class BuildingEditController extends BuildingListController {
         timeClosedFieldNew.setItems(list);
     }
 
-    private List<String> initiateTimeslots()  {
-        List<String> times = new ArrayList<>();
-        for (int i = 0; i < 24; i++) {
-            String time;
-            if (i < 10) {
-                time = "0" + i + ":00";
-            } else {
-                time = i + ":00";
-            }
-            times.add(time);
-        }
-        return times;
-    }
     /**
      * Goes back to main building panel.
      */
@@ -98,9 +86,9 @@ public class BuildingEditController extends BuildingListController {
         String desc = descriptionFieldNew.getText();
         desc = desc.contentEquals("") ? building.getDescription() : desc;
         Object reservationStartValue = timeOpenFieldNew.getValue();
-        String reservationStartString = reservationStartValue == null ? start : reservationStartValue.toString() + ":00";
+        String reservationStartString = reservationStartValue == null ? start + ":00" : reservationStartValue.toString() + ":00";
         Object reservationEndValue = timeClosedFieldNew.getValue();
-        String reservationEndString = reservationEndValue == null ? end : reservationEndValue.toString() + ":00";
+        String reservationEndString = reservationEndValue == null ? end + ":00" : reservationEndValue.toString() + ":00";
         String id = Integer.toString(building.getId());
         ServerCommunication.updateBuilding(name, location, desc, reservationStartString, reservationEndString, id);
         getBack();

@@ -181,16 +181,15 @@ public class Room extends AbstractEntity<Room, RoomDto> {
      */
     @Override
     public RoomDto toDto() {
-        System.out.println("test:" + this.getBuilding().toString());
         return new RoomDto(
-            this.getId(),
-            this.getBuilding().getId(),
-            this.getName(),
-            this.getCapacity(),
-            this.getOnlyStaff(),
-            this.getDescription(),
-            this.getFacilities(),
-            Utils.setEntityToDto(this.getBookings())
+            getId(),
+            getBuilding().getId(),
+            getName(),
+            getCapacity(),
+            getOnlyStaff(),
+            getDescription(),
+            getFacilities(),
+            Utils.setEntityToDto(getBookings())
         );
     }
 

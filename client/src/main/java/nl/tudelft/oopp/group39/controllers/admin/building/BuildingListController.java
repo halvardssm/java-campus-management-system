@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
@@ -14,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -28,8 +31,14 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 @SuppressWarnings("unchecked")
 public class BuildingListController extends AdminPanelController {
 
+    private String start;
+    private String end;
     private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
+    @FXML
+    private ComboBox<String> openingBox;
+    @FXML
+    private ComboBox<String> closingBox;
     @FXML
     private Button backbtn;
     @FXML
@@ -63,6 +72,7 @@ public class BuildingListController extends AdminPanelController {
     public void customInit() {
         try {
             loadAllBuildings();
+            loadTimeSlots();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -79,10 +89,20 @@ public class BuildingListController extends AdminPanelController {
         loadFiltering();
         loadBuildings(buildings);
     }
+
+    public void loadTimeSlots() throws JsonProcessingException {
+        List<String> timeSlots = initiateTimeslots();
+        this.start = timeSlots.get(0);
+        this.end = timeSlots.get(timeSlots.size() - 1);
+        ObservableList<String> list = FXCollections.observableList(timeSlots);
+        openingBox.setItems(list);
+        closingBox.setItems(list);
+        openingBox.setPromptText(this.start);
+        closingBox.setPromptText(this.end);
+    }
     /**
      * Clears filtering boxes.
      */
-
     public void loadFiltering() {
         nameFilter.clear();
         descriptionFilter.clear();
@@ -100,8 +120,10 @@ public class BuildingListController extends AdminPanelController {
         description = description == null ? "" : description;
         String location = locationFilter.getText();
         location = location == null ? "" : location;
-        String open = getTime("00:00:00", true);
-        String closed = getTime("23:59:00", false);
+        Object opening = openingBox.getValue();
+        String open = opening == null ? start + ":00" : opening.toString() + ":00";
+        Object closing = closingBox.getValue();
+        String closed = closing == null ? end + ":00" : closing.toString() + ":00";
         String buildings = ServerCommunication.getFilteredBuildings(name, location, open, closed, description);
         loadBuildings(buildings);
     }
@@ -223,6 +245,20 @@ public class BuildingListController extends AdminPanelController {
     private FXMLLoader switchFunc(String resource) throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
         return mainSwitch(resource, currentstage);
+    }
+
+    public List<String> initiateTimeslots() throws JsonProcessingException {
+        List<String> times = new ArrayList<>();
+        for (int i = 0; i < 24; i++) {
+            String time;
+            if (i < 10) {
+                time = "0" + i + ":00";
+            } else {
+                time = i + ":00";
+            }
+            times.add(time);
+        }
+        return times;
     }
 
 }

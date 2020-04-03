@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
@@ -63,20 +65,23 @@ public class RoomListController extends AdminPanelController {
     private HashMap<String, Long> facilitiesByName = new HashMap<>();
     private HashMap<Long, String> facilitiesById = new HashMap<>();
     @FXML
-    private ComboBox<String> roomBuildingIdField;
+    private ComboBox<String> buildingFilter;
     @FXML
-    private ComboBox<String> roomOnlyStaffField;
+    private ComboBox<String> onlyStaffFilter;
     @FXML
     private ListView<String> facilitiesList;
     @FXML
-    private TextField roomNameField;
-    @FXML
     private MenuBar navBar;
+    @FXML
+    public TextField nameFilter;
+    @FXML
+    public TextField descriptionFilter;
+
     private Stage currentStage;
 
     public void customInit() {
         try {
-            loadRooms();
+            loadAllRooms();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -92,7 +97,9 @@ public class RoomListController extends AdminPanelController {
      */
     public ObservableList<String> getData(String b) throws JsonProcessingException {
         List<Building> buildings = getBuildings(b);
-        List<String> buildingNames = getBuildingNames(buildings);
+        List<String> buildingNames = new ArrayList<>();
+        buildingNames.add("All buildings");
+        buildingNames.addAll(getBuildingNames(buildings));
         return FXCollections.observableArrayList(buildingNames);
     }
 
@@ -109,32 +116,44 @@ public class RoomListController extends AdminPanelController {
         return FXCollections.observableArrayList(facilityNames);
     }
 
-    /**
-     * Loads the values of rooms and puts them into tableView.
-     * @throws JsonProcessingException when there is a processing exception.
-     */
-
-    void loadRooms() throws JsonProcessingException {
+    public void loadAllRooms() throws JsonProcessingException {
+        facilitiesList.getSelectionModel().clearSelection();
+        buildingFilter.getSelectionModel().clearAndSelect(0);
+        nameFilter.clear();
+        descriptionFilter.clear();
+        onlyStaffFilter.getSelectionModel().clearAndSelect(0);
         String f = ServerCommunication.get(ServerCommunication.facility);
-        System.out.println("tset: " + f);
+        String rooms = ServerCommunication.get(ServerCommunication.room);
+        loadRooms(rooms);
+        loadFiltering(f);
+    }
+
+    public void loadFiltering(String f) throws JsonProcessingException {
         List<String> options = new ArrayList<>();
         options.add("All users");
         options.add("Only staff members");
         ObservableList<String> dataOptions = FXCollections.observableArrayList(options);
         String b = ServerCommunication.get(ServerCommunication.building);
         ObservableList<String> buildingData = getData(b);
-        roomBuildingIdField.setItems(buildingData);
-        roomBuildingIdField.setPromptText(buildingData.get(0));
-        roomOnlyStaffField.setItems(dataOptions);
+        buildingFilter.setItems(buildingData);
+        buildingFilter.setPromptText(buildingData.get(0));
+        onlyStaffFilter.setItems(dataOptions);
         facilitiesList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         ObservableList<String> facData = getFacilityData(f);
         facilitiesList.setItems(facData);
-        roomOnlyStaffField.setPromptText(dataOptions.get(0));
+        onlyStaffFilter.setPromptText(dataOptions.get(0));
+    }
+
+    /**
+     * Loads the values of rooms and puts them into tableView.
+     * @throws JsonProcessingException when there is a processing exception.
+     */
+
+    void loadRooms(String rooms) throws JsonProcessingException {
         roomTable.setVisible(true);
         roomTable.getItems().clear();
         roomTable.getColumns().clear();
 
-        String rooms = ServerCommunication.get(ServerCommunication.room);
         ArrayNode body = (ArrayNode) mapper.readTree(rooms).get("body");
         System.out.println(rooms + "\n" + body.toString());
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -229,7 +248,7 @@ public class RoomListController extends AdminPanelController {
     public void deleteRoom(Room room) throws IOException {
         String id = Long.toString(room.getId());
         ServerCommunication.removeRoom(id);
-        loadRooms();
+        loadAllRooms();
     }
     /**
      * Sends user to the room edit page.
@@ -312,6 +331,50 @@ public class RoomListController extends AdminPanelController {
     private FXMLLoader switchFunc(String resource) throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
         return mainSwitch(resource, currentstage);
+    }
+
+    @FXML
+    private void filterRooms() throws JsonProcessingException {
+        String filters = "";
+        String name = nameFilter.getText();
+        String description = descriptionFilter.getText();
+        Object onlyStaffObj = onlyStaffFilter.getValue();
+        String onlyStaff = onlyStaffObj == null ? "" : onlyStaffObj.toString();
+        onlyStaff = onlyStaff.contentEquals("All users") ? "" : onlyStaff;
+        Object buildingObj = buildingFilter.getValue();
+        String building = buildingObj == null ? "" : buildingObj.toString();
+        building = building.contentEquals("All buildings") || building.contentEquals("") ? "" : Integer.toString(buildingsByName.get(building));
+        ObservableList<String> facilities = facilitiesList.getSelectionModel().getSelectedItems();
+        filters = addToFilter("name", name, filters);
+        filters = addToFilter("description", description, filters);
+        filters = addToFilter("onlyStaff", onlyStaff, filters);
+        filters = addToFilter("building", building, filters);
+        List<String> facilitiesListed = new ArrayList<>();
+        for(String facilityDescription : facilities) {
+            facilitiesListed.add(Long.toString(facilitiesByName.get(facilityDescription)));
+        }
+        StringBuilder faciltiesString = new StringBuilder();
+        for (int i = 0; i < facilitiesListed.size(); i++) {
+            if (i == facilitiesListed.size() - 1) {
+                faciltiesString.append(facilitiesListed.get(i));
+            } else {
+                faciltiesString.append(facilitiesListed.get(i)).append(",");
+            }
+        }
+        filters = addToFilter("facilities", faciltiesString.toString(), filters);
+        String rooms = ServerCommunication.getRooms(filters);
+        System.out.println(filters + "\n" + rooms);
+        loadRooms(rooms);
+    }
+
+    public String addToFilter(String name, String input, String filters) {
+        if (!input.contentEquals("")) {
+            if (filters.contentEquals("")) {
+                return name + "=" + input;
+            }
+            return filters + "&"+ name + "=" + input;
+        }
+        return filters;
     }
 }
 

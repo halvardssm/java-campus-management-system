@@ -83,23 +83,6 @@ public class BuildingCreateController extends BuildingListController {
     }
 
     /**
-     * TODO -- maybe move this to initialize.
-     */
-    private List<String> initiateTimeslots() throws JsonProcessingException {
-        List<String> times = new ArrayList<>();
-        for (int i = 0; i < 24; i++) {
-            String time;
-            if (i < 10) {
-                time = "0" + i + ":00";
-            } else {
-                time = i + ":00";
-            }
-            times.add(time);
-        }
-        return times;
-    }
-
-    /**
      * Returns string containing times inputted.
      */
     public String getTime(String time, boolean open) {

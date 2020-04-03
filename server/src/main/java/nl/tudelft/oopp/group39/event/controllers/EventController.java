@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(EventController.REST_MAPPING)
 public class EventController {
     public static final String REST_MAPPING = "/event";
+    public static final String REST_MAPPING_TYPES = "/types";
 
     @Autowired
     private EventService eventService;
@@ -36,7 +37,7 @@ public class EventController {
         return RestResponse.create(eventService.listEvents());
     }
 
-    @GetMapping("/types")
+    @GetMapping(REST_MAPPING_TYPES)
     public ResponseEntity<RestResponse<Object>> listEventTypes() {
         List<EventTypes> enums = Arrays.asList(EventTypes.values());
         return RestResponse.create(enums);
