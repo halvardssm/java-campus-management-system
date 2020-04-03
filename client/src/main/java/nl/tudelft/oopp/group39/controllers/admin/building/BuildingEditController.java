@@ -2,7 +2,6 @@ package nl.tudelft.oopp.group39.controllers.admin.building;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

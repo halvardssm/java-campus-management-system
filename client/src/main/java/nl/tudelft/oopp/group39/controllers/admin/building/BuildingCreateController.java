@@ -83,6 +83,11 @@ public class BuildingCreateController extends BuildingListController {
 
     }
 
+    /**
+     * Creates a list of possible times.
+     */
+    @SuppressWarnings("ALL")
+    // Used to suppress the lack of throwing Json error as that is needed in CustomInit
     public List<String> initiateTimeslots() throws JsonProcessingException {
         List<String> times = new ArrayList<>();
         for (int i = 0; i < 24; i++) {

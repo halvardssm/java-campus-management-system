@@ -10,8 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -58,21 +57,19 @@ public class BookingCreateController extends EventListController {
     private TextArea dateMessage;
 
     /**
-     * TODO sasa.
+     * Initializes scene.
      */
     public void customInit() {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
         setNavBar(navBar, currentStage);
-        roomBox.valueProperty().addListener(new ChangeListener<>() {
-            @Override public void changed(ObservableValue ov, String t, String t1) {
-                String reservationStartString = roomBox.getValue();
-                try {
-                    room = ServerCommunication.getRoom(roomIdByNameMap.get(reservationStartString));
-                    building = getBuilding(room);
-                    setTimeSlots(date);
-                } catch (JsonProcessingException e) {
-                    e.printStackTrace();
-                }
+        roomBox.valueProperty().addListener((ov, t, t1) -> {
+            String reservationStartString = roomBox.getValue();
+            try {
+                room = ServerCommunication.getRoom(roomIdByNameMap.get(reservationStartString));
+                building = getBuilding(room);
+                setTimeSlots(date);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
             }
         });
         reservationDate.valueProperty().addListener((ov, oldValue, newValue) -> {

@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,7 +30,6 @@ public class BuildingListController extends AdminPanelController {
 
     private String start;
     private String end;
-    private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     @FXML
     private ComboBox<String> openingBox;
@@ -69,7 +67,7 @@ public class BuildingListController extends AdminPanelController {
     /**
      * Initializes scene.
      */
-    public void customInit() throws JsonProcessingException {
+    public void customInit()  {
         try {
             loadAllBuildings();
             loadTimeSlots();
@@ -90,6 +88,9 @@ public class BuildingListController extends AdminPanelController {
         loadBuildings(buildings);
     }
 
+    /**
+     * Sets the list of possible times into Time combo boxes.
+     */
     public void loadTimeSlots() throws JsonProcessingException {
         List<String> timeSlots = initiateTimeslots();
         this.start = timeSlots.get(0);
@@ -103,6 +104,7 @@ public class BuildingListController extends AdminPanelController {
     /**
      * Clears filtering boxes.
      */
+
     public void loadFiltering() {
         nameFilter.clear();
         descriptionFilter.clear();
@@ -124,19 +126,15 @@ public class BuildingListController extends AdminPanelController {
         String open = opening == null ? start + ":00" : opening.toString() + ":00";
         Object closing = closingBox.getValue();
         String closed = closing == null ? end + ":00" : closing.toString() + ":00";
-        String buildings = ServerCommunication.getFilteredBuildings(name, location, open, closed, description);
+        String buildings = ServerCommunication.getFilteredBuildings(
+                name,
+                location,
+                open,
+                closed,
+                description);
         loadBuildings(buildings);
     }
-    /**
-     * Returns time as string.
-     */
 
-    public String getTime(String time, boolean open) {
-        if (open) {
-            return time.contentEquals("") ? LocalTime.MAX.toString() : time;
-        }
-        return time.contentEquals("") ? LocalTime.MIN.toString() : time;
-    }
 
     /**
      * Display buildings and data in tableView buildingTable.
@@ -258,6 +256,9 @@ public class BuildingListController extends AdminPanelController {
         return mainSwitch(resource, currentstage);
     }
 
+    /**
+     * Used to make list of possible times.
+     */
     public List<String> initiateTimeslots() throws JsonProcessingException {
         List<String> times = new ArrayList<>();
         for (int i = 0; i < 24; i++) {

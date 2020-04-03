@@ -3,7 +3,6 @@ package nl.tudelft.oopp.group39.controllers.admin;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,14 +10,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.controllers.admin.booking.BookingListController;
 import nl.tudelft.oopp.group39.controllers.admin.building.BuildingListController;
 import nl.tudelft.oopp.group39.controllers.admin.event.EventListController;
 import nl.tudelft.oopp.group39.controllers.admin.room.RoomListController;
 import nl.tudelft.oopp.group39.controllers.admin.user.UserListController;
-import nl.tudelft.oopp.group39.views.AdminPanel;
 
 
 public class AdminPanelController extends MainAdminController implements Initializable {
@@ -36,14 +33,11 @@ public class AdminPanelController extends MainAdminController implements Initial
     public void setNavBar(MenuBar menuBar, Stage currentstage) {
         Label userListLabel = new Label("User list");
         userListLabel.setStyle("-fx-text-fill: black");
-        userListLabel.setOnMouseClicked(new EventHandler<>() {
-            @Override
-            public void handle(MouseEvent event) {
-                try {
-                    switchUserView(currentstage);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        userListLabel.setOnMouseClicked(event -> {
+            try {
+                switchUserView(currentstage);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
         Menu fileMenuButton1 = new Menu();
@@ -51,14 +45,11 @@ public class AdminPanelController extends MainAdminController implements Initial
         menuBar.getMenus().add(fileMenuButton1);
         Label roomListLabel = new Label("Room list");
         roomListLabel.setStyle("-fx-text-fill: black");
-        roomListLabel.setOnMouseClicked(new EventHandler<>() {
-            @Override
-            public void handle(MouseEvent event) {
-                try {
-                    switchRoomView(currentstage);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        roomListLabel.setOnMouseClicked(event -> {
+            try {
+                switchRoomView(currentstage);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
         Menu fileMenuButton2 = new Menu();
@@ -66,14 +57,11 @@ public class AdminPanelController extends MainAdminController implements Initial
         menuBar.getMenus().add(fileMenuButton2);
         Label eventListLabel = new Label("Event list");
         eventListLabel.setStyle("-fx-text-fill: black");
-        eventListLabel.setOnMouseClicked(new EventHandler<>() {
-            @Override
-            public void handle(MouseEvent event) {
-                try {
-                    switchEventView(currentstage);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        eventListLabel.setOnMouseClicked(event -> {
+            try {
+                switchEventView(currentstage);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
         Menu fileMenuButton3 = new Menu();
@@ -81,14 +69,11 @@ public class AdminPanelController extends MainAdminController implements Initial
         menuBar.getMenus().add(fileMenuButton3);
         Label buildingListLabel = new Label("Building list");
         buildingListLabel.setStyle("-fx-text-fill: black");
-        buildingListLabel.setOnMouseClicked(new EventHandler<>() {
-            @Override
-            public void handle(MouseEvent event) {
-                try {
-                    switchBuildingView(currentstage);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        buildingListLabel.setOnMouseClicked(event -> {
+            try {
+                switchBuildingView(currentstage);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
         Menu fileMenuButton4 = new Menu();
@@ -96,14 +81,11 @@ public class AdminPanelController extends MainAdminController implements Initial
         menuBar.getMenus().add(fileMenuButton4);
         Label reservationListLabel = new Label("Reservation list");
         reservationListLabel.setStyle("-fx-text-fill: black");
-        reservationListLabel.setOnMouseClicked(new EventHandler<>() {
-            @Override
-            public void handle(MouseEvent event) {
-                try {
-                    switchBookingsView(currentstage);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        reservationListLabel.setOnMouseClicked(event -> {
+            try {
+                switchBookingsView(currentstage);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
         Menu fileMenuButton5 = new Menu();

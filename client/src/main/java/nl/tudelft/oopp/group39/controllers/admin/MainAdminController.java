@@ -10,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
-//import nl.tudelft.oopp.group39.controllers.MainSceneController;
 
 public class MainAdminController extends AbstractSceneController implements Initializable {
     @Override

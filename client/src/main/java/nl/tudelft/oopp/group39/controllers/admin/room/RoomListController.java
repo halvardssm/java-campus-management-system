@@ -6,21 +6,16 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuBar;
@@ -77,8 +72,6 @@ public class RoomListController extends AdminPanelController {
     @FXML
     public TextField descriptionFilter;
 
-    private Stage currentStage;
-
 
     /**
      * Initialize function.
@@ -89,7 +82,7 @@ public class RoomListController extends AdminPanelController {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        Stage currentStage = (Stage) backbtn.getScene().getWindow();
         setNavBar(navBar, currentStage);
     }
 
@@ -136,6 +129,10 @@ public class RoomListController extends AdminPanelController {
         loadFiltering(f);
     }
 
+    /**
+     * Loads up data needed to set up filtering.
+     * @throws JsonProcessingException when there is a processing exception.
+     */
     public void loadFiltering(String f) throws JsonProcessingException {
         List<String> options = new ArrayList<>();
         options.add("All users");
@@ -338,7 +335,8 @@ public class RoomListController extends AdminPanelController {
     }
 
     public String isOnlyStaff(String string) {
-        return string.contentEquals("Only staff") ? Boolean.toString(true) : Boolean.toString(false) ;
+        return string.contentEquals("Only staff") ? Boolean.toString(true) : Boolean.toString(
+                false);
     }
 
     @FXML
@@ -355,20 +353,21 @@ public class RoomListController extends AdminPanelController {
     private void filterRooms() throws JsonProcessingException {
         String filters = "";
         String name = nameFilter.getText();
-        String description = descriptionFilter.getText();
         Object onlyStaffObj = onlyStaffFilter.getValue();
         String onlyStaff = onlyStaffObj == null ? "" : onlyStaffObj.toString();
         onlyStaff = onlyStaff.contentEquals("All users") ? "" : isOnlyStaff(onlyStaff);
         Object buildingObj = buildingFilter.getValue();
+        String description = descriptionFilter.getText();
         String building = buildingObj == null ? "" : buildingObj.toString();
-        building = building.contentEquals("All buildings") || building.contentEquals("") ? "" : Integer.toString(buildingsByName.get(building));
-        ObservableList<String> facilities = facilitiesList.getSelectionModel().getSelectedItems();
+        building = building.contentEquals("All buildings") || building.contentEquals(
+                "") ? "" : Integer.toString(buildingsByName.get(building));
         filters = addToFilter("name", name, filters);
         filters = addToFilter("description", description, filters);
         filters = addToFilter("onlyStaff", onlyStaff, filters);
         filters = addToFilter("building", building, filters);
         List<String> facilitiesListed = new ArrayList<>();
-        for(String facilityDescription : facilities) {
+        ObservableList<String> facilities = facilitiesList.getSelectionModel().getSelectedItems();
+        for (String facilityDescription : facilities) {
             facilitiesListed.add(Long.toString(facilitiesByName.get(facilityDescription)));
         }
         StringBuilder faciltiesString = new StringBuilder();
@@ -385,12 +384,15 @@ public class RoomListController extends AdminPanelController {
         loadRooms(rooms);
     }
 
+    /**
+     * Used to add format data in a way so that it can be added to a filter.
+     */
     public String addToFilter(String name, String input, String filters) {
         if (!input.contentEquals("")) {
             if (filters.contentEquals("")) {
                 return name + "=" + input;
             }
-            return filters + "&"+ name + "=" + input;
+            return filters + "&" + name + "=" + input;
         }
         return filters;
     }
