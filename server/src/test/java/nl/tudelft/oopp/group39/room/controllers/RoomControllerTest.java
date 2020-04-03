@@ -98,7 +98,6 @@ public class RoomControllerTest extends AbstractControllerTest {
             .andExpect(jsonPath("$.body[0].description", is(testRoom.getDescription())));
     }
 
-    /*
     @Test
     void deleteAndCreateRoomTest() throws Exception {
         mockMvc.perform(delete(REST_MAPPING + "/" + testRoom.getId())
@@ -108,7 +107,7 @@ public class RoomControllerTest extends AbstractControllerTest {
 
         testRoom.setId(null);
 
-        String json = objectMapper.writeValueAsString(testRoom);
+        String json = objectMapper.writeValueAsString(testRoom.toDto());
 
         mockMvc.perform(post(REST_MAPPING)
             .contentType(MediaType.APPLICATION_JSON)
@@ -126,7 +125,7 @@ public class RoomControllerTest extends AbstractControllerTest {
                 JsonNode productNode = new ObjectMapper().readTree(responseString);
                 testRoom.setId(productNode.get("body").get("id").longValue());
             });
-    } */
+    }
 
     @Test
     void readRoomTest() throws Exception {
@@ -140,11 +139,11 @@ public class RoomControllerTest extends AbstractControllerTest {
             .andExpect(jsonPath("$.body.description", is(testRoom.getDescription())));
     }
 
-    /*
+
     @Test
     void updateRoomTest() throws Exception {
         testRoom.setName("asdasd");
-        String json = objectMapper.writeValueAsString(testRoom);
+        String json = objectMapper.writeValueAsString(testRoom.toDto());
 
         mockMvc.perform(put(REST_MAPPING + "/" + testRoom.getId())
             .contentType(MediaType.APPLICATION_JSON)
@@ -160,7 +159,7 @@ public class RoomControllerTest extends AbstractControllerTest {
             .andExpect(jsonPath("$.body.description", is(testRoom.getDescription())));
 
         testRoom.setName("Projectroom 1");
-    } */
+    }
 
     @Test
     void errorTest() {
