@@ -6,18 +6,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
@@ -72,15 +69,18 @@ public class RoomListController extends AdminPanelController {
     private TextField roomNameField;
     @FXML
     private MenuBar navBar;
-    private Stage currentStage;
 
+
+    /**
+     * Initialize function.
+     */
     public void customInit() {
         try {
             loadRooms();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        Stage currentStage = (Stage) backbtn.getScene().getWindow();
         setNavBar(navBar, currentStage);
     }
 
@@ -168,7 +168,13 @@ public class RoomListController extends AdminPanelController {
         viewCol.setCellFactory(param -> returnCell("View"));
         ObservableList<Room> data = FXCollections.observableArrayList(roomList);
         roomTable.setItems(data);
-        roomTable.getColumns().addAll(roomIdCol, buildingIdCol, capacityCol, onlyStaffCol, nameCol, deleteCol, updateCol, viewCol);
+        roomTable.getColumns().addAll(
+             roomIdCol,
+              buildingIdCol,
+              capacityCol,
+              onlyStaffCol,
+              nameCol,
+              deleteCol, updateCol, viewCol);
     }
     /**
      * Inserts the update and delete buttons into table.

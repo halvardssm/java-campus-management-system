@@ -3,15 +3,11 @@ package nl.tudelft.oopp.group39.controllers.admin.booking;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableCell;
@@ -27,7 +23,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 @SuppressWarnings("unchecked")
 public class BookingListController extends AdminPanelController {
 
-    private Stage currentStage;
     @FXML
     private Button backbtn;
     @FXML
@@ -41,7 +36,8 @@ public class BookingListController extends AdminPanelController {
     @FXML
     private TableColumn<Booking, String> reservationDateCol = new TableColumn<>("Reservation time");
     @FXML
-    private TableColumn<Booking, String> reservationStartCol = new TableColumn<>("Reservation time");
+    private TableColumn<Booking, String> reservationStartCol = new TableColumn<>(
+            "Reservation time");
     @FXML
     private TableColumn<Booking, String> reservationEndCol = new TableColumn<>("Reservation time");
     @FXML
@@ -60,7 +56,7 @@ public class BookingListController extends AdminPanelController {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        Stage currentStage = (Stage) backbtn.getScene().getWindow();
         setNavBar(navBar, currentStage);
     }
 
@@ -99,7 +95,15 @@ public class BookingListController extends AdminPanelController {
         updateCol.setCellFactory(param -> returnCell("Update"));
         ObservableList<Booking> data = getData();
         reservationTable.setItems(data);
-        reservationTable.getColumns().addAll(reservationIdCol, userIdCol, roomIdCol, reservationDateCol, reservationStartCol, reservationEndCol, deleteCol, updateCol);
+        reservationTable.getColumns().addAll(
+              reservationIdCol,
+              userIdCol,
+              roomIdCol,
+              reservationDateCol,
+              reservationStartCol,
+              reservationEndCol,
+              deleteCol,
+              updateCol);
     }
     /**
      * Inserts the update and delete buttons into table.
@@ -142,6 +146,9 @@ public class BookingListController extends AdminPanelController {
         };
     }
 
+    /**
+     * Sends user to create booking scene.
+     */
     public void createBooking() throws IOException {
         FXMLLoader loader = switchFunc("/admin/booking/BookingCreate.fxml");
         BookingCreateController controller = loader.getController();

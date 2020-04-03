@@ -4,15 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
-import java.net.URL;
 import java.time.LocalTime;
-import java.util.ResourceBundle;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableCell;
@@ -28,7 +25,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 @SuppressWarnings("unchecked")
 public class BuildingListController extends AdminPanelController {
 
-    private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     @FXML
     private Button backbtn;
@@ -59,14 +55,16 @@ public class BuildingListController extends AdminPanelController {
     @FXML
     private MenuBar navBar;
 
-
-    public void customInit() {
+    /**
+     * Initializes scene.
+     */
+    public void customInit() throws JsonProcessingException {
         try {
             loadAllBuildings();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        this.currentStage = (Stage) backbtn.getScene().getWindow();
+        Stage currentStage = (Stage) backbtn.getScene().getWindow();
         setNavBar(navBar, currentStage);
     }
 
@@ -102,7 +100,12 @@ public class BuildingListController extends AdminPanelController {
         location = location == null ? "" : location;
         String open = getTime("00:00:00", true);
         String closed = getTime("23:59:00", false);
-        String buildings = ServerCommunication.getFilteredBuildings(name, location, open, closed, description);
+        String buildings = ServerCommunication.getFilteredBuildings(
+                name,
+                location,
+                open,
+                closed,
+                description);
         loadBuildings(buildings);
     }
     /**
@@ -145,7 +148,15 @@ public class BuildingListController extends AdminPanelController {
         Building[] list = mapper.readValue(buildings, Building[].class);
         ObservableList<Building> data = FXCollections.observableArrayList(list);
         buildingTable.setItems(data);
-        buildingTable.getColumns().addAll(idCol, nameCol, locationCol, closingTimeCol, openTimeCol, descriptionCol, deleteCol, updateCol);
+        buildingTable.getColumns().addAll(
+             idCol,
+             nameCol,
+             locationCol,
+             closingTimeCol,
+             openTimeCol,
+             descriptionCol,
+             deleteCol,
+             updateCol);
     }
     /**
      * Inserts the update and delete buttons into table.
@@ -188,6 +199,9 @@ public class BuildingListController extends AdminPanelController {
         };
     }
 
+    /**
+     * Sends user to Building Create scene.
+     */
     public void createBuilding() throws IOException {
         FXMLLoader loader = switchFunc("/admin/building/BuildingCreate.fxml");
         BuildingCreateController controller = loader.getController();
