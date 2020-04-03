@@ -177,7 +177,7 @@ public class RoomSceneController extends AbstractSceneController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Doc. TODO
      */
     public void updateRoom() {
         String buildingId = roomBuildingIdField.getText();
@@ -202,7 +202,7 @@ public class RoomSceneController extends AbstractSceneController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Doc. TODO
      */
     public void deleteRoom() {
         String id = updateRoomField.getText();

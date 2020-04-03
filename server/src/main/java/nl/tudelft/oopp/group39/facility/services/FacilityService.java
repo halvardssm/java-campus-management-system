@@ -29,14 +29,18 @@ public class FacilityService {
     }
 
     /**
-     * Doc. TODO Sven
+     * Creates a new facility.
+     * @param newFacility the facility containing the new facility attributes.
      */
     public Facility createFacility(Facility newFacility) {
         return facilityRepository.save(newFacility);
     }
 
     /**
-     * Doc. TODO Sven
+     * Updates an existing facility or throws a FacilityNotFoundException
+     * if the facility that is to be updated isn't found.
+     * @param id the id of the facility.
+     * @param newFacility the facility containing the new updated facility attributes.
      */
     public Facility updateFacility(Facility newFacility, Long id) throws FacilityNotFoundException {
         return facilityRepository.findById(id)
@@ -45,7 +49,9 @@ public class FacilityService {
     }
 
     /**
-     * Doc. TODO Sven
+     * Deletes an existing facility or throws a FacilityNotFoundException
+     * if the facility that is to be deleted isn't found.
+     * @param id the id of the facility.
      */
     public Facility deleteFacility(Long id) throws FacilityNotFoundException {
         try {

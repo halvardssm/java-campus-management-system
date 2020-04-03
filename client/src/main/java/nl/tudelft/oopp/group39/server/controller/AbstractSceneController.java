@@ -105,7 +105,9 @@ public abstract class AbstractSceneController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Switches view to the userpage scene.
+     *
+     * @throws IOException if the scene wasn't found
      */
     public void goToUserPageScene() throws IOException {
         UsersDisplay.sceneHandler("/userPage.fxml");

@@ -52,7 +52,9 @@ public class FacilityController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Deletes an existing facility.
+     * @param id the id of the facility.
+     * @return nothing.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteFacility(@PathVariable Long id) {

@@ -12,12 +12,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+//import nl.tudelft.oopp.group39.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.admin.room.RoomListController;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
@@ -32,6 +29,8 @@ public class UserCreateController extends RoomListController implements Initiali
     private ComboBox<String> roleBox;
     @FXML
     private TextField usernameField;
+    @FXML
+    private List<String> roles;
     @FXML
     private TextArea userMessage;
     @FXML
@@ -69,6 +68,7 @@ public class UserCreateController extends RoomListController implements Initiali
         User[] listU = mapper.readValue(users, User[].class);
         this.users = Arrays.asList(listU);
 
+        this.roles = Arrays.asList(list);
         ObservableList<String> data = FXCollections.observableArrayList(list);
         roleBox.setItems(data);
         roleBox.setPromptText("Select a role:");
@@ -105,14 +105,15 @@ public class UserCreateController extends RoomListController implements Initiali
      * @param roleNull has a role been picked?
      * @param password and passwordConfirmation the password to be set for user.
      *
+     *                 TODO SVEN - make shorter somehow?
      */
 
     public void verifyInputs(
-            String name,
-            String roleObj,
-            boolean roleNull,
-            String password,
-            String passwordConfirmation) throws IOException {
+        String name,
+        String roleObj,
+        boolean roleNull,
+        String password,
+        String passwordConfirmation) throws IOException {
         userMessage.setStyle("-fx-text-fill: Red");
         if (name == null || name.contentEquals("")) {
             userMessage.setText("Please select a name!\n");
@@ -130,9 +131,10 @@ public class UserCreateController extends RoomListController implements Initiali
                 return;
             }
         }
-        if (password == null || passwordConfirmation == null
-                || password.contentEquals("")
-                || passwordConfirmation.contentEquals("")) {
+        if (password == null
+            || passwordConfirmation == null
+            || password.contentEquals("")
+            || passwordConfirmation.contentEquals("")) {
             String abcString = userMessage.getText();
             userMessage.setText(abcString + "Please input a password and confirmation password!\n");
             return;
@@ -147,11 +149,13 @@ public class UserCreateController extends RoomListController implements Initiali
             userMessage.setText(abcString + "The password and password confirmation must match!\n");
             return;
         }
+        String role = roleObj;
         String email = "tudelft.nl";
-        email = roleObj.contentEquals("STUDENT") ? "student." + email : email;
+        email = role.contentEquals("STUDENT") ? "student." + email : email;
         email = name + "@" + email;
-        ServerCommunication.createUser(name, email, roleObj, password);
+        ServerCommunication.createUser(name, email, role, password);
         getBack();
+//        createAlert("Created: " + email);
     }
 
 }

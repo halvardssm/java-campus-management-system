@@ -45,7 +45,7 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
     }
 
     /**
-     * Constructor. TODO Sven
+     * Constructor.
      *
      * @param id          id
      * @param name        name

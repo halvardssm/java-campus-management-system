@@ -37,7 +37,7 @@ public class BuildingController {
     private BuildingService buildingService;
 
     /**
-     * TODO Sven.
+     * Creates a ResponseEntity with a list of all buildings.
      */
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listBuildings(
@@ -49,10 +49,10 @@ public class BuildingController {
     }
 
     /**
-     * Create building. TODO Sven
+     * Creates a building with the dto supplied by the curl request.
      *
-     * @param building building
-     * @return building
+     * @param building the dto values of the building to be created
+     * @return the newly created building
      */
     @PostMapping("")
     @ResponseBody
@@ -81,10 +81,9 @@ public class BuildingController {
     }
 
     /**
-     * Delete building. TODO Sven
-     *
-     * @param id id
-     * @return nothing
+     * Deletes an existing building or throws a
+     * @param id the id of the room.
+     * @return nothing.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteBuilding(@PathVariable Long id) {

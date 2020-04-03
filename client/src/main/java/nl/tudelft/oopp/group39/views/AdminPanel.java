@@ -48,7 +48,7 @@ public class AdminPanel extends Application {
     private static int height = 650;
 
     /**
-     * Doc. TODO Sven
+     * SceneHandler function to help change scenes.
      */
     @FXML
     public static void sceneHandler(String name) throws IOException {
