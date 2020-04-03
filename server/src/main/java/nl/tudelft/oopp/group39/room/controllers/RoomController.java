@@ -64,12 +64,23 @@ public class RoomController {
         );
     }
 
+    /**
+     * Gets/Reads an existing room or throws a RoomNotFoundException.
+     * @param id the id of the room.
+     * @return the room.
+     */
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> readRoom(@PathVariable Long id) {
         return RestResponse.create(service.readRoom(id).toDto());
     }
 
+    /**
+     * Updates an existing room or throws a RoomNotFoundException.
+     * @param id the id of the room.
+     * @param updated the dto values of the room to be updated.
+     * @return the updated room.
+     */
     @PutMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> updateRoom(
@@ -80,7 +91,9 @@ public class RoomController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Deletes an existing room or throws a RoomNotFoundException.
+     * @param id the id of the room.
+     * @return nothing.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteRoom(@PathVariable Long id) {

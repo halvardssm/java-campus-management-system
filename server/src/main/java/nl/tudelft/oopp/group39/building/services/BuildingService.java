@@ -18,9 +18,9 @@ public class BuildingService {
     private BuildingDao buildingDao;
 
     /**
-     * Doc. TODO Sven
+     * Creates a list of all buildings.
+     * @return that list.
      */
-
     public List<Building> listBuildings(Map<String,String> params) {
         return buildingDao.buildingFilter(params);
     }
@@ -31,7 +31,10 @@ public class BuildingService {
     }
 
     /**
-     * Doc. TODO Sven
+     * Deletes an existing building or throws a BuildingNotFoundException
+     * if the building that is to be deleted isn't found.
+     * @param id the id of the building.
+     * @return nothing.
      */
     public Building deleteBuilding(Long id) throws BuildingNotFoundException {
         try {
@@ -44,14 +47,22 @@ public class BuildingService {
     }
 
     /**
-     * Doc. TODO Sven
+     * Creates a room with the dto supplied by the curl request.
+     *
+     * @param newBuilding the values of the building to be created
+     * @return the inserted value converted back to dto
+     * @return the building.
      */
     public Building createBuilding(Building newBuilding) {
         return buildingRepository.save(newBuilding);
     }
 
     /**
-     * Doc. TODO Sven
+     * Updates an existing building or throws a BuildingNotFoundException
+     * if the building that is to be deleted isn't found.
+     * @param id the id of the room.
+     * @param newBuilding the values of the building to be updated.
+     * @return the updated building.
      */
     public Building updateBuilding(Long id, Building newBuilding) throws BuildingNotFoundException {
         return buildingRepository.findById(id)

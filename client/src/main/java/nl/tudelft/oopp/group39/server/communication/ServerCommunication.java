@@ -407,7 +407,7 @@ public class ServerCommunication {
     }
 
     /**
-     * Doc. TODO Sven
+     * DELETE HTTP request to remove a building based on a String parameter id.
      */
     public static void removeBuilding(String id) {
         HttpRequest request = HttpRequest.newBuilder().DELETE()
@@ -428,7 +428,7 @@ public class ServerCommunication {
     }
 
     /**
-     * Doc. TODO Sven
+     * DELETE HTTP request to remove a room based on a String parameter id.
      */
     public static void removeRoom(String id) {
         HttpRequest request = HttpRequest.newBuilder()

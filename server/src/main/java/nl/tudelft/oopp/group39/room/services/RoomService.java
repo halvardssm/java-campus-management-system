@@ -32,14 +32,22 @@ public class RoomService {
     }
 
     /**
-     * Doc. TODO Sven
+     * Creates a room with the dto supplied by the curl request.
+     *
+     * @param newRoom the values of the room to be created
+     * @return the inserted value converted back to dto
+     * @return the room.
      */
     public Room createRoom(Room newRoom) {
         return roomRepository.save(newRoom);
     }
 
     /**
-     * Doc. TODO Sven
+     * Updates an existing room or throws a RoomNotFoundException
+     * if the room that is to be deleted isn't found.
+     * @param id the id of the room.
+     * @param newRoom the values of the room to be updated.
+     * @return the updated room.
      */
     public Room updateRoom(Room newRoom, Long id) throws RoomNotFoundException {
         return roomRepository.findById(id)
@@ -53,7 +61,6 @@ public class RoomService {
     }
 
     /**
-     * Doc. TODO Sven
      * Method to filter rooms.
      * Based on capacity, a room being accessible to students or not, the facilities that should
      * be present (if so their facility ids should be in the facilities array), the building name
@@ -64,7 +71,10 @@ public class RoomService {
     }
 
     /**
-     * Doc. TODO Sven
+     * Deletes an existing room or throws a RoomNotFoundException
+     * if the room that is to be deleted isn't found.
+     * @param id the id of the room.
+     * @return nothing.
      */
     public Room deleteRoom(Long id) throws RoomNotFoundException {
         try {

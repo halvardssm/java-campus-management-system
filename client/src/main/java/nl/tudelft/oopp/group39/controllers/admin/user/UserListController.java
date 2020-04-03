@@ -15,14 +15,20 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.controllers.admin.AdminPanelController;
 import nl.tudelft.oopp.group39.user.model.User;
 
-
+@SuppressWarnings("unchecked")
 public class UserListController extends AdminPanelController implements Initializable {
 
     private ObjectMapper mapper = new ObjectMapper();
@@ -99,7 +105,6 @@ public class UserListController extends AdminPanelController implements Initiali
         List<String> roleList = new ArrayList<>();
         roleList.add(allRoles);
         roleList.addAll(Arrays.asList(list));
-        this.roles = roleList;
         ObservableList<String> data = FXCollections.observableArrayList(roleList);
         roleBox.setItems(data);
         roleBox.getSelectionModel().select(this.lastSelectedRole);

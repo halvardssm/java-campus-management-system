@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
-//import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
 @JsonIgnoreProperties(value = { "reservables", "rooms" })
 public class Building {
@@ -29,8 +28,9 @@ public class Building {
     }
 
     /**
-     * Doc. TODO Sven
+     * Doc.
      *
+     * @param id          id
      * @param name        name
      * @param location    location
      * @param description description

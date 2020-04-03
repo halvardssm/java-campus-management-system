@@ -25,10 +25,9 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 public class RoomViewController extends RoomListController implements Initializable {
 
     private ObjectMapper mapper = new ObjectMapper();
-    private Room room;
     private Building building;
-    private HashMap<String, Integer> buildingsByName = new HashMap();
-    private HashMap<Integer, String> buildingsById = new HashMap();
+    private HashMap<String, Integer> buildingsByName = new HashMap<String, Integer>();
+    private HashMap<Integer, String> buildingsById = new HashMap<Integer, String>();
     @FXML
     private Button backbtn;
     @FXML
@@ -61,7 +60,6 @@ public class RoomViewController extends RoomListController implements Initializa
      */
 
     public void initData(Room room) throws JsonProcessingException {
-        this.room = room;
         String nnnBuilding = ServerCommunication.getBuilding(room.getBuilding());
         System.out.println(nnnBuilding);
         ObjectNode body = (ObjectNode) mapper.readTree(nnnBuilding).get("body");
