@@ -18,11 +18,14 @@ public class ReservableDto<E extends Reservable<E, D>, D extends ReservableDto<E
     private Long building;
     private Set<ReservationAmountDto> reservations = new HashSet<>();
 
+    /**
+     * Creates a ReservableDto.
+     */
     public ReservableDto() {
     }
 
     /**
-     * Creates a Dto object.
+     * Creates a ReservableDto object.
      *
      * @param id           the id
      * @param price        the price of the reservable
@@ -41,31 +44,66 @@ public class ReservableDto<E extends Reservable<E, D>, D extends ReservableDto<E
         getReservations().addAll(initSet(reservations));
     }
 
+    /**
+     * Gets the price of the reservable.
+     *
+     * @return the price of the reservable
+     */
     public Double getPrice() {
         return price;
     }
 
+    /**
+     * Changes the price of the reservable.
+     *
+     * @param price the new price
+     */
     public void setPrice(Double price) {
         this.price = price;
     }
 
+    /**
+     * Gets the building where the reservable is at.
+     *
+     * @return the building where the reservable is at
+     */
     public Long getBuilding() {
         return building;
     }
 
+    /**
+     * Changes the building where the reservable is at.
+     *
+     * @param building the new building
+     */
     public void setBuilding(Long building) {
         this.building = building;
     }
 
+    /**
+     * Gets the reservations of the reservable.
+     *
+     * @return the reservations of the reservable
+     */
     public Set<ReservationAmountDto> getReservations() {
         return reservations;
     }
 
+    /**
+     * Changes the reservations of the reservable.
+     *
+     * @param reservations the new set of reservations
+     */
     public void setReservations(Set<ReservationAmountDto> reservations) {
         this.reservations.clear();
         this.reservations.addAll(reservations);
     }
 
+    /**
+     * Changes the ReservableDto to a Reservable object.
+     *
+     * @return a Reservable object
+     */
     @Override
     public E toEntity() {
         Set<ReservationAmount> reservationAmount = Utils.setDtoToEntity(reservations);

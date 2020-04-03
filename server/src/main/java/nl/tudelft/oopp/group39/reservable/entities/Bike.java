@@ -29,11 +29,14 @@ public class Bike extends Reservable<Bike, BikeDto> {
         this.bikeType = bikeType;
     }
 
+    /**
+     * The Bike constructor.
+     */
     public Bike() {
     }
 
     /**
-     * The constructor of Bike.
+     * The Bike constructor.
      *
      * @param id           of the bike
      * @param bikeType     the bike type
@@ -52,6 +55,11 @@ public class Bike extends Reservable<Bike, BikeDto> {
         setBikeType(bikeType != null ? bikeType : BikeType.CITY);
     }
 
+    /**
+     * Changes the Bike to a BikeDto object.
+     *
+     * @return a BikeDto object
+     */
     @Override
     public BikeDto toDto() {
 
@@ -64,6 +72,12 @@ public class Bike extends Reservable<Bike, BikeDto> {
         );
     }
 
+    /**
+     * Checks whether two bikes are equal.
+     *
+     * @param o the other object
+     * @return  true if the two bikes are equal, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {

@@ -37,26 +37,16 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DbSeeder {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private RoomService roomService;
-    @Autowired
-    private BuildingService buildingService;
-    @Autowired
-    private FacilityService facilityService;
-    @Autowired
-    private BookingService bookingService;
-    @Autowired
-    private EventService eventService;
-    @Autowired
-    private BikeService bikeService;
-    @Autowired
-    private FoodService foodService;
-    @Autowired
-    private ReservationService reservationService;
-    @Autowired
-    private ReservationAmountService reservationAmountService;
+    @Autowired private UserService userService;
+    @Autowired private RoomService roomService;
+    @Autowired private BuildingService buildingService;
+    @Autowired private FacilityService facilityService;
+    @Autowired private BookingService bookingService;
+    @Autowired private EventService eventService;
+    @Autowired private BikeService bikeService;
+    @Autowired private FoodService foodService;
+    @Autowired private ReservationService reservationService;
+    @Autowired private ReservationAmountService reservationAmountService;
 
     /**
      * Initiates the db with all the roles.
@@ -100,6 +90,9 @@ public class DbSeeder {
         System.out.println("[SEED] Admin user created");
     }
 
+    /**
+     * Initiates the database with the facilities.
+     */
     private void initFacilities() {
         Set<Room> rooms = new HashSet<>();
         facilityService.createFacility(new Facility("smartboard", rooms));
@@ -111,6 +104,9 @@ public class DbSeeder {
         System.out.println("[SEED] Facilities created");
     }
 
+    /**
+     * Initiates the database with the buildings.
+     */
     private void initBuildings() {
         LocalTime open = LocalTime.of(9, 0);//.minusHours(3);
         LocalTime closed = LocalTime.of(20, 0);//.plusHours(3);
@@ -146,6 +142,9 @@ public class DbSeeder {
         System.out.println("[SEED] Buildings created");
     }
 
+    /**
+     * Initiates the database with the rooms.
+     */
     private void initRooms() {
         final Building b1 = buildingService.readBuilding(1L);
         final Building b2 = buildingService.readBuilding(2L);
@@ -199,10 +198,12 @@ public class DbSeeder {
             null
         ));
 
-
         System.out.println("[SEED] Rooms created");
     }
 
+    /**
+     * Initiates the database with events.
+     */
     private void initEvents() {
         LocalDateTime today = LocalDateTime.now();
         LocalDateTime tomorrow = today.plusDays(1);
@@ -231,6 +232,9 @@ public class DbSeeder {
         System.out.println("[SEED] Events created");
     }
 
+    /**
+     * Initiates the database with bookings.
+     */
     private void initBookings() {
         LocalDate date = LocalDate.now();
         LocalTime start = LocalTime.of(13, 0);
@@ -252,6 +256,9 @@ public class DbSeeder {
         System.out.println("[SEED] Bookings created");
     }
 
+    /**
+     * Initiates the database with bikes.
+     */
     private void initBikes() {
         Building building = buildingService.listBuildings(new HashMap<>()).get(0);
 
@@ -266,6 +273,9 @@ public class DbSeeder {
         System.out.println("[SEED] Bikes created");
     }
 
+    /**
+     * Initiates the database with food.
+     */
     private void initFoods() {
         Building building = buildingService.listBuildings(new HashMap<>()).get(0);
 
@@ -287,6 +297,9 @@ public class DbSeeder {
         System.out.println("[SEED] Foods created");
     }
 
+    /**
+     * Initiates the database with reservations.
+     */
     private void initReservations() {
 
         Reservation reservation = reservationService.createReservation(new Reservation(

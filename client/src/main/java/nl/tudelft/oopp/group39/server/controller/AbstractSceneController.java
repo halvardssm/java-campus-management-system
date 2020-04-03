@@ -34,30 +34,17 @@ import nl.tudelft.oopp.group39.user.controller.UserPageController;
 import nl.tudelft.oopp.group39.user.model.User;
 
 public abstract class AbstractSceneController {
-
     protected ObjectMapper mapper = new ObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     public static boolean loggedIn = false;
     public static String jwt;
     public static User user;
-
-    @FXML
-    public VBox sidebar;
-
-    @FXML
-    public MenuButton myaccount;
-
-    @FXML
-    protected Button userButton;
-
-    @FXML
-    protected HBox topBar;
-
-    @FXML
-    protected VBox userBox;
-
-    @FXML
-    protected BorderPane window;
+    @FXML public VBox sidebar;
+    @FXML public MenuButton myaccount;
+    @FXML protected Button userButton;
+    @FXML protected HBox topBar;
+    @FXML protected VBox userBox;
+    @FXML protected BorderPane window;
 
     /**
      * Creates a simple alert that has the content specified.
@@ -106,7 +93,9 @@ public abstract class AbstractSceneController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Switches to the user page scene.
+     *
+     * @throws IOException if the scene wasn't found
      */
     public void goToUserPageScene() throws IOException {
         UserPageController controller = (UserPageController) UsersDisplay.sceneControllerHandler("/user/userPage.fxml");

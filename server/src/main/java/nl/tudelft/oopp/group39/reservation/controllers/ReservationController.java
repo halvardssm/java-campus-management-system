@@ -62,7 +62,7 @@ public class ReservationController {
     }
 
     /**
-     * GET Endpoint to retrieve an reservation.
+     * GET Endpoint to retrieve a reservation.
      *
      * @return the requested reservation {@link Reservation}.
      */
@@ -78,7 +78,7 @@ public class ReservationController {
     }
 
     /**
-     * PUT Endpoint to update an reservation.
+     * PUT Endpoint to update a reservation.
      *
      * @return the updated reservation {@link Reservation}.
      */
@@ -97,7 +97,7 @@ public class ReservationController {
     }
 
     /**
-     * DELETE Endpoint to delete am reservation.
+     * DELETE Endpoint to delete a reservation.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteReservation(@PathVariable Long id) {

@@ -49,6 +49,9 @@ public class Event extends AbstractEntity<Event, EventDto> {
         })
     private Set<Room> rooms = new HashSet<>();
 
+    /**
+     * Creates an event.
+     */
     public Event() {
     }
 
@@ -89,18 +92,38 @@ public class Event extends AbstractEntity<Event, EventDto> {
         this.title = title;
     }
 
+    /**
+     * Gets the starting date of the event.
+     *
+     * @return the starting date of the event
+     */
     public LocalDateTime getStartsAt() {
         return startsAt;
     }
 
+    /**
+     * Changes the starting date of the event.
+     *
+     * @param startDate the new starting date
+     */
     public void setStartsAt(LocalDateTime startDate) {
         this.startsAt = startDate;
     }
 
+    /**
+     * Gets the end date of the event.
+     *
+     * @return the end date of the event
+     */
     public LocalDateTime getEndsAt() {
         return endsAt;
     }
 
+    /**
+     * Changes the end date of the event.
+     *
+     * @param endDate the new end date
+     */
     public void setEndsAt(LocalDateTime endDate) {
         this.endsAt = endDate;
     }
@@ -121,14 +144,30 @@ public class Event extends AbstractEntity<Event, EventDto> {
         this.user = user;
     }
 
+    /**
+     * Gets the rooms for which the event holds.
+     *
+     * @return a set with all the rooms for which the event holds
+     */
     public Set<Room> getRooms() {
         return rooms;
     }
 
+    /**
+     * Change the rooms for which the event holds.
+     *
+     * @param rooms the new set of rooms for which the event holds
+     */
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
     }
 
+    /**
+     * Checks if two events are equal.
+     *
+     * @param o the other object
+     * @return  true if the two events are equal, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -147,6 +186,11 @@ public class Event extends AbstractEntity<Event, EventDto> {
             && Objects.equals(getRooms(), event.getRooms());
     }
 
+    /**
+     * Changes the Event to an EventDto object.
+     *
+     * @return the EventDto
+     */
     @Override
     public EventDto toDto() {
         return new EventDto(

@@ -17,46 +17,23 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import nl.tudelft.oopp.group39.booking.model.Booking;
+import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
-
 public class UserPageController extends AbstractSceneController {
-    @FXML
-    private FlowPane flowPane; //The User Page screen
-
-    @FXML
-    private AnchorPane newBooking; //The whole card
-
-    @FXML
-    private Label accountName;
-
-    @FXML
-    private Label accountRole;
-
-    @FXML
-    private Label accountEmail;
-
-    @FXML
-    private Label bookingID;
-
-    @FXML
-    private Label roomID;
-
-    @FXML
-    private Label bookingDate;
-
-    @FXML
-    private TextField editStartingTime;
-
-    @FXML
-    private TextField editDuration;
-
-    @FXML
-    private DatePicker editDate;
-
-    @FXML
-    private Button doneButton;
+    @FXML private FlowPane flowPane;
+    @FXML private AnchorPane newBooking;
+    @FXML private Label accountName;
+    @FXML private Label accountRole;
+    @FXML private Label accountEmail;
+    @FXML private Label bookingID;
+    @FXML private Label roomID;
+    @FXML private Label bookingDate;
+    @FXML private TextField editStartingTime;
+    @FXML private TextField editDuration;
+    @FXML private DatePicker editDate;
+    @FXML private Button doneButton;
 
     /**
      * Updates all the information on the user page.
@@ -70,7 +47,6 @@ public class UserPageController extends AbstractSceneController {
         flowPane.getChildren().clear();
         try {
             String bookingString = ServerCommunication.getAllBookings();
-            System.out.println(bookingString);
             ArrayNode body = (ArrayNode) mapper.readTree(bookingString).get("body");
             bookingString = mapper.writeValueAsString(body);
             Booking[] bookingList = mapper.readValue(bookingString, Booking[].class);
@@ -150,7 +126,7 @@ public class UserPageController extends AbstractSceneController {
     /**
      * Shows the edit fields for editing the booking.
      */
-    public void editBooking() throws IOException {
+    public void editBooking() {
         editStartingTime.setOpacity(1);
         editDuration.setOpacity(1);
         editDate.setOpacity(1);
@@ -241,14 +217,19 @@ public class UserPageController extends AbstractSceneController {
     }
 
     /**
-     * Views the room.
+     * Views the room you have booked.
+     *
+     * @throws IOException if the room wasn't found
      */
     public void viewRoom() throws IOException {
-        goToRoomsScene();
+        Room r1 = ServerCommunication.getRoom(Long.parseLong(roomID.getText()));
+        super.goToReservationScene(r1, r1.getBuildingObject());
     }
 
     /**
      * Returns the user back to the building page when the back button is clicked.
+     *
+     * @throws IOException if the scene wasn't found
      */
     @FXML
     private void backToRoom() throws IOException {
