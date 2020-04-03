@@ -59,3 +59,4 @@ public class BuildingServiceTest extends AbstractTest {
 
         assertEquals(testBuilding, building2);
     }
+}
