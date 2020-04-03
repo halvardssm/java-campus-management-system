@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-
-import com.sun.jdi.LongValue;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -44,8 +42,8 @@ class RoomTest extends AbstractTest {
         facilityService.createFacility(new Facility(
             "whiteboard", rooms
         ));
-        bookings.add(bookingService.readBooking(Long.valueOf(1)));
-        facilities.add(facilityService.readFacility(Long.valueOf(1));
+        bookings.add(bookingService.readBooking(1L));
+        facilities.add(facilityService.readFacility(1L));
 
         this.building = new Building(
             null,
@@ -121,7 +119,7 @@ class RoomTest extends AbstractTest {
     @Test
     void getFacilitiesTest() {
         Set<Facility> facilities2 = new HashSet<>();
-        facilities2.add(facilityService.readFacility(Long.valueOf(2)));
+        facilities2.add(facilityService.readFacility(2L));
         Room room4 = new Room(null, building, name,
             capacity, onlyStaff, description,
             null, facilities2, bookings);
