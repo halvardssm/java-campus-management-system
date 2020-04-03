@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.group39;
 
-import nl.tudelft.oopp.group39.views.AdminPanel;
-import nl.tudelft.oopp.group39.views.LandingPage;
 import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 public class MainApp {

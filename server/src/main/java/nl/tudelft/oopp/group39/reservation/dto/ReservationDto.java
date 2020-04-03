@@ -8,12 +8,17 @@ import java.util.Set;
 import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
+import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.repositories.UserRepository;
+import nl.tudelft.oopp.group39.user.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ReservationDto extends AbstractDto<Reservation, ReservationDto> {
+
     private LocalDateTime timeOfPickup;
     private LocalDateTime timeOfDelivery;
     private String user;
@@ -91,13 +96,12 @@ public class ReservationDto extends AbstractDto<Reservation, ReservationDto> {
 
     @Override
     public Reservation toEntity() {
-
         return new Reservation(
             getId(),
             getTimeOfPickup(),
             getTimeOfDelivery(),
             Utils.idToEntity(getRoom(), Room.class),
-            new User(getUser(), null, null, null, null, null, null),
+            null,
             Utils.setDtoToEntity(getReservationAmounts())
         );
     }

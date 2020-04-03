@@ -6,11 +6,10 @@ import java.util.Set;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.reservable.entities.Bike;
-import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservable.enums.BikeType;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 
-public class BikeDto extends ReservableDto {
+public class BikeDto extends ReservableDto<Bike, BikeDto> {
 
     private BikeType bikeType;
 
@@ -52,8 +51,7 @@ public class BikeDto extends ReservableDto {
             getId(),
             getBikeType(),
             getPrice(),
-            getBuilding() == null
-                ? null : Utils.idToEntity(getBuilding(), Building.class),
+            Utils.idToEntity(getBuilding(), Building.class),
             Utils.setDtoToEntity(getReservations())
         );
     }

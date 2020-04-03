@@ -27,7 +27,8 @@ import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonIgnoreProperties(allowSetters = true, value = {Reservable.COL_RESERVATIONS})
 @JsonIdentityInfo(generator = ObjectIdGenerators.None.class)
-public class Reservable extends AbstractEntity<Reservable, ReservableDto> {
+public class Reservable<E extends Reservable<E, D>, D extends ReservableDto<E, D>>
+    extends AbstractEntity<E, D> {
     public static final String TABLE_NAME = "reservables";
     public static final String MAPPED_NAME = "reservable";
     public static final String COL_PRICE = "price";
@@ -94,10 +95,10 @@ public class Reservable extends AbstractEntity<Reservable, ReservableDto> {
      * @return the converted dto of the object
      */
     @Override
-    public ReservableDto toDto() {
+    public D toDto() {
         Set<ReservationAmountDto> reservationAmountDtos = Utils.setEntityToDto(reservations);
 
-        return new ReservableDto(
+        return (D) new ReservableDto(
             getId(),
             getPrice(),
             getBuilding().getId(),
