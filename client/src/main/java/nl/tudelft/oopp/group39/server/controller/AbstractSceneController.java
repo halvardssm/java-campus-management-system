@@ -15,12 +15,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.event.model.Event;
 import nl.tudelft.oopp.group39.reservable.controller.FoodAndBikeSceneController;
@@ -29,32 +29,29 @@ import nl.tudelft.oopp.group39.room.controller.RoomSceneController;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.views.UsersDisplay;
+import nl.tudelft.oopp.group39.user.controller.CalendarController;
 import nl.tudelft.oopp.group39.user.controller.SignupController;
+import nl.tudelft.oopp.group39.user.controller.UserPageController;
 import nl.tudelft.oopp.group39.user.model.User;
 
 public abstract class AbstractSceneController {
-
     protected ObjectMapper mapper = new ObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     public static boolean loggedIn = false;
     public static String jwt;
     public static User user;
-
+    public DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     @FXML
     public VBox sidebar;
-
     @FXML
     public MenuButton myaccount;
-
     @FXML
     protected Button userButton;
-
     @FXML
     protected HBox topBar;
-
     @FXML
     protected VBox userBox;
-
     @FXML
     protected BorderPane window;
 
@@ -70,7 +67,7 @@ public abstract class AbstractSceneController {
     /**
      * Creates an alert that contains a title.
      *
-     * @param title the title of the alert
+     * @param title   the title of the alert
      * @param content content to be displayed
      */
     public void createAlert(String title, String content) {
@@ -105,10 +102,15 @@ public abstract class AbstractSceneController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Switches to the user page scene.
+     *
+     * @throws IOException if the scene wasn't found
      */
     public void goToUserPageScene() throws IOException {
-        UsersDisplay.sceneHandler("/userPage.fxml");
+        UserPageController controller =
+            (UserPageController) UsersDisplay.sceneControllerHandler("/user/userPage.fxml");
+        controller.changeUserBox();
+        controller.showBookings();
     }
 
     /**
@@ -189,6 +191,17 @@ public abstract class AbstractSceneController {
     }
 
     /**
+     * Switches view to the food order scene.
+     *
+     * @throws IOException if the scene wasn't found
+     */
+    public void goToCalendarScene() throws IOException {
+        CalendarController controller =
+            (CalendarController) goTo("/user/calendarView.fxml");
+        controller.createCalendar();
+    }
+
+    /**
      * Logs the user out.
      *
      * @throws IOException if view wasn't found.
@@ -261,36 +274,52 @@ public abstract class AbstractSceneController {
     }
 
     /**
-     * Retrieves the events in a set.
-     *
-     * @return Set representation of all the events
-     * @throws JsonProcessingException when there is a processing exception
-     */
-    public Set<Event> getEventList() throws JsonProcessingException {
-        String json = ServerCommunication.get(ServerCommunication.event);
-        ArrayNode body = (ArrayNode) mapper.readTree(json).get("body");
-        json = mapper.writeValueAsString(body);
-
-        return new HashSet<>(Arrays.asList(mapper.readValue(json, Event[].class)));
-    }
-
-    /**
      * Checks if the given date is not during an event.
      *
      * @param date the selected date
      * @return boolean true if date is not an event, false if date is on an event
      */
-    public boolean checkDate(String date) throws JsonProcessingException {
-        LocalDate check = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        for (Event event : getEventList()) {
-            LocalDate start = event.getStartDate();
-            LocalDate end = event.getEndDate() == null ? start : event.getEndDate();
-            int checkInt = check.compareTo(start) + check.compareTo(end);
-            if (-1 >= checkInt & checkInt <= 1) {
-                createAlert("There is an event on this date");
-                return false;
+    public boolean checkDate(String date, Long room) throws JsonProcessingException {
+        LocalDate check = LocalDate.parse(date, dateFormatter);
+        Set<Event> events = room == null ? getEvents("isGlobal=true") : getEvents("rooms=" + room);
+        if (events.size() != 0) {
+            for (Event event : events) {
+                LocalDate start = event.getStartTime().toLocalDate();
+                LocalDate end =
+                    event.getEndsAt() == null ? start : event.getEndTime().toLocalDate();
+                if (check.compareTo(start) >= 0 && check.compareTo(end) <= 0) {
+                    createAlert("There is an event on this date");
+                    return false;
+                }
             }
         }
         return true;
     }
+
+    /**
+     * Retrieves an array of bookings with filters.
+     *
+     * @param filters String of filters
+     * @return array of bookings
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public Booking[] getBookings(String filters) throws JsonProcessingException {
+        String userBookings = ServerCommunication.getBookings(filters);
+        ArrayNode bodyBookings = (ArrayNode) mapper.readTree(userBookings).get("body");
+        String userBookingString = mapper.writeValueAsString(bodyBookings);
+        return mapper.readValue(userBookingString, Booking[].class);
+    }
+
+    /**
+     * Retrieves set of events with given filters.
+     *
+     * @param filters String of filters.
+     * @return Set of filtered events
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public Set<Event> getEvents(String filters) throws JsonProcessingException {
+        Event[] events = ServerCommunication.getEvents(filters);
+        return new HashSet<>(Arrays.asList(events));
+    }
+
 }

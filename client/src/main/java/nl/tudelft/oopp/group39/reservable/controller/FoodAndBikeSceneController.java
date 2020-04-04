@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
@@ -28,16 +27,15 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.building.model.Building;
-import nl.tudelft.oopp.group39.models.Reservation;
 import nl.tudelft.oopp.group39.reservable.model.Bike;
 import nl.tudelft.oopp.group39.reservable.model.Food;
 import nl.tudelft.oopp.group39.reservable.model.Reservable;
+import nl.tudelft.oopp.group39.reservation.model.Reservation;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 public class FoodAndBikeSceneController extends AbstractSceneController {
-
     @FXML
     protected VBox buildingList;
     @FXML
@@ -56,16 +54,14 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
     private Label total;
     @FXML
     private Label titleLabel;
-
     public double totalprice = 0;
     public List<Room> rooms = new ArrayList<>();
     private int cartItems = 0;
     private List<Reservable> cart = new ArrayList<>();
     private String type;
-    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private Building building;
-    private ComboBox<String> endTimePicker;
-    private ComboBox<String> startTimePicker;
+    private ComboBox<String> endTimePicker = new ComboBox<>();
+    private ComboBox<String> startTimePicker = new ComboBox<>();
     private List<Integer> bookedBikeTimes = new ArrayList<>();
 
 
@@ -135,9 +131,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
             buildingName.getStyleClass().add("buildingList");
             buildingName.setId(String.valueOf(building.getId()));
             buildingList.getChildren().add(buildingName);
-
         }
-
     }
 
     /**
@@ -322,7 +316,6 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
                 updateCart(reservable);
             }
         }
-
     }
 
     /**
@@ -416,21 +409,20 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
                 bookedBikeTimes.clear();
                 try {
                     updateBikeTimePicker(
-                        dateTimeFormatter.format(datePicker.getValue()),
-                        cart.get(0).getId()
+                        dateFormatter.format(datePicker.getValue()),
+                        cart.get(0).getId().intValue()
                     );
-                    updateEndTimePicker(building.getOpen());
+                    updateEndTimePicker(building.getOpen().toString());
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
             });
-            endTimePicker = new ComboBox<>();
-            startTimePicker = new ComboBox<>();
-            updateBikeTimePicker(dateTimeFormatter.format(LocalDate.now()), cart.get(0).getId());
+            updateBikeTimePicker(dateFormatter.format(
+                LocalDate.now()), cart.get(0).getId().intValue());
             startTimePicker.setPromptText("Select start time");
             startTimePicker.setId("timePicker");
             timeselector.getChildren().add(startTimePicker);
-            updateEndTimePicker(building.getOpen());
+            updateEndTimePicker(building.getOpen().toString());
             endTimePicker.setPromptText("Select end time");
             endTimePicker.setId("durationPicker");
             timeselector.getChildren().add(endTimePicker);
@@ -442,6 +434,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
             roomSelector.setPromptText("Select room");
             for (Room room : rooms) {
                 Label roomName = new Label(room.getName());
+                roomName.getStyleClass().add("roomSelector");
                 roomName.setId(String.valueOf(room.getId()));
                 roomSelector.getItems().add(roomName);
             }
@@ -486,8 +479,8 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
         startTimePicker.getItems().clear();
         getBikeTimes(date, bikeId);
         List<String> times = new ArrayList<>();
-        int open = Integer.parseInt(building.getOpen().split(":")[0]);
-        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        int open = Integer.parseInt(building.getOpen().toString().split(":")[0]);
+        int closed = Integer.parseInt(building.getClosed().toString().split(":")[0]);
         for (int i = open; i < closed; i++) {
             String time;
             if (i < 10) {
@@ -512,7 +505,15 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
                 }
             }
         }
-        startTimePicker.setOnAction(event -> updateEndTimePicker(startTimePicker.getValue()));
+        startTimePicker.setOnAction(event -> {
+            String fromValue;
+            if (startTimePicker.getSelectionModel().isEmpty()) {
+                fromValue = building.getOpen().toString();
+            } else {
+                fromValue = startTimePicker.getValue();
+            }
+            updateEndTimePicker(fromValue);
+        });
         startTimePicker.getItems().addAll(times);
     }
 
@@ -522,8 +523,8 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
      * @return ComboBox for picking the time
      */
     public ComboBox<String> createTimePicker() {
-        int open = Integer.parseInt(building.getOpen().split(":")[0]);
-        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        int open = Integer.parseInt(building.getOpen().toString().split(":")[0]);
+        int closed = Integer.parseInt(building.getClosed().toString().split(":")[0]);
         ComboBox<String> timePicker = new ComboBox<>();
         timePicker.setPromptText("Select delivery time");
         timePicker.setId("timePicker");
@@ -544,30 +545,22 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
      */
     public void updateEndTimePicker(String selectedTime) {
         endTimePicker.getItems().clear();
-        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        int closed = Integer.parseInt(building.getClosed().toString().split(":")[0]);
         int start = Integer.parseInt(selectedTime.split(":")[0]);
         List<Integer> times = new ArrayList<>();
         for (int i = start + 1; i < start + 5; i++) {
-            if (bookedBikeTimes.size() != 0) {
-                int smallest = bookedBikeTimes.get(0);
-                int biggest = bookedBikeTimes.get(1);
-                for (int j = 0; j < bookedBikeTimes.size(); j = j + 2) {
-                    if (bookedBikeTimes.get(j) < smallest) {
-                        smallest = bookedBikeTimes.get(j);
+            if (i <= closed) {
+                times.add(i);
+            }
+        }
+        if (bookedBikeTimes.size() != 0) {
+            for (int j = 0; j < bookedBikeTimes.size(); j = j + 2) {
+                for (int i = start + 1; i < start + 5; i++) {
+                    if (i > bookedBikeTimes.get(j) && i <= bookedBikeTimes.get(j + 1)) {
+                        times.remove((Integer) i);
                     }
-                    if (bookedBikeTimes.get(j + 1) > biggest) {
-                        biggest = bookedBikeTimes.get(j + 1);
-                    }
                 }
-                if (i <= smallest && i <= closed) {
-                    times.add(i);
-                } else if (i > biggest && i <= closed) {
-                    times.add(i);
-                }
-            } else {
-                if (i <= closed) {
-                    times.add(i);
-                }
+
             }
         }
         for (int t = start + 2; t < start + 5; t++) {
@@ -633,7 +626,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
     public String getTimeOfPickup(DatePicker datePicker, ComboBox<String> timePicker) {
         LocalDate date = datePicker.getValue();
         String time = timePicker.getValue();
-        return dateTimeFormatter.format(date) + " " + time + ":00";
+        return dateFormatter.format(date) + " " + time + ":00";
     }
 
     /**
@@ -671,7 +664,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
         } else {
             String timeOfPickup = getTimeOfPickup(datePicker, timePicker);
             Label room = roomSelector.getValue();
-            int roomId = Integer.parseInt(room.getId());
+            Long roomId = Long.parseLong(room.getId());
             StringBuilder orderString = new StringBuilder("[");
             for (int i = 0; i < cart.size(); i++) {
                 Spinner<Integer> amount =
@@ -703,13 +696,12 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
     public void placeOrder(
         String timeOfPickup,
         String timeOfDelivery,
-        Integer roomId,
+        Long roomId,
         String orderString
     ) throws IOException {
         DatePicker datePicker = (DatePicker) timeselector.lookup("#datePicker");
         if (loggedIn) {
-            if (checkDate(dateTimeFormatter.format(datePicker.getValue()))) {
-
+            if (checkDate(dateFormatter.format(datePicker.getValue()), roomId)) {
                 System.out.println(orderString);
                 String username = AbstractSceneController.user.getUsername();
                 String result = ServerCommunication

@@ -12,7 +12,6 @@ import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.event.entities.Event;
-import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.event.services.EventService;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
@@ -38,26 +37,16 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DbSeeder {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private RoomService roomService;
-    @Autowired
-    private BuildingService buildingService;
-    @Autowired
-    private FacilityService facilityService;
-    @Autowired
-    private BookingService bookingService;
-    @Autowired
-    private EventService eventService;
-    @Autowired
-    private BikeService bikeService;
-    @Autowired
-    private FoodService foodService;
-    @Autowired
-    private ReservationService reservationService;
-    @Autowired
-    private ReservationAmountService reservationAmountService;
+    @Autowired private UserService userService;
+    @Autowired private RoomService roomService;
+    @Autowired private BuildingService buildingService;
+    @Autowired private FacilityService facilityService;
+    @Autowired private BookingService bookingService;
+    @Autowired private EventService eventService;
+    @Autowired private BikeService bikeService;
+    @Autowired private FoodService foodService;
+    @Autowired private ReservationService reservationService;
+    @Autowired private ReservationAmountService reservationAmountService;
 
     /**
      * Initiates the db with all the roles.
@@ -85,9 +74,7 @@ public class DbSeeder {
             "admin@tudelft.nl",
             "pwd",
             null,
-            Role.ADMIN,
-            null,
-            null
+            Role.ADMIN
         );
 
         userService.createUser(user);
@@ -97,14 +84,15 @@ public class DbSeeder {
             "student@student.tudelft.nl",
             "student123",
             null,
-            Role.STUDENT,
-            null,
-            null
+            Role.STUDENT
         );
         userService.createUser(user2);
         System.out.println("[SEED] Admin user created");
     }
 
+    /**
+     * Initiates the database with the facilities.
+     */
     private void initFacilities() {
         Set<Room> rooms = new HashSet<>();
         facilityService.createFacility(new Facility("smartboard", rooms));
@@ -116,6 +104,9 @@ public class DbSeeder {
         System.out.println("[SEED] Facilities created");
     }
 
+    /**
+     * Initiates the database with the buildings.
+     */
     private void initBuildings() {
         LocalTime open = LocalTime.of(9, 0);//.minusHours(3);
         LocalTime closed = LocalTime.of(20, 0);//.plusHours(3);
@@ -151,6 +142,9 @@ public class DbSeeder {
         System.out.println("[SEED] Buildings created");
     }
 
+    /**
+     * Initiates the database with the rooms.
+     */
     private void initRooms() {
         final Building b1 = buildingService.readBuilding(1L);
         final Building b2 = buildingService.readBuilding(2L);
@@ -204,31 +198,43 @@ public class DbSeeder {
             null
         ));
 
-
         System.out.println("[SEED] Rooms created");
     }
 
+    /**
+     * Initiates the database with events.
+     */
     private void initEvents() {
-        LocalDate today = LocalDate.now();
-        LocalDate tomorrow = today.plusDays(1);
+        LocalDateTime today = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0));
+        LocalDateTime tomorrow = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
         Building b1 = buildingService.readBuilding(1L);
         Room room = new Room(
             null,
             b1,
-            "test",
-            0,
+            "room 123",
+            23,
             false,
-            null,
+            "some room",
             null,
             new HashSet<>(),
             new HashSet<>()
         );
         HashSet<Room> rooms = new HashSet<>(List.of(room));
-        eventService.createEvent(new Event(EventTypes.EVENT, today, tomorrow, rooms));
+        eventService.createEvent(new Event(
+            null, "Special day",
+            today,
+            tomorrow,
+            true,
+            userService.readUser("admin"),
+            rooms
+        ));
 
         System.out.println("[SEED] Events created");
     }
 
+    /**
+     * Initiates the database with bookings.
+     */
     private void initBookings() {
         LocalDate date = LocalDate.now();
         LocalTime start = LocalTime.of(13, 0);
@@ -250,6 +256,9 @@ public class DbSeeder {
         System.out.println("[SEED] Bookings created");
     }
 
+    /**
+     * Initiates the database with bikes.
+     */
     private void initBikes() {
         Building building = buildingService.listBuildings(new HashMap<>()).get(0);
 
@@ -264,6 +273,9 @@ public class DbSeeder {
         System.out.println("[SEED] Bikes created");
     }
 
+    /**
+     * Initiates the database with food.
+     */
     private void initFoods() {
         Building building = buildingService.listBuildings(new HashMap<>()).get(0);
 
@@ -285,6 +297,9 @@ public class DbSeeder {
         System.out.println("[SEED] Foods created");
     }
 
+    /**
+     * Initiates the database with reservations.
+     */
     private void initReservations() {
 
         Reservation reservation = reservationService.createReservation(new Reservation(

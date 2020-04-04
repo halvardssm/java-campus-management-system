@@ -13,13 +13,20 @@ import java.time.LocalTime;
 import java.util.TimeZone;
 import nl.tudelft.oopp.group39.auth.filters.JwtFilter;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
+import nl.tudelft.oopp.group39.booking.controllers.BookingController;
 import nl.tudelft.oopp.group39.booking.dao.BookingDao;
 import nl.tudelft.oopp.group39.booking.repositories.BookingRepository;
 import nl.tudelft.oopp.group39.booking.services.BookingService;
+import nl.tudelft.oopp.group39.building.controllers.BuildingController;
+import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
+import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.event.controllers.EventController;
 import nl.tudelft.oopp.group39.event.repositories.EventRepository;
 import nl.tudelft.oopp.group39.event.services.EventService;
+import nl.tudelft.oopp.group39.facility.controllers.FacilityController;
+import nl.tudelft.oopp.group39.facility.repositories.FacilityRepository;
+import nl.tudelft.oopp.group39.facility.services.FacilityService;
 import nl.tudelft.oopp.group39.reservable.controllers.BikeController;
 import nl.tudelft.oopp.group39.reservable.controllers.FoodController;
 import nl.tudelft.oopp.group39.reservable.services.BikeService;
@@ -29,6 +36,9 @@ import nl.tudelft.oopp.group39.reservation.controllers.ReservationController;
 import nl.tudelft.oopp.group39.reservation.repositories.ReservationRepository;
 import nl.tudelft.oopp.group39.reservation.services.ReservationAmountService;
 import nl.tudelft.oopp.group39.reservation.services.ReservationService;
+import nl.tudelft.oopp.group39.room.controllers.RoomController;
+import nl.tudelft.oopp.group39.room.repositories.RoomRepository;
+import nl.tudelft.oopp.group39.room.services.RoomService;
 import nl.tudelft.oopp.group39.user.controllers.UserController;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
@@ -83,11 +93,19 @@ public abstract class AbstractTest {
     @Autowired
     protected BikeController bikeController;
     @Autowired
+    protected BookingController bookingController;
+    @Autowired
+    protected BuildingController buildingController;
+    @Autowired
     protected EventController eventController;
+    @Autowired
+    protected FacilityController facilityController;
     @Autowired
     protected FoodController foodController;
     @Autowired
     protected ReservationController reservationController;
+    @Autowired
+    protected RoomController roomController;
     @Autowired
     protected UserController userController;
 
@@ -96,7 +114,11 @@ public abstract class AbstractTest {
     @Autowired
     protected BookingService bookingService;
     @Autowired
+    protected BuildingService buildingService;
+    @Autowired
     protected EventService eventService;
+    @Autowired
+    protected FacilityService facilityService;
     @Autowired
     protected FoodService foodService;
     @Autowired
@@ -110,14 +132,22 @@ public abstract class AbstractTest {
     @Autowired
     protected ReservationService reservationService;
     @Autowired
+    protected RoomService roomService;
+    @Autowired
     protected UserService userService;
 
     @Autowired
     protected BookingRepository bookingRepository;
     @Autowired
+    protected BuildingRepository buildingRepository;
+    @Autowired
     protected EventRepository eventRepository;
     @Autowired
+    protected FacilityRepository facilityRepository;
+    @Autowired
     protected ReservationRepository reservationRepository;
+    @Autowired
+    protected RoomRepository roomRepository;
 
     @MockBean
     protected BookingDao mockBookingDao;

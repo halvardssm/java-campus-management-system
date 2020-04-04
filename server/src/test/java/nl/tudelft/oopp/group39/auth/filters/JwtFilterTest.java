@@ -25,9 +25,7 @@ class JwtFilterTest extends AbstractTest {
         "test@tudelft.nl",
         "test",
         null,
-        Role.ADMIN,
-        null,
-        null
+        Role.ADMIN
     );
     private String jwt;
 

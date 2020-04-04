@@ -2,11 +2,10 @@
 
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
-
 <MenuButton fx:id="myaccount" mnemonicParsing="false" text="MenuButton" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.server.controller.BarController">
   <items>
-      <MenuItem fx:id="myres" mnemonicParsing="false" text="My Reservations" />
       <MenuItem fx:id="myacc" mnemonicParsing="false" onAction="#goToUserPageScene" text="My Account" />
+      <MenuItem fx:id="myres" mnemonicParsing="false" text="My Calendar" onAction="#goToCalendarScene"/>
       <MenuItem fx:id="logout" mnemonicParsing="false" onAction="#logout" text="Logout" />
       <MenuItem fx:id="admin" mnemonicParsing="false" text="Admin panel" />
   </items>

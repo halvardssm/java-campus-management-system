@@ -39,7 +39,7 @@ public class ReservationController extends AbstractController {
     @GetMapping("")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
-        return restHandler((p) -> Utils.listEntityToDto(reservationService.listReservations()));
+        return restHandler((p) -> Utils.listEntityToDto(reservationService.filterReservations(params)));
     }
 
     /**
@@ -62,7 +62,7 @@ public class ReservationController extends AbstractController {
     }
 
     /**
-     * GET Endpoint to retrieve an reservation.
+     * GET Endpoint to retrieve a reservation.
      *
      * @return the requested reservation {@link Reservation}.
      */
@@ -73,7 +73,7 @@ public class ReservationController extends AbstractController {
     }
 
     /**
-     * PUT Endpoint to update an reservation.
+     * PUT Endpoint to update a reservation.
      *
      * @return the updated reservation {@link Reservation}.
      */
@@ -92,7 +92,7 @@ public class ReservationController extends AbstractController {
     }
 
     /**
-     * DELETE Endpoint to delete am reservation.
+     * DELETE Endpoint to delete a reservation.
      */
     @DeleteMapping("/{id}")
     @ResponseBody

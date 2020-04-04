@@ -205,12 +205,6 @@
     -fx-border-color: #00A6D6;
 }
 
-.selectedBuilding {
-    -fx-underline: false;
-    -fx-background-color: #00A6D6;
-    -fx-text-fill: white;
-}
-
 .buildingList:visited {
     -fx-underline: false;
 }
@@ -308,8 +302,11 @@
 }
 
 .bookingCell {
-    -fx-background-color: false;
-    -fx-text-fill: blue;
+    -fx-background-color: none;
+    -fx-text-fill: #00A6D6;
+    -fx-padding: 0;
 }
 
-
+.roomSelector {
+    -fx-text-fill: black;
+}

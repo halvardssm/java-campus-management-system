@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 
 class JwtServiceTest extends AbstractTest {
 
-
     @Test
     void decryptUsername() {
         String jwt = jwtService.encrypt(testUserStudent);
@@ -53,9 +52,7 @@ class JwtServiceTest extends AbstractTest {
             "test@tudelft.nl",
             "test",
             null,
-            Role.STUDENT,
-            null,
-            null
+            Role.STUDENT
         );
         Assertions.assertFalse(jwtService.validate(jwtService.encrypt(testUserStudent), user));
     }

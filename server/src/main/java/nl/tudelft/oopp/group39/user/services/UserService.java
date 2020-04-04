@@ -16,11 +16,8 @@ import org.springframework.stereotype.Service;
 public class UserService implements UserDetailsService {
     public static final String EXCEPTION_USER_NOT_FOUND = "User %s not found";
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private UserRepository userRepository;
+    @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired private UserRepository userRepository;
 
     /**
      * List all users.
@@ -32,7 +29,7 @@ public class UserService implements UserDetailsService {
     }
 
     /**
-     * Get an user.
+     * Get a user.
      *
      * @return user by id {@link User}.
      */
@@ -42,7 +39,7 @@ public class UserService implements UserDetailsService {
     }
 
     /**
-     * Create an user.
+     * Create a user.
      *
      * @return the created user {@link User}.
      */
@@ -64,7 +61,7 @@ public class UserService implements UserDetailsService {
     }
 
     /**
-     * Update an user.
+     * Update a user.
      *
      * @return the updated user {@link User}.
      */
@@ -81,7 +78,7 @@ public class UserService implements UserDetailsService {
     }
 
     /**
-     * Delete an user {@link User}.
+     * Delete a user {@link User}.
      */
     public void deleteUser(String id) {
         userRepository.deleteById(id);

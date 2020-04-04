@@ -13,12 +13,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.config.Constants;
+import nl.tudelft.oopp.group39.event.dto.EventDto;
 import nl.tudelft.oopp.group39.event.entities.Event;
-import nl.tudelft.oopp.group39.event.enums.EventTypes;
+import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,9 +29,11 @@ import org.springframework.http.MediaType;
 
 class EventControllerTest extends AbstractControllerTest {
     private final Event testEvent = new Event(
-        EventTypes.EVENT,
-        LocalDate.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)),
-        LocalDate.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)).plusDays(1),
+        null, "test",
+        LocalDateTime.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)),
+        LocalDateTime.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)).plusDays(1),
+        false,
+        testUser,
         null
     );
 
@@ -53,9 +57,7 @@ class EventControllerTest extends AbstractControllerTest {
         mockMvc.perform(get(REST_MAPPING))
             .andExpect(jsonPath("$.body").isArray())
             .andExpect(jsonPath("$.body", hasSize(1)))
-            .andExpect(jsonPath("$.body[0].type", is(EventTypes.EVENT.name())))
-            .andExpect(jsonPath("$.body[0].startDate", is(testEvent.getStartDate().toString())))
-            .andExpect(jsonPath("$.body[0].endDate", is(testEvent.getEndDate().toString())));
+            .andExpect(jsonPath("$.body[0]." + Event.COL_TITLE, is(testEvent.getTitle())));
     }
 
     @Test
@@ -67,20 +69,18 @@ class EventControllerTest extends AbstractControllerTest {
 
         testEvent.setId(null);
 
-        String json = objectMapper.writeValueAsString(testEvent);
+        String json = objectMapper.writeValueAsString(testEvent.toDto());
 
         mockMvc.perform(post(REST_MAPPING)
             .contentType(MediaType.APPLICATION_JSON)
             .content(json)
             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.body.type", is(EventTypes.EVENT.name())))
-            .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartDate().toString())))
-            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndDate().toString())))
+            .andExpect(jsonPath("$.body." + Event.COL_TITLE, is(testEvent.getTitle())))
             .andDo((event) -> {
                 String responseString = event.getResponse().getContentAsString();
                 JsonNode productNode = new ObjectMapper().readTree(responseString);
-                testEvent.setId(productNode.get("body").get("id").longValue());
+                testEvent.setId(productNode.get("body").get(Event.COL_ID).longValue());
             });
     }
 
@@ -88,15 +88,23 @@ class EventControllerTest extends AbstractControllerTest {
     void readEvent() throws Exception {
         mockMvc.perform(get(REST_MAPPING + "/" + testEvent.getId()))
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body.type", is(EventTypes.EVENT.name())))
-            .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartDate().toString())))
-            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndDate().toString())));
+            .andExpect(jsonPath("$.body." + Event.COL_TITLE, is(testEvent.getTitle())))
+            .andExpect(jsonPath(
+                "$.body." + Event.COL_STARTS_AT,
+                is(testEvent.getStartsAt().format(Constants.FORMATTER_DATE_TIME))
+            ))
+            .andExpect(jsonPath(
+                "$.body." + Event.COL_ENDS_AT,
+                is(testEvent.getEndsAt().format(Constants.FORMATTER_DATE_TIME))
+            ))
+            .andExpect(jsonPath("$.body." + Event.COL_USER, is(testEvent.getUser().getUsername())))
+            .andExpect(jsonPath("$.body." + Event.COL_IS_GLOBAL, is(testEvent.getIsGlobal())));
     }
 
     @Test
     void updateEvent() throws Exception {
-        testEvent.setType(EventTypes.HOLIDAY);
-        String json = objectMapper.writeValueAsString(testEvent);
+        testEvent.setTitle("test2");
+        String json = objectMapper.writeValueAsString(testEvent.toDto());
 
         mockMvc.perform(put(REST_MAPPING + "/" + testEvent.getId())
             .contentType(MediaType.APPLICATION_JSON)
@@ -104,29 +112,23 @@ class EventControllerTest extends AbstractControllerTest {
             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body.type", is(EventTypes.HOLIDAY.name())))
-            .andExpect(jsonPath("$.body.startDate", is(testEvent.getStartDate().toString())))
-            .andExpect(jsonPath("$.body.endDate", is(testEvent.getEndDate().toString())));
+            .andExpect(jsonPath("$.body." + Event.COL_TITLE, is(testEvent.getTitle())));
 
-        testEvent.setType(EventTypes.EVENT);
+        testEvent.setTitle("test");
     }
 
     @Test
     void testError() {
         assertEquals(
-            "Target object must not be null; nested exception is "
-                + "java.lang.IllegalArgumentException: Target object must not be null",
-            eventController.create(null).getBody().getError()
+            "java.lang.NullPointerException",
+            eventController.createEvent(null).getBody().getError()
         );
 
-        assertEquals(
-            "Event with id 0 wasn't found.",
-            eventController.read(0L).getBody().getError()
-        );
+        assertEquals("Event 0 not found", eventController.readEvent(0L).getBody().getError());
 
         assertEquals(
-            "Event with id 0 wasn't found.",
-            eventController.update(0L, null).getBody().getError()
+            "Event 0 not found",
+            eventController.updateEvent(0L, new EventDto()).getBody().getError()
         );
     }
 }

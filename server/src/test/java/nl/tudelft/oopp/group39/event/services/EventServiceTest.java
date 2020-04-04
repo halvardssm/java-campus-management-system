@@ -2,23 +2,25 @@ package nl.tudelft.oopp.group39.event.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import javassist.NotFoundException;
 import nl.tudelft.oopp.group39.AbstractTest;
 import nl.tudelft.oopp.group39.event.entities.Event;
-import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class EventServiceTest extends AbstractTest {
     private static final Event testEvent = new Event(
-        EventTypes.EVENT,
-        LocalDate.now(ZoneId.of("Europe/Paris")),
-        LocalDate.now(ZoneId.of("Europe/Paris")).plusDays(1),
+        null, "test",
+        LocalDateTime.now(ZoneId.of("Europe/Paris")),
+        LocalDateTime.now(ZoneId.of("Europe/Paris")).plusDays(1),
+        false,
+        null,
         null
     );
 
@@ -36,7 +38,7 @@ class EventServiceTest extends AbstractTest {
 
     @Test
     void listEvents() {
-        List<Event> events = eventService.listEvents();
+        List<Event> events = eventService.listEvents(new HashMap<>());
 
         assertEquals(1, events.size());
         assertEquals(testEvent, events.get(0));
@@ -53,7 +55,7 @@ class EventServiceTest extends AbstractTest {
     void deleteAndCreateEvent() {
         eventService.deleteEvent(testEvent.getId());
 
-        assertEquals(new ArrayList<>(), eventService.listEvents());
+        assertEquals(new ArrayList<>(), eventService.listEvents(new HashMap<>()));
 
         Event event = eventService.createEvent(testEvent);
 
@@ -65,7 +67,7 @@ class EventServiceTest extends AbstractTest {
     @Test
     void updateEvent() throws NotFoundException {
         Event event = testEvent;
-        event.setType(EventTypes.HOLIDAY);
+        event.setTitle("title2");
         Event event2 = eventService.updateEvent(testEvent.getId(), event);
 
         assertEquals(event, event2);

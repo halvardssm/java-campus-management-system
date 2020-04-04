@@ -12,31 +12,44 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FacilityService {
+    @Autowired private FacilityRepository facilityRepository;
+    @Autowired private RoomRepository roomRepository;
 
-
-    @Autowired
-    private FacilityRepository facilityRepository;
-    @Autowired
-    private RoomRepository roomRepository;
-
+    /**
+     * Reads a facility.
+     *
+     * @param id the id of the facility that you want to get
+     * @return the requested facility
+     * @throws FacilityNotFoundException if the facility wasn't found
+     */
     public Facility readFacility(Long id) throws FacilityNotFoundException {
         return facilityRepository.findById(id)
             .orElseThrow(() -> new FacilityNotFoundException(id));
     }
 
+    /**
+     * Lists all facilities.
+     *
+     * @return a list of facilities
+     */
     public List<Facility> listFacilities() {
         return facilityRepository.findAll();
     }
 
     /**
-     * Doc. TODO Sven
+     * Create a facility.
+     *
+     * @return the created facility
      */
     public Facility createFacility(Facility newFacility) {
         return facilityRepository.save(newFacility);
     }
 
     /**
-     * Doc. TODO Sven
+     * Update a facility.
+     *
+     * @return the updated facility
+     * @throws FacilityNotFoundException if the facility wasn't found
      */
     public Facility updateFacility(Facility newFacility, Long id) throws FacilityNotFoundException {
         return facilityRepository.findById(id)
@@ -45,7 +58,9 @@ public class FacilityService {
     }
 
     /**
-     * Doc. TODO Sven
+     * Delete a facility.
+     *
+     * @throws FacilityNotFoundException if the facility wasn't found
      */
     public Facility deleteFacility(Long id) throws FacilityNotFoundException {
         try {
@@ -63,5 +78,4 @@ public class FacilityService {
             throw new FacilityNotFoundException(id);
         }
     }
-
 }

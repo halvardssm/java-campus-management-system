@@ -1,11 +1,14 @@
-package nl.tudelft.oopp.group39.models;
+package nl.tudelft.oopp.group39.reservation.model;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import java.time.LocalDateTime;
 
 public class Reservation {
     private Integer id;
     private String timeOfDelivery;
     private String timeOfPickup;
+    private Long room;
     private ArrayNode reservationAmounts;
 
     public Reservation() {
@@ -24,11 +27,13 @@ public class Reservation {
         Integer id,
         String timeOfDelivery,
         String timeOfPickup,
+        Long room,
         ArrayNode reservationAmounts
     ) {
         this.id = id;
         this.timeOfDelivery = timeOfDelivery;
         this.timeOfPickup = timeOfPickup;
+        this.room = room;
         this.reservationAmounts = reservationAmounts;
     }
 
@@ -44,7 +49,24 @@ public class Reservation {
         return timeOfPickup;
     }
 
+    public Long getRoom() {
+        return room;
+    }
+
     public ArrayNode getReservationAmounts() {
         return reservationAmounts;
+    }
+
+    public Long getReservable() {
+        JsonNode reservationAmount = reservationAmounts.get(0);
+        return reservationAmount.get("reservable").asLong();
+    }
+
+    public LocalDateTime getPickupTime() {
+        return LocalDateTime.parse(timeOfPickup.replace(" ", "T"));
+    }
+
+    public LocalDateTime getDeliveryTime() {
+        return LocalDateTime.parse(timeOfDelivery.replace(" ", "T"));
     }
 }

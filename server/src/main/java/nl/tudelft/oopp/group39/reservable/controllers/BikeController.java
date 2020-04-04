@@ -34,7 +34,7 @@ public class BikeController extends AbstractController {
      *
      * @return a list of bikes {@link Bike}.
      */
-    @GetMapping("")
+    @GetMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
         return restHandler((p) -> Utils.listEntityToDto(bikeService.listBikes(params)));
@@ -45,7 +45,7 @@ public class BikeController extends AbstractController {
      *
      * @return the created bike {@link Bike}.
      */
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> create(@RequestBody BikeDto bike) {
         return restHandler(

@@ -51,7 +51,7 @@ public class RoomController extends AbstractController {
      * @param newRoom the dto values of the room to be created
      * @return the inserted value converted back to dto
      */
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> create(@RequestBody RoomDto newRoom) {
         return restHandler(
@@ -60,12 +60,22 @@ public class RoomController extends AbstractController {
         );
     }
 
+    /**
+     * GET Endpoint to get a room.
+     *
+     * @return the requested room
+     */
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
         return restHandler((p) -> service.readRoom(id).toDto());
     }
 
+    /**
+     * PUT Endpoint to update a room.
+     *
+     * @return the updated room
+     */
     @PutMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> update(
@@ -76,7 +86,7 @@ public class RoomController extends AbstractController {
     }
 
     /**
-     * Doc. TODO Sven
+     * Delete Endpoint to delete a room.
      */
     @DeleteMapping("/{id}")
     @ResponseBody

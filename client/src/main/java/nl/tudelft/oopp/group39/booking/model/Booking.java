@@ -1,11 +1,12 @@
 package nl.tudelft.oopp.group39.booking.model;
 
-import javax.print.DocFlavor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import java.util.Objects;
 import nl.tudelft.oopp.group39.room.model.Room;
-import nl.tudelft.oopp.group39.user.model.User;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 public class Booking {
-
     private Integer id;
     private String date;
     private String startTime;
@@ -13,8 +14,10 @@ public class Booking {
     private String user;
     private Long room;
 
+    /**
+     * Creates a booking.
+     */
     public Booking() {
-
     }
 
     /**
@@ -42,27 +45,84 @@ public class Booking {
         this.room = room;
     }
 
+    /**
+     * Gets the id of the booking.
+     *
+     * @return the booking id
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * Gets the date of the booking.
+     *
+     * @return the booking date
+     */
     public String getDate() {
         return date;
     }
 
+    /**
+     * Gets the starting time of the booking.
+     *
+     * @return the starting time of the booking.
+     */
     public String getStartTime() {
         return startTime;
     }
 
+    /**
+     * Gets the end time of the booking.
+     *
+     * @return the end time of the booking
+     */
     public String getEndTime() {
         return endTime;
     }
 
+    /**
+     * Gets the user who made the booking.
+     *
+     * @return the user who made the booking
+     */
     public String getUser() {
         return user;
     }
 
+    /**
+     * Gets the id of the room that is booked.
+     *
+     * @return the id of the room
+     */
     public Long getRoom() {
         return room;
+    }
+
+    /**
+     * Gets the room object that is booked.
+     *
+     * @return the room object
+     */
+    @JsonIgnore
+    public Room getRoomObj() throws JsonProcessingException {
+        return ServerCommunication.getRoom(room);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Booking booking = (Booking) o;
+        return Objects.equals(id, booking.id)
+            && Objects.equals(date, booking.date)
+            && Objects.equals(startTime, booking.startTime)
+            && Objects.equals(endTime, booking.endTime)
+            && Objects.equals(user, booking.user)
+            && Objects.equals(room, booking.room);
     }
 }

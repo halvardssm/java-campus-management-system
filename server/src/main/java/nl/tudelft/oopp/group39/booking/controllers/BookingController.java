@@ -32,7 +32,7 @@ public class BookingController extends AbstractController {
     private BookingService bookingService;
 
     /**
-     * GET Endpoint to retrieve all bookings.
+     * GET endpoint to retrieve all bookings.
      *
      * @return a list of bookings {@link Booking}.
      */
@@ -43,11 +43,11 @@ public class BookingController extends AbstractController {
     }
 
     /**
-     * POST Endpoint to create booking.
+     * POST endpoint to create a booking.
      *
      * @return the created booking {@link Booking}.
      */
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> create(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
@@ -62,7 +62,7 @@ public class BookingController extends AbstractController {
     }
 
     /**
-     * GET Endpoint to retrieve booking.
+     * GET endpoint to retrieve the booking.
      *
      * @return the requested booking {@link Booking}.
      */
@@ -73,7 +73,7 @@ public class BookingController extends AbstractController {
     }
 
     /**
-     * PUT Endpoint to update booking.
+     * PUT endpoint to update the booking.
      *
      * @return the updated booking {@link Booking}.
      */
@@ -92,7 +92,7 @@ public class BookingController extends AbstractController {
     }
 
     /**
-     * DELETE Endpoint to delete booking.
+     * DELETE endpoint to delete the booking.
      */
     @DeleteMapping("/{id}")
     @ResponseBody

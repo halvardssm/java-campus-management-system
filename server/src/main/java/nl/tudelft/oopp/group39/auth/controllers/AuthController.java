@@ -19,15 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
     public static final String REST_MAPPING = "/authenticate";
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtService jwtService;
-
-    @Autowired
-    private UserService userService;
+    @Autowired private AuthenticationManager authenticationManager;
+    @Autowired private JwtService jwtService;
+    @Autowired private UserService userService;
 
     /**
      * Endpoint to receive a JWT for the user if present.

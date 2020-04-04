@@ -26,24 +26,44 @@ public class FacilityController extends AbstractController {
     @Autowired
     private FacilityService service;
 
-    @GetMapping("")
+    /**
+     * GET endpoint to retrieve all facilities.
+     *
+     * @return a list of facilities
+     */
+    @GetMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list() {
         return restHandler((p) -> service.listFacilities());
     }
 
-    @PostMapping("")
+    /**
+     * POST endpoint to create a facility.
+     *
+     * @return the created facility
+     */
+    @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> create(@RequestBody Facility facility) {
         return restHandler(HttpStatus.CREATED, (p) -> service.createFacility(facility));
     }
 
+    /**
+     * GET endpoint to retrieve the facility.
+     *
+     * @return the requested facility
+     */
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
         return restHandler((p) -> service.readFacility(id));
     }
 
+    /**
+     * PUT endpoint to update the facility.
+     *
+     * @return the updated facility
+     */
     @PutMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> update(
@@ -54,7 +74,7 @@ public class FacilityController extends AbstractController {
     }
 
     /**
-     * Doc. TODO Sven
+     * DELETE endpoint to delete the facility.
      */
     @DeleteMapping("/{id}")
     @ResponseBody

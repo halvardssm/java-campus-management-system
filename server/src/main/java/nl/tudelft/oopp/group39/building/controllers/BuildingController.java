@@ -2,6 +2,8 @@ package nl.tudelft.oopp.group39.building.controllers;
 
 import java.util.Map;
 import nl.tudelft.oopp.group39.building.dto.BuildingDto;
+import nl.tudelft.oopp.group39.building.entities.Building;
+import nl.tudelft.oopp.group39.building.exceptions.BuildingNotFoundException;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.config.Utils;
@@ -24,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(BuildingController.REST_MAPPING)
 public class BuildingController extends AbstractController {
     public static final String REST_MAPPING = "/building";
-
     public static final String PARAM_CAPACITY = "capacity";
     public static final String PARAM_OPEN = "open";
     public static final String PARAM_CLOSED = "closed";
@@ -35,21 +36,22 @@ public class BuildingController extends AbstractController {
     private BuildingService buildingService;
 
     /**
-     * TODO Sven.
+     * GET endpoint to retrieve all buildings.
+     *
+     * @return a list of buildings
      */
-    @GetMapping("")
+    @GetMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
         return restHandler((p) -> Utils.listEntityToDto(buildingService.listBuildings(params)));
     }
 
     /**
-     * Create building. TODO Sven
+     * POST endpoint to create a building.
      *
-     * @param building building
-     * @return building
+     * @return the created building
      */
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> create(@RequestBody BuildingDto building) {
         return restHandler(
@@ -58,12 +60,22 @@ public class BuildingController extends AbstractController {
         );
     }
 
+    /**
+     * GET endpoint to retrieve a building.
+     *
+     * @return the requested building
+     */
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
         return restHandler((p) -> buildingService.readBuilding(id).toDto());
     }
 
+    /**
+     * PUT endpoint to update the building.
+     *
+     * @return the updated building
+     */
     @PutMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> update(
@@ -74,10 +86,7 @@ public class BuildingController extends AbstractController {
     }
 
     /**
-     * Delete building. TODO Sven
-     *
-     * @param id id
-     * @return nothing
+     * DELETE endpoint to delete a booking.
      */
     @DeleteMapping("/{id}")
     @ResponseBody
@@ -88,5 +97,4 @@ public class BuildingController extends AbstractController {
             return null;
         });
     }
-
 }
