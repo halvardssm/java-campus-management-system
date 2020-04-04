@@ -33,9 +33,9 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
     private String description;
     private LocalTime open;
     private LocalTime closed;
-    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
     private Set<Room> rooms = new HashSet<>();
-    @OneToMany(mappedBy = MAPPED_NAME) //TODO change to reservable id
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER) //TODO change to reservable id
     private Set<Reservable> reservables = new HashSet<>();
 
     /**
@@ -231,16 +231,16 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Building)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         Building building = (Building) o;
-        return getId().equals(building.getId())
-            && Objects.equals(getName(), building.getName())
+        return Objects.equals(getName(), building.getName())
             && Objects.equals(getLocation(), building.getLocation())
             && Objects.equals(getDescription(), building.getDescription())
             && Objects.equals(getOpen(), building.getOpen())
             && Objects.equals(getClosed(), building.getClosed())
+            && Objects.equals(getRooms(), building.getRooms())
             && Objects.equals(getReservables(), building.getReservables());
     }
 }

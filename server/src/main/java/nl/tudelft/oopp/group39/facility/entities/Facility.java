@@ -30,7 +30,7 @@ public class Facility extends AbstractEntity<Facility, IEntity> {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private String description;
 
-    @ManyToMany(mappedBy = Facility.TABLE_NAME, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = Facility.TABLE_NAME, fetch = FetchType.EAGER)
     private Set<Room> rooms = new HashSet<>();
 
     /**

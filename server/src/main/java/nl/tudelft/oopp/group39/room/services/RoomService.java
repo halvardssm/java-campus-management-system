@@ -98,7 +98,7 @@ public class RoomService {
      *
      * @param room A user to map roles for
      */
-    private void mapFacilitiesForRooms(Room room) {
+    protected void mapFacilitiesForRooms(Room room) {
         Set<Facility> facilities = new HashSet<>();
         for (Facility facility : room.getFacilities()) {
             Facility mappedFacility = facilityService.readFacility(facility.getId());

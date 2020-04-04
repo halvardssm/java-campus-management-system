@@ -36,15 +36,15 @@ public class Room extends AbstractEntity<Room, RoomDto> {
     public static final String COL_NAME = "name";
     public static final String COL_DESCRIPTION = "description";
 
-    private String name;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Building.MAPPED_NAME)
     private Building building;
+    private String name;
     private Integer capacity;
     private Boolean onlyStaff;
     private String description;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = (TABLE_NAME + "_" + Facility.TABLE_NAME),
         joinColumns = {
             @JoinColumn(name = TABLE_NAME, referencedColumnName = COL_ID,
@@ -56,12 +56,12 @@ public class Room extends AbstractEntity<Room, RoomDto> {
         })
     private Set<Facility> facilities = new HashSet<>();
 
-    @ManyToMany(mappedBy = TABLE_NAME, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = TABLE_NAME, fetch = FetchType.EAGER)
     private Set<Event> events = new HashSet<>();
 
-    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
     private Set<Booking> bookings = new HashSet<>();
-    @OneToMany(mappedBy = MAPPED_NAME)
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
     private Set<Reservation> reservations = new HashSet<>();
 
     /**
@@ -301,13 +301,14 @@ public class Room extends AbstractEntity<Room, RoomDto> {
             return false;
         }
         Room room = (Room) o;
-        return getId().equals(room.getId())
-            && building.equals(room.building)
-            && getCapacity() == room.getCapacity()
-            && getOnlyStaff() == room.getOnlyStaff()
+        return Objects.equals(getId(), room.getId())
             && Objects.equals(getName(), room.getName())
+            && Objects.equals(getBuilding(), room.getBuilding())
+            && Objects.equals(getCapacity(), room.getCapacity())
+            && Objects.equals(getOnlyStaff(), room.getOnlyStaff())
             && Objects.equals(getDescription(), room.getDescription())
             && Objects.equals(getFacilities(), room.getFacilities())
+            && Objects.equals(getEvents(), room.getEvents())
             && Objects.equals(getBookings(), room.getBookings())
             && Objects.equals(getReservations(), room.getReservations());
     }

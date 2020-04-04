@@ -7,6 +7,6 @@ public class BuildingNotFoundException extends RuntimeException {
      * @param id the id of the building that is not found
      */
     public BuildingNotFoundException(Long id) {
-        super("Room with id " + id + " wasn't found.");
+        super("Building with id " + id + " wasn't found.");
     }
 }

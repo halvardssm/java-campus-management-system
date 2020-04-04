@@ -42,7 +42,11 @@ public class FacilityController {
     @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createFacility(@RequestBody Facility facility) {
-        return RestResponse.create(service.createFacility(facility), null, HttpStatus.CREATED);
+        try {
+            return RestResponse.create(service.createFacility(facility), null, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return RestResponse.error(e);
+        }
     }
 
     /**
@@ -53,7 +57,11 @@ public class FacilityController {
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> readFacility(@PathVariable Long id) {
-        return RestResponse.create(service.readFacility(id));
+        try {
+            return RestResponse.create(service.readFacility(id));
+        } catch (Exception e) {
+            return RestResponse.error(e);
+        }
     }
 
     /**
@@ -67,7 +75,11 @@ public class FacilityController {
         @RequestBody Facility updated,
         @PathVariable Long id
     ) {
-        return RestResponse.create(service.updateFacility(updated, id));
+        try {
+            return RestResponse.create(service.updateFacility(updated, id));
+        } catch (Exception e) {
+            return RestResponse.error(e);
+        }
     }
 
     /**

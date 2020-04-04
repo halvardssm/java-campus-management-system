@@ -57,11 +57,15 @@ public class RoomController {
     @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createRoom(@RequestBody RoomDto newRoom) {
-        return RestResponse.create(
-            service.createRoom(newRoom.toEntity()).toDto(),
-            null,
-            HttpStatus.CREATED
-        );
+        try {
+            return RestResponse.create(
+                service.createRoom(newRoom.toEntity()).toDto(),
+                null,
+                HttpStatus.CREATED
+            );
+        } catch (Exception e) {
+            return RestResponse.error(e);
+        }
     }
 
     /**
@@ -72,7 +76,11 @@ public class RoomController {
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> readRoom(@PathVariable Long id) {
-        return RestResponse.create(service.readRoom(id).toDto());
+        try {
+            return RestResponse.create(service.readRoom(id).toDto());
+        } catch (Exception e) {
+            return RestResponse.error(e);
+        }
     }
 
     /**
@@ -86,7 +94,11 @@ public class RoomController {
         @RequestBody RoomDto updated,
         @PathVariable Long id
     ) {
-        return RestResponse.create(service.updateRoom(updated.toEntity(), id).toDto());
+        try {
+            return RestResponse.create(service.updateRoom(updated.toEntity(), id).toDto());
+        } catch (Exception e) {
+            return RestResponse.error(e);
+        }
     }
 
     /**
