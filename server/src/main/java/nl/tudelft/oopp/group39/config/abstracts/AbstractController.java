@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public abstract class AbstractController {
     public static final String EXCEPTION_ACCESS_DENIED = "This user cannot access this resource";
+    public static final String PATH_ID = "/{id}";
 
     @Autowired
     protected JwtService jwtService;

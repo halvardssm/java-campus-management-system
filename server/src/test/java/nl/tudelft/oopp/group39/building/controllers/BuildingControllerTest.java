@@ -18,7 +18,6 @@ import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,14 +35,6 @@ public class BuildingControllerTest extends AbstractControllerTest {
         null,
         null
     );
-    private final User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.ADMIN
-    );
-    private String jwt;
 
     @BeforeEach
     void setUp() {

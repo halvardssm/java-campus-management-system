@@ -59,7 +59,7 @@ public class BikeController extends AbstractController {
      *
      * @return the requested bike {@link Bike}.
      */
-    @GetMapping("/{id}")
+    @GetMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
         return restHandler(() -> bikeService.readBike(id).toDto());
@@ -70,7 +70,7 @@ public class BikeController extends AbstractController {
      *
      * @return the updated bike {@link Bike}.
      */
-    @PutMapping("/{id}")
+    @PutMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> update(
         @PathVariable Long id,
@@ -82,7 +82,7 @@ public class BikeController extends AbstractController {
     /**
      * DELETE Endpoint to delete a bike.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
         return restHandler(() -> {

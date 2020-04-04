@@ -7,6 +7,7 @@ import nl.tudelft.oopp.group39.auth.controllers.AuthController;
 import nl.tudelft.oopp.group39.auth.filters.JwtFilter;
 import nl.tudelft.oopp.group39.booking.controllers.BookingController;
 import nl.tudelft.oopp.group39.building.controllers.BuildingController;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.event.controllers.EventController;
 import nl.tudelft.oopp.group39.facility.controllers.FacilityController;
 import nl.tudelft.oopp.group39.reservable.controllers.BikeController;
@@ -63,7 +64,7 @@ public class AuthConfiguration extends WebSecurityConfigurerAdapter {
     private String[] addIdToRequests(String... strings) {
         List<String> result = new ArrayList<>();
         for (String string : strings) {
-            result.add(string + "/{id}");
+            result.add(string + AbstractController.PATH_ID);
         }
         return result.toArray(String[]::new);
     }

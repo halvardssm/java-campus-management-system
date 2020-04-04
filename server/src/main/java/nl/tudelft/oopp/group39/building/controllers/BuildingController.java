@@ -63,7 +63,7 @@ public class BuildingController extends AbstractController {
      *
      * @return the requested building
      */
-    @GetMapping("/{id}")
+    @GetMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
         return restHandler(() -> buildingService.readBuilding(id).toDto());
@@ -74,7 +74,7 @@ public class BuildingController extends AbstractController {
      *
      * @return the updated building
      */
-    @PutMapping("/{id}")
+    @PutMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> update(
         @RequestBody BuildingDto updated,
@@ -86,7 +86,7 @@ public class BuildingController extends AbstractController {
     /**
      * DELETE endpoint to delete a booking.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
         return restHandler(() -> {

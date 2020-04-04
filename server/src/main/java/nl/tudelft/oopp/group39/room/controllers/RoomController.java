@@ -65,7 +65,7 @@ public class RoomController extends AbstractController {
      *
      * @return the requested room
      */
-    @GetMapping("/{id}")
+    @GetMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
         return restHandler(() -> service.readRoom(id).toDto());
@@ -76,7 +76,7 @@ public class RoomController extends AbstractController {
      *
      * @return the updated room
      */
-    @PutMapping("/{id}")
+    @PutMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> update(
         @RequestBody RoomDto updated,
@@ -88,7 +88,7 @@ public class RoomController extends AbstractController {
     /**
      * Delete Endpoint to delete a room.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
         return restHandler(() -> {

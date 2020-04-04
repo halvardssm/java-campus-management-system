@@ -53,7 +53,7 @@ public class FacilityController extends AbstractController {
      *
      * @return the requested facility
      */
-    @GetMapping("/{id}")
+    @GetMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
         return restHandler(() -> service.readFacility(id));
@@ -64,7 +64,7 @@ public class FacilityController extends AbstractController {
      *
      * @return the updated facility
      */
-    @PutMapping("/{id}")
+    @PutMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> update(
         @RequestBody Facility updated,
@@ -76,7 +76,7 @@ public class FacilityController extends AbstractController {
     /**
      * DELETE endpoint to delete the facility.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
         return restHandler(() -> {

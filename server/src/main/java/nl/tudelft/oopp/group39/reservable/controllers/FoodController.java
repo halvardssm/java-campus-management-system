@@ -59,7 +59,7 @@ public class FoodController extends AbstractController {
      *
      * @return the requested food {@link Food}.
      */
-    @GetMapping("/{id}")
+    @GetMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
         return restHandler(() -> foodService.readFood(id).toDto());
@@ -70,7 +70,7 @@ public class FoodController extends AbstractController {
      *
      * @return the updated food {@link Food}.
      */
-    @PutMapping("/{id}")
+    @PutMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> update(
         @PathVariable Long id,
@@ -82,7 +82,7 @@ public class FoodController extends AbstractController {
     /**
      * DELETE Endpoint to delete am food.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
         return restHandler(() -> {

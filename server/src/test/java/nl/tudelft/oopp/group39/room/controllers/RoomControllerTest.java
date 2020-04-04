@@ -19,7 +19,6 @@ import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,13 +26,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 public class RoomControllerTest extends AbstractControllerTest {
-    private final User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.ADMIN
-    );
     private final Building testBuilding = new Building(
         null,
         "Drebbelweg",
@@ -55,7 +47,6 @@ public class RoomControllerTest extends AbstractControllerTest {
         null,
         null
     );
-    private String jwt;
 
     @BeforeEach
     void setUp() {

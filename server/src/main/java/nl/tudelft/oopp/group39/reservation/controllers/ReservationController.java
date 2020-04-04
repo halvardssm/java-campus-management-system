@@ -67,7 +67,7 @@ public class ReservationController extends AbstractController {
      *
      * @return the requested reservation {@link Reservation}.
      */
-    @GetMapping("/{id}")
+    @GetMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
         return restHandler(() -> reservationService.readReservation(id).toDto());
@@ -78,7 +78,7 @@ public class ReservationController extends AbstractController {
      *
      * @return the updated reservation {@link Reservation}.
      */
-    @PutMapping("/{id}")
+    @PutMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> update(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
@@ -95,9 +95,9 @@ public class ReservationController extends AbstractController {
     /**
      * DELETE Endpoint to delete a reservation.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping(PATH_ID)
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> deleteReservation(
+    public ResponseEntity<RestResponse<Object>> delete(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
         @PathVariable Long id
     ) {

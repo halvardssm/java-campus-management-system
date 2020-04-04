@@ -62,7 +62,7 @@ public class UserController extends AbstractController {
      *
      * @return the requested user {@link User}.
      */
-    @GetMapping("/{id}")
+    @GetMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
@@ -80,7 +80,7 @@ public class UserController extends AbstractController {
      *
      * @return the updated user {@link User}.
      */
-    @PutMapping("/{id}")
+    @PutMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> update(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
@@ -97,7 +97,7 @@ public class UserController extends AbstractController {
     /**
      * DELETE Endpoint to delete user.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> delete(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String header,

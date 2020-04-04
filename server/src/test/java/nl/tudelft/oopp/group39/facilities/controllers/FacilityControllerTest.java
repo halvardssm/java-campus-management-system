@@ -17,7 +17,6 @@ import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,18 +24,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 public class FacilityControllerTest extends AbstractControllerTest {
-    private final User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.ADMIN
-    );
     private final Facility testFacility = new Facility(
         "test",
         null
     );
-    private String jwt;
 
     @BeforeEach
     void setUp() {

@@ -73,7 +73,7 @@ public class EventController extends AbstractController {
      *
      * @return the requested event {@link Event}.
      */
-    @GetMapping("/{id}")
+    @GetMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
         return restHandler(() -> eventService.readEvent(id).toDto());
@@ -84,7 +84,7 @@ public class EventController extends AbstractController {
      *
      * @return the updated event {@link Event}.
      */
-    @PutMapping("/{id}")
+    @PutMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> update(
         @PathVariable Long id,
@@ -125,7 +125,7 @@ public class EventController extends AbstractController {
     /**
      * DELETE Endpoint to delete event.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping(PATH_ID)
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
         return restHandler(() -> {
