@@ -94,9 +94,11 @@ class UserControllerTest extends AbstractControllerTest {
     void testError() {
         assertEquals("User can not be null", userController.create(null).getBody().getError());
 
-        assertEquals("User asdf not found", userController.read(null, "asdf").getBody().getError());
+        assertEquals("User with id asdf wasn't found.", userController.read(null, "asdf")
+            .getBody()
+            .getError());
 
-        assertEquals("User asdf not found", userController.update(null, "asdf", null)
+        assertEquals("User with id asdf wasn't found.", userController.update(null, "asdf", null)
             .getBody().getError());
     }
 }

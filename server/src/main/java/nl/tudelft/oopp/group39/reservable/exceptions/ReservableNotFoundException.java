@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.group39.reservable.exceptions;
 
-public class ReservableNotFoundException extends RuntimeException {
+import nl.tudelft.oopp.group39.config.abstracts.NotFoundException;
+
+public class ReservableNotFoundException extends NotFoundException {
     public ReservableNotFoundException(Long id) {
-        super("Reservable with id " + id + " wasn't found.");
+        super("Reservable", id);
     }
 }

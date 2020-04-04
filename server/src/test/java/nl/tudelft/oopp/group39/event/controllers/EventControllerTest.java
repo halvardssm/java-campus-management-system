@@ -122,10 +122,13 @@ class EventControllerTest extends AbstractControllerTest {
             eventController.create(null).getBody().getError()
         );
 
-        assertEquals("Event 0 not found", eventController.read(0L).getBody().getError());
+        assertEquals(
+            "Event with id 0 wasn't found.",
+            eventController.read(0L).getBody().getError()
+        );
 
         assertEquals(
-            "Event 0 not found",
+            "Event with id 0 wasn't found.",
             eventController.update(0L, new EventDto()).getBody().getError()
         );
     }

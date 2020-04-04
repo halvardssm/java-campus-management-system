@@ -4,18 +4,16 @@ import java.util.List;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.exceptions.UserExistsException;
+import nl.tudelft.oopp.group39.user.exceptions.UserNotFoundException;
 import nl.tudelft.oopp.group39.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements UserDetailsService {
-    public static final String EXCEPTION_USER_NOT_FOUND = "User %s not found";
-
     @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private UserRepository userRepository;
 
@@ -33,9 +31,8 @@ public class UserService implements UserDetailsService {
      *
      * @return user by id {@link User}.
      */
-    public User readUser(String id) throws UsernameNotFoundException {
-        return userRepository.findById(id).orElseThrow(()
-            -> new UsernameNotFoundException(String.format(EXCEPTION_USER_NOT_FOUND, id)));
+    public User readUser(String id) throws UserNotFoundException {
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     /**
@@ -48,7 +45,7 @@ public class UserService implements UserDetailsService {
             readUser(newUser.getUsername());
             throw new UserExistsException(newUser.getUsername());
 
-        } catch (UsernameNotFoundException e) {
+        } catch (UserNotFoundException e) {
             newUser.setPassword(encryptPassword(newUser.getPassword()));
             mapRoleForUser(newUser);
 
@@ -65,7 +62,7 @@ public class UserService implements UserDetailsService {
      *
      * @return the updated user {@link User}.
      */
-    public User updateUser(String id, User newUser) throws UsernameNotFoundException {
+    public User updateUser(String id, User newUser) throws UserNotFoundException {
         return userRepository.findById(id)
             .map(user -> {
                 mapRoleForUser(newUser);
@@ -73,8 +70,7 @@ public class UserService implements UserDetailsService {
                 user.setRole(newUser.getRole());
 
                 return userRepository.save(user);
-            }).orElseThrow(()
-                -> new UsernameNotFoundException(String.format(EXCEPTION_USER_NOT_FOUND, id)));
+            }).orElseThrow(() -> new UserNotFoundException(id));
     }
 
     /**
@@ -109,11 +105,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws UserNotFoundException {
         User user = this.userRepository.findUserByUsername(username);
 
         if (user == null) {
-            throw new UsernameNotFoundException(String.format(EXCEPTION_USER_NOT_FOUND, username));
+            throw new UserNotFoundException(username);
         }
 
         return user;
