@@ -1,19 +1,37 @@
 package nl.tudelft.oopp.group39.event;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import nl.tudelft.oopp.group39.event.model.Event;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class EventTest {
 
-    static Event testEvent = new Event("TestType", LocalDate.of(1881,5,19), LocalDate.of(1938,11,10));
+    static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    static Event testEvent = new Event(
+        "Christmas",
+        LocalDateTime.of(
+            LocalDate.of(1881, 5, 19),
+            LocalTime.of(0, 0, 0))
+            .format(dateTimeFormatter),
+        LocalDateTime.of(
+            LocalDate.of(1938, 11, 10),
+            LocalTime.of(23, 59, 59))
+            .format(dateTimeFormatter),
+        false,
+        "admin",
+        List.of(5L, 7L)
+    );
 
     @Test
     void getId() {
@@ -23,26 +41,54 @@ class EventTest {
     @Test
     void jsonConversionTest() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        String convert = mapper.writeValueAsString(testEvent);
+        System.out.println(mapper.writeValueAsString(testEvent));
+        Event reconvEvent = mapper.readValue(
+            mapper.writeValueAsString(testEvent), Event.class);
 
-        Event reconvEvent = mapper.readValue(convert, Event.class);
-
+        System.out.println(mapper.writeValueAsString(reconvEvent));
         assertEquals(reconvEvent, testEvent);
     }
 
     @Test
-    void getType() {
-        assertEquals(testEvent.getType(), "TestType");
+    void getTitle() {
+        assertEquals(testEvent.getTitle(), "Christmas");
     }
 
     @Test
-    void getStartDate() {
-        assertEquals(testEvent.getStartDate(), LocalDate.of(1881,5,19));
+    void getStartsAt() {
+        assertEquals(
+            testEvent.getStartsAt(),
+            LocalDateTime.of(
+                LocalDate.of(1881, 5, 19),
+                LocalTime.of(0, 0, 0))
+                .format(dateTimeFormatter)
+        );
     }
 
     @Test
-    void getEndDate() {
-        assertEquals(testEvent.getEndDate(), LocalDate.of(1938,11,10));
+    void getEndsAt() {
+        assertEquals(
+            testEvent.getEndsAt(),
+            LocalDateTime.of(
+                LocalDate.of(1938, 11, 10),
+                LocalTime.of(23, 59, 59))
+                .format(dateTimeFormatter)
+        );
+    }
+
+    @Test
+    void isGlobal() {
+        assertFalse(testEvent.isGlobal());
+    }
+
+    @Test
+    void getUser() {
+        assertEquals(testEvent.getUser(), "admin");
+    }
+
+    @Test
+    void getRooms() {
+        assertEquals(testEvent.getRooms(), List.of(5L, 7L));
     }
 
     @Test
@@ -53,6 +99,6 @@ class EventTest {
 
     @Test
     void testSame() {
-        assertEquals(testEvent,testEvent);
+        assertEquals(testEvent, testEvent);
     }
 }

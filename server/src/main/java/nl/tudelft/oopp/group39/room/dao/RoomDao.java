@@ -57,7 +57,20 @@ public class RoomDao {
         if (keys.contains(Room.COL_ID)) {
             allPredicates.add(cb.greaterThanOrEqualTo(
                 room.get(Room.COL_ID),
-                Long.parseLong(filters.get(Room.COL_ID))));
+                Long.parseLong(filters.get(Room.COL_ID))
+            ));
+
+            List<Long> idList = new ArrayList<>((
+                Arrays.stream(
+                    filters.get(
+                        Room.COL_ID)
+                        .split(","))
+                    .mapToLong(Long::parseLong)
+                    .boxed()
+                    .collect(Collectors.toList())
+            ));
+
+            allPredicates.add(cb.in(room.get(Room.COL_ID).in(idList)));
         }
 
         if (keys.contains(Room.COL_ONLY_STAFF)) {

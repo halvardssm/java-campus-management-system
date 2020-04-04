@@ -39,7 +39,7 @@ public class BuildingController {
      *
      * @return a list of buildings
      */
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<RestResponse<Object>> listBuildings(
         @RequestParam Map<String, String> params
     ) {
@@ -53,7 +53,7 @@ public class BuildingController {
      *
      * @return the created building
      */
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createBuilding(@RequestBody BuildingDto building) {
         return RestResponse.create(

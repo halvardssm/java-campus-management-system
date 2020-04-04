@@ -1,9 +1,10 @@
 package nl.tudelft.oopp.group39.booking.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.Objects;
-import javax.print.DocFlavor;
 import nl.tudelft.oopp.group39.room.model.Room;
-import nl.tudelft.oopp.group39.user.model.User;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 public class Booking {
     private Integer id;
@@ -96,6 +97,16 @@ public class Booking {
      */
     public Long getRoom() {
         return room;
+    }
+
+    /**
+     * Gets the room object that is booked.
+     *
+     * @return the room object
+     */
+    @JsonIgnore
+    public Room getRoomObj() throws JsonProcessingException {
+        return ServerCommunication.getRoom(room);
     }
 
     @Override

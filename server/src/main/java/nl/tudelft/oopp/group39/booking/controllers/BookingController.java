@@ -34,7 +34,7 @@ public class BookingController {
      *
      * @return a list of bookings {@link Booking}.
      */
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<RestResponse<Object>> listBookings(
         @RequestParam Map<String, String> params
     ) {
@@ -48,7 +48,7 @@ public class BookingController {
      *
      * @return the created booking {@link Booking}.
      */
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createBooking(@RequestBody BookingDto newBooking) {
         try {

@@ -32,7 +32,7 @@ public class ReservationController {
      *
      * @return a list of reservations {@link Reservation}.
      */
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<RestResponse<Object>> listReservations(
         @RequestParam Map<String,String> filters
     ) {
@@ -46,7 +46,7 @@ public class ReservationController {
      *
      * @return the created reservation {@link Reservation}.
      */
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<RestResponse<Object>> createReservation(
         @RequestBody ReservationDto reservation
     ) {

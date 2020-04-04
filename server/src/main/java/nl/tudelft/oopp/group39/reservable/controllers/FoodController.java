@@ -33,7 +33,7 @@ public class FoodController {
      *
      * @return a list of foods {@link Food}.
      */
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<RestResponse<Object>> listFoods(
         @RequestParam Map<String, String> params
     ) {
@@ -49,7 +49,7 @@ public class FoodController {
      *
      * @return the created food {@link Food}.
      */
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<RestResponse<Object>> createFood(@RequestBody FoodDto food) {
         try {
             return RestResponse.create(

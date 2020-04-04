@@ -1,6 +1,11 @@
 package nl.tudelft.oopp.group39.reservable.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import nl.tudelft.oopp.group39.building.model.Building;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 public class Reservable {
     private Long id;
@@ -51,5 +56,20 @@ public class Reservable {
      */
     public Long getBuilding() {
         return building;
+    }
+
+    /**
+     * Retrieves the building as object.
+     *
+     * @return building object
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public Building getBuildingObj() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        String buildingString = ServerCommunication.getBuilding(this.building);
+        JsonNode body = mapper.readTree(buildingString).get("body");
+        String buildingAsString = mapper.writeValueAsString(body);
+        return mapper.readValue(buildingAsString, Building.class);
     }
 }

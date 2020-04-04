@@ -23,6 +23,8 @@ public class LoginController extends AbstractSceneController {
             if (ServerCommunication.userLogin(user, password).equals("Logged in")) {
                 changeUserBox();
                 goToBuildingScene();
+            } else {
+                createAlert("Wrong username or password");
             }
         }
         System.out.println(loggedIn);
