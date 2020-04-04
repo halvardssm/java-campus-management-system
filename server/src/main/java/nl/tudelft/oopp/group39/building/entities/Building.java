@@ -22,11 +22,13 @@ import nl.tudelft.oopp.group39.room.entities.Room;
 public class Building extends AbstractEntity<Building, BuildingDto> {
     public static final String TABLE_NAME = "buildings";
     public static final String MAPPED_NAME = "building";
-    public static final String COL_OPEN = "open";
-    public static final String COL_CLOSED = "closed";
     public static final String COL_NAME = "name";
     public static final String COL_LOCATION = "location";
     public static final String COL_DESC = "description";
+    public static final String COL_OPEN = "open";
+    public static final String COL_CLOSED = "closed";
+    public static final String COL_ROOMS = "rooms";
+    public static final String COL_RESERVABLES = "reservables";
 
     private String name;
     private String location;
@@ -224,7 +226,7 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
      * Checks whether two rooms are equal.
      *
      * @param o the other object to compare
-     * @return  true if the two buildings are the same, false otherwise
+     * @return true if the two buildings are the same, false otherwise
      */
     @Override
     public boolean equals(Object o) {

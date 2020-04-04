@@ -16,10 +16,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BookingService {
-    @Autowired private BookingRepository bookingRepository;
-    @Autowired private BookingDao bookingDao;
-    @Autowired private UserService userService;
-    @Autowired private RoomService roomService;
+    @Autowired
+    private BookingRepository bookingRepository;
+    @Autowired
+    private BookingDao bookingDao;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private RoomService roomService;
 
     /**
      * List all bookings.

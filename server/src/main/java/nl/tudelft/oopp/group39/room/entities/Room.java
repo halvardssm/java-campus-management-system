@@ -31,18 +31,23 @@ import nl.tudelft.oopp.group39.room.dto.RoomDto;
 public class Room extends AbstractEntity<Room, RoomDto> {
     public static final String TABLE_NAME = "rooms";
     public static final String MAPPED_NAME = "room";
+    public static final String COL_NAME = "name";
     public static final String COL_CAPACITY = "capacity";
     public static final String COL_ONLY_STAFF = "onlyStaff";
-    public static final String COL_NAME = "name";
     public static final String COL_DESCRIPTION = "description";
+    public static final String COL_BUILDING = "building";
+    public static final String COL_FACILITIES = "facilities";
+    public static final String COL_EVENTS = "events";
+    public static final String COL_BOOKINGS = "bookings";
+    public static final String COL_RESERVATIONS = "reservations";
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = Building.MAPPED_NAME)
-    private Building building;
     private String name;
     private Integer capacity;
     private Boolean onlyStaff;
     private String description;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = Building.MAPPED_NAME)
+    private Building building;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = (TABLE_NAME + "_" + Facility.TABLE_NAME),

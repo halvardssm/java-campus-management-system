@@ -23,8 +23,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultMatcher;
 
 public class FacilityControllerTest extends AbstractControllerTest {
     private final User testUser = new User(
@@ -121,17 +119,19 @@ public class FacilityControllerTest extends AbstractControllerTest {
             "Target object must not be null; "
                 + "nested exception is java.lang.IllegalArgumentException: "
                 + "Target object must not be null",
-            facilityController.createFacility(null).getBody().getError()
+            facilityController.create(null).getBody().getError()
         );
 
-        assertEquals("Facility with id 0 wasn't found.",
-            facilityController.readFacility(0L).getBody().getError());
+        assertEquals(
+            "Facility with id 0 wasn't found.",
+            facilityController.read(0L).getBody().getError()
+        );
 
         assertEquals(
             "The given id must not be null!; nested exception is "
                 + "java.lang.IllegalArgumentException: "
                 + "The given id must not be null!",
-            facilityController.updateFacility(testFacility, null).getBody().getError()
+            facilityController.update(testFacility, null).getBody().getError()
         );
     }
 }

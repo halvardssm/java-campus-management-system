@@ -19,8 +19,6 @@ import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.event.dto.EventDto;
 import nl.tudelft.oopp.group39.event.entities.Event;
-import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -121,14 +119,14 @@ class EventControllerTest extends AbstractControllerTest {
     void testError() {
         assertEquals(
             "java.lang.NullPointerException",
-            eventController.createEvent(null).getBody().getError()
+            eventController.create(null).getBody().getError()
         );
 
-        assertEquals("Event 0 not found", eventController.readEvent(0L).getBody().getError());
+        assertEquals("Event 0 not found", eventController.read(0L).getBody().getError());
 
         assertEquals(
             "Event 0 not found",
-            eventController.updateEvent(0L, new EventDto()).getBody().getError()
+            eventController.update(0L, new EventDto()).getBody().getError()
         );
     }
 }

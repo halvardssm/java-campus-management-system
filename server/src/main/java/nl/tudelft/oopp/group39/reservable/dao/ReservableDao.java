@@ -1,47 +1,35 @@
 package nl.tudelft.oopp.group39.reservable.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import nl.tudelft.oopp.group39.building.entities.Building;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractDao;
+import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReservableDao {
+public class ReservableDao<T extends Reservable> extends AbstractDao<T> {
     @PersistenceContext
     private EntityManager em;
 
     /**
      * Filters Reservables.
      *
-     * @param params all params
+     * @param newParams all params
      * @return filtered list
      */
-    public <T> List<T> listReservables(Map<String, String> params, Class<T> resultClass) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+    public List<T> listReservables(Map<String, String> newParams, Class<T> clazz) {
+        init(em, clazz, newParams);
 
-        CriteriaQuery<T> q = cb.createQuery(resultClass);
-        Root<T> c = q.from(resultClass);
-        q.select(c);
-        List<Predicate> predicates = new ArrayList<>();
+        checkParam(Reservable.COL_BUILDING, (c, p) -> predicateInRelationManyOne(
+            p,
+            Reservable.TABLE_NAME,
+            Building.class
+            )
+        );
 
-        if (params.containsKey(Building.MAPPED_NAME)) {
-            predicates.add(cb.equal(
-                c.get(Building.MAPPED_NAME).get(Building.COL_ID),
-                params.get(Building.MAPPED_NAME)
-            ));
-        }
-
-        q.where(cb.and(predicates.toArray(new Predicate[0])));
-
-        TypedQuery<T> query = em.createQuery(q);
-        return query.getResultList();
+        return result();
     }
 }

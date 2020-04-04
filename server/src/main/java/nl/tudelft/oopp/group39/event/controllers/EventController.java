@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import nl.tudelft.oopp.group39.config.RestResponse;
-import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.event.dto.EventDto;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.event.services.EventService;
@@ -24,8 +24,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -45,7 +45,7 @@ public class EventController extends AbstractController {
      *
      * @return a list of events {@link Event}.
      */
-    @GetMapping("")
+    @GetMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list(
         @RequestParam Map<String, String> params
@@ -58,7 +58,7 @@ public class EventController extends AbstractController {
      *
      * @return the created event {@link Event}.
      */
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> create(@RequestBody EventDto event) {
         return restHandler(HttpStatus.CREATED, (p) -> {

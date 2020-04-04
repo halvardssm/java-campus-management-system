@@ -33,7 +33,7 @@ public class UserController extends AbstractController {
      *
      * @return a list of users {@link User}.
      */
-    @GetMapping("")
+    @GetMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String header
@@ -50,7 +50,7 @@ public class UserController extends AbstractController {
      *
      * @return the created user {@link User}.
      */
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> create(
         @RequestBody User user

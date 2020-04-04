@@ -36,7 +36,7 @@ public class ReservationController extends AbstractController {
      *
      * @return a list of reservations {@link Reservation}.
      */
-    @GetMapping("")
+    @GetMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
         return restHandler((p) -> Utils.listEntityToDto(reservationService.filterReservations(params)));
@@ -47,7 +47,7 @@ public class ReservationController extends AbstractController {
      *
      * @return the created reservation {@link Reservation}.
      */
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> create(
         @RequestHeader(HttpHeaders.AUTHORIZATION) String header,

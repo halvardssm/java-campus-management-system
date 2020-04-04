@@ -21,7 +21,6 @@ import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,13 +31,6 @@ public class BookingControllerTest extends AbstractControllerTest {
     private final LocalDate date = LocalDate.now();
     private final LocalTime start = LocalTime.of(4, 20, 42);
     private final LocalTime end = LocalTime.of(6, 9, 20);
-    private final User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.ADMIN
-    );
     private final Room testRoom = new Room(
         null,
         null,
@@ -145,17 +137,20 @@ public class BookingControllerTest extends AbstractControllerTest {
     @Test
     void errorTest() {
         assertEquals(
-            "java.lang.NullPointerException",
-            bookingController.createBooking(null).getBody().getError()
+            "The given id must not be null!; nested exception is java.lang"
+                + ".IllegalArgumentException: The given id must not be null!",
+            bookingController.create(null, new BookingDto()).getBody().getError()
         );
 
-        assertEquals("Booking with id 0 wasn't found.",
-            bookingController.readBooking(0L).getBody().getError());
+        assertEquals(
+            "Booking with id 0 wasn't found.",
+            bookingController.read(0L).getBody().getError()
+        );
 
         assertEquals(
             "The given id must not be null!; nested exception is "
                 + "java.lang.IllegalArgumentException: The given id must not be null!",
-            bookingController.updateBooking(testBooking, null).getBody().getError()
+            bookingController.update(null, testBooking, null).getBody().getError()
         );
     }
 

@@ -159,17 +159,19 @@ public class RoomControllerTest extends AbstractControllerTest {
     void errorTest() {
         assertEquals(
             "java.lang.NullPointerException",
-            roomController.createRoom(null).getBody().getError()
+            roomController.create(null).getBody().getError()
         );
 
-        assertEquals("Room with id 0 wasn't found.",
-            roomController.readRoom(0L).getBody().getError());
+        assertEquals(
+            "Room with id 0 wasn't found.",
+            roomController.read(0L).getBody().getError()
+        );
 
         assertEquals(
             "The given id must not be null!; nested exception is "
                 + "java.lang.IllegalArgumentException: "
                 + "The given id must not be null!",
-            roomController.updateRoom(testRoom.toDto(), null).getBody().getError()
+            roomController.update(testRoom.toDto(), null).getBody().getError()
         );
     }
 }

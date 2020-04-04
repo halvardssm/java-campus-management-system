@@ -45,7 +45,6 @@ import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest
@@ -56,18 +55,14 @@ public abstract class AbstractTest {
         "test@tudelft.nl",
         "test",
         null,
-        Role.ADMIN,
-        null,
-        null
+        Role.ADMIN
     );
     protected User testUserStudent = new User(
         "test",
         "test@tudelft.nl",
         "test",
         null,
-        Role.STUDENT,
-        null,
-        null
+        Role.STUDENT
     );
 
     protected final ObjectMapper objectMapper = new ObjectMapper()
@@ -149,7 +144,6 @@ public abstract class AbstractTest {
     @Autowired
     protected RoomRepository roomRepository;
 
-    @MockBean
-    protected BookingDao mockBookingDao;
-
+    @Autowired
+    protected BookingDao bookingDao;
 }

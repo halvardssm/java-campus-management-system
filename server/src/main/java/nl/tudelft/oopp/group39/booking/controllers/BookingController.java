@@ -36,7 +36,7 @@ public class BookingController extends AbstractController {
      *
      * @return a list of bookings {@link Booking}.
      */
-    @GetMapping("")
+    @GetMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
         return restHandler((p) -> Utils.listEntityToDto(bookingService.listBookings(params)));

@@ -37,7 +37,7 @@ public class RoomController extends AbstractController {
      * @return filtered list in accordance to the parameters entered.
      * @see RoomDao#roomFilter(Map)
      */
-    @GetMapping("")
+    @GetMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list(
         @RequestParam Map<String, String> allParams
