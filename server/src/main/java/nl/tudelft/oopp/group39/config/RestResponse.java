@@ -84,6 +84,20 @@ public class RestResponse<T> implements Serializable {
     }
 
     /**
+     * Creates a {@link ResponseEntity} with a body and error field.
+     *
+     * @param error The error to place in the error field
+     * @return The finalized ResponseEntity
+     */
+    public static <T> ResponseEntity<RestResponse<T>> error(Exception error, HttpStatus status) {
+        String message = (error.getMessage() != null && !error.getMessage().isEmpty())
+            ? error.getMessage()
+            : error.getClass().getName();
+
+        return create(null, message, status);
+    }
+
+    /**
      * Gets the body of the REST response.
      *
      * @return the body of the rest respone

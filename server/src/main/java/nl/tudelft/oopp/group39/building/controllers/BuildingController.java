@@ -41,7 +41,7 @@ public class BuildingController extends AbstractController {
     @GetMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
-        return restHandler((p) -> Utils.listEntityToDto(buildingService.listBuildings(params)));
+        return restHandler(() -> Utils.listEntityToDto(buildingService.listBuildings(params)));
     }
 
     /**
@@ -54,7 +54,7 @@ public class BuildingController extends AbstractController {
     public ResponseEntity<RestResponse<Object>> create(@RequestBody BuildingDto building) {
         return restHandler(
             HttpStatus.CREATED,
-            (p) -> buildingService.createBuilding(building.toEntity()).toDto()
+            () -> buildingService.createBuilding(building.toEntity()).toDto()
         );
     }
 
@@ -66,7 +66,7 @@ public class BuildingController extends AbstractController {
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
-        return restHandler((p) -> buildingService.readBuilding(id).toDto());
+        return restHandler(() -> buildingService.readBuilding(id).toDto());
     }
 
     /**
@@ -80,7 +80,7 @@ public class BuildingController extends AbstractController {
         @RequestBody BuildingDto updated,
         @PathVariable Long id
     ) {
-        return restHandler((p) -> buildingService.updateBuilding(id, updated.toEntity()).toDto());
+        return restHandler(() -> buildingService.updateBuilding(id, updated.toEntity()).toDto());
     }
 
     /**
@@ -89,7 +89,7 @@ public class BuildingController extends AbstractController {
     @DeleteMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
-        return restHandler((p) -> {
+        return restHandler(() -> {
             buildingService.deleteBuilding(id);
 
             return null;

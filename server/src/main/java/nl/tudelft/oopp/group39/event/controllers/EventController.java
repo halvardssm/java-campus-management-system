@@ -50,7 +50,7 @@ public class EventController extends AbstractController {
     public ResponseEntity<RestResponse<Object>> list(
         @RequestParam Map<String, String> params
     ) {
-        return restHandler((p) -> Utils.listEntityToDto(eventService.listEvents(params)));
+        return restHandler(() -> Utils.listEntityToDto(eventService.listEvents(params)));
     }
 
     /**
@@ -61,7 +61,7 @@ public class EventController extends AbstractController {
     @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> create(@RequestBody EventDto event) {
-        return restHandler(HttpStatus.CREATED, (p) -> {
+        return restHandler(HttpStatus.CREATED, () -> {
             Event event1 = event.toEntity();
             event1.setUser(userService.readUser(event.getUser()));
             return eventService.createEvent(event1).toDto();
@@ -76,7 +76,7 @@ public class EventController extends AbstractController {
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
-        return restHandler((p) -> eventService.readEvent(id).toDto());
+        return restHandler(() -> eventService.readEvent(id).toDto());
     }
 
     /**
@@ -90,7 +90,7 @@ public class EventController extends AbstractController {
         @PathVariable Long id,
         @RequestBody EventDto event
     ) {
-        return restHandler((p) -> {
+        return restHandler(() -> {
             Set<Room> rooms = new HashSet<>();
 
             if (event.getRooms() != null && event.getRooms().size() > 0) {
@@ -128,7 +128,7 @@ public class EventController extends AbstractController {
     @DeleteMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
-        return restHandler((p) -> {
+        return restHandler(() -> {
             eventService.deleteEvent(id);
 
             return null;

@@ -42,7 +42,7 @@ public class RoomController extends AbstractController {
     public ResponseEntity<RestResponse<Object>> list(
         @RequestParam Map<String, String> allParams
     ) {
-        return restHandler((p) -> Utils.listEntityToDto(service.filterRooms(allParams)));
+        return restHandler(() -> Utils.listEntityToDto(service.filterRooms(allParams)));
     }
 
     /**
@@ -56,7 +56,7 @@ public class RoomController extends AbstractController {
     public ResponseEntity<RestResponse<Object>> create(@RequestBody RoomDto newRoom) {
         return restHandler(
             HttpStatus.CREATED,
-            (p) -> service.createRoom(newRoom.toEntity()).toDto()
+            () -> service.createRoom(newRoom.toEntity()).toDto()
         );
     }
 
@@ -68,7 +68,7 @@ public class RoomController extends AbstractController {
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
-        return restHandler((p) -> service.readRoom(id).toDto());
+        return restHandler(() -> service.readRoom(id).toDto());
     }
 
     /**
@@ -82,7 +82,7 @@ public class RoomController extends AbstractController {
         @RequestBody RoomDto updated,
         @PathVariable Long id
     ) {
-        return restHandler((p) -> service.updateRoom(updated.toEntity(), id).toDto());
+        return restHandler(() -> service.updateRoom(updated.toEntity(), id).toDto());
     }
 
     /**
@@ -91,7 +91,7 @@ public class RoomController extends AbstractController {
     @DeleteMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
-        return restHandler((p) -> {
+        return restHandler(() -> {
             service.deleteRoom(id);
 
             return null;

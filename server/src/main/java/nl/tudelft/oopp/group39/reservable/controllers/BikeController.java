@@ -37,7 +37,7 @@ public class BikeController extends AbstractController {
     @GetMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
-        return restHandler((p) -> Utils.listEntityToDto(bikeService.listBikes(params)));
+        return restHandler(() -> Utils.listEntityToDto(bikeService.listBikes(params)));
     }
 
     /**
@@ -50,7 +50,7 @@ public class BikeController extends AbstractController {
     public ResponseEntity<RestResponse<Object>> create(@RequestBody BikeDto bike) {
         return restHandler(
             HttpStatus.CREATED,
-            (p) -> bikeService.createBike(bike.toEntity()).toDto()
+            () -> bikeService.createBike(bike.toEntity()).toDto()
         );
     }
 
@@ -62,7 +62,7 @@ public class BikeController extends AbstractController {
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
-        return restHandler((p) -> bikeService.readBike(id).toDto());
+        return restHandler(() -> bikeService.readBike(id).toDto());
     }
 
     /**
@@ -76,7 +76,7 @@ public class BikeController extends AbstractController {
         @PathVariable Long id,
         @RequestBody Bike bike
     ) {
-        return restHandler((p) -> bikeService.updateBike(id, bike).toDto());
+        return restHandler(() -> bikeService.updateBike(id, bike).toDto());
     }
 
     /**
@@ -85,7 +85,7 @@ public class BikeController extends AbstractController {
     @DeleteMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
-        return restHandler((p) -> {
+        return restHandler(() -> {
             bikeService.deleteBike(id);
 
             return null;

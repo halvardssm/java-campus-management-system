@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
+import java.util.function.Supplier;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.config.abstracts.IEntity;
@@ -35,9 +35,9 @@ public interface Utils {
      * @param fn the function
      * @return the result or null
      */
-    static <T> T safeNull(Function<Object, T> fn) {
+    static <T> T safeNull(Supplier<T> fn) {
         try {
-            return fn.apply(null);
+            return fn.get();
         } catch (Exception e) {
             return null;
         }

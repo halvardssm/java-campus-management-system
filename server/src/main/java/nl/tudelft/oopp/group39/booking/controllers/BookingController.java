@@ -39,7 +39,7 @@ public class BookingController extends AbstractController {
     @GetMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
-        return restHandler((p) -> Utils.listEntityToDto(bookingService.listBookings(params)));
+        return restHandler(() -> Utils.listEntityToDto(bookingService.listBookings(params)));
     }
 
     /**
@@ -57,7 +57,7 @@ public class BookingController extends AbstractController {
             header,
             newBooking.getUser(),
             HttpStatus.CREATED,
-            (p) -> bookingService.createBooking(newBooking).toDto()
+            () -> bookingService.createBooking(newBooking).toDto()
         );
     }
 
@@ -69,7 +69,7 @@ public class BookingController extends AbstractController {
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
-        return restHandler((p) -> bookingService.readBooking(id).toDto());
+        return restHandler(() -> bookingService.readBooking(id).toDto());
     }
 
     /**
@@ -87,7 +87,7 @@ public class BookingController extends AbstractController {
         return restHandler(
             header,
             updated.getUser(),
-            (p) -> bookingService.updateBooking(updated, id).toDto()
+            () -> bookingService.updateBooking(updated, id).toDto()
         );
     }
 
@@ -100,7 +100,7 @@ public class BookingController extends AbstractController {
         @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
         @PathVariable Long id
     ) {
-        return restHandler(header, bookingService.readBooking(id).getUser().getUsername(), (p) -> {
+        return restHandler(header, bookingService.readBooking(id).getUser().getUsername(), () -> {
             bookingService.deleteBooking(id);
 
             return null;

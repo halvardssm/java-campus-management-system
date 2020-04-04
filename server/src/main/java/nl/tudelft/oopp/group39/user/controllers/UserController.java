@@ -41,7 +41,7 @@ public class UserController extends AbstractController {
         return restHandler(
             header,
             null,
-            (p) -> service.listUsers()
+            () -> service.listUsers()
         );
     }
 
@@ -55,7 +55,7 @@ public class UserController extends AbstractController {
     public ResponseEntity<RestResponse<Object>> create(
         @RequestBody User user
     ) {
-        return restHandler(HttpStatus.CREATED, (p) -> service.createUser(user));
+        return restHandler(HttpStatus.CREATED, () -> service.createUser(user));
     }
 
     /**
@@ -71,8 +71,8 @@ public class UserController extends AbstractController {
     ) {
         return restHandler(
             header,
-            Utils.safeNull((p) -> service.readUser(id).getUsername()),
-            (p) -> service.readUser(id)
+            Utils.safeNull(() -> service.readUser(id).getUsername()),
+            () -> service.readUser(id)
         );
     }
 
@@ -90,8 +90,8 @@ public class UserController extends AbstractController {
     ) {
         return restHandler(
             header,
-            Utils.safeNull((p) -> service.readUser(id).getUsername()),
-            (p) -> service.updateUser(id, user)
+            Utils.safeNull(() -> service.readUser(id).getUsername()),
+            () -> service.updateUser(id, user)
         );
     }
 
@@ -104,7 +104,7 @@ public class UserController extends AbstractController {
         @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
         @PathVariable String id
     ) {
-        return restHandler(header, service.readUser(id).getUsername(), (p) -> {
+        return restHandler(header, service.readUser(id).getUsername(), () -> {
             service.deleteUser(id);
 
             return null;

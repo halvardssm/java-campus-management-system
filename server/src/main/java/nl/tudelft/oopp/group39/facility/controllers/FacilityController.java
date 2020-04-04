@@ -34,7 +34,7 @@ public class FacilityController extends AbstractController {
     @GetMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list() {
-        return restHandler((p) -> service.listFacilities());
+        return restHandler(() -> service.listFacilities());
     }
 
     /**
@@ -45,7 +45,7 @@ public class FacilityController extends AbstractController {
     @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> create(@RequestBody Facility facility) {
-        return restHandler(HttpStatus.CREATED, (p) -> service.createFacility(facility));
+        return restHandler(HttpStatus.CREATED, () -> service.createFacility(facility));
     }
 
     /**
@@ -56,7 +56,7 @@ public class FacilityController extends AbstractController {
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
-        return restHandler((p) -> service.readFacility(id));
+        return restHandler(() -> service.readFacility(id));
     }
 
     /**
@@ -70,7 +70,7 @@ public class FacilityController extends AbstractController {
         @RequestBody Facility updated,
         @PathVariable Long id
     ) {
-        return restHandler((p) -> service.updateFacility(updated, id));
+        return restHandler(() -> service.updateFacility(updated, id));
     }
 
     /**
@@ -79,7 +79,7 @@ public class FacilityController extends AbstractController {
     @DeleteMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
-        return restHandler((p) -> {
+        return restHandler(() -> {
             service.deleteFacility(id);
 
             return null;

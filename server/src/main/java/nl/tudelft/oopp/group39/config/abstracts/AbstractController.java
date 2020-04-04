@@ -1,6 +1,6 @@
 package nl.tudelft.oopp.group39.config.abstracts;
 
-import java.util.function.Function;
+import java.util.function.Supplier;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.config.RestResponse;
@@ -76,18 +76,47 @@ public abstract class AbstractController {
         String header,
         String username,
         HttpStatus status,
-        Function<String, Object> fn
+        Supplier<Object> fn
     ) {
         try {
             if (header != null) {
                 validateUserRequest(header, username);
             }
 
-            Object result = fn.apply(null);
+            Object result = fn.get();
 
             return RestResponse.create(result, null, status);
         } catch (Exception e) {
             return RestResponse.error(e);
+        }
+    }
+
+    /**
+     * Handles a request and returns the response.
+     *
+     * @param header   the header of the request
+     * @param username the username of the object in the request
+     * @param status   the http status
+     * @param fn       the callback function
+     * @return the response
+     */
+    public ResponseEntity<RestResponse<Object>> restHandler(
+        String header,
+        String username,
+        HttpStatus status,
+        HttpStatus error,
+        Supplier<Object> fn
+    ) {
+        try {
+            if (header != null) {
+                validateUserRequest(header, username);
+            }
+
+            Object result = fn.get();
+
+            return RestResponse.create(result, null, status);
+        } catch (Exception e) {
+            return RestResponse.error(e, error);
         }
     }
 
@@ -102,7 +131,7 @@ public abstract class AbstractController {
     public ResponseEntity<RestResponse<Object>> restHandler(
         String header,
         String username,
-        Function<String, Object> fn
+        Supplier<Object> fn
     ) {
         return restHandler(header, username, HttpStatus.OK, fn);
     }
@@ -116,7 +145,7 @@ public abstract class AbstractController {
      */
     public ResponseEntity<RestResponse<Object>> restHandler(
         HttpStatus status,
-        Function<String, Object> fn
+        Supplier<Object> fn
     ) {
         return restHandler(null, null, status, fn);
     }
@@ -128,7 +157,7 @@ public abstract class AbstractController {
      * @return the response
      */
     public ResponseEntity<RestResponse<Object>> restHandler(
-        Function<String, Object> fn
+        Supplier<Object> fn
     ) {
         return restHandler(null, null, HttpStatus.OK, fn);
     }

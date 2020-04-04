@@ -37,7 +37,7 @@ public class FoodController extends AbstractController {
     @GetMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
-        return restHandler((p) -> Utils.listEntityToDto(foodService.listFoods(params)));
+        return restHandler(() -> Utils.listEntityToDto(foodService.listFoods(params)));
     }
 
     /**
@@ -50,7 +50,7 @@ public class FoodController extends AbstractController {
     public ResponseEntity<RestResponse<Object>> create(@RequestBody FoodDto food) {
         return restHandler(
             HttpStatus.CREATED,
-            (p) -> foodService.createFood(food.toEntity()).toDto()
+            () -> foodService.createFood(food.toEntity()).toDto()
         );
     }
 
@@ -62,7 +62,7 @@ public class FoodController extends AbstractController {
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
-        return restHandler((p) -> foodService.readFood(id).toDto());
+        return restHandler(() -> foodService.readFood(id).toDto());
     }
 
     /**
@@ -76,7 +76,7 @@ public class FoodController extends AbstractController {
         @PathVariable Long id,
         @RequestBody Food food
     ) {
-        return restHandler((p) -> foodService.updateFood(id, food).toDto());
+        return restHandler(() -> foodService.updateFood(id, food).toDto());
     }
 
     /**
@@ -85,7 +85,7 @@ public class FoodController extends AbstractController {
     @DeleteMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
-        return restHandler((p) -> {
+        return restHandler(() -> {
             foodService.deleteFood(id);
 
             return null;
