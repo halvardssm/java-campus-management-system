@@ -1,15 +1,14 @@
 package nl.tudelft.oopp.group39.reservable;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import nl.tudelft.oopp.group39.reservable.model.Food;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class FoodTest {
 
-    Food food = new Food(1L,"Apple","Really? A description for an Apple?",0.69,1L);
+    Food food = new Food(1L, "Apple", "Really? A description for an Apple?", 0.69, 1L);
 
     @Test
     void getName() {
