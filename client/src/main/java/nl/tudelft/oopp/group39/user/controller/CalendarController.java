@@ -150,7 +150,7 @@ public class CalendarController extends AbstractSceneController {
                 Interval interval =
                     new Interval(reservation.getPickupTime(), reservation.getPickupTime());
                 Room room = ServerCommunication.getRoom(reservation.getRoom());
-                String location = room.getBuildingObject().getName() + room.getName();
+                String location = room.getBuildingObject().getName() + " " + room.getName();
                 Entry<String> entry = new Entry<>("Food order", interval);
                 entry.setLocation(location);
                 calendar.addEntry(entry);
