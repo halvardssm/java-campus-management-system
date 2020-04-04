@@ -10,7 +10,7 @@ public interface UserRepository extends JpaRepository<User, String> {
      * Gets the user from a given username.
      *
      * @param userName the username where you want the user from
-     * @return         the user
+     * @return the user
      */
     User findUserByUsername(String userName);
 }

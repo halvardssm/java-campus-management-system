@@ -50,21 +50,6 @@ import org.springframework.test.annotation.DirtiesContext;
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public abstract class AbstractTest {
-    protected User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.ADMIN
-    );
-    protected User testUserStudent = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.STUDENT
-    );
-
     protected final ObjectMapper objectMapper = new ObjectMapper()
         .registerModule(new JavaTimeModule())
         .setTimeZone(TimeZone.getTimeZone(Constants.DEFAULT_TIMEZONE))
@@ -84,7 +69,20 @@ public abstract class AbstractTest {
             )
         )
         .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
+    protected User testUser = new User(
+        "test",
+        "test@tudelft.nl",
+        "test",
+        null,
+        Role.ADMIN
+    );
+    protected User testUserStudent = new User(
+        "test",
+        "test@tudelft.nl",
+        "test",
+        null,
+        Role.STUDENT
+    );
     @Autowired
     protected BikeController bikeController;
     @Autowired

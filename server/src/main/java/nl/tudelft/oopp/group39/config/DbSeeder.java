@@ -37,16 +37,26 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DbSeeder {
-    @Autowired private UserService userService;
-    @Autowired private RoomService roomService;
-    @Autowired private BuildingService buildingService;
-    @Autowired private FacilityService facilityService;
-    @Autowired private BookingService bookingService;
-    @Autowired private EventService eventService;
-    @Autowired private BikeService bikeService;
-    @Autowired private FoodService foodService;
-    @Autowired private ReservationService reservationService;
-    @Autowired private ReservationAmountService reservationAmountService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private RoomService roomService;
+    @Autowired
+    private BuildingService buildingService;
+    @Autowired
+    private FacilityService facilityService;
+    @Autowired
+    private BookingService bookingService;
+    @Autowired
+    private EventService eventService;
+    @Autowired
+    private BikeService bikeService;
+    @Autowired
+    private FoodService foodService;
+    @Autowired
+    private ReservationService reservationService;
+    @Autowired
+    private ReservationAmountService reservationAmountService;
 
     /**
      * Initiates the db with all the roles.

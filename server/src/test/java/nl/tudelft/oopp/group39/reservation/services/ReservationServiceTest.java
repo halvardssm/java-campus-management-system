@@ -51,15 +51,19 @@ class ReservationServiceTest extends AbstractTest {
 
         assertEquals(1, reservations.size());
         assertEquals(testReservation.getId(), reservations.get(0).getId());
-        assertEquals(testReservation.getTimeOfPickup()
+        assertEquals(
+            testReservation.getTimeOfPickup()
                 .format(DateTimeFormatter.ISO_DATE),
             reservations.get(0).getTimeOfPickup()
-                .format(DateTimeFormatter.ISO_DATE));
+                .format(DateTimeFormatter.ISO_DATE)
+        );
 
-        assertEquals(testReservation.getTimeOfDelivery()
+        assertEquals(
+            testReservation.getTimeOfDelivery()
                 .format(DateTimeFormatter.ISO_DATE),
             reservations.get(0).getTimeOfDelivery()
-                .format(DateTimeFormatter.ISO_DATE));
+                .format(DateTimeFormatter.ISO_DATE)
+        );
     }
 
     @Test

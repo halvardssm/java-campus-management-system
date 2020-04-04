@@ -48,7 +48,7 @@ public class ReservationService {
      * Method to filter reservations.
      *
      * @param filters the filter where you want to filter on
-     * @return        the filtered reservations
+     * @return the filtered reservations
      */
     public List<Reservation> filterReservations(Map<String, String> filters) {
         return reservationDao.reservationFilter(filters);

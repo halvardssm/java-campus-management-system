@@ -60,8 +60,10 @@ class ReservableServiceTest extends AbstractTest {
     void updateReservable() throws NotFoundException {
         testReservable.setPrice(6.7);
 
-        Reservable reservable = reservableService.updateReservable(testReservable.getId(),
-                                                                   testReservable);
+        Reservable reservable = reservableService.updateReservable(
+            testReservable.getId(),
+            testReservable
+        );
 
         assertEquals(testReservable.getId(), reservable.getId());
         assertEquals(testReservable.getPrice(), reservable.getPrice());

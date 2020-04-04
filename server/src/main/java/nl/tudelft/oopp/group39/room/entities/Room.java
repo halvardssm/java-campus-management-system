@@ -295,7 +295,7 @@ public class Room extends AbstractEntity<Room, RoomDto> {
      * Checks whether two rooms are equal.
      *
      * @param o the other object
-     * @return  true if the two rooms are equal, false otherwise
+     * @return true if the two rooms are equal, false otherwise
      */
     @Override
     public boolean equals(Object o) {

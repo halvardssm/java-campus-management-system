@@ -58,8 +58,10 @@ public class FacilityControllerTest extends AbstractControllerTest {
         mockMvc.perform(get(REST_MAPPING))
             .andExpect(jsonPath("$.body").isArray())
             .andExpect(jsonPath("$.body", hasSize(1)))
-            .andExpect(jsonPath("$.body[0].description",
-                is(testFacility.getDescription())));
+            .andExpect(jsonPath(
+                "$.body[0].description",
+                is(testFacility.getDescription())
+            ));
     }
 
     @Test
@@ -78,8 +80,10 @@ public class FacilityControllerTest extends AbstractControllerTest {
             .content(json)
             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.body.description",
-                is(testFacility.getDescription())))
+            .andExpect(jsonPath(
+                "$.body.description",
+                is(testFacility.getDescription())
+            ))
             .andDo((facility) -> {
                 String responseString = facility.getResponse().getContentAsString();
                 JsonNode productNode = new ObjectMapper().readTree(responseString);
@@ -91,8 +95,10 @@ public class FacilityControllerTest extends AbstractControllerTest {
     void readFacilityTest() throws Exception {
         mockMvc.perform(get(REST_MAPPING + "/" + testFacility.getId()))
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body.description",
-                is(testFacility.getDescription())));
+            .andExpect(jsonPath(
+                "$.body.description",
+                is(testFacility.getDescription())
+            ));
     }
 
     @Test
@@ -106,8 +112,10 @@ public class FacilityControllerTest extends AbstractControllerTest {
             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body.description",
-                is(testFacility.getDescription())));
+            .andExpect(jsonPath(
+                "$.body.description",
+                is(testFacility.getDescription())
+            ));
 
 
         testFacility.setDescription("test");

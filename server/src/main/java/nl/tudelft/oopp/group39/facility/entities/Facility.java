@@ -100,7 +100,7 @@ public class Facility extends AbstractEntity<Facility, IEntity> {
      * Checks whether two facilities are equal.
      *
      * @param o the other object
-     * @return  true if the two facilities are equal, false otherwise
+     * @return true if the two facilities are equal, false otherwise
      */
     @Override
     public boolean equals(Object o) {

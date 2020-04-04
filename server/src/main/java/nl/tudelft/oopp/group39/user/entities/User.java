@@ -299,7 +299,7 @@ public class User implements UserDetails {
      * Checks whether two users are equal.
      *
      * @param o the other object
-     * @return  true if the two users are equal, false otherwise
+     * @return true if the two users are equal, false otherwise
      */
     @Override
     public boolean equals(Object o) {

@@ -55,12 +55,12 @@ public class Booking extends AbstractEntity<Booking, BookingDto> {
      * @param room      room
      */
     public Booking(
-            Long id,
-            LocalDate date,
-            LocalTime startTime,
-            LocalTime endTime,
-            User user,
-            Room room
+        Long id,
+        LocalDate date,
+        LocalTime startTime,
+        LocalTime endTime,
+        User user,
+        Room room
     ) {
         setId(id);
         setDate(date);
@@ -181,7 +181,7 @@ public class Booking extends AbstractEntity<Booking, BookingDto> {
      * Checks whether two bookings are equal.
      *
      * @param o the other object to be checked
-     * @return  true if the bookings are the same, false otherwise
+     * @return true if the bookings are the same, false otherwise
      */
     @Override
     public boolean equals(Object o) {

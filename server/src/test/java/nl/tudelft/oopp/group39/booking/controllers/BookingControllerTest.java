@@ -42,7 +42,6 @@ public class BookingControllerTest extends AbstractControllerTest {
         null,
         null
     );
-    private String jwt;
     private final BookingDto testBooking = new BookingDto(
         null,
         date,
