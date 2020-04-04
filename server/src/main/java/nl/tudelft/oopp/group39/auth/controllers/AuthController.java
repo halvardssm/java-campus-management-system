@@ -43,7 +43,7 @@ public class AuthController extends AbstractController {
     public ResponseEntity<RestResponse<Object>> createToken(
         @RequestBody AuthRequestDto body
     ) throws UnauthorizedException {
-        return restHandler(null, null, null, HttpStatus.UNAUTHORIZED, () -> {
+        return restHandler(null, null, HttpStatus.UNAUTHORIZED, null, () -> {
             try {
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     body.getUsername(),

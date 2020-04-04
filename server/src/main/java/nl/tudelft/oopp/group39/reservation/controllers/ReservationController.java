@@ -56,8 +56,8 @@ public class ReservationController extends AbstractController {
     ) {
         return restHandler(
             header,
-            Utils.safeNull(reservation::getUser),
             HttpStatus.CREATED,
+            reservation::getUser,
             () -> reservationService.createReservation(reservation).toDto()
         );
     }
@@ -87,7 +87,7 @@ public class ReservationController extends AbstractController {
     ) {
         return restHandler(
             header,
-            Utils.safeNull(reservation::getUser),
+            reservation::getUser,
             () -> reservationService.updateReservation(id, reservation).toDto()
         );
     }
@@ -103,7 +103,7 @@ public class ReservationController extends AbstractController {
     ) {
         return restHandler(
             header,
-            reservationService.readReservation(id).getUser().getUsername(),
+            () -> reservationService.readReservation(id).getUser().getUsername(),
             () -> {
                 reservationService.deleteReservation(id);
 

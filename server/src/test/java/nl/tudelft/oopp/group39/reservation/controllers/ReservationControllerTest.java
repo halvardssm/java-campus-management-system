@@ -194,8 +194,9 @@ class ReservationControllerTest extends AbstractControllerTest {
     @Test
     void testError() {
         assertEquals(
-            "java.lang.NullPointerException",
-            reservationController.create(null, null).getBody().getError()
+            "The given id must not be null!; nested exception is java.lang"
+                + ".IllegalArgumentException: The given id must not be null!",
+            reservationController.create(null, new ReservationDto()).getBody().getError()
         );
 
         assertEquals(
@@ -205,7 +206,7 @@ class ReservationControllerTest extends AbstractControllerTest {
 
         assertEquals(
             "Reservation with id '0' wasn't found.",
-            reservationController.update(null, 0L, null).getBody().getError()
+            reservationController.update(null, 0L, new ReservationDto()).getBody().getError()
         );
     }
 }

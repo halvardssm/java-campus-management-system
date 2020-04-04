@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,20 +68,20 @@ public abstract class AbstractController {
      * Handles a request and returns the response.
      *
      * @param header   the header of the request
-     * @param username the username of the object in the request
      * @param status   the http status
+     * @param username the username of the object in the request
      * @param fn       the callback function
      * @return the response
      */
     public ResponseEntity<RestResponse<Object>> restHandler(
         String header,
-        String username,
         HttpStatus status,
+        Supplier<String> username,
         Supplier<Object> fn
     ) {
         try {
             if (header != null) {
-                validateUserRequest(header, username);
+                validateUserRequest(header, Utils.safeNull(username));
             }
 
             Object result = fn.get();
@@ -95,21 +96,21 @@ public abstract class AbstractController {
      * Handles a request and returns the response.
      *
      * @param header   the header of the request
-     * @param username the username of the object in the request
      * @param status   the http status
+     * @param username the username of the object in the request
      * @param fn       the callback function
      * @return the response
      */
     public ResponseEntity<RestResponse<Object>> restHandler(
         String header,
-        String username,
         HttpStatus status,
         HttpStatus error,
+        Supplier<String> username,
         Supplier<Object> fn
     ) {
         try {
             if (header != null) {
-                validateUserRequest(header, username);
+                validateUserRequest(header, Utils.safeNull(username));
             }
 
             Object result = fn.get();
@@ -130,10 +131,10 @@ public abstract class AbstractController {
      */
     public ResponseEntity<RestResponse<Object>> restHandler(
         String header,
-        String username,
+        Supplier<String> username,
         Supplier<Object> fn
     ) {
-        return restHandler(header, username, HttpStatus.OK, fn);
+        return restHandler(header, HttpStatus.OK, username, fn);
     }
 
     /**
@@ -147,7 +148,7 @@ public abstract class AbstractController {
         HttpStatus status,
         Supplier<Object> fn
     ) {
-        return restHandler(null, null, status, fn);
+        return restHandler(null, status, null, fn);
     }
 
     /**
@@ -159,6 +160,6 @@ public abstract class AbstractController {
     public ResponseEntity<RestResponse<Object>> restHandler(
         Supplier<Object> fn
     ) {
-        return restHandler(null, null, HttpStatus.OK, fn);
+        return restHandler(null, HttpStatus.OK, null, fn);
     }
 }

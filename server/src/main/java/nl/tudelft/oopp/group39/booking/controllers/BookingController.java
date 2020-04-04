@@ -55,8 +55,8 @@ public class BookingController extends AbstractController {
     ) {
         return restHandler(
             header,
-            newBooking.getUser(),
             HttpStatus.CREATED,
+            newBooking::getUser,
             () -> bookingService.createBooking(newBooking).toDto()
         );
     }
@@ -86,7 +86,7 @@ public class BookingController extends AbstractController {
     ) {
         return restHandler(
             header,
-            updated.getUser(),
+            updated::getUser,
             () -> bookingService.updateBooking(updated, id).toDto()
         );
     }
@@ -100,10 +100,14 @@ public class BookingController extends AbstractController {
         @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
         @PathVariable Long id
     ) {
-        return restHandler(header, bookingService.readBooking(id).getUser().getUsername(), () -> {
-            bookingService.deleteBooking(id);
+        return restHandler(
+            header,
+            () -> bookingService.readBooking(id).getUser().getUsername(),
+            () -> {
+                bookingService.deleteBooking(id);
 
-            return null;
-        });
+                return null;
+            }
+        );
     }
 }
