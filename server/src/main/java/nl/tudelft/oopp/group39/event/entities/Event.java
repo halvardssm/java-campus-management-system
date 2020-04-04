@@ -3,36 +3,44 @@ package nl.tudelft.oopp.group39.event.entities;
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
-import nl.tudelft.oopp.group39.config.abstracts.IEntity;
-import nl.tudelft.oopp.group39.event.enums.EventTypes;
+import nl.tudelft.oopp.group39.event.dto.EventDto;
 import nl.tudelft.oopp.group39.room.entities.Room;
+import nl.tudelft.oopp.group39.user.entities.User;
 
 @Entity
 @Table(name = Event.TABLE_NAME)
 @JsonIgnoreProperties(allowSetters = true, value = {Event.COL_ROOMS})
-public class Event extends AbstractEntity<Event, IEntity> {
+public class Event extends AbstractEntity<Event, EventDto> {
     public static final String TABLE_NAME = "events";
     public static final String MAPPED_NAME = "event";
+    public static final String COL_TITLE = "title";
+    public static final String COL_STARTS_AT = "startsAt";
+    public static final String COL_ENDS_AT = "endsAt";
+    public static final String COL_IS_GLOBAL = "isGlobal";
+    public static final String COL_USER = "user";
     public static final String COL_ROOMS = "rooms";
 
-    @Enumerated(EnumType.STRING)
-    private EventTypes type;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String title;
+    private LocalDateTime startsAt;
+    private LocalDateTime endsAt;
+    private Boolean isGlobal;
+    @ManyToOne
+    @JoinColumn(name = User.MAPPED_NAME)
+    private User user;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = (TABLE_NAME + "_" + Room.TABLE_NAME),
         joinColumns = {@JoinColumn(name = TABLE_NAME, referencedColumnName = COL_ID)},
@@ -50,21 +58,38 @@ public class Event extends AbstractEntity<Event, IEntity> {
     /**
      * Creates an event.
      *
-     * @param type      the {@link EventTypes} type
-     * @param startDate the start date yyyy-mm-dd
-     * @param endDate   the end date yyyy-mm-dd, nullable
-     * @param rooms     the rooms
+     * @param id       the id
+     * @param title    the title of the event
+     * @param startsAt the start date yyyy-mm-dd
+     * @param endsAt   the end date yyyy-mm-dd, nullable
+     * @param isGlobal if the event is global, or user specific
+     * @param user     the user owning the event, is null if it is global
+     * @param rooms    the rooms
      */
     public Event(
-        EventTypes type,
-        LocalDate startDate,
-        LocalDate endDate,
+        Long id,
+        String title,
+        LocalDateTime startsAt,
+        LocalDateTime endsAt,
+        Boolean isGlobal,
+        User user,
         Set<Room> rooms
     ) {
-        this.type = type;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.rooms.addAll(initSet(rooms));
+        setId(id);
+        setTitle(title);
+        setStartsAt(startsAt);
+        setEndsAt(endsAt);
+        setIsGlobal(isGlobal != null ? isGlobal : false);
+        setUser(user);
+        getRooms().addAll(initSet(rooms));
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     /**
@@ -72,8 +97,8 @@ public class Event extends AbstractEntity<Event, IEntity> {
      *
      * @return the starting date of the event
      */
-    public LocalDate getStartDate() {
-        return startDate;
+    public LocalDateTime getStartsAt() {
+        return startsAt;
     }
 
     /**
@@ -81,8 +106,8 @@ public class Event extends AbstractEntity<Event, IEntity> {
      *
      * @param startDate the new starting date
      */
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
+    public void setStartsAt(LocalDateTime startDate) {
+        this.startsAt = startDate;
     }
 
     /**
@@ -90,8 +115,8 @@ public class Event extends AbstractEntity<Event, IEntity> {
      *
      * @return the end date of the event
      */
-    public LocalDate getEndDate() {
-        return endDate;
+    public LocalDateTime getEndsAt() {
+        return endsAt;
     }
 
     /**
@@ -99,16 +124,24 @@ public class Event extends AbstractEntity<Event, IEntity> {
      *
      * @param endDate the new end date
      */
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setEndsAt(LocalDateTime endDate) {
+        this.endsAt = endDate;
     }
 
-    public EventTypes getType() {
-        return type;
+    public Boolean getIsGlobal() {
+        return isGlobal;
     }
 
-    public void setType(EventTypes type) {
-        this.type = type;
+    public void setIsGlobal(Boolean isGlobal) {
+        this.isGlobal = isGlobal;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     /**
@@ -145,19 +178,29 @@ public class Event extends AbstractEntity<Event, IEntity> {
         }
         Event event = (Event) o;
         return Objects.equals(getId(), event.getId())
-            && getType() == event.getType()
-            && Objects.equals(getStartDate(), event.getStartDate())
-            && Objects.equals(getEndDate(), event.getEndDate())
-            && Objects.equals(getRooms(),event.getRooms());
+            && Objects.equals(getTitle(), event.getTitle())
+            && Objects.equals(getStartsAt(), event.getStartsAt())
+            && Objects.equals(getEndsAt(), event.getEndsAt())
+            && Objects.equals(getIsGlobal(), event.getIsGlobal())
+            && Objects.equals(getUser(), event.getUser())
+            && Objects.equals(getRooms(), event.getRooms());
     }
 
     /**
      * Changes the Event to an EventDto object.
      *
-     * @return null
+     * @return the EventDto
      */
     @Override
-    public IEntity toDto() {
-        return null;
+    public EventDto toDto() {
+        return new EventDto(
+            getId(),
+            getTitle(),
+            getStartsAt(),
+            getEndsAt(),
+            getIsGlobal(),
+            Utils.safeNull((p) -> getUser().getUsername()),
+            Utils.entitiesToIds(getRooms())
+        );
     }
 }

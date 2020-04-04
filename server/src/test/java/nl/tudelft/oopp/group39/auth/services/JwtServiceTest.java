@@ -13,9 +13,7 @@ class JwtServiceTest extends AbstractTest {
         "test@tudelft.nl",
         "test",
         null,
-        Role.STUDENT,
-        null,
-        null
+        Role.STUDENT
     );
 
     @Test
@@ -58,9 +56,7 @@ class JwtServiceTest extends AbstractTest {
             "test@tudelft.nl",
             "test",
             null,
-            Role.STUDENT,
-            null,
-            null
+            Role.STUDENT
         );
         Assertions.assertFalse(jwtService.validate(jwtService.encrypt(testUser), user));
     }

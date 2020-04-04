@@ -31,9 +31,7 @@ class FoodControllerTest extends AbstractControllerTest {
         "test@tudelft.nl",
         "test",
         null,
-        Role.ADMIN,
-        null,
-        null
+        Role.ADMIN
     );
     private final Food testFood = new Food(null, "Food", "Piece of yummy food", 5.6, null, null);
     private String jwt;

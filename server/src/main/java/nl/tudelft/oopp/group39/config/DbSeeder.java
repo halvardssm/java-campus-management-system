@@ -12,7 +12,6 @@ import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.event.entities.Event;
-import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.event.services.EventService;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
@@ -75,9 +74,7 @@ public class DbSeeder {
             "admin@tudelft.nl",
             "pwd",
             null,
-            Role.ADMIN,
-            null,
-            null
+            Role.ADMIN
         );
 
         userService.createUser(user);
@@ -87,9 +84,7 @@ public class DbSeeder {
             "student@student.tudelft.nl",
             "student123",
             null,
-            Role.STUDENT,
-            null,
-            null
+            Role.STUDENT
         );
         userService.createUser(user2);
         System.out.println("[SEED] Admin user created");
@@ -210,22 +205,29 @@ public class DbSeeder {
      * Initiates the database with events.
      */
     private void initEvents() {
-        LocalDate today = LocalDate.now();
-        LocalDate tomorrow = today.plusDays(1);
+        LocalDateTime today = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0));
+        LocalDateTime tomorrow = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
         Building b1 = buildingService.readBuilding(1L);
         Room room = new Room(
             null,
             b1,
-            "test",
-            0,
+            "room 123",
+            23,
             false,
-            null,
+            "some room",
             null,
             new HashSet<>(),
             new HashSet<>()
         );
         HashSet<Room> rooms = new HashSet<>(List.of(room));
-        eventService.createEvent(new Event(EventTypes.EVENT, today, tomorrow, rooms));
+        eventService.createEvent(new Event(
+            null, "Special day",
+            today,
+            tomorrow,
+            true,
+            userService.readUser("admin"),
+            rooms
+        ));
 
         System.out.println("[SEED] Events created");
     }

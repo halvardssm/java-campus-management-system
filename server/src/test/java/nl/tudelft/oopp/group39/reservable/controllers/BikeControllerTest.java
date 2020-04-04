@@ -32,9 +32,7 @@ class BikeControllerTest extends AbstractControllerTest {
         "test@tudelft.nl",
         "test",
         null,
-        Role.ADMIN,
-        null,
-        null
+        Role.ADMIN
     );
     private final Bike testBike = new Bike(null, BikeType.CITY, 5.6, null, null);
     private String jwt;

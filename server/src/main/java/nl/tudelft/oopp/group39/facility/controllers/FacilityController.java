@@ -29,7 +29,7 @@ public class FacilityController {
      *
      * @return a list of facilities
      */
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<RestResponse<Object>> listFacilities() {
         return RestResponse.create(service.listFacilities());
     }
@@ -39,7 +39,7 @@ public class FacilityController {
      *
      * @return the created facility
      */
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createFacility(@RequestBody Facility facility) {
         try {

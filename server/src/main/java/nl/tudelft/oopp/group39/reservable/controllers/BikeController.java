@@ -33,7 +33,7 @@ public class BikeController {
      *
      * @return a list of bikes {@link Bike}.
      */
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<RestResponse<Object>> listBikes(
         @RequestParam Map<String, String> params
     ) {
@@ -49,7 +49,7 @@ public class BikeController {
      *
      * @return the created bike {@link Bike}.
      */
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<RestResponse<Object>> createBike(@RequestBody BikeDto bike) {
         try {
             return RestResponse.create(

@@ -39,7 +39,7 @@ public class RoomController {
      *
      * @see RoomDao#roomFilter(Map)
      */
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<RestResponse<Object>> listRooms(
         @RequestParam Map<String, String> allParams
     ) {
@@ -54,7 +54,7 @@ public class RoomController {
      * @param newRoom the dto values of the room to be created
      * @return the inserted value converted back to dto
      */
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createRoom(@RequestBody RoomDto newRoom) {
         try {
