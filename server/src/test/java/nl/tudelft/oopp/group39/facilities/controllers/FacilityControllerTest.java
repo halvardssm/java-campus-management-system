@@ -32,9 +32,7 @@ public class FacilityControllerTest extends AbstractControllerTest {
         "test@tudelft.nl",
         "test",
         null,
-        Role.ADMIN,
-        null,
-        null
+        Role.ADMIN
     );
     private final Facility testFacility = new Facility(
         "test",

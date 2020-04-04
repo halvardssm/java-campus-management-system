@@ -32,9 +32,7 @@ public class BookingTest {
             "student@student.tudelft.nl",
             "student123",
             null,
-            Role.STUDENT,
-            null,
-            null
+            Role.STUDENT
         );
         this.room = new Room(null,
             new Building(null, "Drebbelweg",
