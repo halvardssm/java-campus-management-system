@@ -117,12 +117,12 @@ class BikeControllerTest extends AbstractControllerTest {
         );
 
         assertEquals(
-            "Reservable with id 0 wasn't found.",
+            "Bike with id '0' wasn't found.",
             bikeController.read(0L).getBody().getError()
         );
 
         assertEquals(
-            "Reservable with id 0 wasn't found.",
+            "Bike with id '0' wasn't found.",
             bikeController.update(0L, null).getBody().getError()
         );
     }

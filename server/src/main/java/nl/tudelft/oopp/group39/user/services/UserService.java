@@ -1,10 +1,11 @@
 package nl.tudelft.oopp.group39.user.services;
 
 import java.util.List;
+import nl.tudelft.oopp.group39.config.exceptions.ExistsException;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
+import nl.tudelft.oopp.group39.config.exceptions.NotNullException;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
-import nl.tudelft.oopp.group39.user.exceptions.UserExistsException;
-import nl.tudelft.oopp.group39.user.exceptions.UserNotFoundException;
 import nl.tudelft.oopp.group39.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,8 +15,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements UserDetailsService {
-    @Autowired private PasswordEncoder passwordEncoder;
-    @Autowired private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * List all users.
@@ -31,8 +34,11 @@ public class UserService implements UserDetailsService {
      *
      * @return user by id {@link User}.
      */
-    public User readUser(String id) throws UserNotFoundException {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    public User readUser(String id) throws NotFoundException {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException(
+            User.MAPPED_NAME,
+            id
+        ));
     }
 
     /**
@@ -43,9 +49,9 @@ public class UserService implements UserDetailsService {
     public User createUser(User newUser) {
         try {
             readUser(newUser.getUsername());
-            throw new UserExistsException(newUser.getUsername());
+            throw new ExistsException(User.MAPPED_NAME, newUser.getUsername());
 
-        } catch (UserNotFoundException e) {
+        } catch (NotFoundException e) {
             newUser.setPassword(encryptPassword(newUser.getPassword()));
             mapRoleForUser(newUser);
 
@@ -53,7 +59,7 @@ public class UserService implements UserDetailsService {
 
             return newUser;
         } catch (NullPointerException e) {
-            throw new NullPointerException("User can not be null");
+            throw new NotNullException(User.MAPPED_NAME);
         }
     }
 
@@ -62,7 +68,7 @@ public class UserService implements UserDetailsService {
      *
      * @return the updated user {@link User}.
      */
-    public User updateUser(String id, User newUser) throws UserNotFoundException {
+    public User updateUser(String id, User newUser) throws NotFoundException {
         return userRepository.findById(id)
             .map(user -> {
                 mapRoleForUser(newUser);
@@ -70,7 +76,7 @@ public class UserService implements UserDetailsService {
                 user.setRole(newUser.getRole());
 
                 return userRepository.save(user);
-            }).orElseThrow(() -> new UserNotFoundException(id));
+            }).orElseThrow(() -> new NotFoundException(User.MAPPED_NAME, id));
     }
 
     /**
@@ -105,11 +111,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UserNotFoundException {
+    public UserDetails loadUserByUsername(String username) throws NotFoundException {
         User user = this.userRepository.findUserByUsername(username);
 
         if (user == null) {
-            throw new UserNotFoundException(username);
+            throw new NotFoundException(User.MAPPED_NAME, username);
         }
 
         return user;

@@ -13,6 +13,10 @@ import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.config.abstracts.IEntity;
 
 public interface Utils {
+    static String firstLetterToUppercase(String string) {
+        return string.substring(0, 1).toUpperCase() + string.substring(1);
+    }
+
     static LocalDateTime parseDateTime(String string) {
         return LocalDateTime.parse(string, Constants.FORMATTER_DATE_TIME);
     }

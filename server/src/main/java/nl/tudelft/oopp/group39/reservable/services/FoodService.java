@@ -2,9 +2,9 @@ package nl.tudelft.oopp.group39.reservable.services;
 
 import java.util.List;
 import java.util.Map;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import nl.tudelft.oopp.group39.reservable.dao.ReservableDao;
 import nl.tudelft.oopp.group39.reservable.entities.Food;
-import nl.tudelft.oopp.group39.reservable.exceptions.ReservableNotFoundException;
 import nl.tudelft.oopp.group39.reservable.repositories.FoodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class FoodService {
     @Autowired
     private FoodRepository foodRepository;
     @Autowired
-    private ReservableDao reservableDao;
+    private ReservableDao<Food> reservableDao;
 
     /**
      * List all foods.
@@ -33,7 +33,8 @@ public class FoodService {
      * @return food by id {@link Food}.
      */
     public Food readFood(Long id) {
-        return foodRepository.findById(id).orElseThrow(() -> new ReservableNotFoundException(id));
+        return foodRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException(Food.MAPPED_NAME, id));
     }
 
     /**
@@ -58,7 +59,7 @@ public class FoodService {
 
                 return foodRepository.save(food);
             })
-            .orElseThrow(() -> new ReservableNotFoundException(id));
+            .orElseThrow(() -> new NotFoundException(Food.MAPPED_NAME, id));
     }
 
     /**

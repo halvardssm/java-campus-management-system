@@ -2,9 +2,9 @@ package nl.tudelft.oopp.group39.auth.controllers;
 
 import nl.tudelft.oopp.group39.auth.dto.AuthRequestDto;
 import nl.tudelft.oopp.group39.auth.dto.AuthResponseDto;
-import nl.tudelft.oopp.group39.auth.exceptions.UnauthorizedException;
 import nl.tudelft.oopp.group39.auth.services.JwtService;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.exceptions.UnauthorizedException;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

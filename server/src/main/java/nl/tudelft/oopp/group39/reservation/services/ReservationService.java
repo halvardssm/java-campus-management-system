@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservable.services.ReservableService;
 import nl.tudelft.oopp.group39.reservation.dao.ReservationDao;
@@ -11,7 +12,6 @@ import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationDto;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
-import nl.tudelft.oopp.group39.reservation.exceptions.ReservationNotFoundException;
 import nl.tudelft.oopp.group39.reservation.repositories.ReservationRepository;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
@@ -22,8 +22,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ReservationService {
-    public static final String EXCEPTION_RESERVATION_NOT_FOUND = "Reservation %d not found";
-
     @Autowired
     private ReservationRepository reservationRepository;
     @Autowired
@@ -63,7 +61,7 @@ public class ReservationService {
      */
     public Reservation readReservation(Long id) {
         return reservationRepository.findById(id)
-            .orElseThrow(() -> new ReservationNotFoundException(id));
+            .orElseThrow(() -> new NotFoundException(Reservation.MAPPED_NAME, id));
     }
 
     /**
@@ -150,7 +148,7 @@ public class ReservationService {
 
                 return reservationRepository.save(reservation);
             })
-            .orElseThrow(() -> new ReservationNotFoundException(id));
+            .orElseThrow(() -> new NotFoundException(Reservation.MAPPED_NAME, id));
     }
 
     /**

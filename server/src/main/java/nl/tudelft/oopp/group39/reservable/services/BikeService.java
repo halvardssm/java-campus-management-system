@@ -2,21 +2,20 @@ package nl.tudelft.oopp.group39.reservable.services;
 
 import java.util.List;
 import java.util.Map;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import nl.tudelft.oopp.group39.reservable.dao.ReservableDao;
 import nl.tudelft.oopp.group39.reservable.entities.Bike;
-import nl.tudelft.oopp.group39.reservable.exceptions.ReservableNotFoundException;
 import nl.tudelft.oopp.group39.reservable.repositories.BikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BikeService {
-    public static final String EXCEPTION_BIKE_NOT_FOUND = "Bike %d not found";
 
     @Autowired
     private BikeRepository bikeRepository;
     @Autowired
-    private ReservableDao reservableDao;
+    private ReservableDao<Bike> reservableDao;
 
     /**
      * List all bikes.
@@ -33,7 +32,8 @@ public class BikeService {
      * @return bike by id {@link Bike}.
      */
     public Bike readBike(Long id) {
-        return bikeRepository.findById(id).orElseThrow(() -> new ReservableNotFoundException(id));
+        return bikeRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException(Bike.MAPPED_NAME, id));
     }
 
     /**
@@ -58,7 +58,7 @@ public class BikeService {
 
                 return bikeRepository.save(bike);
             })
-            .orElseThrow(() -> new ReservableNotFoundException(id));
+            .orElseThrow(() -> new NotFoundException(Bike.MAPPED_NAME, id));
     }
 
     /**

@@ -1,17 +1,15 @@
 package nl.tudelft.oopp.group39.reservation.services;
 
 import java.util.List;
-import javassist.NotFoundException;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
-import nl.tudelft.oopp.group39.reservation.exceptions.ReservationNotFoundException;
 import nl.tudelft.oopp.group39.reservation.repositories.ReservationAmountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReservationAmountService {
-    public static final String EXCEPTION_RESERVATION_NOT_FOUND = "Reservation %d not found";
 
     @Autowired
     private ReservationAmountRepository reservationAmountRepository;
@@ -32,10 +30,7 @@ public class ReservationAmountService {
      */
     public ReservationAmount readReservation(Long id) throws NotFoundException {
         return reservationAmountRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException(String.format(
-                EXCEPTION_RESERVATION_NOT_FOUND,
-                id
-            )));
+            .orElseThrow(() -> new NotFoundException(Reservation.MAPPED_NAME, id));
     }
 
     /**
@@ -64,7 +59,7 @@ public class ReservationAmountService {
 
                 return reservationAmountRepository.save(reservation);
             })
-            .orElseThrow(() -> new ReservationNotFoundException(id));
+            .orElseThrow(() -> new NotFoundException(Reservation.MAPPED_NAME, id));
     }
 
     /**

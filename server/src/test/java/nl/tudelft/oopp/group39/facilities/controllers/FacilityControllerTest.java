@@ -123,7 +123,7 @@ public class FacilityControllerTest extends AbstractControllerTest {
         );
 
         assertEquals(
-            "Facility with id 0 wasn't found.",
+            "Facility with id '0' wasn't found.",
             facilityController.read(0L).getBody().getError()
         );
 

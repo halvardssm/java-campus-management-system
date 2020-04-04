@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.auth.exceptions;
+package nl.tudelft.oopp.group39.config.exceptions;
 
 import nl.tudelft.oopp.group39.AbstractTest;
 import org.junit.jupiter.api.Assertions;

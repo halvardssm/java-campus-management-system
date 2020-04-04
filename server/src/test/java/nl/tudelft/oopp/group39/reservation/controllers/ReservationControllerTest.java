@@ -199,12 +199,12 @@ class ReservationControllerTest extends AbstractControllerTest {
         );
 
         assertEquals(
-            "Reservation with id 0 wasn't found.",
+            "Reservation with id '0' wasn't found.",
             reservationController.read(0L).getBody().getError()
         );
 
         assertEquals(
-            "Reservation with id 0 wasn't found.",
+            "Reservation with id '0' wasn't found.",
             reservationController.update(null, 0L, null).getBody().getError()
         );
     }

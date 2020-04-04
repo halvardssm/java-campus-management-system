@@ -139,7 +139,7 @@ public class BuildingControllerTest extends AbstractControllerTest {
         );
 
         assertEquals(
-            "Building with id 0 wasn't found.",
+            "Building with id '0' wasn't found.",
             buildingController.read(0L).getBody().getError()
         );
 

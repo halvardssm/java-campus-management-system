@@ -163,7 +163,7 @@ public class RoomControllerTest extends AbstractControllerTest {
         );
 
         assertEquals(
-            "Room with id 0 wasn't found.",
+            "Room with id '0' wasn't found.",
             roomController.read(0L).getBody().getError()
         );
 

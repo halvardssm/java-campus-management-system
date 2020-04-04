@@ -143,7 +143,7 @@ public class BookingControllerTest extends AbstractControllerTest {
         );
 
         assertEquals(
-            "Booking with id 0 wasn't found.",
+            "Booking with id '0' wasn't found.",
             bookingController.read(0L).getBody().getError()
         );
 

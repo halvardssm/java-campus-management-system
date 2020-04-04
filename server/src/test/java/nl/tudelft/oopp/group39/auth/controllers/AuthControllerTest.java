@@ -5,7 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.auth.dto.AuthRequestDto;
-import nl.tudelft.oopp.group39.auth.exceptions.UnauthorizedException;
+import nl.tudelft.oopp.group39.config.exceptions.UnauthorizedException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

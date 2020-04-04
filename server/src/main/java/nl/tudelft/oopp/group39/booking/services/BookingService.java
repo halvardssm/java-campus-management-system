@@ -5,8 +5,8 @@ import java.util.Map;
 import nl.tudelft.oopp.group39.booking.dao.BookingDao;
 import nl.tudelft.oopp.group39.booking.dto.BookingDto;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
-import nl.tudelft.oopp.group39.booking.exceptions.BookingNotFoundException;
 import nl.tudelft.oopp.group39.booking.repositories.BookingRepository;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
 import nl.tudelft.oopp.group39.user.entities.User;
@@ -39,9 +39,9 @@ public class BookingService {
      *
      * @return booking by id {@link Booking}.
      */
-    public Booking readBooking(Long id) throws BookingNotFoundException {
+    public Booking readBooking(Long id) throws NotFoundException {
         return bookingRepository.findById(id)
-            .orElseThrow(() -> new BookingNotFoundException(id));
+            .orElseThrow(() -> new NotFoundException(Booking.MAPPED_NAME, id));
     }
 
     /**
@@ -78,7 +78,7 @@ public class BookingService {
      *
      * @return the updated booking {@link Booking}.
      */
-    public Booking updateBooking(Booking newBooking, Long id) throws BookingNotFoundException {
+    public Booking updateBooking(Booking newBooking, Long id) throws NotFoundException {
         return bookingRepository.findById(id)
             .map(booking -> {
                 booking.setId(id);
@@ -89,7 +89,7 @@ public class BookingService {
                 booking.setRoom(newBooking.getRoom());
                 return bookingRepository.save(booking);
             })
-            .orElseThrow(() -> new BookingNotFoundException(id));
+            .orElseThrow(() -> new NotFoundException(Booking.MAPPED_NAME, id));
     }
 
     /**
@@ -98,7 +98,7 @@ public class BookingService {
      * @return the updated booking {@link Booking}.
      */
     public Booking updateBooking(BookingDto newBooking, Long id)
-        throws BookingNotFoundException {
+        throws NotFoundException {
         User user = userService.readUser(newBooking.getUser());
         Room room = roomService.readRoom(newBooking.getRoom());
 
@@ -116,13 +116,13 @@ public class BookingService {
     /**
      * Delete a booking {@link Booking}.
      */
-    public Booking deleteBooking(Long id) throws BookingNotFoundException {
+    public Booking deleteBooking(Long id) throws NotFoundException {
         try {
             Booking rf = readBooking(id);
             bookingRepository.delete(readBooking(id));
             return rf;
-        } catch (BookingNotFoundException e) {
-            throw new BookingNotFoundException(id);
+        } catch (NotFoundException e) {
+            throw new NotFoundException(Booking.MAPPED_NAME, id);
         }
     }
 }

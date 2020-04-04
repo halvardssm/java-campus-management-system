@@ -2,10 +2,9 @@ package nl.tudelft.oopp.group39.event.services;
 
 import java.util.List;
 import java.util.Map;
-import javassist.NotFoundException;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import nl.tudelft.oopp.group39.event.dao.EventDao;
 import nl.tudelft.oopp.group39.event.entities.Event;
-import nl.tudelft.oopp.group39.event.exceptions.EventNotFoundException;
 import nl.tudelft.oopp.group39.event.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +33,8 @@ public class EventService {
      * @return event by id {@link Event}.
      */
     public Event readEvent(Long id) {
-        return eventRepository.findById(id).orElseThrow(() -> new EventNotFoundException(id));
+        return eventRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException(Event.MAPPED_NAME, id));
     }
 
     /**
@@ -61,7 +61,7 @@ public class EventService {
                 event.setRooms(newEvent.getRooms());
                 return eventRepository.save(event);
             })
-            .orElseThrow(() -> new EventNotFoundException(id));
+            .orElseThrow(() -> new NotFoundException(Event.MAPPED_NAME, id));
     }
 
     /**

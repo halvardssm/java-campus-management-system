@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 import nl.tudelft.oopp.group39.building.dao.BuildingDao;
 import nl.tudelft.oopp.group39.building.entities.Building;
-import nl.tudelft.oopp.group39.building.exceptions.BuildingNotFoundException;
 import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class BuildingService {
      *
      * @return a list of buildings
      */
-    public List<Building> listBuildings(Map<String,String> params) {
+    public List<Building> listBuildings(Map<String, String> params) {
         return buildingDao.buildingFilter(params);
     }
 
@@ -30,26 +30,26 @@ public class BuildingService {
      *
      * @param id the id of the building
      * @return the Building that was found.
-     * @throws BuildingNotFoundException when no building is found.
+     * @throws NotFoundException when no building is found.
      */
-    public Building readBuilding(Long id) throws BuildingNotFoundException {
+    public Building readBuilding(Long id) throws NotFoundException {
         return buildingRepository.findById(id)
-            .orElseThrow(() -> new BuildingNotFoundException(id));
+            .orElseThrow(() -> new NotFoundException(Building.MAPPED_NAME, id));
     }
 
     /**
      * Deletes a building.
      *
      * @param id the id of the building
-     * @throws BuildingNotFoundException if the building wasn't found
+     * @throws NotFoundException if the building wasn't found
      */
-    public Building deleteBuilding(Long id) throws BuildingNotFoundException {
+    public Building deleteBuilding(Long id) throws NotFoundException {
         try {
             Building rf = readBuilding(id);
             buildingRepository.delete(readBuilding(id));
             return rf;
-        } catch (BuildingNotFoundException e) {
-            throw new BuildingNotFoundException(id);
+        } catch (NotFoundException e) {
+            throw new NotFoundException(Building.MAPPED_NAME, id);
         }
     }
 
@@ -66,17 +66,17 @@ public class BuildingService {
     /**
      * Updates a building.
      *
-     * @param id the id of the building that you want to update
+     * @param id          the id of the building that you want to update
      * @param newBuilding the new building
      * @return the updated booking
-     * @throws BuildingNotFoundException if the building wasn't found
+     * @throws NotFoundException if the building wasn't found
      */
-    public Building updateBuilding(Long id, Building newBuilding) throws BuildingNotFoundException {
+    public Building updateBuilding(Long id, Building newBuilding) throws NotFoundException {
         return buildingRepository.findById(id)
             .map(building -> {
                 newBuilding.setId(id);
                 building = newBuilding;
                 return buildingRepository.save(building);
-            }).orElseThrow(() -> new BuildingNotFoundException(id));
+            }).orElseThrow(() -> new NotFoundException(Building.MAPPED_NAME, id));
     }
 }

@@ -1,4 +1,6 @@
-package nl.tudelft.oopp.group39.config.abstracts;
+package nl.tudelft.oopp.group39.config.exceptions;
+
+import nl.tudelft.oopp.group39.config.Utils;
 
 public class NotFoundException extends RuntimeException {
     /**
@@ -7,7 +9,7 @@ public class NotFoundException extends RuntimeException {
      * @param id the id of the room that was not found
      */
     public NotFoundException(String name, Object id) {
-        super(name + " with id " + id + " wasn't found.");
+        super(Utils.firstLetterToUppercase(name) + " with id '" + id + "' wasn't found.");
     }
 
 }

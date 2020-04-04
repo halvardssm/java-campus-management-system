@@ -2,10 +2,9 @@ package nl.tudelft.oopp.group39.reservable.services;
 
 import java.util.List;
 import java.util.Map;
-import javassist.NotFoundException;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import nl.tudelft.oopp.group39.reservable.dao.ReservableDao;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
-import nl.tudelft.oopp.group39.reservable.exceptions.ReservableNotFoundException;
 import nl.tudelft.oopp.group39.reservable.repositories.ReservableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,7 @@ public class ReservableService {
     @Autowired
     private ReservableRepository reservableRepository;
     @Autowired
-    private ReservableDao reservableDao;
+    private ReservableDao<Reservable> reservableDao;
 
     /**
      * List all reservables.
@@ -35,7 +34,7 @@ public class ReservableService {
      */
     public Reservable readReservable(Long id) {
         return reservableRepository.findById(id)
-            .orElseThrow(() -> new ReservableNotFoundException(id));
+            .orElseThrow(() -> new NotFoundException(Reservable.MAPPED_NAME, id));
     }
 
     /**
@@ -61,10 +60,7 @@ public class ReservableService {
 
                 return reservableRepository.save(reservable);
             })
-            .orElseThrow(() -> new NotFoundException(String.format(
-                EXCEPTION_RESERVABLE_NOT_FOUND,
-                id
-            )));
+            .orElseThrow(() -> new NotFoundException(Reservable.MAPPED_NAME, id));
     }
 
     /**
