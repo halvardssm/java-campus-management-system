@@ -57,6 +57,7 @@ public class EventService {
                 event.setTitle(newEvent.getTitle());
                 event.setStartsAt(newEvent.getStartsAt());
                 event.setEndsAt(newEvent.getEndsAt());
+                event.setIsGlobal(newEvent.getIsGlobal());
                 event.setUser(newEvent.getUser());
                 event.setRooms(newEvent.getRooms());
                 return eventRepository.save(event);
