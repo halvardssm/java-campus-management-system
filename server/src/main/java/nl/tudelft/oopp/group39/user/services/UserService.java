@@ -29,7 +29,7 @@ public class UserService implements UserDetailsService {
      *
      * @return a list of users {@link User}.
      */
-    public List<User> listUsers(Map<String, String> params) {
+    public List<User> listUsers(Map<String, String> params) throws IllegalArgumentException {
         return userDao.filter(params);
     }
 
