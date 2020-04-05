@@ -2,9 +2,6 @@ package nl.tudelft.oopp.group39.building.entities;
 
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
