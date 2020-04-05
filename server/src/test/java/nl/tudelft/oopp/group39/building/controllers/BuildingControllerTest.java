@@ -38,7 +38,7 @@ public class BuildingControllerTest extends AbstractControllerTest {
 
     @BeforeEach
     void setUp() {
-        User user = userService.createUser(testUser);
+        User user = userService.createUser(testUser, true);
         jwt = jwtService.encrypt(testUser);
 
         Building building = buildingService.createBuilding(testBuilding);

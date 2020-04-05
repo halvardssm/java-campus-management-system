@@ -87,7 +87,7 @@ public class DbSeeder {
             Role.ADMIN
         );
 
-        userService.createUser(user);
+        userService.createUser(user, true);
 
         User user2 = new User(
             "student",
@@ -96,7 +96,7 @@ public class DbSeeder {
             null,
             Role.STUDENT
         );
-        userService.createUser(user2);
+        userService.createUser(user2, true);
         System.out.println("[SEED] Admin user created");
     }
 

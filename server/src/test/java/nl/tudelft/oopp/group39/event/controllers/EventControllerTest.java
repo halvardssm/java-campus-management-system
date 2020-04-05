@@ -37,7 +37,7 @@ class EventControllerTest extends AbstractControllerTest {
 
     @BeforeEach
     void setUp() {
-        userService.createUser(testUser);
+        userService.createUser(testUser, true);
         jwt = jwtService.encrypt(testUser);
 
         Event event = eventService.createEvent(testEvent);

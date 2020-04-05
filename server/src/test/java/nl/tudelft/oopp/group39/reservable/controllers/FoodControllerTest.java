@@ -29,7 +29,7 @@ class FoodControllerTest extends AbstractControllerTest {
 
     @BeforeEach
     void setUp() {
-        User user = userService.createUser(testUser);
+        User user = userService.createUser(testUser, true);
         jwt = jwtService.encrypt(testUser);
 
         Food food = foodService.createFood(testFood);

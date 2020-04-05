@@ -31,7 +31,7 @@ public class FacilityControllerTest extends AbstractControllerTest {
 
     @BeforeEach
     void setUp() {
-        User user = userService.createUser(testUser);
+        User user = userService.createUser(testUser, true);
         jwt = jwtService.encrypt(testUser);
 
         Facility facility = facilityService.createFacility(testFacility);

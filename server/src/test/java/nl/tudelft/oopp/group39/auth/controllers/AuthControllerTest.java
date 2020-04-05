@@ -16,7 +16,7 @@ class AuthControllerTest extends AbstractControllerTest {
 
     @BeforeEach
     void setUp() {
-        userService.createUser(testUser);
+        userService.createUser(testUser, true);
     }
 
     @AfterEach

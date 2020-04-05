@@ -16,7 +16,7 @@ class UserServiceTest extends AbstractTest {
 
     @BeforeEach
     void setUp() {
-        userService.createUser(testUserStudent);
+        userService.createUser(testUserStudent, true);
     }
 
     @AfterEach
@@ -39,7 +39,7 @@ class UserServiceTest extends AbstractTest {
 
         assertEquals(new ArrayList<>(), userService.listUsers(new HashMap<>()));
 
-        User user = userService.createUser(testUserStudent);
+        User user = userService.createUser(testUserStudent, true);
 
         assertEquals(testUserStudent, user);
     }
@@ -54,7 +54,7 @@ class UserServiceTest extends AbstractTest {
     @Test
     void updateUser() {
         testUserStudent.setEmail("test@tudelft.nl");
-        User user = userService.updateUser("test", testUserStudent);
+        User user = userService.updateUser("test", testUserStudent, true);
 
         assertEquals(testUserStudent, user);
     }
@@ -63,7 +63,7 @@ class UserServiceTest extends AbstractTest {
     void mapRoleForUser() {
         User user = testUserStudent;
         user.setRole(null);
-        userService.mapRoleForUser(user);
+        userService.mapRoleForUser(user, false);
 
         assertEquals(testUserStudent, user);
         assertEquals(user.getRole(), Role.STUDENT);

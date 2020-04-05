@@ -22,7 +22,7 @@ class JwtFilterTest extends AbstractTest {
 
     @BeforeEach
     void setUp() {
-        userService.createUser(testUser);
+        userService.createUser(testUser, true);
         jwt = jwtService.encrypt(testUser);
     }
 

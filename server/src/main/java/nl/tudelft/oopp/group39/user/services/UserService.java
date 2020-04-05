@@ -50,14 +50,16 @@ public class UserService implements UserDetailsService {
      *
      * @return the created user {@link User}.
      */
-    public User createUser(User newUser) {
+    public User createUser(User newUser, Boolean isAdmin) {
         try {
             readUser(newUser.getUsername());
             throw new ExistsException(User.MAPPED_NAME, newUser.getUsername());
 
         } catch (NotFoundException e) {
+
+            mapRoleForUser(newUser, isAdmin);
+
             newUser.setPassword(encryptPassword(newUser.getPassword()));
-            mapRoleForUser(newUser);
 
             userRepository.save(newUser);
 
@@ -72,10 +74,10 @@ public class UserService implements UserDetailsService {
      *
      * @return the updated user {@link User}.
      */
-    public User updateUser(String id, User newUser) throws NotFoundException {
+    public User updateUser(String id, User newUser, Boolean isAdmin) throws NotFoundException {
         return userRepository.findById(id)
             .map(user -> {
-                mapRoleForUser(newUser);
+                mapRoleForUser(newUser, isAdmin);
                 user.setEmail(newUser.getEmail());
                 user.setRole(newUser.getRole());
 
@@ -93,11 +95,21 @@ public class UserService implements UserDetailsService {
     /**
      * Will map the roles of a user to the roles in the db.
      *
-     * @param user A user to map roles for
+     * @param user    A user to map roles for
+     * @param isAdmin If the request is done by an admin
      */
-    protected void mapRoleForUser(User user) {
+    public void mapRoleForUser(User user, Boolean isAdmin) {
         try {
             Role role = Role.valueOf(user.getRole().getAuthority());
+
+            if (!isAdmin) {
+                if (user.getRole() == Role.ADMIN
+                    || (user.getRole() == Role.STAFF && !user.getEmail().endsWith("@tudelft.nl"))
+                ) {
+                    role = Role.STUDENT;
+                }
+            }
+
             user.setRole(role);
         } catch (NullPointerException | IllegalArgumentException e) {
             user.setRole(Role.STUDENT);

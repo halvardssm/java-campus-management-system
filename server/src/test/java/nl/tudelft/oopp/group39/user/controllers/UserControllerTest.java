@@ -24,7 +24,7 @@ class UserControllerTest extends AbstractControllerTest {
 
     @BeforeEach
     void setUp() {
-        userService.createUser(testUser);
+        userService.createUser(testUser, true);
         jwt = jwtService.encrypt(testUser);
         testUser.setPassword("test");
     }
@@ -92,7 +92,9 @@ class UserControllerTest extends AbstractControllerTest {
 
     @Test
     void testError() {
-        assertEquals("User can not be null.", userController.create(null).getBody().getError());
+        assertEquals("User can not be null.", userController.create(null, null)
+            .getBody()
+            .getError());
 
         assertEquals("User with id 'asdf' wasn't found.", userController.read(null, "asdf")
             .getBody()

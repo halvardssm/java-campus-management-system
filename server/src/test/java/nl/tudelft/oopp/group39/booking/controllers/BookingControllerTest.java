@@ -44,7 +44,7 @@ public class BookingControllerTest extends AbstractControllerTest {
 
     @BeforeEach
     void setUp() {
-        User user = userService.createUser(testUser);
+        User user = userService.createUser(testUser, true);
         jwt = jwtService.encrypt(testUser);
 
         Room room = roomService.createRoom(testRoom);

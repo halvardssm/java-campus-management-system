@@ -65,9 +65,21 @@ public class UserController extends AbstractController {
     @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> create(
+        @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String header,
         @RequestBody User user
     ) {
-        return restHandler(HttpStatus.CREATED, () -> service.createUser(user));
+        return restHandler(HttpStatus.CREATED, () -> {
+            Boolean isAdmin = false;
+            String token = getTokenFromHeader(header);
+
+            if (token != null) {
+                String username = jwtService.decryptUsername(getTokenFromHeader(header));
+
+                isAdmin = service.readUser(username).getRole() == Role.ADMIN;
+            }
+
+            return service.createUser(user, isAdmin);
+        });
     }
 
     /**
@@ -103,7 +115,18 @@ public class UserController extends AbstractController {
         return restHandler(
             header,
             () -> service.readUser(id).getUsername(),
-            () -> service.updateUser(id, user)
+            () -> {
+                Boolean isAdmin = false;
+                String token = getTokenFromHeader(header);
+
+                if (token != null) {
+                    String username = jwtService.decryptUsername(getTokenFromHeader(header));
+
+                    isAdmin = service.readUser(username).getRole() == Role.ADMIN;
+                }
+
+                return service.updateUser(id, user, isAdmin);
+            }
         );
     }
 
