@@ -5,77 +5,80 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="700.0" style="-fx-padding: 4px;" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.admin.building.BuildingEditController">
+<BorderPane fx:id="window" prefHeight="600.0" prefWidth="700.0" style="-fx-padding: 4px;" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.admin.building.BuildingEditController">
     <top>
         <HBox spacing="10" styleClass="bar">
             <padding>
-                <Insets bottom="15" left="15" right="15" top="15"/>
+                <Insets bottom="15" left="15" right="15" top="15" />
             </padding>
-            <Text id="title" text="Admin: Building View"/>
+            <VBox prefHeight="0.0" prefWidth="100.0">
+                <Button id="menubtn" alignment="CENTER" onMouseClicked="#toggleAdminSidebar">
+                    <graphic>
+                        <ImageView fitHeight="30" fitWidth="30">
+                            <Image url="@../../icons/menu-icon.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </VBox>
+            <Text id="title" text="Admin: Building View" />
         </HBox>
     </top>
     <bottom>
         <HBox spacing="10" styleClass="bar">
             <padding>
-                <Insets bottom="15" left="15" right="15" top="15"/>
+                <Insets bottom="15" left="15" right="15" top="15" />
             </padding>
-            <Button id="backbtn" fx:id="backbtn" onAction="#getBack" text="◀ Back"/>
+            <Button id="backbtn" fx:id="backbtn" onAction="#getBack" text="◀ Back" />
         </HBox>
     </bottom>
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <Text layoutX="27.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update a building"
-                  underline="true">
+            <Text layoutX="27.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update a building" underline="true">
                 <font>
-                    <Font name="System Bold" size="33.0"/>
+                    <Font name="System Bold" size="33.0" />
                 </font>
             </Text>
             <Text layoutX="35.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
                 <font>
-                    <Font name="System Bold" size="17.0"/>
+                    <Font name="System Bold" size="17.0" />
                 </font>
             </Text>
-            <TextField fx:id="nameFieldNew" layoutX="193.0" layoutY="119.0" prefHeight="31.0" prefWidth="200.0"
-                       promptText="name"/>
+            <TextField fx:id="nameFieldNew" layoutX="193.0" layoutY="119.0" prefHeight="31.0" prefWidth="200.0" promptText="name" />
             <Text layoutX="18.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Closing Time:">
                 <font>
-                    <Font name="System Bold" size="17.0"/>
+                    <Font name="System Bold" size="17.0" />
                 </font>
             </Text>
-            <ComboBox fx:id="timeClosedFieldNew" layoutX="200.0" layoutY="357.0" prefHeight="31.0" prefWidth="200.0"
-                      promptText="00:00:00"/>
+            <ComboBox fx:id="timeClosedFieldNew" layoutX="200.0" layoutY="357.0" prefHeight="31.0" prefWidth="200.0" promptText="00:00:00" />
             <Text layoutX="27.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address:">
                 <font>
-                    <Font name="System Bold" size="17.0"/>
+                    <Font name="System Bold" size="17.0" />
                 </font>
             </Text>
-            <TextField fx:id="locationFieldNew" layoutX="193.0" layoutY="170.0" prefHeight="31.0" prefWidth="200.0"
-                       promptText="Address"/>
+            <TextField fx:id="locationFieldNew" layoutX="193.0" layoutY="170.0" prefHeight="31.0" prefWidth="200.0" promptText="Address" />
             <Text layoutX="13.0" layoutY="309.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Opening Time:">
                 <font>
-                    <Font name="System Bold" size="17.0"/>
+                    <Font name="System Bold" size="17.0" />
                 </font>
             </Text>
-            <ComboBox fx:id="timeOpenFieldNew" layoutX="200.0" layoutY="302.0" prefHeight="31.0" prefWidth="200.0"
-                      promptText="23:59:59"/>
-            <Text layoutX="17.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:"
-                  wrappingWidth="109.99365234375">
+            <ComboBox fx:id="timeOpenFieldNew" layoutX="200.0" layoutY="302.0" prefHeight="31.0" prefWidth="200.0" promptText="23:59:59" />
+            <Text layoutX="17.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:" wrappingWidth="109.99365234375">
                 <font>
-                    <Font name="System Bold" size="17.0"/>
+                    <Font name="System Bold" size="17.0" />
                 </font>
             </Text>
-            <TextField fx:id="descriptionFieldNew" layoutX="193.0" layoutY="218.0" prefHeight="31.0" prefWidth="200.0"
-                       promptText="description"/>
-            <Button layoutX="600.0" layoutY="450.0" mnemonicParsing="false" onMouseClicked="#updateBuilding"
-                    text="Update Building"/>
-            <MenuBar fx:id="navBar" layoutX="4.0" prefHeight="33.0" prefWidth="890.0" AnchorPane.leftAnchor="0.0"
-                     AnchorPane.rightAnchor="0.0"/>
+            <TextField fx:id="descriptionFieldNew" layoutX="193.0" layoutY="218.0" prefHeight="31.0" prefWidth="200.0" promptText="description" />
+            <Button layoutX="600.0" layoutY="450.0" mnemonicParsing="false" onMouseClicked="#updateBuilding" text="Update Building" />
+            <MenuBar fx:id="navBar" layoutX="4.0" prefHeight="33.0" prefWidth="890.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
         </AnchorPane>
     </center>
 </BorderPane>

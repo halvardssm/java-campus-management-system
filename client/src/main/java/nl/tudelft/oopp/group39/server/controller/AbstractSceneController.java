@@ -20,6 +20,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import nl.tudelft.oopp.group39.admin.AdminPanelController;
 import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.event.model.Event;
@@ -33,6 +34,7 @@ import nl.tudelft.oopp.group39.user.controller.CalendarController;
 import nl.tudelft.oopp.group39.user.controller.SignupController;
 import nl.tudelft.oopp.group39.user.controller.UserPageController;
 import nl.tudelft.oopp.group39.user.model.User;
+import nl.tudelft.oopp.group39.views.AdminPanel;
 
 public abstract class AbstractSceneController {
     protected ObjectMapper mapper = new ObjectMapper()
@@ -90,6 +92,67 @@ public abstract class AbstractSceneController {
         AbstractSceneController controller = UsersDisplay.sceneControllerHandler(location);
         controller.changeUserBox();
         return controller;
+    }
+
+    /**
+     * Method to go to a specific screen in admin panel.
+     *
+     * @param location location of the xml file
+     * @return the controller for said xml file(for additional purposes)
+     * @throws IOException if said xml file does not exist.
+     *
+     */
+
+    public AbstractSceneController goToAdmin(String location) throws IOException {
+        AbstractSceneController controller = AdminPanel.sceneControllerHandler(location);
+        controller.changeUserBox();
+        return controller;
+    }
+
+    /**
+     * Switches view to the admin building list scene.
+     *
+     * @throws IOException if the scene wasn't found
+     */
+
+    public void goToAdminBuildingScene() throws IOException {
+        goToAdmin("/admin/building/BuildingList.fxml");
+    }
+
+    /**
+     * Switches view to the admin room list scene.
+     *
+     * @throws IOException if the scene wasn't found
+     */
+    public void goToAdminRoomScene() throws IOException {
+        goToAdmin("/admin/room/RoomList.fxml");
+    }
+    /**
+     * Switches view to the admin bookings scene.
+     *
+     * @throws IOException if the scene wasn't found
+     */
+
+    public void goToAdminBookingsScene() throws IOException {
+        goToAdmin("/admin/booking/BookingList.fxml");
+    }
+    /**
+     * Switches view to the admin user scene.
+     *
+     * @throws IOException if the scene wasn't found
+     */
+
+    public void goToAdminUserScene() throws IOException {
+        goToAdmin("/admin/user/UserList.fxml");
+    }
+
+    /**
+     * Switches view to the admin Event scene.
+     *
+     * @throws IOException if the scene wasn't found
+     */
+    public void goToAdminEventScene() throws IOException {
+        goToAdmin("/admin/event/EventList.fxml");
     }
 
     /**
@@ -154,6 +217,7 @@ public abstract class AbstractSceneController {
         RoomSceneController controller = (RoomSceneController) goTo("/room/roomView.fxml");
         controller.setup();
     }
+
 
     /**
      * Goes to reservation scene.
@@ -249,13 +313,31 @@ public abstract class AbstractSceneController {
     public void toggleSidebar() throws IOException {
         if (window.getLeft() == null) {
             sidebar = FXMLLoader.load(
-                getClass().getResource("/sidebar.fxml")
+                    getClass().getResource("/sidebar.fxml")
             );
             window.setLeft(sidebar);
             return;
         }
         window.setLeft(null);
     }
+
+    /**
+     * Toggles the admin sidebar.
+     *
+     * @throws IOException if view wasn't found.
+     */
+
+    public void toggleAdminSidebar() throws IOException {
+        if (window.getLeft() == null) {
+            sidebar = FXMLLoader.load(
+                    getClass().getResource("/adminSidebar.fxml")
+            );
+            window.setLeft(sidebar);
+            return;
+        }
+        window.setLeft(null);
+    }
+
 
     /**
      * Sets the capacity Slider for filtering in rooms and buildings.
