@@ -1,13 +1,20 @@
 package nl.tudelft.oopp.group39.admin.event;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
@@ -15,12 +22,14 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import nl.tudelft.oopp.group39.event.model.Event;
+import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
-
+import nl.tudelft.oopp.group39.user.model.User;
 
 
 public class EventCreateController extends EventListController {
 
+    private ObjectMapper mapper = new ObjectMapper();
     private Stage currentStage;
     @FXML
     private Button backbtn;
@@ -34,6 +43,10 @@ public class EventCreateController extends EventListController {
     private TextArea dateMessage;
     @FXML
     private MenuBar navBar;
+    @FXML
+    private ComboBox<String> userComboBox;
+    @FXML
+    private CheckBox globalCheckbox;
 
     /**
      * Initializes scene.
@@ -54,6 +67,9 @@ public class EventCreateController extends EventListController {
     public void initData() throws JsonProcessingException {
         dateMessage.setText("");
 
+        ObservableList<String> data = getUserIds();
+        userComboBox.setItems(data);
+        userComboBox.getSelectionModel().selectFirst();
         startField.setPromptText(LocalDate.now().toString());
         endField.setPromptText(LocalDate.now().toString());
     }
@@ -68,19 +84,22 @@ public class EventCreateController extends EventListController {
         LocalDate start = startField.getValue();
         boolean startNull = start == null;
         String startDate = startNull ? LocalDateTime.now().toString(
-        ) : start.toString() + "00:00:00";
+        ) : start.toString() + " 00:00:00";
         LocalDate end = endField.getValue();
+        String userId = userComboBox.getValue();
         boolean endNull = end == null;
+        boolean globalBool = globalCheckbox.isSelected();
         String endDate = endNull ? LocalDateTime.now().toString() : end.toString() + " 23:59:00";
-        checkValidity(startDate, endDate, startNull, endNull, title);
+        checkValidity(startDate, endDate, startNull, endNull, title, globalBool, userId);
     }
     /**
      * Communicates information to create event to server.
      */
 
     public void createEventFinal(
-            String title, String startDate, String endDate) throws IOException {
-        Event newEvent = new Event(title,startDate,endDate, true,null, new ArrayList<>());
+            String title, String startDate, String endDate
+            , boolean globalBool, String userId) throws IOException {
+        Event newEvent = new Event(title,startDate,endDate, globalBool,userId, new ArrayList<>());
         createAlert(ServerCommunication.addEvent(newEvent));
         getBack();
         createAlert("Created an event of type: " + title);
@@ -94,7 +113,9 @@ public class EventCreateController extends EventListController {
           String endDate,
           boolean startNull,
           boolean endNull,
-          String title) throws IOException {
+          String title,
+          boolean globalBool,
+          String userId) throws IOException {
         if (!endNull || !startNull) {
             if (!endNull && !startNull) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -112,7 +133,7 @@ public class EventCreateController extends EventListController {
                             + start.toString() + ", Inputted end date was:" + end.toString() + ")");
                     return;
                 }
-                createEventFinal(title, startDate, endDate);
+                createEventFinal(title, startDate, endDate, globalBool, userId);
                 return;
             }
             if (!endNull) {
@@ -125,7 +146,7 @@ public class EventCreateController extends EventListController {
                             + "(Automatically generated start date was: " + start.toString() + ")");
                     return;
                 }
-                createEventFinal(title, start.format(formatter), endDate);
+                createEventFinal(title, start.format(formatter), endDate, globalBool, userId);
                 return;
             }
             if (!startNull) {
@@ -139,7 +160,7 @@ public class EventCreateController extends EventListController {
                         + start.toString() + " )");
                     return;
                 }
-                createEventFinal(title, startDate, end.format(formatter));
+                createEventFinal(title, startDate, end.format(formatter), globalBool, userId);
                 return;
             }
         }

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,6 +21,7 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.admin.AdminPanelController;
 import nl.tudelft.oopp.group39.event.model.Event;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+import nl.tudelft.oopp.group39.user.model.User;
 
 @SuppressWarnings("unchecked")
 public class EventListController extends AdminPanelController {
@@ -92,6 +95,22 @@ public class EventListController extends AdminPanelController {
         eventTable.setItems(data);
         eventTable.getColumns().addAll(
                 idCol, typeCol, startCol, endCol, globalCol, userCol, deleteCol, updateCol);
+    }
+
+    /**
+     * Gets all (String) User ids.
+     */
+
+    public ObservableList<String> getUserIds() throws JsonProcessingException {
+        String users = ServerCommunication.get(ServerCommunication.user);
+        ArrayNode body = (ArrayNode) mapper.readTree(users).get("body");
+        users = mapper.writeValueAsString(body);
+        User[] list = mapper.readValue(users, User[].class);
+        List<String> dataList = new ArrayList<>();
+        for (User user : list) {
+            dataList.add(user.getUsername());
+        }
+        return FXCollections.observableArrayList(dataList);
     }
     /**
      * Inserts the update and delete buttons into table.

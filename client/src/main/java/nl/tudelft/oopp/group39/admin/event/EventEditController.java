@@ -6,9 +6,12 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
@@ -37,6 +40,8 @@ public class EventEditController extends EventListController {
     @FXML
     private TextArea dateMessage;
     @FXML
+    private ComboBox<String> userComboBox;
+    @FXML
     private CheckBox globalCheckbox;
 
     public void customInit() {
@@ -53,8 +58,15 @@ public class EventEditController extends EventListController {
         this.abcEvent = abcEvent;
         titleField.setPromptText(abcEvent.getTitle());
         globalCheckbox.setSelected(abcEvent.isGlobal());
-
-
+        ObservableList<String> data = getUserIds();
+        userComboBox.setItems(data);
+        String oldUser = abcEvent.getUser();
+        if(oldUser == null) {
+            userComboBox.getSelectionModel().selectFirst();
+        }
+        else {
+            userComboBox.getSelectionModel().select(oldUser);
+        }
         startField.setPromptText(abcEvent.getStartsAt().toString());
         endField.setPromptText(abcEvent.getEndsAt().toString());
     }
@@ -82,9 +94,10 @@ public class EventEditController extends EventListController {
         LocalDate end = endField.getValue();
         boolean endNull = end == null;
         boolean globalBool = globalCheckbox.isSelected();
+        String userId = userComboBox.getValue();
         String endDate = endNull ? abcEvent.getEndsAt().toString() : end.toString() + " 23:59:00";
         String id = Long.toString(abcEvent.getId());
-        checkValidity(id, startDate, endDate, startNull, endNull, title, globalBool);
+        checkValidity(id, startDate, endDate, startNull, endNull, title, userId, globalBool);
     }
     /**
      * Communicates edit of event to server.
@@ -95,11 +108,13 @@ public class EventEditController extends EventListController {
             String title,
             String startDate,
             String endDate,
-            Boolean globalBool) throws IOException {
-        System.out.println(globalBool);
-        ServerCommunication.updateEvent(id, title, startDate, endDate, globalBool);
+            String userId,
+            boolean globalBool) throws IOException {
+        Event newEvent = new Event(title,startDate,endDate, globalBool, userId, new ArrayList<>());
+        createAlert(ServerCommunication.updateEvent(newEvent, Long.valueOf(id)));
+//        ServerCommunication.updateEvent(id, title, startDate, endDate, globalBool);
         getBack();
-        createAlert("Updated: " + abcEvent.getTitle());
+//        createAlert("Updated: " + abcEvent.getTitle());
     }
     /**
      * Makes sure that values put into event are valid.
@@ -112,7 +127,8 @@ public class EventEditController extends EventListController {
             boolean startNull,
             boolean endNull,
             String title,
-            Boolean globalBool) throws IOException {
+            String userId,
+            boolean globalBool) throws IOException {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime start = LocalDateTime.parse(startDate, formatter);
         LocalDateTime end = LocalDateTime.parse(endDate, formatter);
@@ -132,7 +148,7 @@ public class EventEditController extends EventListController {
                 + end.toString() + " )");
             return;
         }
-        createEventFinal(id, title, startDate, endDate, globalBool);
+        createEventFinal(id, title, startDate, endDate, userId, globalBool);
     }
 
 }

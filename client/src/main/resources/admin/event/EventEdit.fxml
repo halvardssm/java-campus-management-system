@@ -24,39 +24,45 @@
     </bottom>
    <left>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <Text layoutX="27.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update an Event" underline="true">
+            <Text layoutX="14.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update an Event" underline="true">
                 <font>
                     <Font name="System Bold" size="33.0" />
                 </font>
             </Text>
-            <Text layoutX="27.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title:">
+            <Text layoutX="14.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title:">
                 <font>
                     <Font name="System Bold" size="17.0" />
                 </font>
             </Text>
             <TextField fx:id="titleField" layoutX="200.0" layoutY="106.0" prefHeight="31.0" prefWidth="200.0" promptText="title" />
-            <Text layoutX="15.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start date:">
+            <Text layoutX="14.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start date:">
                 <font>
                     <Font name="System Bold" size="17.0" />
                 </font>
             </Text>
             <DatePicker fx:id="startField" layoutX="200.0" layoutY="187.0" prefHeight="31.0" prefWidth="200.0" promptText="23:59:00" />
-            <Text layoutX="20.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End date:">
+            <Text layoutX="14.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End date:">
                 <font>
                     <Font name="System Bold" size="17.0" />
                 </font>
             </Text>
-            <DatePicker fx:id="endField" layoutX="200.0" layoutY="276.0" prefHeight="31.0" prefWidth="200.0" promptText="00:00:00" />
+            <DatePicker fx:id="endField" layoutX="200.0" layoutY="266.0" prefHeight="31.0" prefWidth="200.0" promptText="00:00:00" />
             <Button layoutX="776.0" layoutY="459.0" mnemonicParsing="false" onMouseClicked="#editEvent" text="Update Event" />
             <MenuBar fx:id="navBar" layoutY="2.0" prefHeight="32.0" prefWidth="891.0">
             </MenuBar>
             <TextArea fx:id="dateMessage" disable="true" layoutX="443.0" layoutY="104.0" prefHeight="212.0" prefWidth="417.0" />
-            <Text layoutX="20.0" layoutY="364.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Is global:">
+            <Text layoutX="14.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User:" wrappingWidth="109.99365234375">
                 <font>
                     <Font name="System Bold" size="17.0" />
                 </font>
             </Text>
-            <CheckBox layoutX="201.0" layoutY="346.0" mnemonicParsing="false" fx:id="globalCheckbox"/>
+            <ComboBox layoutX="200.0" layoutY="336.0" prefHeight="31.0" prefWidth="200.0"  fx:id="userComboBox"/>
+            <Text layoutX="14.0" layoutY="416.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Is global:">
+                <font>
+                    <Font name="System Bold" size="17.0" />
+                </font>
+            </Text>
+            <CheckBox layoutX="201.0" layoutY="400.0" mnemonicParsing="false" fx:id="globalCheckbox"/>
         </AnchorPane>
    </left>
 </BorderPane>
