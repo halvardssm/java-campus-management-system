@@ -169,5 +169,11 @@ public class AdminPanelController extends MainAdminController implements Initial
         Stage currentStage = (Stage) buildingView.getScene().getWindow();
         switchEventView(currentStage);
     }
+
+    @FXML
+    private void getBackFromAdmin() throws IOException {
+        Stage currentStage = (Stage) buildingView.getScene().getWindow();
+        mainSwitch("/building/buildingListView.fxml", currentStage);
+    }
 }
 

@@ -39,7 +39,9 @@ public class ServerCommunication {
      * @return the body of a get request to the server.
      */
     public static String get(String type) {
-        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(url + type)).build();
+        HttpRequest request = HttpRequest.newBuilder()
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .GET().uri(URI.create(url + type)).build();
         return httpRequest(request);
     }
 

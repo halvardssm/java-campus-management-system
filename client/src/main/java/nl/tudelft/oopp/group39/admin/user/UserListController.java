@@ -70,6 +70,7 @@ public class UserListController extends AdminPanelController {
         this.lastSelectedRole = allRoles;
         this.lastSelectedName = "";
         String users = ServerCommunication.get(ServerCommunication.user);
+        System.out.println(users);
         loadUsers(users);
     }
     /**

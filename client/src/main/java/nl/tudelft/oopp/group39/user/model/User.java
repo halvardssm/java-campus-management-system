@@ -1,8 +1,10 @@
 package nl.tudelft.oopp.group39.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.sql.Blob;
 
+@JsonIgnoreProperties(value = { "events"})
 public class User {
     private String username;
     private String email;
