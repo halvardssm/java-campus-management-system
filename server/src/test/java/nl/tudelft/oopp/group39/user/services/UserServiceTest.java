@@ -3,6 +3,7 @@ package nl.tudelft.oopp.group39.user.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import nl.tudelft.oopp.group39.AbstractTest;
 import nl.tudelft.oopp.group39.user.entities.User;
@@ -26,7 +27,7 @@ class UserServiceTest extends AbstractTest {
 
     @Test
     void listUsers() {
-        List<User> users = userService.listUsers();
+        List<User> users = userService.listUsers(new HashMap<>());
 
         assertEquals(1, users.size());
         assertEquals(testUserStudent, users.get(0));
@@ -36,7 +37,7 @@ class UserServiceTest extends AbstractTest {
     void deleteAndCreateUser() {
         userService.deleteUser(testUserStudent.getUsername());
 
-        assertEquals(new ArrayList<>(), userService.listUsers());
+        assertEquals(new ArrayList<>(), userService.listUsers(new HashMap<>()));
 
         User user = userService.createUser(testUserStudent);
 
