@@ -1,31 +1,42 @@
 package nl.tudelft.oopp.group39.building.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-
+import java.util.Objects;
 import java.util.Set;
-//import nl.tudelft.oopp.group39.models.Room;
+import nl.tudelft.oopp.group39.room.comparator.RoomCapacityComparator;
 import nl.tudelft.oopp.group39.room.model.Room;
-import nl.tudelft.oopp.group39.room.model.RoomCapacityComparator;
 
 public class Building {
-
     private Long id;
-
     private String name;
-
     private String location;
-
     private String description;
 
-    private String open;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+    @JsonDeserialize(using = LocalTimeDeserializer.class)
+    @JsonSerialize(using = LocalTimeSerializer.class)
+    private LocalTime open;
 
-    private String closed;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+    @JsonDeserialize(using = LocalTimeDeserializer.class)
+    @JsonSerialize(using = LocalTimeSerializer.class)
+    private LocalTime closed;
 
     private Set<Room> rooms = new HashSet<>();
 
+    /**
+     * Creates a building.
+     */
     public Building() {
-
     }
 
     /**
@@ -43,8 +54,8 @@ public class Building {
         String name,
         String location,
         String description,
-        String open,
-        String closed,
+        LocalTime open,
+        LocalTime closed,
         Set<Room> rooms
     ) {
         this.id = id;
@@ -56,36 +67,119 @@ public class Building {
         this.rooms.addAll(rooms);
     }
 
+    /**
+     * Gets the id of the building.
+     *
+     * @return the building id
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Gets the name of the building.
+     *
+     * @return the building name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Get the address of the building.
+     *
+     * @return the building location
+     */
     public String getLocation() {
         return location;
     }
 
+    /**
+     * Gets the description of the building.
+     *
+     * @return the building description
+     */
     public String getDescription() {
         return description;
     }
 
-    public String getOpen() {
+    /**
+     * Gets the opening time of the building.
+     *
+     * @return the opening time
+     */
+    public LocalTime getOpen() {
         return open;
     }
 
-    public String getClosed() {
+    /**
+     * Gets the closing time of the building.
+     *
+     * @return the closing time
+     */
+    public LocalTime getClosed() {
         return closed;
     }
 
+    /**
+     * Gets the rooms that the building has.
+     *
+     * @return a set of rooms of the building
+     */
     public Set<Room> getRooms() {
         return rooms;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setOpen(LocalTime open) {
+        this.open = open;
+    }
+
+    public void setClosed(LocalTime closed) {
+        this.closed = closed;
+    }
+
+    /**
+     * Change the room of the buildings.
+     *
+     * @param rooms the new set of rooms of the building
+     */
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Building building = (Building) o;
+
+        return id.equals(building.id)
+            && name.equals(building.name)
+            && location.equals(building.location)
+            && description.equals(building.description)
+            && open.equals(building.open)
+            && closed.equals(building.closed)
+            && Arrays.deepEquals(building.rooms.toArray(),rooms.toArray());
     }
 
     /**
@@ -93,12 +187,17 @@ public class Building {
      *
      * @return the max capacity of a room in the building
      */
+    @JsonIgnore
     public int getMaxCapacity() {
-//        if (rooms.size() == 0) {
-//            return 0;
-//        }
-//        Room max = (Room) Collections.max(rooms, new RoomCapacityComparator());
-//        return max.getCapacity();
-        return 0;
+        if (rooms.size() == 0) {
+            return 0;
+        }
+        Room max = Collections.max(rooms, new RoomCapacityComparator());
+        return max.getCapacity();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

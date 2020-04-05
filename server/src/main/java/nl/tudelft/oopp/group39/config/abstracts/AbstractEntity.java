@@ -22,13 +22,28 @@ public abstract class AbstractEntity<E extends AbstractEntity<E, D>, D extends I
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
+    /**
+     * Gets the id.
+     *
+     * @return the id
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * Changes the id.
+     *
+     * @param id the new id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Changes an entity to a Dto object.
+     *
+     * @return a Dto object
+     */
     public abstract D toDto();
 }

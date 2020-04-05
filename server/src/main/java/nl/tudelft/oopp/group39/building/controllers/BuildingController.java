@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(BuildingController.REST_MAPPING)
 public class BuildingController {
     public static final String REST_MAPPING = "/building";
-
     public static final String PARAM_CAPACITY = "capacity";
     public static final String PARAM_OPEN = "open";
     public static final String PARAM_CLOSED = "closed";
@@ -36,7 +35,9 @@ public class BuildingController {
     private BuildingService buildingService;
 
     /**
-     * Creates a ResponseEntity with a list of all buildings.
+     * GET endpoint to retrieve all buildings.
+     *
+     * @return a list of buildings
      */
     @GetMapping("")
     public ResponseEntity<RestResponse<Object>> listBuildings(
@@ -48,41 +49,62 @@ public class BuildingController {
     }
 
     /**
-     * Creates a building with the dto supplied by the curl request.
+     * POST endpoint to create a building.
      *
-     * @param building the dto values of the building to be created
-     * @return the newly created building
+     * @return the created building
      */
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createBuilding(@RequestBody BuildingDto building) {
-
-        return RestResponse.create(
-            buildingService.createBuilding(building.toEntity()).toDto(),
-            null,
-            HttpStatus.CREATED
-        );
+        try {
+            return RestResponse.create(
+                buildingService.createBuilding(building.toEntity()).toDto(),
+                null,
+                HttpStatus.CREATED
+            );
+        } catch (Exception e) {
+            return RestResponse.error(e);
+        }
     }
 
+    /**
+     * GET endpoint to retrieve a building.
+     *
+     * @return the requested building
+     */
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> readBuilding(@PathVariable Long id) {
-        return RestResponse.create(buildingService.readBuilding(id).toDto());
+        try {
+            return RestResponse.create(buildingService.readBuilding(id).toDto());
+        } catch (Exception e) {
+            return RestResponse.error(e);
+
+        }
     }
 
+    /**
+     * PUT endpoint to update the building.
+     *
+     * @return the updated building
+     */
     @PutMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> updateBuilding(
         @RequestBody BuildingDto updated,
         @PathVariable Long id
     ) {
-        return RestResponse.create(buildingService.updateBuilding(id, updated.toEntity()).toDto());
+        try {
+            return RestResponse.create(buildingService.updateBuilding(
+                id, updated.toEntity()).toDto()
+            );
+        } catch (Exception e) {
+            return RestResponse.error(e);
+        }
     }
 
     /**
-     * Deletes an existing building or throws a
-     * @param id the id of the room.
-     * @return nothing.
+     * DELETE endpoint to delete a booking.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteBuilding(@PathVariable Long id) {

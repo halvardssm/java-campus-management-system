@@ -37,7 +37,7 @@ public class UserController {
      *
      * @return a list of users {@link User}.
      */
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<RestResponse<Object>> listUsers() {
         return RestResponse.create(service.listUsers());
     }
@@ -59,7 +59,7 @@ public class UserController {
      *
      * @return the created user {@link User}.
      */
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<RestResponse<Object>> createUser(@RequestBody User user) {
         try {
             return RestResponse.create(service.createUser(user), null, HttpStatus.CREATED);

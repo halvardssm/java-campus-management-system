@@ -10,14 +10,9 @@ import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 //import nl.tudelft.oopp.group39.communication.ServerCommunication;
 
 public class LoginController extends AbstractSceneController {
-    @FXML
-    private TextField usernameField;
-
-    @FXML
-    private PasswordField passwordField;
-
-    @FXML
-    private Label errormsg;
+    @FXML private TextField usernameField;
+    @FXML private PasswordField passwordField;
+    @FXML private Label errormsg;
 
     /**
      * Logs the user in.
@@ -29,6 +24,8 @@ public class LoginController extends AbstractSceneController {
             if (ServerCommunication.userLogin(user, password).equals("Logged in")) {
                 changeUserBox();
                 goToBuildingScene();
+            } else {
+                createAlert("Wrong username or password");
             }
         }
         System.out.println(loggedIn);

@@ -30,34 +30,69 @@ public class Facility extends AbstractEntity<Facility, IEntity> {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private String description;
 
-    @ManyToMany(mappedBy = Facility.TABLE_NAME, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = Facility.TABLE_NAME, fetch = FetchType.EAGER)
     private Set<Room> rooms = new HashSet<>();
 
+    /**
+     * Creates a facility.
+     */
     public Facility() {
     }
 
+    /**
+     * Creates a facility.
+     *
+     * @param description a description of the facilities
+     * @param rooms       the rooms where the facility is available
+     */
     public Facility(String description, Set<Room> rooms) {
         this.description = description;
         this.rooms.addAll(initSet(rooms));
     }
 
+    /**
+     * Gets the description of the facility.
+     *
+     * @return the description of the facility
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Changes the description of the facility.
+     *
+     * @param description the new description of the facility
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Changes the rooms where a facility is available.
+     *
+     * @param rooms the new set of rooms
+     */
     public void setRooms(Set<Room> rooms) {
         this.rooms = rooms.size() == 0 ? new HashSet<>() : rooms;
     }
 
+    /**
+     * Changes to a Dto object.
+     *
+     * @return null
+     */
     @Override
     public IEntity toDto() {
         return null;
     }
 
+    /**
+     * Checks whether two facilities are equal.
+     *
+     * @param o the other object
+     * @return  true if the two facilities are equal, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {

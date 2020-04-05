@@ -23,9 +23,7 @@ class AuthControllerTest extends AbstractControllerTest {
         "test@tudelft.nl",
         "test",
         null,
-        Role.ADMIN,
-        null,
-        null
+        Role.ADMIN
     );
 
     @BeforeEach

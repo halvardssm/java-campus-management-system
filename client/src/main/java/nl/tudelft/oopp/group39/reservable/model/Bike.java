@@ -1,13 +1,12 @@
 package nl.tudelft.oopp.group39.reservable.model;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import nl.tudelft.oopp.group39.reservable.model.Reservable;
-
 public class Bike extends Reservable {
-
     private String bikeType;
     private String rentalDuration;
 
+    /**
+     * Creates a bike.
+     */
     public Bike() {
         super();
     }
@@ -22,9 +21,9 @@ public class Bike extends Reservable {
      * @param rentalDuration for how long the bike can be rented
      */
     public Bike(
-        Integer id,
-        double price,
-        JsonNode building,
+        Long id,
+        Double price,
+        Long building,
         String bikeType,
         String rentalDuration
     ) {
@@ -33,10 +32,20 @@ public class Bike extends Reservable {
         this.rentalDuration = rentalDuration;
     }
 
+    /**
+     * Gets the bike type.
+     *
+     * @return the bike type
+     */
     public String getBikeType() {
         return bikeType;
     }
 
+    /**
+     * Gets the duration how long a rental takes place.
+     *
+     * @return the rental duration
+      */
     public String getRentalDuration() {
         return rentalDuration;
     }

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RoomService {
-
     @Autowired
     private RoomRepository roomRepository;
     @Autowired
@@ -23,31 +22,40 @@ public class RoomService {
     @Autowired
     private FacilityService facilityService;
 
+    /**
+     * Reads a room.
+     *
+     * @param id the room to be read
+     * @return   the requested room
+     * @throws RoomNotFoundException if the room wasn't found
+     */
     public Room readRoom(Long id) throws RoomNotFoundException {
         return roomRepository.findById(id).orElseThrow(() -> new RoomNotFoundException(id));
     }
 
+    /**
+     * Lists all rooms.
+     *
+     * @return a list of rooms
+     */
     public List<Room> listRooms() {
         return roomRepository.findAll();
     }
 
     /**
-     * Creates a room with the dto supplied by the curl request.
+     * Create a room.
      *
-     * @param newRoom the values of the room to be created
-     * @return the inserted value converted back to dto
-     * @return the room.
+     * @return the created room
      */
     public Room createRoom(Room newRoom) {
         return roomRepository.save(newRoom);
     }
 
     /**
-     * Updates an existing room or throws a RoomNotFoundException
-     * if the room that is to be deleted isn't found.
-     * @param id the id of the room.
-     * @param newRoom the values of the room to be updated.
-     * @return the updated room.
+     * Update a room.
+     *
+     * @return the updated room
+     * @throws RoomNotFoundException if the room wasn't found
      */
     public Room updateRoom(Room newRoom, Long id) throws RoomNotFoundException {
         return roomRepository.findById(id)
@@ -71,10 +79,9 @@ public class RoomService {
     }
 
     /**
-     * Deletes an existing room or throws a RoomNotFoundException
-     * if the room that is to be deleted isn't found.
-     * @param id the id of the room.
-     * @return nothing.
+     * Delete a room.
+     *
+     * @throws RoomNotFoundException if the room wasn't found
      */
     public Room deleteRoom(Long id) throws RoomNotFoundException {
         try {
@@ -91,7 +98,7 @@ public class RoomService {
      *
      * @param room A user to map roles for
      */
-    private void mapFacilitiesForRooms(Room room) {
+    protected void mapFacilitiesForRooms(Room room) {
         Set<Facility> facilities = new HashSet<>();
         for (Facility facility : room.getFacilities()) {
             Facility mappedFacility = facilityService.readFacility(facility.getId());

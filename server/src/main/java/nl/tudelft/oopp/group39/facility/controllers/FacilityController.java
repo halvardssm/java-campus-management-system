@@ -19,42 +19,71 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(FacilityController.REST_MAPPING)
 public class FacilityController {
-
     public static final String REST_MAPPING = "/facility";
 
     @Autowired
     private FacilityService service;
 
-    @GetMapping("")
+    /**
+     * GET endpoint to retrieve all facilities.
+     *
+     * @return a list of facilities
+     */
+    @GetMapping
     public ResponseEntity<RestResponse<Object>> listFacilities() {
         return RestResponse.create(service.listFacilities());
     }
 
-    @PostMapping("")
+    /**
+     * POST endpoint to create a facility.
+     *
+     * @return the created facility
+     */
+    @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createFacility(@RequestBody Facility facility) {
-        return RestResponse.create(service.createFacility(facility), null, HttpStatus.CREATED);
+        try {
+            return RestResponse.create(service.createFacility(facility), null, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return RestResponse.error(e);
+        }
     }
 
+    /**
+     * GET endpoint to retrieve the facility.
+     *
+     * @return the requested facility
+     */
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> readFacility(@PathVariable Long id) {
-        return RestResponse.create(service.readFacility(id));
+        try {
+            return RestResponse.create(service.readFacility(id));
+        } catch (Exception e) {
+            return RestResponse.error(e);
+        }
     }
 
+    /**
+     * PUT endpoint to update the facility.
+     *
+     * @return the updated facility
+     */
     @PutMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> updateFacility(
         @RequestBody Facility updated,
         @PathVariable Long id
     ) {
-        return RestResponse.create(service.updateFacility(updated, id));
+        try {
+            return RestResponse.create(service.updateFacility(updated, id));
+        } catch (Exception e) {
+            return RestResponse.error(e);
+        }
     }
 
     /**
-     * Deletes an existing facility.
-     * @param id the id of the facility.
-     * @return nothing.
+     * Doc. TODO Sven
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteFacility(@PathVariable Long id) {
@@ -62,5 +91,4 @@ public class FacilityController {
 
         return RestResponse.create(null, null, HttpStatus.OK);
     }
-
 }

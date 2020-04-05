@@ -47,12 +47,18 @@ public class ReservationService {
         return reservationRepository.findAll();
     }
 
+    /**
+     * Method to filter reservations.
+     *
+     * @param filters the filter where you want to filter on
+     * @return        the filtered reservations
+     */
     public List<Reservation> filterReservations(Map<String, String> filters) {
         return reservationDao.reservationFilter(filters);
     }
 
     /**
-     * Get an reservation.
+     * Get a reservation.
      *
      * @return reservation by id {@link Reservation}.
      */
@@ -65,7 +71,7 @@ public class ReservationService {
     }
 
     /**
-     * Create an reservation.
+     * Create a reservation.
      *
      * @return the created reservation {@link Reservation}.
      */
@@ -74,7 +80,7 @@ public class ReservationService {
     }
 
     /**
-     * Create an reservation.
+     * Create a reservation.
      *
      * @return the created reservation {@link Reservation}.
      */
@@ -116,7 +122,7 @@ public class ReservationService {
     }
 
     /**
-     * Update an reservation.
+     * Update a reservation.
      *
      * @return the updated reservation {@link Reservation}.
      */
@@ -155,7 +161,7 @@ public class ReservationService {
     }
 
     /**
-     * Delete an reservation {@link Reservation}.
+     * Delete a reservation {@link Reservation}.
      */
     public void deleteReservation(Long id) {
         reservationAmountService.deleteReservationAmountsByReservationId(id);

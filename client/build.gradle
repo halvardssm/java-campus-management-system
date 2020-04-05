@@ -6,13 +6,19 @@ application {
     mainClassName = "nl.tudelft.oopp.demo.MainApp"
 }
 
+repositories {
+    jcenter()
+}
+
 dependencies {
     testCompile("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.6.0")
+    testImplementation 'org.mockito:mockito-core:3.3.3'
     implementation('com.fasterxml.jackson.core:jackson-core:2.10.2',
             'com.fasterxml.jackson.core:jackson-annotations:2.10.2',
             'com.fasterxml.jackson.core:jackson-databind:2.10.2',
-            'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.2')
+            'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.2',
+            'com.calendarfx:view:11.8.3')
 }
 
 javafx {

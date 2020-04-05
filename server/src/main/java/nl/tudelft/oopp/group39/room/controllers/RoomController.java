@@ -39,7 +39,7 @@ public class RoomController {
      *
      * @see RoomDao#roomFilter(Map)
      */
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<RestResponse<Object>> listRooms(
         @RequestParam Map<String, String> allParams
     ) {
@@ -54,32 +54,39 @@ public class RoomController {
      * @param newRoom the dto values of the room to be created
      * @return the inserted value converted back to dto
      */
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createRoom(@RequestBody RoomDto newRoom) {
-        return RestResponse.create(
-            service.createRoom(newRoom.toEntity()).toDto(),
-            null,
-            HttpStatus.CREATED
-        );
+        try {
+            return RestResponse.create(
+                service.createRoom(newRoom.toEntity()).toDto(),
+                null,
+                HttpStatus.CREATED
+            );
+        } catch (Exception e) {
+            return RestResponse.error(e);
+        }
     }
 
     /**
-     * Gets/Reads an existing room or throws a RoomNotFoundException.
-     * @param id the id of the room.
-     * @return the room.
+     * GET Endpoint to get a room.
+     *
+     * @return the requested room
      */
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> readRoom(@PathVariable Long id) {
-        return RestResponse.create(service.readRoom(id).toDto());
+        try {
+            return RestResponse.create(service.readRoom(id).toDto());
+        } catch (Exception e) {
+            return RestResponse.error(e);
+        }
     }
 
     /**
-     * Updates an existing room or throws a RoomNotFoundException.
-     * @param id the id of the room.
-     * @param updated the dto values of the room to be updated.
-     * @return the updated room.
+     * PUT Endpoint to update a room.
+     *
+     * @return the updated room
      */
     @PutMapping("/{id}")
     @ResponseBody
@@ -87,13 +94,15 @@ public class RoomController {
         @RequestBody RoomDto updated,
         @PathVariable Long id
     ) {
-        return RestResponse.create(service.updateRoom(updated.toEntity(), id).toDto());
+        try {
+            return RestResponse.create(service.updateRoom(updated.toEntity(), id).toDto());
+        } catch (Exception e) {
+            return RestResponse.error(e);
+        }
     }
 
     /**
-     * Deletes an existing room or throws a RoomNotFoundException.
-     * @param id the id of the room.
-     * @return nothing.
+     * Delete Endpoint to delete a room.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteRoom(@PathVariable Long id) {

@@ -17,9 +17,7 @@ class UserServiceTest extends AbstractTest {
         "test@tudelft.nl",
         "test",
         null,
-        Role.STUDENT,
-        null,
-        null
+        Role.STUDENT
     );
 
     @BeforeEach

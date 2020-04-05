@@ -4,17 +4,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import nl.tudelft.oopp.group39.building.model.Building;
+import nl.tudelft.oopp.group39.event.model.Event;
+import nl.tudelft.oopp.group39.reservable.model.Bike;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 import nl.tudelft.oopp.group39.user.model.User;
 
 public class ServerCommunication {
-
     public static String user = "user/";
     public static String building = "building/";
     public static String room = "room/";
@@ -27,7 +29,8 @@ public class ServerCommunication {
     public static String event = "event/";
     private static HttpClient client = HttpClient.newBuilder().build();
     public static String url;
-    private static ObjectMapper mapper = new ObjectMapper();
+    private static ObjectMapper mapper =
+        new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     /**
      * Retrieves all Objects of type type.
@@ -49,7 +52,6 @@ public class ServerCommunication {
     public static User getUser(String username) throws JsonProcessingException {
         HttpRequest request =
             HttpRequest.newBuilder().GET().uri(URI.create(url + user + username)).build();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         JsonNode userJson = mapper.readTree(httpRequest(request)).get("body");
         String userAsString = mapper.writeValueAsString(userJson);
         return mapper.readValue(userAsString, User.class);
@@ -76,8 +78,7 @@ public class ServerCommunication {
 
     public static Building getTheBuilding(long id) throws JsonProcessingException {
         HttpRequest request = HttpRequest.newBuilder()
-            .GET().uri(URI.create(url + building + id)).build();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                .GET().uri(URI.create(url + building + id)).build();
         JsonNode roomJson = mapper.readTree(httpRequest(request)).get("body");
         String roomAsString = mapper.writeValueAsString(roomJson);
         return mapper.readValue(roomAsString, Building.class);
@@ -104,7 +105,6 @@ public class ServerCommunication {
      * @return the body of a get request to the server.
      */
     public static String getRooms(String input) {
-        System.out.println(url + "room?" + input);
         HttpRequest request = HttpRequest.newBuilder()
             .GET()
             .uri(URI.create(url + "room?" + input))
@@ -145,7 +145,6 @@ public class ServerCommunication {
             .GET()
             .uri(URI.create(url + room + roomId))
             .build();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         JsonNode roomJson = mapper.readTree(httpRequest(request)).get("body");
         String roomAsString = mapper.writeValueAsString(roomJson);
         return mapper.readValue(roomAsString, Room.class);
@@ -301,6 +300,56 @@ public class ServerCommunication {
     }
 
     /**
+     * Adds a room on the server.
+     *
+     * @return the body of a post request to the server.
+     */
+    public static String addEvent(Event eventObj) throws JsonProcessingException {
+        String eventJson = mapper.writeValueAsString(eventObj);
+        System.out.println(eventJson);
+        HttpRequest.BodyPublisher newEvent = HttpRequest.BodyPublishers
+            .ofString(eventJson);
+        HttpRequest request = HttpRequest.newBuilder().POST(newEvent)
+            .uri(URI.create(url + event))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Retrieves array of filtered events from server.
+     *
+     * @param filters String of filters
+     * @return the body of a get request to the server.
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public static Event[] getEvents(String filters) throws JsonProcessingException {
+        String urlString = url + "event?" + filters;
+        System.out.println(urlString);
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
+        ArrayNode eventJson = (ArrayNode) mapper.readTree(httpRequest(request)).get("body");
+        String eventAsString = mapper.writeValueAsString(eventJson);
+        return mapper.readValue(eventAsString, Event[].class);
+    }
+
+    /**
+     * Updates event in the server.
+     *
+     * @param eventObj the new event
+     * @param id       id of the to be updated event
+     * @return the body of a put request to the server.
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public static String updateEvent(Event eventObj, Long id) throws JsonProcessingException {
+        String eventJson = mapper.writeValueAsString(eventObj);
+        HttpRequest.BodyPublisher newEvent = HttpRequest.BodyPublishers
+            .ofString(eventJson);
+        HttpRequest request = HttpRequest.newBuilder().PUT(newEvent)
+            .uri(URI.create(url + event + id))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    /**
      * Updates bookings on the server.
      *
      * @return the body of a put request to the server.
@@ -367,6 +416,28 @@ public class ServerCommunication {
     }
 
     /**
+     * Updates Rooms on the server.
+     *
+     * @return the body of a put request to the server.
+     */
+    public static String updateRoom(
+        String buildingId,
+        String roomCapacity,
+        String roomDescription,
+        String id,
+        String bookings
+    ) {
+        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers
+            .ofString("{\"buildingId\": \"" + buildingId + "\", \"capacity\":\""
+                + roomCapacity + "\", \"description\":\"" + roomDescription
+                + "\", \"bookings\":\"" + bookings + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding)
+            .uri(URI.create(url + room + id))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    /**
      * Updates buildings on the server.
      *
      * @return the body of a post request to the server.
@@ -384,7 +455,7 @@ public class ServerCommunication {
                 + "\", \"description\":\"" + description + "\", \"open\":\"" + open
                 + "\", \"closed\":\"" + closed + "\"}");
         HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding)
-            .uri(URI.create(url + "building/" + id))
+            .uri(URI.create(url + building + id))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }
@@ -482,7 +553,6 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
-
     /**
      * Retrieves all bookings from the server.
      *
@@ -521,6 +591,23 @@ public class ServerCommunication {
     }
 
     /**
+     * Retrieves Bike from server filtered on id.
+     *
+     * @param bikeId the id of requested bike
+     * @return the body of a get request to the server.
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public static Bike getBike(Long bikeId) throws JsonProcessingException {
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create(url + bike + bikeId))
+            .build();
+        String bikeString =
+            mapper.writeValueAsString(mapper.readTree(httpRequest(request)).get("body"));
+        return mapper.readValue(bikeString, Bike.class);
+    }
+
+    /**
      * Retrieves food filtered on building id.
      *
      * @param buildingId the id of the selected building
@@ -548,7 +635,7 @@ public class ServerCommunication {
         String timeOfPickup,
         String timeOfDelivery,
         String user,
-        Integer roomId,
+        Long roomId,
         String reservable
     ) {
         String timeofDeliv;
@@ -685,5 +772,4 @@ public class ServerCommunication {
             return "Logged in";
         }
     }
-
 }

@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.building.services;
 
 import java.util.List;
 import java.util.Map;
+
 import nl.tudelft.oopp.group39.building.dao.BuildingDao;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.exceptions.BuildingNotFoundException;
@@ -17,23 +18,32 @@ public class BuildingService {
     private BuildingDao buildingDao;
 
     /**
-     * Creates a list of all buildings.
-     * @return that list.
+     * List all buildings.
+     *
+     * @return a list of buildings
      */
+
     public List<Building> listBuildings(Map<String,String> params) {
         return buildingDao.buildingFilter(params);
     }
 
-    public Building readBuilding(long id) throws BuildingNotFoundException {
+    /**
+     * Reads the building inside the database using its id.
+     *
+     * @param id the id of the building
+     * @return the Building that was found.
+     * @throws BuildingNotFoundException when no building is found.
+     */
+    public Building readBuilding(Long id) throws BuildingNotFoundException {
         return buildingRepository.findById(id)
             .orElseThrow(() -> new BuildingNotFoundException(id));
     }
 
     /**
-     * Deletes an existing building or throws a BuildingNotFoundException
-     * if the building that is to be deleted isn't found.
-     * @param id the id of the building.
-     * @return nothing.
+     * Deletes a building.
+     *
+     * @param id the id of the building
+     * @throws BuildingNotFoundException if the building wasn't found
      */
     public Building deleteBuilding(Long id) throws BuildingNotFoundException {
         try {
@@ -46,22 +56,22 @@ public class BuildingService {
     }
 
     /**
-     * Creates a room with the dto supplied by the curl request.
+     * Creates a building.
      *
-     * @param newBuilding the values of the building to be created
-     * @return the inserted value converted back to dto
-     * @return the building.
+     * @param newBuilding the new building that you want to create
+     * @return the created building
      */
     public Building createBuilding(Building newBuilding) {
         return buildingRepository.save(newBuilding);
     }
 
     /**
-     * Updates an existing building or throws a BuildingNotFoundException
-     * if the building that is to be deleted isn't found.
-     * @param id the id of the room.
-     * @param newBuilding the values of the building to be updated.
-     * @return the updated building.
+     * Updates a building.
+     *
+     * @param id the id of the building that you want to update
+     * @param newBuilding the new building
+     * @return the updated booking
+     * @throws BuildingNotFoundException if the building wasn't found
      */
     public Building updateBuilding(Long id, Building newBuilding) throws BuildingNotFoundException {
         return buildingRepository.findById(id)

@@ -30,11 +30,11 @@ public class BookingController {
     private BookingService bookingService;
 
     /**
-     * GET Endpoint to retrieve all bookings.
+     * GET endpoint to retrieve all bookings.
      *
      * @return a list of bookings {@link Booking}.
      */
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<RestResponse<Object>> listBookings(
         @RequestParam Map<String, String> params
     ) {
@@ -44,11 +44,11 @@ public class BookingController {
     }
 
     /**
-     * POST Endpoint to create booking.
+     * POST endpoint to create a booking.
      *
      * @return the created booking {@link Booking}.
      */
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> createBooking(@RequestBody BookingDto newBooking) {
         try {
@@ -61,7 +61,7 @@ public class BookingController {
     }
 
     /**
-     * GET Endpoint to retrieve booking.
+     * GET endpoint to retrieve the booking.
      *
      * @return the requested booking {@link Booking}.
      */
@@ -80,7 +80,7 @@ public class BookingController {
     }
 
     /**
-     * PUT Endpoint to update booking.
+     * PUT endpoint to update the booking.
      *
      * @return the updated booking {@link Booking}.
      */
@@ -98,7 +98,7 @@ public class BookingController {
     }
 
     /**
-     * DELETE Endpoint to delete booking.
+     * DELETE endpoint to delete the booking.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<RestResponse<Object>> deleteBooking(@PathVariable Long id) {

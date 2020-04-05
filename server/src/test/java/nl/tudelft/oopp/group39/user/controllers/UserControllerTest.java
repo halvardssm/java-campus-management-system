@@ -27,9 +27,7 @@ class UserControllerTest extends AbstractControllerTest {
         "test@tudelft.nl",
         "test",
         null,
-        Role.ADMIN,
-        null,
-        null
+        Role.ADMIN
     );
     private String jwt;
 

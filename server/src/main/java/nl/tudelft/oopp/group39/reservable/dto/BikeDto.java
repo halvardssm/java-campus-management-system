@@ -13,6 +13,9 @@ public class BikeDto extends ReservableDto<Bike, BikeDto> {
 
     private BikeType bikeType;
 
+    /**
+     * Creates a BikeDto object.
+     */
     public BikeDto() {
     }
 
@@ -36,17 +39,31 @@ public class BikeDto extends ReservableDto<Bike, BikeDto> {
         setBikeType(bikeType != null ? bikeType : BikeType.CITY);
     }
 
+    /**
+     * Gets the type of the bike.
+     *
+     * @return the bike type
+     */
     public BikeType getBikeType() {
         return bikeType;
     }
 
+    /**
+     * Changes the bike type.
+     *
+     * @param bikeType the new bike type
+     */
     public void setBikeType(BikeType bikeType) {
         this.bikeType = bikeType;
     }
 
+    /**
+     * Changes the BikeDto to a Bike object.
+     *
+     * @return a bike object
+     */
     @Override
     public Bike toEntity() {
-
         return new Bike(
             getId(),
             getBikeType(),

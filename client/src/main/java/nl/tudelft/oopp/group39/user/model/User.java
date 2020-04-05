@@ -11,9 +11,10 @@ public class User {
     private String role;
     private ArrayNode bookings;
 
-
+    /**
+     * Creates a user.
+     */
     public User() {
-
     }
 
     /**
@@ -33,28 +34,57 @@ public class User {
         this.role = role;
     }
 
+    /**
+     * Gets the username of the user.
+     *
+     * @return the username of the user
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Gets the email of the user.
+     *
+     * @return the email of the user
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Gets the password of the user.
+     *
+     * @return the password of the user
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Gets the image of the user.
+     *
+     * @return the image of the user
+     */
     public Blob getImage() {
         return image;
     }
 
+    /**
+     * Gets the role of the user.
+     *
+     * @return the role of the user.
+     */
     public String getRole() {
         return role;
     }
 
+    /**
+     * Gets the bookings of the user.
+     *
+     * @return the bookings of the user.
+     */
     public ArrayNode getBookings() {
         return bookings;
     }
-
 }
