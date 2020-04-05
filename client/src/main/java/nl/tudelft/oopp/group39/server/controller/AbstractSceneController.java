@@ -38,7 +38,7 @@ public abstract class AbstractSceneController {
     protected ObjectMapper mapper = new ObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     public static boolean loggedIn = false;
-    public static String jwt;
+    public static String jwt = "";
     public static User user;
     public DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -208,7 +208,7 @@ public abstract class AbstractSceneController {
      */
     public void logout() throws IOException {
         loggedIn = false;
-        jwt = null;
+        jwt = "";
         goToBuildingScene();
     }
 
@@ -320,6 +320,10 @@ public abstract class AbstractSceneController {
     public Set<Event> getEvents(String filters) throws JsonProcessingException {
         Event[] events = ServerCommunication.getEvents(filters);
         return new HashSet<>(Arrays.asList(events));
+    }
+
+    public void goToAdminScene() throws IOException {
+        UsersDisplay.sceneHandler("/admin/AdminPanel.fxml");
     }
 
 }
