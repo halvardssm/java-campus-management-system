@@ -68,7 +68,6 @@ public class ServerCommunication {
             .GET().uri(URI.create(url + building + id)).build();
         return httpRequest(request);
     }
-
     /**
      * Retrieves building filtered on id. The difference between the other getBuilding method
      * is that this method returns it as a building object.
@@ -76,6 +75,7 @@ public class ServerCommunication {
      * @param id of wanted building
      * @return the building.
      */
+
     public static Building getTheBuilding(long id) throws JsonProcessingException {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET().uri(URI.create(url + building + id)).build();
@@ -87,13 +87,49 @@ public class ServerCommunication {
     /**
      * Retrieves rooms from the server based on building id.
      *
-     * @param input filter parameters
+     * @param buildingId id of the building
+     * @return the body of a get request to the server.
+     */
+    public static String getRooms(long buildingId) {
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create(url + "room?building=" + buildingId))
+            .build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Retrieves the rooms with given filters.
+     *
+     * @param input String representation of all the selected filters
      * @return the body of a get request to the server.
      */
     public static String getRooms(String input) {
         HttpRequest request = HttpRequest.newBuilder()
             .GET()
             .uri(URI.create(url + "room?" + input))
+            .build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Gets the type of event.
+     */
+    public static String getEventTypes() {
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create(url + "event/types"))
+            .build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Gets the roles of users i.e student/staff.
+     */
+    public static String getUserRoles() {
+        HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create(url + "user/roles"))
             .build();
         return httpRequest(request);
     }
@@ -114,6 +150,7 @@ public class ServerCommunication {
         return mapper.readValue(roomAsString, Room.class);
     }
 
+
     /**
      * Retrieves filtered list of buildings from the server.
      *
@@ -122,6 +159,37 @@ public class ServerCommunication {
     public static String getFilteredBuildings(String filters) {
         String urlString = url + "building?" + filters;
         System.out.println(urlString);
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
+        return httpRequest(request);
+    }
+    /**
+     * Retrieves filtered list of buildings from the server.
+     *
+     * @return the body of a get request to the server.
+     */
+
+    public static String getFilteredBuildings(
+        String name,
+        String location,
+        String open,
+        String closed,
+        String description
+    ) {
+        String urlString = url + "building?name=" + name
+            + "&location=" + location + "&open=" + open + "&closed=" + closed
+            + "&description=" + description;
+        HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Gets users once they have been filtered.
+     */
+    public static String getFilteredUsers(
+        String name,
+        String role
+    ) {
+        String urlString = url + "user/filter?name=" + name + "&role=" + role;
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(urlString)).build();
         return httpRequest(request);
     }
@@ -182,15 +250,21 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
+
+
     /**
      * Adds a room on the server.
      *
      * @return the body of a post request to the server.
      */
-    public static String addRoom(String buildingId, String roomCapacity, String roomDescription) {
+    public static String addRoom(
+             String buildingId,
+             String roomCapacity,
+             String roomDescription, String onlyStaff, String name) {
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers
-            .ofString("{\"buildingId\": \"" + buildingId + "\", \"capacity\":\""
-                + roomCapacity + "\", \"description\":\"" + roomDescription + "\"}");
+            .ofString("{\"building\": \"" + buildingId + "\", \"capacity\":\""
+                + roomCapacity + "\", \"description\":\"" + roomDescription
+                    + "\", \"onlyStaff\":\"" + onlyStaff + "\", \"name\":\"" + name + "\"}");
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
             .uri(URI.create(url + "room/"))
             .header("Content-Type", "application/json").build();
@@ -198,7 +272,37 @@ public class ServerCommunication {
     }
 
     /**
-     * Adds a room on the server.
+     * Creates a user on the server.
+     */
+    public static String createUser(String username, String email, String role, String password) {
+        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers
+            .ofString("{\"username\": \"" + username + "\", \"email\":\""
+                + email + "\", \"role\":\"" + role + "\", \"password\":\"" + password + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
+            .uri(URI.create(url + "user/"))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+    /**
+     * Adds an event to the server.
+     */
+
+    public static String addEvent(
+            String title,
+            String startDate,
+            String endDate
+    ) {
+        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers
+                .ofString("{\"title\": \"" + title + "\", \"startsAt\":\"" + startDate
+                        + "\", \"endsAt\":\"" + endDate + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
+                .uri(URI.create(url + "event/"))
+                .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Adds an event on the server.
      *
      * @return the body of a post request to the server.
      */
@@ -227,6 +331,26 @@ public class ServerCommunication {
         ArrayNode eventJson = (ArrayNode) mapper.readTree(httpRequest(request)).get("body");
         String eventAsString = mapper.writeValueAsString(eventJson);
         return mapper.readValue(eventAsString, Event[].class);
+    }
+    /**
+     * Updates events on the server.
+     */
+
+    public static String updateEvent(
+            String id,
+            String title,
+            String startsAt,
+            String endsAt,
+            Boolean isGlobal
+    ) {
+        HttpRequest.BodyPublisher newBooking = HttpRequest.BodyPublishers
+                .ofString("{\"id\": \"" + id + "\", \"title\":\"" + title
+                        + "\", \"startsAt\":\"" + startsAt + "\", \"endsAt\":\"" + endsAt
+                        + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().PUT(newBooking)
+                .uri(URI.create(url + "event/" + id))
+                .header("Content-Type", "application/json").build();
+        return httpRequest(request);
     }
 
     /**
@@ -265,8 +389,34 @@ public class ServerCommunication {
                 + "\", \"endTime\":\"" + endTime + "\", \"user\":\"" + user
                 + "\", \"room\":\"" + room + "\"}");
         HttpRequest request = HttpRequest.newBuilder().PUT(newBooking)
-            .uri(URI.create(url + booking + id))
+            .uri(URI.create(url + "booking/" + id))
             .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+
+
+    /**
+     * Updates Rooms on the server.
+     *
+     * @return the body of a put request to the server.
+     */
+    public static String updateRoom(
+        String building,
+        String roomCapacity,
+        String roomDescription,
+        String id,
+        String onlyStaff,
+        String name
+    ) {
+        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers
+            .ofString("{\"building\": \"" + building + "\", \"capacity\":\""
+                + roomCapacity + "\", \"description\":\"" + roomDescription
+                + "\", \"onlyStaff\":\"" + onlyStaff + "\", \"name\":\"" + name + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding)
+            .uri(URI.create(url + "room/" + id))
+            .header("Content-Type", "application/json").build();
+        System.out.println(httpRequest(request));
         return httpRequest(request);
     }
 
@@ -315,20 +465,41 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
+
     /**
      * Updates the user on the server.
      *
      * @return the body of a post request to the server.
      */
     public static String updateUser(
+            String username,
+            String email,
+            String password,
+            String bookings
+    ) {
+        HttpRequest.BodyPublisher newUser = HttpRequest.BodyPublishers
+                .ofString("{\"username\": \"" + username + "\", \"email\":\"" + email
+                         + "\", \"password\":\"" + password + "\", \"bookings\":\""
+                         + bookings + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().PUT(newUser)
+                .uri(URI.create(url + "user/" + username))
+                .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Updates the user on the server.
+     *
+     */
+
+    public static String updateUserAdmin(
         String username,
         String email,
-        String password,
-        String bookings
+        String role
     ) {
         HttpRequest.BodyPublisher newUser = HttpRequest.BodyPublishers
             .ofString("{\"username\": \"" + username + "\", \"email\":\"" + email
-                + "\", \"password\":\"" + password + "\", \"bookings\":\"" + bookings + "\"}");
+                + "\", \"role\":\"" + role + "\"}");
         HttpRequest request = HttpRequest.newBuilder().PUT(newUser)
             .uri(URI.create(url + "user/" + username))
             .header("Content-Type", "application/json").build();
@@ -336,20 +507,36 @@ public class ServerCommunication {
     }
 
     /**
-     * Removes a building based on the id.
-     *
-     * @param id the id of the building
+     * DELETE HTTP request to remove a building based on a String parameter id.
      */
     public static void removeBuilding(String id) {
         HttpRequest request = HttpRequest.newBuilder().DELETE()
             .uri(URI.create(url + "building/" + id)).build();
         httpRequest(request);
     }
+    /**
+     * DELETE HTTP request to remove a User.
+     * @param id events id
+     */
+
+    public static void removeUser(String id) {
+        HttpRequest request = HttpRequest.newBuilder().DELETE()
+            .uri(URI.create(url + "user/" + id)).build();
+        httpRequest(request);
+    }
 
     /**
-     * Removes a room based on the id.
-     *
-     * @param id the id of the room in String.
+     * DELETE HTTP request to remove an event.
+     * @param id events id
+     */
+    public static void removeEvent(String id) {
+        HttpRequest request = HttpRequest.newBuilder().DELETE()
+            .uri(URI.create(url + "event/" + id)).build();
+        httpRequest(request);
+    }
+
+    /**
+     * DELETE HTTP request to remove a room based on a String parameter id.
      */
     public static void removeRoom(String id) {
         HttpRequest request = HttpRequest.newBuilder()
@@ -358,6 +545,8 @@ public class ServerCommunication {
             .build();
         httpRequest(request);
     }
+
+
 
     /**
      * Retrieves all bookings from the server.
@@ -372,7 +561,7 @@ public class ServerCommunication {
     /**
      * Retrieves all bookings from the server.
      *
-     * @param filters String of filters
+     * @param filters the ID of the room
      * @return returns an HTTP request
      */
     public static String getBookings(String filters) {

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="621.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.admin.room.RoomListController">
+   <top>
+      <HBox spacing="10" styleClass="bar">
+         <padding>
+            <Insets bottom="15" left="15" right="15" top="15" />
+         </padding>
+         <Text id="title" text="Admin: Room View" />
+      </HBox>
+   </top>
+   <bottom>
+      <HBox prefHeight="80.0" prefWidth="892.0" spacing="10" styleClass="bar">
+         <padding>
+            <Insets bottom="15" left="15" right="15" top="15" />
+         </padding>
+         <Button id="backbtn" fx:id="backbtn" onAction="#switchBack" text="◀ Back" />
+      </HBox>
+   </bottom>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <Text layoutX="8.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Rooms" underline="true">
+            <font>
+               <Font name="System Bold" size="33.0" />
+            </font>
+         </Text>
+         <TableView fx:id="roomTable" layoutY="81.0" opacity="0.75" prefHeight="418.0" prefWidth="700.0">
+            <columns>
+               <TableColumn fx:id="roomIdCol" prefWidth="106.0" text="ID" />
+               <TableColumn fx:id="buildingIdCol" prefWidth="37.0" text="Building ID" />
+               <TableColumn fx:id="capacityCol" prefWidth="140.0" text="Capacity" />
+               <TableColumn fx:id="nameCol" prefWidth="160.0" text="Name" />
+               <TableColumn fx:id="onlyStaffCol" prefWidth="106.0" text="Only staff" />
+               <TableColumn fx:id="deleteCol" prefWidth="50.0" text="Delete" />
+               <TableColumn fx:id="updateCol" prefWidth="50.0" text="Update" />
+               <TableColumn fx:id="viewCol" prefWidth="50.0" text="View" />
+            </columns>
+         </TableView>
+         <Button layoutX="600.0" layoutY="48.0" mnemonicParsing="false" onMouseClicked="#createRoom" text="Add Room" />
+         <BorderPane layoutX="716.0" layoutY="39.0" prefHeight="450.0" prefWidth="176.0" style="-fx-background-color: lightgray;">
+            <center>
+               <VBox prefHeight="460.0" prefWidth="176.0" style="-fx-background-color: #ADD8E6; -fx-padding: 4px;" BorderPane.alignment="CENTER">
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="160.0" style="-fx-underline: true;" text="Filter Rooms">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Label text="Name:" />
+                  <TextField fx:id="nameFilter" />
+                  <Label text="Building:" />
+                  <ComboBox fx:id="buildingFilter" />
+                  <Label text="Description:" />
+                  <TextField fx:id="descriptionFilter"/>
+                  <Label text="Only Staff:" />
+                  <ComboBox fx:id="onlyStaffFilter" />
+                  <Label text="Facilities:" />
+                  <ListView fx:id="facilitiesList" prefHeight="200.0" prefWidth="200.0" />
+                  <Button mnemonicParsing="false" text="Filter" onMouseClicked="#filterRooms"/>
+                  <Button mnemonicParsing="false" text="Clear filters" onMouseClicked="#loadAllRooms"/>
+               </VBox>
+            </center>
+         </BorderPane>
+         <MenuBar fx:id="navBar" layoutY="2.0" prefHeight="33.0" prefWidth="890.0">
+         </MenuBar>
+      </AnchorPane>
+   </center>
+</BorderPane>

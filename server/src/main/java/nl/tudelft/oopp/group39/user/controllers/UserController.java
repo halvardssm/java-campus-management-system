@@ -1,8 +1,11 @@
 package nl.tudelft.oopp.group39.user.controllers;
 
+import java.util.Arrays;
+import java.util.List;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(UserController.REST_MAPPING)
 public class UserController extends AbstractController {
     public static final String REST_MAPPING = "/user";
+    public static final String REST_MAPPING_ROLE = "/roles";
 
     @Autowired
     private UserService service;
@@ -42,6 +46,12 @@ public class UserController extends AbstractController {
             null,
             () -> service.listUsers()
         );
+    }
+
+    @GetMapping(REST_MAPPING_ROLE)
+    public ResponseEntity<RestResponse<Object>> listUserRoles() {
+        List<Role> enums = Arrays.asList(Role.values());
+        return RestResponse.create(enums);
     }
 
     /**

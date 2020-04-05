@@ -7,6 +7,7 @@ import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 public class Booking {
+
     private Integer id;
     private String date;
     private String startTime;
@@ -18,6 +19,7 @@ public class Booking {
      * Creates a booking.
      */
     public Booking() {
+
     }
 
     /**

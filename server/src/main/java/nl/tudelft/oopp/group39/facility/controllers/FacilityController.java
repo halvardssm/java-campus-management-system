@@ -74,7 +74,7 @@ public class FacilityController extends AbstractController {
     }
 
     /**
-     * DELETE endpoint to delete the facility.
+     * Doc. TODO Sven
      */
     @DeleteMapping(PATH_ID)
     @ResponseBody

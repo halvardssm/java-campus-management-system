@@ -124,18 +124,6 @@ public class RoomSceneController extends AbstractSceneController {
         }
     }
 
-    /**
-     * Creates a new room.
-     */
-    public void newRoom() {
-        String buildingId = roomBuildingIdField.getText();
-
-        String roomCapacity = roomCapacityField.getText();
-
-        String roomDescription = roomDescriptionField.getText();
-
-        createAlert(ServerCommunication.addRoom(buildingId, roomCapacity, roomDescription));
-    }
 
     /**
      * Updates the room.

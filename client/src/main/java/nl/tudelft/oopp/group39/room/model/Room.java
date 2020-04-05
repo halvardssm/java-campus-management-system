@@ -1,11 +1,13 @@
 package nl.tudelft.oopp.group39.room.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import java.io.IOException;
 import java.util.Objects;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
@@ -19,6 +21,21 @@ public class Room {
     private Integer capacity;
     private ArrayNode facilities;
     private ArrayNode bookings;
+
+    /**
+     * Is used to get the ID of a building.
+     */
+
+    @JsonProperty("building")
+    public void setBuildingId(JsonNode building) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        if (building.canConvertToLong()) {
+            this.building = building.asLong();
+            return;
+        }
+        Building nnnBuilding = mapper.reader().forType(Building.class).readValue(building);
+        this.building = nnnBuilding.getId();
+    }
 
     /**
      * Creates a room.
