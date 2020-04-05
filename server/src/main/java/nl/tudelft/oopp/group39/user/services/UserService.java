@@ -1,9 +1,11 @@
 package nl.tudelft.oopp.group39.user.services;
 
 import java.util.List;
+import java.util.Map;
 import nl.tudelft.oopp.group39.config.exceptions.ExistsException;
 import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import nl.tudelft.oopp.group39.config.exceptions.NotNullException;
+import nl.tudelft.oopp.group39.user.dao.UserDao;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.repositories.UserRepository;
@@ -19,14 +21,16 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserDao userDao;
 
     /**
      * List all users.
      *
      * @return a list of users {@link User}.
      */
-    public List<User> listUsers() {
-        return userRepository.findAll();
+    public List<User> listUsers(Map<String, String> params) {
+        return userDao.filter(params);
     }
 
     /**

@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.user.controllers;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.user.entities.User;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,12 +41,13 @@ public class UserController extends AbstractController {
     @GetMapping
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list(
-        @RequestHeader(HttpHeaders.AUTHORIZATION) String header
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
+        @RequestParam Map<String, String> params
     ) {
         return restHandler(
             header,
             null,
-            () -> service.listUsers()
+            () -> service.listUsers(params)
         );
     }
 

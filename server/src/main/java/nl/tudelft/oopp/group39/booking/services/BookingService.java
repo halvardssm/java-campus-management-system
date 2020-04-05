@@ -83,7 +83,6 @@ public class BookingService {
             .map(booking -> {
                 booking.setId(id);
                 booking.setDate(newBooking.getDate());
-                booking.setId(id);
                 booking.setStartTime(newBooking.getStartTime());
                 booking.setEndTime(newBooking.getEndTime());
                 booking.setUser(newBooking.getUser());
