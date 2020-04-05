@@ -61,8 +61,6 @@ public class BuildingListController extends AdminPanelController {
     private TableColumn<Building, Building> updateCol = new TableColumn<>("Update");
     @FXML
     private TableView<Building> buildingTable = new TableView<>();
-    @FXML
-    private MenuBar navBar;
 
     /**
      * Initializes scene.
@@ -75,7 +73,6 @@ public class BuildingListController extends AdminPanelController {
             e.printStackTrace();
         }
         Stage currentStage = (Stage) backbtn.getScene().getWindow();
-        setNavBar(navBar, currentStage);
     }
 
     /**

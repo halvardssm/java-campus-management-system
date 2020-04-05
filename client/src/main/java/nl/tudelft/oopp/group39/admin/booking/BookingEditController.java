@@ -49,8 +49,6 @@ public class BookingEditController extends BookingListController {
     @FXML
     private Button backbtn;
     @FXML
-    private MenuBar navBar;
-    @FXML
     private TextArea dateMessage;
 
     /**
@@ -58,7 +56,6 @@ public class BookingEditController extends BookingListController {
      */
     public void customInit() {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
-        setNavBar(navBar, currentStage);
         roomBox.valueProperty().addListener((ov, t, t1) -> {
             String reservationStartString = roomBox.getValue();
             try {

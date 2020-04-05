@@ -36,8 +36,6 @@ public class EventEditController extends EventListController {
     @FXML
     private DatePicker endField;
     @FXML
-    private MenuBar navBar;
-    @FXML
     private TextArea dateMessage;
     @FXML
     private ComboBox<String> userComboBox;
@@ -46,7 +44,6 @@ public class EventEditController extends EventListController {
 
     public void customInit() {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
-        setNavBar(navBar, currentStage);
     }
 
     /**

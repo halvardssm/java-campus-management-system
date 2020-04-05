@@ -31,8 +31,6 @@ public class BuildingCreateController extends BuildingListController {
     private ComboBox<String> timeOpenFieldNew;
     @FXML
     private ComboBox<String> timeClosedFieldNew;
-    @FXML
-    private MenuBar navBar;
 
 
     /**
@@ -40,7 +38,6 @@ public class BuildingCreateController extends BuildingListController {
      */
     public void customInit() {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
-        setNavBar(navBar, currentStage);
         List<String> timeSlots = null;
         try {
             timeSlots = initiateTimeslots();

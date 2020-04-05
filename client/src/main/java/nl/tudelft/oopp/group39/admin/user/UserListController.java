@@ -46,8 +46,6 @@ public class UserListController extends AdminPanelController {
     private ComboBox<String> roleBox;
     @FXML
     private TextField usernameField;
-    @FXML
-    private MenuBar navBar;
 
     /**
      * Initializes scene.
@@ -59,7 +57,6 @@ public class UserListController extends AdminPanelController {
             e.printStackTrace();
         }
         Stage currentStage = (Stage) backbtn.getScene().getWindow();
-        setNavBar(navBar, currentStage);
     }
     /**
      * Loads users when no filtering is enabled.

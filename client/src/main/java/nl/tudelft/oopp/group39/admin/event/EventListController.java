@@ -40,8 +40,6 @@ public class EventListController extends AdminPanelController {
     private TableColumn<Event, Event> deleteCol = new TableColumn<>("Delete");
     @FXML
     private TableColumn<Event, Event> updateCol = new TableColumn<>("Update");
-    @FXML
-    private MenuBar navBar;
 
     /**
      * Initializes scene.
@@ -53,7 +51,6 @@ public class EventListController extends AdminPanelController {
             e.printStackTrace();
         }
         Stage currentStage = (Stage) backbtn.getScene().getWindow();
-        setNavBar(navBar, currentStage);
     }
     /**
      * Ensures that all events are put into table view.

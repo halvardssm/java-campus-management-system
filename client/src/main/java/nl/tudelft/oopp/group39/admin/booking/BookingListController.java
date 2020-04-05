@@ -44,8 +44,6 @@ public class BookingListController extends AdminPanelController {
     private TableColumn<Booking, Booking> deleteCol = new TableColumn<>("Delete");
     @FXML
     private TableColumn<Booking, Booking> updateCol = new TableColumn<>("Update");
-    @FXML
-    private MenuBar navBar;
 
     /**
      * Initialize data into tableView.
@@ -57,7 +55,6 @@ public class BookingListController extends AdminPanelController {
             e.printStackTrace();
         }
         Stage currentStage = (Stage) backbtn.getScene().getWindow();
-        setNavBar(navBar, currentStage);
     }
 
     /**

@@ -42,8 +42,6 @@ public class EventCreateController extends EventListController {
     @FXML
     private TextArea dateMessage;
     @FXML
-    private MenuBar navBar;
-    @FXML
     private ComboBox<String> userComboBox;
     @FXML
     private CheckBox globalCheckbox;
@@ -58,7 +56,6 @@ public class EventCreateController extends EventListController {
             e.printStackTrace();
         }
         this.currentStage = (Stage) backbtn.getScene().getWindow();
-        setNavBar(navBar, currentStage);
     }
     /**
      * .

@@ -26,8 +26,6 @@ public class UserEditController extends UserListController {
     private ComboBox<String> roleBox;
     @FXML
     private TextField emailField;
-    @FXML
-    private MenuBar navBar;
 
 
     /**
@@ -38,7 +36,6 @@ public class UserEditController extends UserListController {
 
     public void initData(User user) throws JsonProcessingException {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
-        setNavBar(navBar, currentStage);
         this.user = user;
         String roles = ServerCommunication.getUserRoles();
         ArrayNode body = (ArrayNode) mapper.readTree(roles).get("body");

@@ -42,13 +42,10 @@ public class RoomEditController extends RoomListController {
     @FXML
     private TextField roomCapacityField;
     @FXML
-    private MenuBar navBar;
-    @FXML
     private TextArea dateMessage;
 
     public void customInit() {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
-        setNavBar(navBar, currentStage);
     }
     /**
      * Initializes data into their respective boxes to be used for editing.

@@ -5,7 +5,6 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -27,7 +26,7 @@
                 <Button id="menubtn" alignment="CENTER" onMouseClicked="#toggleAdminSidebar">
                     <graphic>
                         <ImageView fitHeight="30" fitWidth="30">
-                            <Image url="@../../icons/menu-icon.png"/>
+                            <Image url="@../../icons/menu-icon.png" />
                         </ImageView>
                     </graphic>
                 </Button>
@@ -70,8 +69,6 @@
             <DatePicker fx:id="endField" layoutX="200.0" layoutY="266.0" prefHeight="31.0" prefWidth="200.0" />
             <Button layoutX="507.0" layoutY="445.0" mnemonicParsing="false" onMouseClicked="#createEvent" text="Add Event" />
             <TextArea fx:id="dateMessage" disable="true" layoutX="446.0" layoutY="124.0" prefHeight="173.0" prefWidth="417.0" />
-            <MenuBar fx:id="navBar" prefHeight="33.0" prefWidth="890.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-            </MenuBar>
             <Text layoutX="14.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User:" wrappingWidth="109.99365234375">
                 <font>
                     <Font name="System Bold" size="17.0" />

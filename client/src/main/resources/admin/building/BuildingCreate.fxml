@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -20,11 +19,11 @@
             <padding>
                 <Insets bottom="15" left="15" right="15" top="15" />
             </padding>
-            <VBox prefHeight="0.0" prefWidth="100.0">
+            <VBox prefHeight="30.0" prefWidth="88.0">
                 <Button id="menubtn" alignment="CENTER" onMouseClicked="#toggleAdminSidebar">
                     <graphic>
                         <ImageView fitHeight="30" fitWidth="30">
-                            <Image url="@../../icons/menu-icon.png"/>
+                            <Image url="@../../icons/menu-icon.png" />
                         </ImageView>
                     </graphic>
                 </Button>
@@ -78,7 +77,6 @@
             </Text>
             <TextField fx:id="descriptionFieldNew" layoutX="200.0" layoutY="215.0" prefHeight="31.0" prefWidth="200.0" promptText="description" />
             <Button layoutX="293.0" layoutY="407.0" mnemonicParsing="false" onMouseClicked="#addBuilding" text="Add Building" />
-            <MenuBar fx:id="navBar" layoutX="-4.0" layoutY="-2.0" prefHeight="33.0" prefWidth="890.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
         </AnchorPane>
     </center>
 </BorderPane>
