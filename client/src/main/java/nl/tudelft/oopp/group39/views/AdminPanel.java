@@ -1,18 +1,17 @@
 package nl.tudelft.oopp.group39.views;
 
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import java.io.IOException;
 import javafx.stage.Stage;
-import java.net.URL;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
-//import nl.tudelft.oopp.group39.controllers.MainSceneController;
 
 public class AdminPanel extends Application {
 
@@ -48,8 +47,6 @@ public class AdminPanel extends Application {
 
     private static Stage window;
     private static Parent root;
-    private static int width = 900;
-    private static int height = 650;
 
     /**
      * SceneHandler function to help change scenes.
@@ -72,6 +69,8 @@ public class AdminPanel extends Application {
 
         FXMLLoader loader = new FXMLLoader(AdminPanel.class.getResource(name));
         root = loader.load();
+        int height = 650;
+        int width = 900;
         window.setScene(new Scene(root, width, height));
 
         return loader.getController();

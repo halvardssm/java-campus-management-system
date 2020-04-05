@@ -22,15 +22,19 @@ public class Room {
     private ArrayNode facilities;
     private ArrayNode bookings;
 
+    /**
+     * Is used to get the ID of a building.
+     */
+
     @JsonProperty("building")
     public void setBuildingId(JsonNode building) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        if(building.canConvertToLong()) {
+        if (building.canConvertToLong()) {
             this.building = building.asLong();
             return;
         }
-        Building nBuilding = mapper.reader().forType(Building.class).readValue(building);
-        this.building = nBuilding.getId();
+        Building nnnBuilding = mapper.reader().forType(Building.class).readValue(building);
+        this.building = nnnBuilding.getId();
     }
 
     /**

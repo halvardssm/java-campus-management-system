@@ -2,17 +2,13 @@ package nl.tudelft.oopp.group39.admin.event;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
@@ -58,14 +54,7 @@ public class EventEditController extends EventListController {
         titleField.setPromptText(abcEvent.getTitle());
         globalCheckbox.setSelected(abcEvent.isGlobal());
 
-//        String types = ServerCommunication.getEventTypes();
-//
-//        ArrayNode body = (ArrayNode) mapper.readTree(types).get("body");
-//        types = mapper.writeValueAsString(body);
-//        String[] list = mapper.readValue(types, String[].class);
-//        ObservableList<String> data = FXCollections.observableArrayList(list);
 
-//        typeBox.setItems(data);
         startField.setPromptText(abcEvent.getStartsAt().toString());
         endField.setPromptText(abcEvent.getEndsAt().toString());
     }
@@ -88,11 +77,12 @@ public class EventEditController extends EventListController {
         title = title.contentEquals("") ? abcEvent.getTitle() : title;
         LocalDate start = startField.getValue();
         boolean startNull = start == null;
-        String startDate = startNull ? abcEvent.getStartsAt().toString() : start.toString() + " 00:00:00" ;
+        String startDate = startNull ? abcEvent.getStartsAt().toString() : start.toString()
+                + " 00:00:00";
         LocalDate end = endField.getValue();
         boolean endNull = end == null;
         boolean globalBool = globalCheckbox.isSelected();
-        String endDate = endNull ? abcEvent.getEndsAt().toString() : end.toString() + " 23:59:00" ;
+        String endDate = endNull ? abcEvent.getEndsAt().toString() : end.toString() + " 23:59:00";
         String id = Long.toString(abcEvent.getId());
         checkValidity(id, startDate, endDate, startNull, endNull, title, globalBool);
     }
@@ -107,7 +97,6 @@ public class EventEditController extends EventListController {
             String endDate,
             Boolean globalBool) throws IOException {
         System.out.println(globalBool);
-//        Event newEvent = new Event(null,title,startDate,endDate, abcEvent.isGlobal(),abcEvent.getUser(),abcEvent.getRooms());
         ServerCommunication.updateEvent(id, title, startDate, endDate, globalBool);
         getBack();
         createAlert("Updated: " + abcEvent.getTitle());

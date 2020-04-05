@@ -42,7 +42,9 @@ public class RoomCreateController extends RoomListController {
     @FXML
     private MenuBar navBar;
 
-
+    /**
+     * Initializes the scene.
+     */
     public void customInit() {
         try {
             initData();
@@ -118,7 +120,9 @@ public class RoomCreateController extends RoomListController {
         roomCap = roomCap == null || roomCap.contentEquals("") ? "0" : roomCap;
         String roomDesc = roomDescriptionField.getText();
         roomDesc = roomDesc == null ? "" : roomDesc;
-        String buildingId = building == null ? Integer.toString(buildingsByName.get(buildingsByName.keySet().toArray()[0])) : Integer.toString(this.buildingsByName.get(building.toString()));
+        String buildingId = building == null ? Integer.toString(buildingsByName.get(
+                buildingsByName.keySet().toArray()[0])) : Integer.toString(
+                        this.buildingsByName.get(building.toString()));
         String onlyStaffObj = roomOnlyStaffField.getValue();
         String onlyStaff = onlyStaffObj == null ? Boolean.toString(false) : onlyStaffObj;
         onlyStaff = Boolean.toString((onlyStaff).contentEquals("Only staff members"));

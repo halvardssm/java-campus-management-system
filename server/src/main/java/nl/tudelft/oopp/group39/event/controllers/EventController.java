@@ -1,7 +1,5 @@
 package nl.tudelft.oopp.group39.event.controllers;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -11,7 +9,6 @@ import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.event.dto.EventDto;
 import nl.tudelft.oopp.group39.event.entities.Event;
-//import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.event.services.EventService;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;

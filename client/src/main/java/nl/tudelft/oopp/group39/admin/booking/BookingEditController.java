@@ -20,7 +20,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.booking.model.Booking;
-import nl.tudelft.oopp.group39.admin.event.EventListController;
 import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;

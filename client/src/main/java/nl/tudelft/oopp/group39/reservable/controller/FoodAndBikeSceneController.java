@@ -461,15 +461,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
         System.out.println(reservations);
         ArrayNode body = (ArrayNode) mapper.readTree(reservations).get("body");
         String reservationString = mapper.writeValueAsString(body);
-//        Reservation[] reservationsArray = mapper.readValue(reservationString, Reservation[].class);
-//        for (Reservation reservation : reservationsArray) {
-//            int startTime =
-//                Integer.parseInt(reservation.getTimeOfPickup().split(" ")[1].split(":")[0]);
-//            bookedBikeTimes.add(startTime);
-//            int endTime =
-//                Integer.parseInt(reservation.getTimeOfDelivery().split(" ")[1].split(":")[0]);
-//            bookedBikeTimes.add(endTime);
-//        }
+
         System.out.println(bookedBikeTimes);
     }
 

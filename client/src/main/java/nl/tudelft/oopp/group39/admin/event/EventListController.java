@@ -90,7 +90,8 @@ public class EventListController extends AdminPanelController {
         Event[] list = mapper.readValue(events, Event[].class);
         ObservableList<Event> data = FXCollections.observableArrayList(list);
         eventTable.setItems(data);
-        eventTable.getColumns().addAll(idCol, typeCol, startCol, endCol, globalCol, userCol, deleteCol, updateCol);
+        eventTable.getColumns().addAll(
+                idCol, typeCol, startCol, endCol, globalCol, userCol, deleteCol, updateCol);
     }
     /**
      * Inserts the update and delete buttons into table.

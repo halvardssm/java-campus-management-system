@@ -43,7 +43,8 @@ public class UserController {
     }
 
     @GetMapping("/filter")
-    public ResponseEntity<RestResponse<Object>> filterUsersTemp(@RequestParam String name, @RequestParam String role) {
+    public ResponseEntity<RestResponse<Object>> filterUsersTemp(
+            @RequestParam String name, @RequestParam String role) {
         return RestResponse.create(repository.filterUsers(name, role));
     }
 

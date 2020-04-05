@@ -1,18 +1,13 @@
 package nl.tudelft.oopp.group39.admin.event;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
@@ -20,7 +15,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import nl.tudelft.oopp.group39.event.model.Event;
-import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 
@@ -28,8 +22,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 public class EventCreateController extends EventListController {
 
     private Stage currentStage;
-    private ObjectMapper mapper = new ObjectMapper();
-    private String eventType;
     @FXML
     private Button backbtn;
     @FXML
@@ -75,19 +67,20 @@ public class EventCreateController extends EventListController {
         title = title == null ? "" : title;
         LocalDate start = startField.getValue();
         boolean startNull = start == null;
-        String startDate = startNull ? LocalDateTime.now().toString() : start.toString() + " 00:00:00" ;
+        String startDate = startNull ? LocalDateTime.now().toString(
+        ) : start.toString() + "00:00:00";
         LocalDate end = endField.getValue();
         boolean endNull = end == null;
-        String endDate = endNull ? LocalDateTime.now().toString() : end.toString() + " 23:59:00" ;
+        String endDate = endNull ? LocalDateTime.now().toString() : end.toString() + " 23:59:00";
         checkValidity(startDate, endDate, startNull, endNull, title);
     }
     /**
      * Communicates information to create event to server.
      */
 
-    public void createEventFinal(String title, String startDate, String endDate) throws IOException {
-        Event newEvent = new Event(title,startDate,endDate, true,null, new ArrayList<Long>());
-//        ServerCommunication.addEvent(type, startDate, endDate);
+    public void createEventFinal(
+            String title, String startDate, String endDate) throws IOException {
+        Event newEvent = new Event(title,startDate,endDate, true,null, new ArrayList<>());
         createAlert(ServerCommunication.addEvent(newEvent));
         getBack();
         createAlert("Created an event of type: " + title);

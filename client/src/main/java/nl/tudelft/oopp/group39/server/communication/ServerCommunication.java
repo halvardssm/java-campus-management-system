@@ -250,22 +250,7 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
-    /**
-     * Adds an event to the server.
-     */
-    public static String addEvent(
-        String title,
-        String startDate,
-        String endDate
-    ) {
-        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers
-            .ofString("{\"title\": \"" + title + "\", \"startsAt\":\"" + startDate
-                + "\", \"endsAt\":\"" + endDate + "\"}");
-        HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
-            .uri(URI.create(url + "event/"))
-            .header("Content-Type", "application/json").build();
-        return httpRequest(request);
-    }
+
 
     /**
      * Adds a room on the server.
@@ -298,9 +283,26 @@ public class ServerCommunication {
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }
+    /**
+     * Adds an event to the server.
+     */
+
+    public static String addEvent(
+            String title,
+            String startDate,
+            String endDate
+    ) {
+        HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers
+                .ofString("{\"title\": \"" + title + "\", \"startsAt\":\"" + startDate
+                        + "\", \"endsAt\":\"" + endDate + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
+                .uri(URI.create(url + "event/"))
+                .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
 
     /**
-     * Adds a room on the server.
+     * Adds an event on the server.
      *
      * @return the body of a post request to the server.
      */
@@ -329,6 +331,26 @@ public class ServerCommunication {
         ArrayNode eventJson = (ArrayNode) mapper.readTree(httpRequest(request)).get("body");
         String eventAsString = mapper.writeValueAsString(eventJson);
         return mapper.readValue(eventAsString, Event[].class);
+    }
+    /**
+     * Updates events on the server.
+     */
+
+    public static String updateEvent(
+            String id,
+            String title,
+            String startsAt,
+            String endsAt,
+            Boolean isGlobal
+    ) {
+        HttpRequest.BodyPublisher newBooking = HttpRequest.BodyPublishers
+                .ofString("{\"id\": \"" + id + "\", \"title\":\"" + title
+                        + "\", \"startsAt\":\"" + startsAt + "\", \"endsAt\":\"" + endsAt
+                        + "\"}");
+        HttpRequest request = HttpRequest.newBuilder().PUT(newBooking)
+                .uri(URI.create(url + "event/" + id))
+                .header("Content-Type", "application/json").build();
+        return httpRequest(request);
     }
 
     /**
@@ -372,25 +394,7 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
-    /**
-     * Updates events on the server.
-     */
-    public static String updateEvent(
-        String id,
-        String title,
-        String startsAt,
-        String endsAt,
-        Boolean isGlobal
-    ) {
-        HttpRequest.BodyPublisher newBooking = HttpRequest.BodyPublishers
-            .ofString("{\"id\": \"" + id + "\", \"title\":\"" + title
-                + "\", \"startsAt\":\"" + startsAt + "\", \"endsAt\":\"" + endsAt
-                + "\"}");
-        HttpRequest request = HttpRequest.newBuilder().PUT(newBooking)
-            .uri(URI.create(url + "event/" + id))
-            .header("Content-Type", "application/json").build();
-        return httpRequest(request);
-    }
+
 
     /**
      * Updates Rooms on the server.

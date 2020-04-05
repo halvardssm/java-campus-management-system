@@ -1,24 +1,24 @@
 package nl.tudelft.oopp.group39.views;
 
 import javafx.application.Application;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.*;
-import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
-import javafx.scene.control.Label;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
 
 public class LandingPage extends Application {
 
@@ -40,6 +40,9 @@ public class LandingPage extends Application {
 
     }
 
+    /**
+     * Creates a Grid Pane.
+     */
     public GridPane createGridPane(Text title, Text desc) {
         GridPane grid = new GridPane();
         grid.setPrefSize(180, 220);
@@ -48,23 +51,30 @@ public class LandingPage extends Application {
         grid.setPadding(new Insets(15, 10, 0, 10));
         Rectangle picture = new Rectangle(140, 100);
         title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        grid.add(picture, 1, 0 );
+        grid.add(picture, 1, 0);
         grid.add(title, 1, 1, 2, 1);
         grid.add(desc, 1, 2,2,1);
         grid.setStyle("-fx-background-color: rgba(0,166,214,0.29);");
         return grid;
     }
 
-    public FlowPane createFlow(){
+    /**
+     * Creates a flow pane.
+     */
+    public FlowPane createFlow() {
         FlowPane flowpane = new FlowPane(20, 20);
         for (int i = 0; i < 10; i++) {
-            flowpane.getChildren().add(createGridPane(new Text("Test" + (i + 1)), new Text("Some description\nCapacity:\nAddress:")));
+            flowpane.getChildren().add(createGridPane(new Text("Test" + (i + 1)), new Text(
+                    "Some description\nCapacity:\nAddress:")));
         }
         flowpane.setPadding(new Insets(30,0,30,0));
         flowpane.setAlignment(Pos.TOP_CENTER);
         return flowpane;
     }
 
+    /**
+     * Creates the hbox and contents that make up top part of a scene in our layout.
+     */
     public HBox createTop() {
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(15, 12, 15, 12));
