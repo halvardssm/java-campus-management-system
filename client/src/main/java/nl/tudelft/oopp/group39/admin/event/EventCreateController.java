@@ -97,8 +97,8 @@ public class EventCreateController extends EventListController {
      */
 
     public void createEventFinal(
-            String title, String startDate, String endDate
-            , boolean globalBool, String userId) throws IOException {
+            String title, String startDate, String endDate,
+            boolean globalBool, String userId) throws IOException {
         Event newEvent = new Event(title,startDate,endDate, globalBool,userId, new ArrayList<>());
         createAlert(ServerCommunication.addEvent(newEvent));
         getBack();

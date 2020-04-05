@@ -61,10 +61,10 @@ public class EventEditController extends EventListController {
         ObservableList<String> data = getUserIds();
         userComboBox.setItems(data);
         String oldUser = abcEvent.getUser();
-        if(oldUser == null) {
+        if (oldUser == null) {
             userComboBox.getSelectionModel().selectFirst();
-        }
-        else {
+
+        } else {
             userComboBox.getSelectionModel().select(oldUser);
         }
         startField.setPromptText(abcEvent.getStartsAt().toString());

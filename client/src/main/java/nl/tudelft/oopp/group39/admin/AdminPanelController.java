@@ -10,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.admin.booking.BookingListController;
 import nl.tudelft.oopp.group39.admin.building.BuildingListController;
@@ -92,6 +94,7 @@ public class AdminPanelController extends MainAdminController implements Initial
         fileMenuButton5.setGraphic(reservationListLabel);
         menuBar.getMenus().add(fileMenuButton5);
     }
+
 
     /**
      * Used to switch to bookings list.

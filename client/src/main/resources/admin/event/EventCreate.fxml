@@ -1,16 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.admin.event.EventCreateController">
+<BorderPane fx:id="window" prefHeight="600.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.admin.event.EventCreateController">
     <top>
         <HBox spacing="10" styleClass="bar">
             <padding>
                 <Insets bottom="15" left="15" right="15" top="15" />
             </padding>
+            <VBox prefHeight="0.0" prefWidth="100.0">
+                <Button id="menubtn" alignment="CENTER" onMouseClicked="#toggleAdminSidebar">
+                    <graphic>
+                        <ImageView fitHeight="30" fitWidth="30">
+                            <Image url="@../../icons/menu-icon.png"/>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </VBox>
             <Text id="title" text="Admin: Event View" />
         </HBox>
     </top>
@@ -56,13 +77,13 @@
                     <Font name="System Bold" size="17.0" />
                 </font>
             </Text>
-            <ComboBox layoutX="200.0" layoutY="336.0" prefHeight="31.0" prefWidth="200.0"  fx:id="userComboBox"/>
+            <ComboBox fx:id="userComboBox" layoutX="200.0" layoutY="336.0" prefHeight="31.0" prefWidth="200.0" />
             <Text layoutX="14.0" layoutY="416.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Is global:">
                 <font>
                     <Font name="System Bold" size="17.0" />
                 </font>
             </Text>
-            <CheckBox layoutX="201.0" layoutY="400.0" mnemonicParsing="false" fx:id="globalCheckbox"/>
+            <CheckBox fx:id="globalCheckbox" layoutX="201.0" layoutY="400.0" mnemonicParsing="false" />
         </AnchorPane>
     </center>
 </BorderPane>

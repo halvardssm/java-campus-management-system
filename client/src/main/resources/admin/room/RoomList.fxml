@@ -1,16 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="621.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.admin.room.RoomListController">
+<BorderPane fx:id="window" prefHeight="621.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.admin.room.RoomListController">
    <top>
       <HBox spacing="10" styleClass="bar">
          <padding>
             <Insets bottom="15" left="15" right="15" top="15" />
          </padding>
+         <VBox prefHeight="0.0" prefWidth="100.0">
+            <Button id="menubtn" alignment="CENTER" onMouseClicked="#toggleAdminSidebar">
+               <graphic>
+                  <ImageView fitHeight="30" fitWidth="30">
+                     <Image url="@../../icons/menu-icon.png"/>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </VBox>
          <Text id="title" text="Admin: Room View" />
       </HBox>
    </top>
@@ -55,13 +77,13 @@
                   <Label text="Building:" />
                   <ComboBox fx:id="buildingFilter" />
                   <Label text="Description:" />
-                  <TextField fx:id="descriptionFilter"/>
+                  <TextField fx:id="descriptionFilter" />
                   <Label text="Only Staff:" />
                   <ComboBox fx:id="onlyStaffFilter" />
                   <Label text="Facilities:" />
                   <ListView fx:id="facilitiesList" prefHeight="200.0" prefWidth="200.0" />
-                  <Button mnemonicParsing="false" text="Filter" onMouseClicked="#filterRooms"/>
-                  <Button mnemonicParsing="false" text="Clear filters" onMouseClicked="#loadAllRooms"/>
+                  <Button mnemonicParsing="false" onMouseClicked="#filterRooms" text="Filter" />
+                  <Button mnemonicParsing="false" onMouseClicked="#loadAllRooms" text="Clear filters" />
                </VBox>
             </center>
          </BorderPane>

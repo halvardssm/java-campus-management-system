@@ -115,7 +115,7 @@ public class UserListController extends AdminPanelController {
         usertable.getItems().clear();
         usertable.getColumns().clear();
         System.out.println(users);
-        if(!users.contains("\"body\" : null,")) {
+        if (!users.contains("\"body\" : null,")) {
             ArrayNode body = (ArrayNode) mapper.readTree(users).get("body");
             users = mapper.writeValueAsString(body);
 
