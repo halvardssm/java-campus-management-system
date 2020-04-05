@@ -13,7 +13,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import nl.tudelft.oopp.group39.user.entities.User;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -73,9 +72,9 @@ public abstract class AbstractDao<E> {
         ));
     }
 
-    protected void predicateEqualUser(String col, Object obj) {
+    protected void predicateEqualForeign(String col, String colForeign, Object obj) {
         predicates.add(builder.equal(
-            root.get(col).get(User.COL_USERNAME),
+            root.get(col).get(colForeign),
             obj
         ));
     }

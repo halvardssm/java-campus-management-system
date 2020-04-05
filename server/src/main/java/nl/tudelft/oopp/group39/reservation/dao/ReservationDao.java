@@ -9,6 +9,7 @@ import nl.tudelft.oopp.group39.config.abstracts.AbstractDao;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.reservation.entities.ReservationAmount;
+import nl.tudelft.oopp.group39.user.entities.User;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -40,7 +41,10 @@ public class ReservationDao extends AbstractDao<Reservation> {
         );
 
         checkParam(Reservation.COL_ROOM, this::predicateEqual);
-        checkParam(Reservation.COL_USER, this::predicateEqualUser);
+        checkParam(
+            Reservation.COL_USER,
+            (c, p) -> predicateEqualForeign(c, User.COL_USERNAME, p)
+        );
 
         checkParam(PARAM_RESERVABLE, (c, p) -> predicateInRelationManyMany(
             p,
