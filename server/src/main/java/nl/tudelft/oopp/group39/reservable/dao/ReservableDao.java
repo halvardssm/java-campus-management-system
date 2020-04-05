@@ -23,12 +23,7 @@ public class ReservableDao<T extends Reservable> extends AbstractDao<T> {
     public List<T> listReservables(Map<String, String> newParams, Class<T> clazz) {
         init(em, clazz, newParams);
 
-        checkParam(Reservable.COL_BUILDING, (c, p) -> predicateInRelationManyOne(
-            p,
-            Reservable.TABLE_NAME,
-            Building.class
-            )
-        );
+        checkParam(Reservable.COL_BUILDING, (c, p) -> predicateEqualForeign(c, Building.COL_ID, p));
 
         return result();
     }
