@@ -151,7 +151,7 @@ public class AdminPanelController extends MainAdminController implements Initial
     @FXML
     private void switchUserView() throws IOException {
         Stage currentStage = (Stage) buildingView.getScene().getWindow();
-        switchEventView(currentStage);
+        switchUserView(currentStage);
     }
 
     /**
