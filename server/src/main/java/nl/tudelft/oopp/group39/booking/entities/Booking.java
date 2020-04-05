@@ -25,6 +25,8 @@ public class Booking extends AbstractEntity<Booking, BookingDto> {
     public static final String TABLE_NAME = "bookings";
     public static final String MAPPED_NAME = "booking";
     public static final String COL_DATE = "date";
+    public static final String COL_START_TIME = "startTime";
+    public static final String COL_END_TIME = "endTime";
     public static final String COL_USER = "user";
     public static final String COL_ROOM = "room";
 
