@@ -1,18 +1,22 @@
-package nl.tudelft.oopp.group39.controllers.admin.event;
+package nl.tudelft.oopp.group39.admin.event;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.event.model.Event;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
@@ -27,7 +31,7 @@ public class EventEditController extends EventListController {
     @FXML
     private Button backbtn;
     @FXML
-    private ComboBox<String> typeBox;
+    private TextField titleField;
     @FXML
     private DatePicker startField;
     @FXML
@@ -36,6 +40,8 @@ public class EventEditController extends EventListController {
     private MenuBar navBar;
     @FXML
     private TextArea dateMessage;
+    @FXML
+    private CheckBox globalCheckbox;
 
     public void customInit() {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
@@ -49,17 +55,19 @@ public class EventEditController extends EventListController {
     public void initData(Event abcEvent) throws JsonProcessingException {
         customInit();
         this.abcEvent = abcEvent;
-        typeBox.setPromptText(abcEvent.getType());
-        String types = ServerCommunication.getEventTypes();
+        titleField.setPromptText(abcEvent.getTitle());
+        globalCheckbox.setSelected(abcEvent.isGlobal());
 
-        ArrayNode body = (ArrayNode) mapper.readTree(types).get("body");
-        types = mapper.writeValueAsString(body);
-        String[] list = mapper.readValue(types, String[].class);
-        ObservableList<String> data = FXCollections.observableArrayList(list);
+//        String types = ServerCommunication.getEventTypes();
+//
+//        ArrayNode body = (ArrayNode) mapper.readTree(types).get("body");
+//        types = mapper.writeValueAsString(body);
+//        String[] list = mapper.readValue(types, String[].class);
+//        ObservableList<String> data = FXCollections.observableArrayList(list);
 
-        typeBox.setItems(data);
-        startField.setPromptText(abcEvent.getStartDate().toString());
-        endField.setPromptText(abcEvent.getEndDate().toString());
+//        typeBox.setItems(data);
+        startField.setPromptText(abcEvent.getStartsAt().toString());
+        endField.setPromptText(abcEvent.getEndsAt().toString());
     }
 
     /**
@@ -76,16 +84,17 @@ public class EventEditController extends EventListController {
      */
 
     public void editEvent() throws IOException {
-        Object typeObj = typeBox.getValue();
-        String type = typeObj == null ? abcEvent.getType() : typeObj.toString();
+        String title = titleField.getText();
+        title = title.contentEquals("") ? abcEvent.getTitle() : title;
         LocalDate start = startField.getValue();
         boolean startNull = start == null;
-        String startDate = startNull ? abcEvent.getStartDate().toString() : start.toString();
+        String startDate = startNull ? abcEvent.getStartsAt().toString() : start.toString() + " 00:00:00" ;
         LocalDate end = endField.getValue();
         boolean endNull = end == null;
-        String endDate = endNull ? abcEvent.getEndDate().toString() : end.toString();
+        boolean globalBool = globalCheckbox.isSelected();
+        String endDate = endNull ? abcEvent.getEndsAt().toString() : end.toString() + " 23:59:00" ;
         String id = Long.toString(abcEvent.getId());
-        checkValidity(id, startDate, endDate, startNull, endNull, type);
+        checkValidity(id, startDate, endDate, startNull, endNull, title, globalBool);
     }
     /**
      * Communicates edit of event to server.
@@ -93,12 +102,15 @@ public class EventEditController extends EventListController {
 
     public void createEventFinal(
             String id,
-            String type,
+            String title,
             String startDate,
-            String endDate) throws IOException {
-        ServerCommunication.updateEvent(id, type, startDate, endDate);
+            String endDate,
+            Boolean globalBool) throws IOException {
+        System.out.println(globalBool);
+//        Event newEvent = new Event(null,title,startDate,endDate, abcEvent.isGlobal(),abcEvent.getUser(),abcEvent.getRooms());
+        ServerCommunication.updateEvent(id, title, startDate, endDate, globalBool);
         getBack();
-        createAlert("Updated: " + abcEvent.getType());
+        createAlert("Updated: " + abcEvent.getTitle());
     }
     /**
      * Makes sure that values put into event are valid.
@@ -110,9 +122,11 @@ public class EventEditController extends EventListController {
             String endDate,
             boolean startNull,
             boolean endNull,
-            String type) throws IOException {
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
+            String title,
+            Boolean globalBool) throws IOException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime start = LocalDateTime.parse(startDate, formatter);
+        LocalDateTime end = LocalDateTime.parse(endDate, formatter);
         if (!end.isAfter(start)) {
             dateMessage.setStyle("-fx-text-fill: Red");
             dateMessage.setText(
@@ -120,7 +134,7 @@ public class EventEditController extends EventListController {
                 + start.toString() + ", end date was: " + end.toString() + " )");
             return;
         }
-        if (!start.isAfter(LocalDate.now())) {
+        if (!start.isAfter(LocalDateTime.now())) {
             dateMessage.setStyle("-fx-text-fill: Red");
             dateMessage.setText(
                 "The start date needs to be later than today!\n(Start date was: "
@@ -129,7 +143,7 @@ public class EventEditController extends EventListController {
                 + end.toString() + " )");
             return;
         }
-        createEventFinal(id, type, start.toString(), end.toString());
+        createEventFinal(id, title, startDate, endDate, globalBool);
     }
 
 }

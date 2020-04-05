@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers.admin.room;
+package nl.tudelft.oopp.group39.admin.room;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

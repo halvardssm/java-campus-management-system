@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers.admin.room;
+package nl.tudelft.oopp.group39.admin.room;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -26,7 +26,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.controllers.admin.AdminPanelController;
+import nl.tudelft.oopp.group39.admin.AdminPanelController;
 import nl.tudelft.oopp.group39.facility.model.Facility;
 import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.room.model.Room;

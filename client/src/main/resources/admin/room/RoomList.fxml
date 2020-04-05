@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="621.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.controllers.admin.room.RoomListController">
+<BorderPane prefHeight="621.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.admin.room.RoomListController">
    <top>
       <HBox spacing="10" styleClass="bar">
          <padding>

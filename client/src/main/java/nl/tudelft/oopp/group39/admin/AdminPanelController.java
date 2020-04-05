@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers.admin;
+package nl.tudelft.oopp.group39.admin;
 
 import java.io.IOException;
 import java.net.URL;
@@ -11,11 +11,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.controllers.admin.booking.BookingListController;
-import nl.tudelft.oopp.group39.controllers.admin.building.BuildingListController;
-import nl.tudelft.oopp.group39.controllers.admin.event.EventListController;
-import nl.tudelft.oopp.group39.controllers.admin.room.RoomListController;
-import nl.tudelft.oopp.group39.controllers.admin.user.UserListController;
+import nl.tudelft.oopp.group39.admin.booking.BookingListController;
+import nl.tudelft.oopp.group39.admin.building.BuildingListController;
+import nl.tudelft.oopp.group39.admin.event.EventListController;
+import nl.tudelft.oopp.group39.admin.room.RoomListController;
+import nl.tudelft.oopp.group39.admin.user.UserListController;
 
 
 public class AdminPanelController extends MainAdminController implements Initializable {

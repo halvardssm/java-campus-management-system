@@ -254,13 +254,13 @@ public class ServerCommunication {
      * Adds an event to the server.
      */
     public static String addEvent(
-        String type,
+        String title,
         String startDate,
         String endDate
     ) {
         HttpRequest.BodyPublisher newBuilding = HttpRequest.BodyPublishers
-            .ofString("{\"type\": \"" + type + "\", \"startDate\":\"" + startDate
-                + "\", \"endDate\":\"" + endDate + "\"}");
+            .ofString("{\"title\": \"" + title + "\", \"startsAt\":\"" + startDate
+                + "\", \"endsAt\":\"" + endDate + "\"}");
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
             .uri(URI.create(url + "event/"))
             .header("Content-Type", "application/json").build();
@@ -377,13 +377,14 @@ public class ServerCommunication {
      */
     public static String updateEvent(
         String id,
-        String type,
-        String startDate,
-        String endDate
+        String title,
+        String startsAt,
+        String endsAt,
+        Boolean isGlobal
     ) {
         HttpRequest.BodyPublisher newBooking = HttpRequest.BodyPublishers
-            .ofString("{\"id\": \"" + id + "\", \"type\":\"" + type
-                + "\", \"startDate\":\"" + startDate + "\", \"endDate\":\"" + endDate
+            .ofString("{\"id\": \"" + id + "\", \"title\":\"" + title
+                + "\", \"startsAt\":\"" + startsAt + "\", \"endsAt\":\"" + endsAt
                 + "\"}");
         HttpRequest request = HttpRequest.newBuilder().PUT(newBooking)
             .uri(URI.create(url + "event/" + id))

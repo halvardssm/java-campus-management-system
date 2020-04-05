@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers.admin.booking;
+package nl.tudelft.oopp.group39.admin.booking;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -16,7 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.booking.model.Booking;
-import nl.tudelft.oopp.group39.controllers.admin.AdminPanelController;
+import nl.tudelft.oopp.group39.admin.AdminPanelController;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 

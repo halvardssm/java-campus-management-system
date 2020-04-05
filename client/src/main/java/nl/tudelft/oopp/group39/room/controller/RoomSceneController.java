@@ -22,13 +22,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.facility.model.Facility;
-import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 public class RoomSceneController extends AbstractSceneController {
-
     private Building building;
     private boolean filterBarShown = false;
     private boolean filtered = false;
@@ -128,20 +126,19 @@ public class RoomSceneController extends AbstractSceneController {
 
     /**
      * Creates a new room.
-     * TODO
      */
     public void newRoom() {
-        String buildingId = roomBuildingIdField.getText();
-
-        String roomCapacity = roomCapacityField.getText();
-
-        String roomDescription = roomDescriptionField.getText();
-
-        createAlert(ServerCommunication.addRoom(buildingId, roomCapacity, roomDescription));
+//        String buildingId = roomBuildingIdField.getText();
+//
+//        String roomCapacity = roomCapacityField.getText();
+//
+//        String roomDescription = roomDescriptionField.getText();
+//
+//        createAlert(ServerCommunication.addRoom(buildingId, roomCapacity, roomDescription));
     }
 
     /**
-     * Doc. TODO Sven
+     * Updates the room.
      */
     public void updateRoom() {
         String buildingId = roomBuildingIdField.getText();
@@ -156,17 +153,16 @@ public class RoomSceneController extends AbstractSceneController {
 
         String roomReservations = updateRoomField.getText();
 
-//        createAlert(ServerCommunication.updateRoom(
-//            buildingId,
-//            roomCap,
-//            roomDesc,
-//            roomID,
-//            roomReservations
-//        ));
+        createAlert(ServerCommunication.updateRoom(
+            buildingId,
+            roomCap,
+            roomDesc,
+            roomID,
+            roomReservations
+        ));
     }
 
     /**
-     * Doc. TODO
      * Deletes the room.
      */
     public void deleteRoom() {

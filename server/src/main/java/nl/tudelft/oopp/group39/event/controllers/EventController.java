@@ -11,7 +11,7 @@ import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.event.dto.EventDto;
 import nl.tudelft.oopp.group39.event.entities.Event;
-import nl.tudelft.oopp.group39.event.enums.EventTypes;
+//import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.event.services.EventService;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.services.RoomService;
@@ -51,12 +51,6 @@ public class EventController {
         @RequestParam Map<String, String> params
     ) {
         return RestResponse.create(Utils.listEntityToDto(eventService.listEvents(params)));
-    }
-
-    @GetMapping(REST_MAPPING_TYPES)
-    public ResponseEntity<RestResponse<Object>> listEventTypes() {
-        List<EventTypes> enums = Arrays.asList(EventTypes.values());
-        return RestResponse.create(enums);
     }
 
     /**

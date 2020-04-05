@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers.admin.building;
+package nl.tudelft.oopp.group39.admin.building;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,8 +21,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.controllers.admin.AdminPanelController;
-import nl.tudelft.oopp.group39.models.Building;
+import nl.tudelft.oopp.group39.admin.AdminPanelController;
+import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 @SuppressWarnings("unchecked")
@@ -229,7 +229,7 @@ public class BuildingListController extends AdminPanelController {
      */
 
     public void deleteBuilding(Building building) throws IOException {
-        String id = Integer.toString(building.getId());
+        String id = Long.toString(building.getId());
         ServerCommunication.removeBuilding(id);
         loadAllBuildings();
     }

@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers.admin;
+package nl.tudelft.oopp.group39.admin;
 
 import java.io.IOException;
 import java.net.URL;

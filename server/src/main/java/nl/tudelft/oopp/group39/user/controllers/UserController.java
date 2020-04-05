@@ -3,7 +3,7 @@ package nl.tudelft.oopp.group39.user.controllers;
 import java.util.Arrays;
 import java.util.List;
 import nl.tudelft.oopp.group39.config.RestResponse;
-import nl.tudelft.oopp.group39.event.enums.EventTypes;
+//import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.repositories.UserRepository;

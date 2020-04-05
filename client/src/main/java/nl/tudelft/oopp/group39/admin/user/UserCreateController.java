@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers.admin.user;
+package nl.tudelft.oopp.group39.admin.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,11 +15,10 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.controllers.admin.room.RoomListController;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
 
-public class UserCreateController extends RoomListController {
+public class UserCreateController extends UserListController {
 
     private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();

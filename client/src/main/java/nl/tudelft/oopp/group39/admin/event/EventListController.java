@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers.admin.event;
+package nl.tudelft.oopp.group39.admin.event;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.controllers.admin.AdminPanelController;
+import nl.tudelft.oopp.group39.admin.AdminPanelController;
 import nl.tudelft.oopp.group39.event.model.Event;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
@@ -31,6 +31,8 @@ public class EventListController extends AdminPanelController {
     @FXML private TableColumn<Event, String> typeCol;
     @FXML private TableColumn<Event, String> startCol;
     @FXML private TableColumn<Event, String> endCol;
+    @FXML private TableColumn<Event, String> globalCol;
+    @FXML private TableColumn<Event, String> userCol;
     @FXML
     private TableColumn<Event, Event> deleteCol = new TableColumn<>("Delete");
     @FXML
@@ -57,6 +59,7 @@ public class EventListController extends AdminPanelController {
     void loadAllEvents() throws JsonProcessingException {
 
         String events = ServerCommunication.get(ServerCommunication.event);
+        System.out.println(events);
         loadEvents(events);
     }
     /**
@@ -71,9 +74,11 @@ public class EventListController extends AdminPanelController {
         ArrayNode body = (ArrayNode) mapper.readTree(events).get("body");
         events = mapper.writeValueAsString(body);
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
-        startCol.setCellValueFactory(new PropertyValueFactory<>("startDate"));
-        endCol.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        startCol.setCellValueFactory(new PropertyValueFactory<>("startsAt"));
+        globalCol.setCellValueFactory(new PropertyValueFactory<>("global"));
+        userCol.setCellValueFactory(new PropertyValueFactory<>("user"));
+        endCol.setCellValueFactory(new PropertyValueFactory<>("endsAt"));
         deleteCol.setCellValueFactory(
             param -> new ReadOnlyObjectWrapper<>(param.getValue())
         );
@@ -85,7 +90,7 @@ public class EventListController extends AdminPanelController {
         Event[] list = mapper.readValue(events, Event[].class);
         ObservableList<Event> data = FXCollections.observableArrayList(list);
         eventTable.setItems(data);
-        eventTable.getColumns().addAll(idCol, typeCol, startCol, endCol, deleteCol, updateCol);
+        eventTable.getColumns().addAll(idCol, typeCol, startCol, endCol, globalCol, userCol, deleteCol, updateCol);
     }
     /**
      * Inserts the update and delete buttons into table.

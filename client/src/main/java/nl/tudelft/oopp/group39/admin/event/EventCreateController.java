@@ -1,10 +1,13 @@
-package nl.tudelft.oopp.group39.controllers.admin.event;
+package nl.tudelft.oopp.group39.admin.event;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,8 +16,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import nl.tudelft.oopp.group39.event.model.Event;
+import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 
@@ -27,7 +33,7 @@ public class EventCreateController extends EventListController {
     @FXML
     private Button backbtn;
     @FXML
-    private ComboBox<String> typeBox;
+    private TextField titleField;
     @FXML
     private DatePicker startField;
     @FXML
@@ -54,16 +60,8 @@ public class EventCreateController extends EventListController {
      */
 
     public void initData() throws JsonProcessingException {
-        String types = ServerCommunication.getEventTypes();
-        ArrayNode body = (ArrayNode) mapper.readTree(types).get("body");
-        types = mapper.writeValueAsString(body);
-        String[] list = mapper.readValue(types, String[].class);
-        ObservableList<String> data = FXCollections.observableArrayList(list);
-        this.eventType = data.get(0);
         dateMessage.setText("");
 
-        typeBox.setItems(data);
-        typeBox.setPromptText(eventType);
         startField.setPromptText(LocalDate.now().toString());
         endField.setPromptText(LocalDate.now().toString());
     }
@@ -73,24 +71,26 @@ public class EventCreateController extends EventListController {
 
     public void createEvent() throws IOException {
         dateMessage.setText("");
-        Object typeObj = typeBox.getValue();
-        String type = typeObj == null ? this.eventType : typeObj.toString();
+        String title = titleField.getText();
+        title = title == null ? "" : title;
         LocalDate start = startField.getValue();
         boolean startNull = start == null;
-        String startDate = startNull ? LocalDate.now().toString() : start.toString();
+        String startDate = startNull ? LocalDateTime.now().toString() : start.toString() + " 00:00:00" ;
         LocalDate end = endField.getValue();
         boolean endNull = end == null;
-        String endDate = endNull ? LocalDate.now().toString() : end.toString();
-        checkValidity(startDate, endDate, startNull, endNull, type);
+        String endDate = endNull ? LocalDateTime.now().toString() : end.toString() + " 23:59:00" ;
+        checkValidity(startDate, endDate, startNull, endNull, title);
     }
     /**
      * Communicates information to create event to server.
      */
 
-    public void createEventFinal(String type, String startDate, String endDate) throws IOException {
-        ServerCommunication.addEvent(type, startDate, endDate);
+    public void createEventFinal(String title, String startDate, String endDate) throws IOException {
+        Event newEvent = new Event(title,startDate,endDate, true,null, new ArrayList<Long>());
+//        ServerCommunication.addEvent(type, startDate, endDate);
+        createAlert(ServerCommunication.addEvent(newEvent));
         getBack();
-        createAlert("Created an event of type: " + type);
+        createAlert("Created an event of type: " + title);
     }
     /**
      * Makes sure that values put into event are valid.
@@ -101,47 +101,53 @@ public class EventCreateController extends EventListController {
           String endDate,
           boolean startNull,
           boolean endNull,
-          String type) throws IOException {
+          String title) throws IOException {
         if (!endNull || !startNull) {
             if (!endNull && !startNull) {
-                LocalDate start = LocalDate.parse(startDate);
-                LocalDate end = LocalDate.parse(endDate);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime start = LocalDateTime.parse(startDate, formatter);
+                LocalDateTime end = LocalDateTime.parse(endDate, formatter);
                 if (!end.isAfter(start)) {
                     dateMessage.setStyle("-fx-text-fill: Red");
                     dateMessage.setText("The end date needs to be later than the start date!");
                     return;
                 }
-                if (!start.isAfter(LocalDate.now())) {
+                if (!start.isAfter(LocalDateTime.now())) {
                     dateMessage.setStyle("-fx-text-fill: Red");
                     dateMessage.setText("The start date needs to be later than today!\n"
                             + "(Inputted start date was: "
                             + start.toString() + ", Inputted end date was:" + end.toString() + ")");
                     return;
                 }
-                createEventFinal(type, start.toString(), end.toString());
+                createEventFinal(title, startDate, endDate);
+                return;
             }
             if (!endNull) {
-                LocalDate end = LocalDate.parse(endDate);
-                LocalDate start = end.minusDays(1);
-                if (!start.isAfter(LocalDate.now())) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime end = LocalDateTime.parse(endDate, formatter);
+                LocalDateTime start = end.minusDays(1);
+                if (!start.isAfter(LocalDateTime.now())) {
                     dateMessage.setStyle("-fx-text-fill: Red");
                     dateMessage.setText("The start date needs to be later than today!\n"
                             + "(Automatically generated start date was: " + start.toString() + ")");
                     return;
                 }
-                createEventFinal(type, start.toString(), end.toString());
+                createEventFinal(title, start.format(formatter), endDate);
+                return;
             }
             if (!startNull) {
-                LocalDate start = LocalDate.parse(startDate);
-                LocalDate end = start.plusDays(1);
-                if (!start.isAfter(LocalDate.now())) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime start = LocalDateTime.parse(startDate, formatter);
+                LocalDateTime end = start.plusDays(1);
+                if (!start.isAfter(LocalDateTime.now())) {
                     dateMessage.setStyle("-fx-text-fill: Red");
                     dateMessage.setText("The start date needs to be later than today!"
                             + "\n(Inputted start date was: "
                         + start.toString() + " )");
                     return;
                 }
-                createEventFinal(type, start.toString(), end.toString());
+                createEventFinal(title, startDate, end.format(formatter));
+                return;
             }
         }
         dateMessage.setStyle("-fx-text-fill: Red");

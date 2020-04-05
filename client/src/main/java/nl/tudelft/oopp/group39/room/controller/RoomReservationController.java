@@ -1,63 +1,37 @@
 package nl.tudelft.oopp.group39.room.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javax.swing.text.html.ImageView;
-//import nl.tudelft.oopp.group39.communication.ServerCommunication;
-//import nl.tudelft.oopp.group39.models.Booking;
 import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.building.model.Building;
-//import nl.tudelft.oopp.group39.models.Room;
+import nl.tudelft.oopp.group39.event.model.Event;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 import nl.tudelft.oopp.group39.server.views.UsersDisplay;
-//import nl.tudelft.oopp.group39.views.UsersDisplay;
 
 
 public class RoomReservationController extends AbstractSceneController {
-    @FXML
-    private DatePicker date;
-    @FXML
-    private ImageView image;
-    @FXML
-    private Button reserveButton;
-    @FXML
-    private Button backButton;
-    @FXML
-    private Button loginButton;
-    @FXML
-    private Button homeButton;
-    @FXML
-    private ComboBox<String> fromTime;
-    @FXML
-    private ComboBox<String> toTime;
-    @FXML
-    private Label roomName;
-    @FXML
-    private Label roomDetails;
-    @FXML
-    private VBox roomInfo;
-    @FXML
-    private Label titleLabel;
-    @FXML
-    private Label onlyStaff;
-    @FXML
-    private Label errormsg;
-
+    @FXML private DatePicker date;
+    @FXML private Button reserveButton;
+    @FXML private ComboBox<String> fromTime;
+    @FXML private ComboBox<String> toTime;
+    @FXML private Label roomName;
+    @FXML private Label roomDetails;
+    @FXML private Label titleLabel;
+    @FXML private Label onlyStaff;
+    @FXML private Label errormsg;
     private Building building;
     private Room room;
 
@@ -66,9 +40,9 @@ public class RoomReservationController extends AbstractSceneController {
      *
      * @param room     the room you've selected
      * @param building the building of the room you've selected
+     * @throws JsonProcessingException if the JSON could not be processed
      */
     public void setup(Room room, Building building) throws JsonProcessingException {
-
         this.building = building;
         this.room = room;
         titleLabel.setText(room.getName());
@@ -94,7 +68,7 @@ public class RoomReservationController extends AbstractSceneController {
         if (loggedIn) {
             String dateString = date.getValue()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            if (checkDate(dateString)) {
+            if (checkDate(dateString, room.getId())) {
                 if (checkEmpty(date, fromTime, toTime)) {
                     long roomId = room.getId();
                     String roomIdString = "" + roomId;
@@ -150,13 +124,8 @@ public class RoomReservationController extends AbstractSceneController {
      * @throws JsonProcessingException when there is something wrong with processing
      */
     public List<Integer> getBookedTimes(String date) throws JsonProcessingException {
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String roomDate = "room=" + room.getId() + "&date=" + date;
-        String bookings = ServerCommunication.getBookings(roomDate);
-        System.out.println(bookings);
-        ArrayNode body = (ArrayNode) mapper.readTree(bookings).get("body");
-        String bookingString = mapper.writeValueAsString(body);
-        Booking[] bookingsList = mapper.readValue(bookingString, Booking[].class);
+        Booking[] bookingsList = getBookings(roomDate);
         List<Integer> bookedTimes = new ArrayList<>();
         for (Booking booking : bookingsList) {
             int startTime = Integer.parseInt(booking.getStartTime().split(":")[0]);
@@ -166,15 +135,36 @@ public class RoomReservationController extends AbstractSceneController {
         }
         if (loggedIn) {
             String userDate = "user=" + user.getUsername() + "&date=" + date;
-            String userBookings = ServerCommunication.getBookings(userDate);
-            ArrayNode bodyBookings = (ArrayNode) mapper.readTree(userBookings).get("body");
-            String userBookingString = mapper.writeValueAsString(bodyBookings);
-            Booking[] userBookingsList = mapper.readValue(userBookingString, Booking[].class);
-            for (Booking userBooking : userBookingsList) {
-                int startTime = Integer.parseInt(userBooking.getStartTime().split(":")[0]);
-                bookedTimes.add(startTime);
-                int endTime = Integer.parseInt(userBooking.getEndTime().split(":")[0]);
-                bookedTimes.add(endTime);
+            Booking[] userBookingsList = getBookings(userDate);
+            if (userBookingsList.length != 0) {
+                for (Booking userBooking : userBookingsList) {
+                    int startTime = Integer.parseInt(userBooking.getStartTime().split(":")[0]);
+                    bookedTimes.add(startTime);
+                    int endTime = Integer.parseInt(userBooking.getEndTime().split(":")[0]);
+                    bookedTimes.add(endTime);
+                }
+            }
+            String eventFilters = "user=" + user.getUsername() + "&date=" + date;
+            Set<Event> events = getEvents(eventFilters);
+            if (events.size() != 0) {
+                for (Event event : events) {
+                    if (event.getStartTime().toLocalDate()
+                        .isEqual(event.getEndTime().toLocalDate())
+                    ) {
+                        int start = event.getStartTime().getHour();
+                        int end = event.getEndTime().getHour();
+                        bookedTimes.add(start);
+                        bookedTimes.add(end);
+                    } else if (event.getStartTime().toLocalDate().isEqual(LocalDate.parse(date))) {
+                        int start = event.getStartTime().getHour();
+                        bookedTimes.add(start);
+                        bookedTimes.add(23);
+                    } else if (event.getEndTime().toLocalDate().isEqual(LocalDate.parse(date))) {
+                        int end = event.getEndTime().getHour();
+                        bookedTimes.add(0);
+                        bookedTimes.add(end);
+                    }
+                }
             }
         }
         System.out.println(bookedTimes);
@@ -188,8 +178,8 @@ public class RoomReservationController extends AbstractSceneController {
      */
     private List<String> initiateTimeslots(String date) throws JsonProcessingException {
         List<String> times = new ArrayList<>();
-        int open = Integer.parseInt(building.getOpen().split(":")[0]);
-        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        int open = Integer.parseInt(building.getOpen().toString().split(":")[0]);
+        int closed = Integer.parseInt(building.getClosed().toString().split(":")[0]);
         List<Integer> bookedTimes = getBookedTimes(date);
         for (int i = open; i < closed; i++) {
             String time;
@@ -229,29 +219,21 @@ public class RoomReservationController extends AbstractSceneController {
         int timeAsInt = Integer.parseInt(time.split(":")[0]);
         List<Integer> bookedTimes = getBookedTimes(date);
         toTime.getItems().clear();
-        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        int closed = Integer.parseInt(building.getClosed().toString().split(":")[0]);
         List<Integer> times = new ArrayList<>();
         for (int i = timeAsInt + 1; i < timeAsInt + 5; i++) {
-            if (bookedTimes.size() != 0) {
-                int smallest = bookedTimes.get(0);
-                int biggest = bookedTimes.get(1);
-                for (int j = 0; j < bookedTimes.size(); j = j + 2) {
-                    if (bookedTimes.get(j) < smallest) {
-                        smallest = bookedTimes.get(j);
+            if (i <= closed) {
+                times.add(i);
+            }
+        }
+        if (bookedTimes.size() != 0) {
+            for (int j = 0; j < bookedTimes.size(); j = j + 2) {
+                for (int i = timeAsInt + 1; i < timeAsInt + 5; i++) {
+                    if (i > bookedTimes.get(j) && i <= bookedTimes.get(j + 1)) {
+                        times.remove((Integer) i);
                     }
-                    if (bookedTimes.get(j + 1) > biggest) {
-                        biggest = bookedTimes.get(j + 1);
-                    }
                 }
-                if (i <= smallest && i <= closed) {
-                    times.add(i);
-                } else if (i > biggest && i <= closed) {
-                    times.add(i);
-                }
-            } else {
-                if (i <= closed) {
-                    times.add(i);
-                }
+
             }
         }
         for (int t = timeAsInt + 2; t < timeAsInt + 5; t++) {
@@ -321,22 +303,26 @@ public class RoomReservationController extends AbstractSceneController {
             }
         });
         date.setValue(LocalDate.now());
-        updateStartSlots(date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        updateEndSlots(
-            date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-            fromTime.getItems().get(0));
+        updateStartSlots(date.getValue().format(dateFormatter));
+        updateEndSlots(date.getValue().format(dateFormatter), building.getOpen().toString());
         date.setOnAction(event -> {
             try {
-                updateStartSlots(date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                updateStartSlots(date.getValue().format(dateFormatter));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
         });
         fromTime.setOnAction(event -> {
             try {
+                String fromValue;
+                if (fromTime.getSelectionModel().isEmpty()) {
+                    fromValue = building.getOpen().toString();
+                } else {
+                    fromValue = fromTime.getValue();
+                }
                 updateEndSlots(
                     date.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
-                    fromTime.getValue()
+                    fromValue
                 );
             } catch (JsonProcessingException e) {
                 e.printStackTrace();

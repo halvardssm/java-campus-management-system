@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.controllers.admin.booking;
+package nl.tudelft.oopp.group39.admin.booking;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -21,13 +21,12 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.booking.model.Booking;
-import nl.tudelft.oopp.group39.controllers.admin.event.EventListController;
 import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
 
-public class BookingCreateController extends EventListController {
+public class BookingCreateController extends BookingListController {
 
     private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
