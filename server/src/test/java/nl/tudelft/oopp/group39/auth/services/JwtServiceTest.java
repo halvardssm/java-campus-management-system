@@ -8,26 +8,19 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class JwtServiceTest extends AbstractTest {
-    private final User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.STUDENT
-    );
 
     @Test
     void decryptUsername() {
-        String jwt = jwtService.encrypt(testUser);
+        String jwt = jwtService.encrypt(testUserStudent);
 
         String username = jwtService.decryptUsername(jwt);
 
-        Assertions.assertEquals(testUser.getUsername(), username);
+        Assertions.assertEquals(testUserStudent.getUsername(), username);
     }
 
     @Test
     void decryptExpiration() {
-        String jwt = jwtService.encrypt(testUser);
+        String jwt = jwtService.encrypt(testUserStudent);
 
         Date date = jwtService.decryptExpiration(jwt);
 
@@ -46,7 +39,10 @@ class JwtServiceTest extends AbstractTest {
 
     @Test
     void encryptAndValidate() {
-        Assertions.assertTrue(jwtService.validate(jwtService.encrypt(testUser), testUser));
+        Assertions.assertTrue(jwtService.validate(
+            jwtService.encrypt(testUserStudent),
+            testUserStudent
+        ));
     }
 
     @Test
@@ -58,6 +54,6 @@ class JwtServiceTest extends AbstractTest {
             null,
             Role.STUDENT
         );
-        Assertions.assertFalse(jwtService.validate(jwtService.encrypt(testUser), user));
+        Assertions.assertFalse(jwtService.validate(jwtService.encrypt(testUserStudent), user));
     }
 }

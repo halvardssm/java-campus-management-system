@@ -182,7 +182,7 @@ public class Reservation extends AbstractEntity<Reservation, ReservationDto> {
      * Checks whether two reservations are equal.
      *
      * @param o the other object
-     * @return  true if the two reservations are equal, false otherwise
+     * @return true if the two reservations are equal, false otherwise
      */
     @Override
     public boolean equals(Object o) {

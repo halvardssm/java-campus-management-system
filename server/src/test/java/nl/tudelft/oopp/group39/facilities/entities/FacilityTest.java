@@ -1,14 +1,10 @@
 package nl.tudelft.oopp.group39.facilities.entities;
 
-import static nl.tudelft.oopp.group39.config.Utils.initSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import java.util.HashSet;
-import java.util.Set;
 import nl.tudelft.oopp.group39.AbstractTest;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
-import nl.tudelft.oopp.group39.room.entities.Room;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

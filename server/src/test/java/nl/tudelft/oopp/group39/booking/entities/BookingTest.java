@@ -24,9 +24,9 @@ public class BookingTest {
 
     @BeforeEach
     void testBooking() {
-        this.date = LocalDate.of(2069,4,20);
-        this.startTime = LocalTime.of(13,0);
-        this.endTime = LocalTime.of(15,0);
+        this.date = LocalDate.of(2069, 4, 20);
+        this.startTime = LocalTime.of(13, 0);
+        this.endTime = LocalTime.of(15, 0);
         this.user = new User(
             "student",
             "student@student.tudelft.nl",
@@ -34,14 +34,16 @@ public class BookingTest {
             null,
             Role.STUDENT
         );
-        this.room = new Room(null,
+        this.room = new Room(
+            null,
             new Building(null, "Drebbelweg",
                 "Drebbelweg 5",
                 "Drebbelweg",
                 LocalTime.of(6, 0),
                 LocalTime.of(17, 30),
                 null,
-                null),
+                null
+            ),
             "Projectroom 1",
             8,
             true,
@@ -62,9 +64,9 @@ public class BookingTest {
         );
         this.booking3 = new Booking(
             null,
-            LocalDate.of(2020,3,20),
-            LocalTime.of(15,0),
-            LocalTime.of(16,0),
+            LocalDate.of(2020, 3, 20),
+            LocalTime.of(15, 0),
+            LocalTime.of(16, 0),
             null,
             null
         );

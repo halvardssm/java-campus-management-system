@@ -1,89 +1,44 @@
 package nl.tudelft.oopp.group39.building.dao;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import nl.tudelft.oopp.group39.building.entities.Building;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractDao;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BuildingDao {
+public class BuildingDao extends AbstractDao<Building> {
     @PersistenceContext
     private EntityManager em;
 
     /**
      * Filter for buildings.
      *
-     * @param filters filters to be used
-     * @return        the filtered values
+     * @param newParams filters to be used
+     * @return the filtered values
      */
-    public List<Building> buildingFilter(Map<String, String> filters) {
+    public List<Building> buildingFilter(Map<String, String> newParams) {
+        init(em, Building.class, newParams);
 
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Building> rcq = cb.createQuery(Building.class);
-        Root<Building> building = rcq.from(Building.class);
-        Set<String> keys = filters.keySet();
+        checkParam(Building.COL_OPEN, (c, p) -> predicateSmaller(c, LocalTime.parse(p)));
 
-        List<Predicate> allPredicates = new ArrayList<>();
+        checkParam(Building.COL_CLOSED, (c, p) -> predicateGreater(c, LocalTime.parse(p)));
 
-        if (keys.contains(Building.COL_OPEN)) {
-            allPredicates.add(cb.lessThanOrEqualTo(
-                building.get(Building.COL_OPEN),
-                LocalTime.parse(filters.get(Building.COL_OPEN))
-            ));
-        }
+        checkParam(
+            Building.COL_RESERVABLES,
+            (c, p) -> predicateInRelationManyOne(p, Building.TABLE_NAME, Reservable.class)
+        );
 
-        if (keys.contains(Building.COL_CLOSED)) {
-            allPredicates.add(cb.greaterThanOrEqualTo(
-                building.get(Building.COL_CLOSED),
-                LocalTime.parse(filters.get(Building.COL_CLOSED))
-            ));
-        }
+        checkParam(Building.COL_NAME, this::predicateLike);
 
-        if (keys.contains(Reservable.MAPPED_NAME)) {
-            CriteriaQuery<Reservable> recq = cb.createQuery(Reservable.class);
-            Root<Reservable> reservable = recq.from(Reservable.class);
+        checkParam(Building.COL_DESC, this::predicateLike);
 
-            List<Integer> rvals = new ArrayList<>((Arrays.stream(
-                filters.get(Reservable.MAPPED_NAME).split(","))
-                .mapToInt(Integer::parseInt)
-                .boxed()
-                .collect(Collectors.toList())
-            ));
+        checkParam(Building.COL_LOCATION, this::predicateLike);
 
-            recq.select(reservable.get(Building.MAPPED_NAME))
-                .where(reservable.get(Reservable.COL_ID).in(rvals));
-
-            allPredicates.add(building.in(em.createQuery(recq).getResultList()));
-        }
-
-        if (keys.contains(Building.COL_NAME)) {
-            allPredicates.add(cb.like(building.get(Building.COL_NAME),
-                "%" + filters.get(Building.COL_NAME) + "%"));
-        }
-
-        if (keys.contains(Building.COL_DESC)) {
-            allPredicates.add(cb.like(building.get(Building.COL_DESC),
-                "%" + filters.get(Building.COL_DESC) + "%"));
-        }
-
-        if (keys.contains(Building.COL_LOCATION)) {
-            allPredicates.add(cb.like(building.get(Building.COL_LOCATION),
-                "%" + filters.get(Building.COL_LOCATION) + "%"));
-        }
-
-        rcq.where(cb.and(allPredicates.toArray(new Predicate[0])));
-        return em.createQuery(rcq).getResultList();
+        return result();
     }
 }

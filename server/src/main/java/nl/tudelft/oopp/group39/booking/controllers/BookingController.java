@@ -1,13 +1,14 @@
 package nl.tudelft.oopp.group39.booking.controllers;
 
-import java.util.List;
 import java.util.Map;
 import nl.tudelft.oopp.group39.booking.dto.BookingDto;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
 import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(BookingController.REST_MAPPING)
-public class BookingController {
+public class BookingController extends AbstractController {
     public static final String REST_MAPPING = "/booking";
 
     @Autowired
@@ -35,12 +37,9 @@ public class BookingController {
      * @return a list of bookings {@link Booking}.
      */
     @GetMapping
-    public ResponseEntity<RestResponse<Object>> listBookings(
-        @RequestParam Map<String, String> params
-    ) {
-        List<Booking> bookings = bookingService.listBookings(params);
-
-        return RestResponse.create(Utils.listEntityToDto(bookings));
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
+        return restHandler(() -> Utils.listEntityToDto(bookingService.listBookings(params)));
     }
 
     /**
@@ -50,14 +49,16 @@ public class BookingController {
      */
     @PostMapping
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> createBooking(@RequestBody BookingDto newBooking) {
-        try {
-            return RestResponse.create(
-                bookingService.createBooking(newBooking), null, HttpStatus.CREATED
-            );
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+    public ResponseEntity<RestResponse<Object>> create(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
+        @RequestBody BookingDto newBooking
+    ) {
+        return restHandler(
+            header,
+            HttpStatus.CREATED,
+            newBooking::getUser,
+            () -> bookingService.createBooking(newBooking).toDto()
+        );
     }
 
     /**
@@ -65,18 +66,10 @@ public class BookingController {
      *
      * @return the requested booking {@link Booking}.
      */
-    @GetMapping("/{id}")
+    @GetMapping(PATH_ID)
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> readBooking(@PathVariable Long id) {
-        try {
-            Booking booking = bookingService.readBooking(id);
-
-            BookingDto bookingDto = booking.toDto();
-
-            return RestResponse.create(bookingDto);
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+    public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
+        return restHandler(() -> bookingService.readBooking(id).toDto());
     }
 
     /**
@@ -84,26 +77,37 @@ public class BookingController {
      *
      * @return the updated booking {@link Booking}.
      */
-    @PutMapping("/{id}")
+    @PutMapping(PATH_ID)
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> updateBooking(
+    public ResponseEntity<RestResponse<Object>> update(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
         @RequestBody BookingDto updated,
         @PathVariable Long id
     ) {
-        try {
-            return RestResponse.create(bookingService.updateBooking(updated, id).toDto());
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+        return restHandler(
+            header,
+            updated::getUser,
+            () -> bookingService.updateBooking(updated, id).toDto()
+        );
     }
 
     /**
      * DELETE endpoint to delete the booking.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteBooking(@PathVariable Long id) {
-        bookingService.deleteBooking(id);
+    @DeleteMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> delete(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
+        @PathVariable Long id
+    ) {
+        return restHandler(
+            header,
+            () -> bookingService.readBooking(id).getUser().getUsername(),
+            () -> {
+                bookingService.deleteBooking(id);
 
-        return RestResponse.create(null, null, HttpStatus.OK);
+                return null;
+            }
+        );
     }
 }

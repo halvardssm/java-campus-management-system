@@ -14,7 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,18 +21,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 class UserControllerTest extends AbstractControllerTest {
-    private final User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.ADMIN
-    );
-    private String jwt;
 
     @BeforeEach
     void setUp() {
-        userService.createUser(testUser);
+        userService.createUser(testUser, true);
         jwt = jwtService.encrypt(testUser);
         testUser.setPassword("test");
     }
@@ -47,16 +38,16 @@ class UserControllerTest extends AbstractControllerTest {
     @Test
     void deleteAndCreateUser() throws Exception {
         mockMvc.perform(delete(REST_MAPPING + "/"
-                                   + testUser.getUsername())
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            + testUser.getUsername())
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
 
         String json = "{\"username\":\"test\",\"email\":\"test@tudelft.nl\",\"password\":\"test\"}";
 
         mockMvc.perform(post(REST_MAPPING)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(json))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.body.username", is(testUser.getUsername())))
             .andExpect(jsonPath("$.body.email", is(testUser.getEmail())));
@@ -65,7 +56,7 @@ class UserControllerTest extends AbstractControllerTest {
     @Test
     void listUsers() throws Exception {
         mockMvc.perform(get(REST_MAPPING)
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isArray())
             .andExpect(jsonPath("$.body", hasSize(1)))
@@ -76,8 +67,8 @@ class UserControllerTest extends AbstractControllerTest {
     @Test
     void readUser() throws Exception {
         mockMvc.perform(get(REST_MAPPING + "/"
-                                + testUser.getUsername())
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            + testUser.getUsername())
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body.username", is(testUser.getUsername())))
             .andExpect(jsonPath("$.body.email", is(testUser.getEmail())));
@@ -90,10 +81,10 @@ class UserControllerTest extends AbstractControllerTest {
         String json = objectMapper.writeValueAsString(user);
 
         mockMvc.perform(put(REST_MAPPING + "/"
-                                + testUser.getUsername())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(json)
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            + testUser.getUsername())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body.username", is(user.getUsername())))
             .andExpect(jsonPath("$.body.email", is(user.getEmail())));
@@ -101,11 +92,15 @@ class UserControllerTest extends AbstractControllerTest {
 
     @Test
     void testError() {
-        assertEquals("User can not be null", userController.createUser(null).getBody().getError());
+        assertEquals("User can not be null.", userController.create(null, null)
+            .getBody()
+            .getError());
 
-        assertEquals("User asdf not found", userController.readUser("asdf").getBody().getError());
+        assertEquals("User with id 'asdf' wasn't found.", userController.read(null, "asdf")
+            .getBody()
+            .getError());
 
-        assertEquals("User asdf not found", userController.updateUser("asdf", null)
+        assertEquals("User with id 'asdf' wasn't found.", userController.update(null, "asdf", null)
             .getBody().getError());
     }
 }

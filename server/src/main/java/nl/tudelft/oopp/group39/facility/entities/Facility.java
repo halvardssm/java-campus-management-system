@@ -69,6 +69,15 @@ public class Facility extends AbstractEntity<Facility, IEntity> {
     }
 
     /**
+     * Gets the rooms of the facility.
+     *
+     * @return the rooms of the facility
+     */
+    public Set<Room> getRooms() {
+        return rooms;
+    }
+
+    /**
      * Changes the rooms where a facility is available.
      *
      * @param rooms the new set of rooms
@@ -91,7 +100,7 @@ public class Facility extends AbstractEntity<Facility, IEntity> {
      * Checks whether two facilities are equal.
      *
      * @param o the other object
-     * @return  true if the two facilities are equal, false otherwise
+     * @return true if the two facilities are equal, false otherwise
      */
     @Override
     public boolean equals(Object o) {
@@ -102,8 +111,8 @@ public class Facility extends AbstractEntity<Facility, IEntity> {
             return false;
         }
         Facility facility = (Facility) o;
-        return getId() == facility.getId()
+        return Objects.equals(getId(), facility.getId())
             && Objects.equals(getDescription(), facility.getDescription())
-            && rooms.equals(facility.rooms);
+            && Objects.equals(getRooms(), facility.getRooms());
     }
 }

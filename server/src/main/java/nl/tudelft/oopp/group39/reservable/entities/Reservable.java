@@ -143,7 +143,7 @@ public class Reservable<E extends Reservable<E, D>, D extends ReservableDto<E, D
      * Checks whether two reservables are equal.
      *
      * @param o the other object
-     * @return  true if the two reservables are equal, false otherwise
+     * @return true if the two reservables are equal, false otherwise
      */
     @Override
     public boolean equals(Object o) {

@@ -1,17 +1,24 @@
 package nl.tudelft.oopp.group39.user;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import nl.tudelft.oopp.group39.user.model.User;
 import org.junit.jupiter.api.Test;
 
 class UserTest {
 
-    public static User testUser = new User("kittyamazing", "j.lig@ma.stud.nl", "secret", null, "STUDENT");
+    public static User testUser = new User(
+        "kittyamazing",
+        "j.lig@ma.stud.nl",
+        "secret",
+        null,
+        "STUDENT"
+    );
 
     @Test
     void getUsername() {
-        assertEquals(testUser.getUsername(),"kittyamazing");
+        assertEquals(testUser.getUsername(), "kittyamazing");
     }
 
     @Test

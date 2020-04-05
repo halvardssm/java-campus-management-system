@@ -1,65 +1,36 @@
 package nl.tudelft.oopp.group39.booking.dao;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractDao;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.user.entities.User;
 import org.springframework.stereotype.Component;
 
 @Component
-public class BookingDao {
+public class BookingDao extends AbstractDao<Booking> {
     @PersistenceContext
     private EntityManager em;
 
     /**
      * Filters Bookings.
      *
-     * @param params all params
+     * @param newParams all params
      * @return filtered list
      */
-    public List<Booking> listBookings(Map<String, String> params) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+    public List<Booking> listBookings(Map<String, String> newParams) {
+        init(em, Booking.class, newParams);
 
-        CriteriaQuery<Booking> q = cb.createQuery(Booking.class);
-        Root<Booking> c = q.from(Booking.class);
-        q.select(c);
+        checkParam(Booking.COL_USER, (c, p) -> predicateEqualForeign(c, User.COL_USERNAME, p));
 
-        List<Predicate> predicates = new ArrayList<>();
+        checkParam(Booking.COL_ROOM, (c, p) -> predicateEqualForeign(c, Room.COL_ID, p));
 
-        if (params.containsKey(Booking.COL_USER)) {
-            predicates.add(cb.equal(
-                c.get(Booking.COL_USER).get(User.COL_USERNAME),
-                params.get(Booking.COL_USER)
-            ));
-        }
+        checkParam(Booking.COL_DATE, (c, p) -> predicateEqual(c, LocalDate.parse(p)));
 
-        if (params.containsKey(Booking.COL_ROOM)) {
-            predicates.add(cb.equal(
-                c.get(Booking.COL_ROOM).get(Room.COL_ID),
-                params.get(Booking.COL_ROOM)
-            ));
-        }
-
-        if (params.containsKey(Booking.COL_DATE)) {
-            predicates.add(cb.equal(
-                c.get(Booking.COL_DATE),
-                LocalDate.parse(params.get(Booking.COL_DATE))
-            ));
-        }
-
-        q.where(cb.and(predicates.toArray(new Predicate[0])));
-
-        TypedQuery<Booking> query = em.createQuery(q);
-        return query.getResultList();
+        return result();
     }
 }

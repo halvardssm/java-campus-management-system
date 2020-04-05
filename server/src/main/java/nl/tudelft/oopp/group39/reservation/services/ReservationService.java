@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javassist.NotFoundException;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservable.services.ReservableService;
 import nl.tudelft.oopp.group39.reservation.dao.ReservationDao;
@@ -18,13 +18,10 @@ import nl.tudelft.oopp.group39.room.services.RoomService;
 import nl.tudelft.oopp.group39.user.entities.User;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReservationService {
-    public static final String EXCEPTION_RESERVATION_NOT_FOUND = "Reservation %d not found";
-
     @Autowired
     private ReservationRepository reservationRepository;
     @Autowired
@@ -51,7 +48,7 @@ public class ReservationService {
      * Method to filter reservations.
      *
      * @param filters the filter where you want to filter on
-     * @return        the filtered reservations
+     * @return the filtered reservations
      */
     public List<Reservation> filterReservations(Map<String, String> filters) {
         return reservationDao.reservationFilter(filters);
@@ -62,12 +59,9 @@ public class ReservationService {
      *
      * @return reservation by id {@link Reservation}.
      */
-    public Reservation readReservation(Long id) throws NotFoundException {
+    public Reservation readReservation(Long id) {
         return reservationRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException(String.format(
-                EXCEPTION_RESERVATION_NOT_FOUND,
-                id
-            )));
+            .orElseThrow(() -> new NotFoundException(Reservation.MAPPED_NAME, id));
     }
 
     /**
@@ -84,8 +78,7 @@ public class ReservationService {
      *
      * @return the created reservation {@link Reservation}.
      */
-    public Reservation createReservation(ReservationDto reservation)
-        throws IllegalArgumentException, NotFoundException {
+    public Reservation createReservation(ReservationDto reservation) {
         User user = userService.readUser(reservation.getUser());
 
         Reservation reservation1 = new Reservation(
@@ -126,18 +119,19 @@ public class ReservationService {
      *
      * @return the updated reservation {@link Reservation}.
      */
-    public Reservation updateReservation(Long id, ReservationDto newReservation)
-        throws NotFoundException {
-
+    public Reservation updateReservation(Long id, ReservationDto newReservation) {
         Set<ReservationAmount> reservationAmounts = new HashSet<>();
 
         if (newReservation != null) {
             for (ReservationAmountDto reservationAmountDto : newReservation.getReservationAmounts()
             ) {
                 reservationAmounts.add(reservationAmountDto.getId() == null
-                    ? reservationAmountService.createReservation(reservationAmountDto.toEntity())
+                    ? reservationAmountService.createReservation(
+                    reservationAmountDto.toEntity())
                     : reservationAmountService.updateReservation(
-                    reservationAmountDto.getId(), reservationAmountDto.toEntity())
+                        reservationAmountDto.getId(),
+                        reservationAmountDto.toEntity()
+                    )
                 );
             }
         }
@@ -154,10 +148,7 @@ public class ReservationService {
 
                 return reservationRepository.save(reservation);
             })
-            .orElseThrow(() -> new NotFoundException(String.format(
-                EXCEPTION_RESERVATION_NOT_FOUND,
-                id
-            )));
+            .orElseThrow(() -> new NotFoundException(Reservation.MAPPED_NAME, id));
     }
 
     /**

@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.group39.event.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -15,6 +17,11 @@ public class Event {
     private Boolean global;
     private String user;
     private List<Long> rooms;
+
+    @JsonProperty("isGlobal")
+    public void setGlobal(Boolean isGlobal) throws IOException {
+        this.global = isGlobal;
+    }
 
     public Event() {
 
@@ -48,6 +55,10 @@ public class Event {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {

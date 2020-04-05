@@ -8,9 +8,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import nl.tudelft.oopp.group39.AbstractTest;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.room.entities.Room;
-import nl.tudelft.oopp.group39.room.exceptions.RoomNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -92,7 +92,7 @@ public class RoomServiceTest extends AbstractTest {
 
     @Test
     void errorTest() {
-        assertThrows(RoomNotFoundException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             roomService.deleteRoom(0L);
         });
     }

@@ -7,12 +7,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.function.Function;
+import java.util.function.Supplier;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.config.abstracts.IEntity;
 
 public interface Utils {
+    static String firstLetterToUppercase(String string) {
+        return string.substring(0, 1).toUpperCase() + string.substring(1);
+    }
+
     static LocalDateTime parseDateTime(String string) {
         return LocalDateTime.parse(string, Constants.FORMATTER_DATE_TIME);
     }
@@ -31,10 +35,10 @@ public interface Utils {
      * @param fn the function
      * @return the result or null
      */
-    static <T> T safeNull(Function<Object, T> fn) {
+    static <T> T safeNull(Supplier<T> fn) {
         try {
-            return fn.apply(null);
-        } catch (NullPointerException e) {
+            return fn.get();
+        } catch (Exception e) {
             return null;
         }
     }

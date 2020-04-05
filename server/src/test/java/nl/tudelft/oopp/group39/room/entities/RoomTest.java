@@ -69,14 +69,16 @@ class RoomTest extends AbstractTest {
             capacity, onlyStaff, description,
             null, facilities, bookings
         );
-        this.room3 = new Room(null,
+        this.room3 = new Room(
+            null,
             new Building(null, "Drebbelweg",
                 "Drebbelweg 5",
                 "Drebbelweg",
                 LocalTime.of(6, 0),
                 LocalTime.of(17, 30),
                 null,
-                null),
+                null
+            ),
             "Projectroom 1",
             8,
             true,
@@ -122,7 +124,8 @@ class RoomTest extends AbstractTest {
         facilities2.add(facilityService.readFacility(2L));
         Room room4 = new Room(null, building, name,
             capacity, onlyStaff, description,
-            null, facilities2, bookings);
+            null, facilities2, bookings
+        );
 
         assertEquals(room1.getFacilities(), room2.getFacilities());
         assertNotEquals(room1.getFacilities(), room4.getFacilities());
@@ -133,7 +136,8 @@ class RoomTest extends AbstractTest {
         Set<Booking> bookings2 = new HashSet<>();
         Room room4 = new Room(null, building, name,
             capacity, onlyStaff, description,
-            null, facilities, bookings2);
+            null, facilities, bookings2
+        );
 
         assertEquals(room1.getBookings(), room2.getBookings());
         assertNotEquals(room1.getBookings(), room4.getBookings());

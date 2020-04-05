@@ -19,8 +19,6 @@ import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.event.dto.EventDto;
 import nl.tudelft.oopp.group39.event.entities.Event;
-import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,14 +26,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 class EventControllerTest extends AbstractControllerTest {
-    private final User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.ADMIN
-    );
-
     private final Event testEvent = new Event(
         null, "test",
         LocalDateTime.now(ZoneId.of(Constants.DEFAULT_TIMEZONE)),
@@ -45,11 +35,9 @@ class EventControllerTest extends AbstractControllerTest {
         null
     );
 
-    private String jwt;
-
     @BeforeEach
     void setUp() {
-        userService.createUser(testUser);
+        userService.createUser(testUser, true);
         jwt = jwtService.encrypt(testUser);
 
         Event event = eventService.createEvent(testEvent);
@@ -131,14 +119,17 @@ class EventControllerTest extends AbstractControllerTest {
     void testError() {
         assertEquals(
             "java.lang.NullPointerException",
-            eventController.createEvent(null).getBody().getError()
+            eventController.create(null).getBody().getError()
         );
 
-        assertEquals("Event 0 not found", eventController.readEvent(0L).getBody().getError());
+        assertEquals(
+            "Event with id '0' wasn't found.",
+            eventController.read(0L).getBody().getError()
+        );
 
         assertEquals(
-            "Event 0 not found",
-            eventController.updateEvent(0L, new EventDto()).getBody().getError()
+            "Event with id '0' wasn't found.",
+            eventController.update(0L, new EventDto()).getBody().getError()
         );
     }
 }

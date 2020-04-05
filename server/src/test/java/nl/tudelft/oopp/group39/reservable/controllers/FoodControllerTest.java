@@ -18,7 +18,6 @@ import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.reservable.entities.Food;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,19 +25,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 class FoodControllerTest extends AbstractControllerTest {
-    private final User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.ADMIN
-    );
     private final Food testFood = new Food(null, "Food", "Piece of yummy food", 5.6, null, null);
-    private String jwt;
 
     @BeforeEach
     void setUp() {
-        User user = userService.createUser(testUser);
+        User user = userService.createUser(testUser, true);
         jwt = jwtService.encrypt(testUser);
 
         Food food = foodService.createFood(testFood);
@@ -66,16 +57,16 @@ class FoodControllerTest extends AbstractControllerTest {
     @Test
     void deleteAndCreateFood() throws Exception {
         mockMvc.perform(delete(REST_MAPPING + "/" + testFood.getId())
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
 
         String json = objectMapper.writeValueAsString(testFood.toDto());
 
         mockMvc.perform(post(REST_MAPPING)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(json)
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.body").isMap())
             .andExpect(jsonPath("$.body." + Food.COL_ID).isNumber())
@@ -109,9 +100,9 @@ class FoodControllerTest extends AbstractControllerTest {
         String json = objectMapper.writeValueAsString(testFood.toDto());
 
         mockMvc.perform(put(REST_MAPPING + "/" + testFood.getId())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(json)
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
             .andExpect(jsonPath("$.body." + Food.COL_NAME, is(testFood.getName())))
@@ -123,17 +114,17 @@ class FoodControllerTest extends AbstractControllerTest {
     void testError() {
         assertEquals(
             "java.lang.NullPointerException",
-            foodController.createFood(null).getBody().getError()
+            foodController.create(null).getBody().getError()
         );
 
         assertEquals(
-            "Food 0 not found",
-            foodController.readFood(0L).getBody().getError()
+            "Food with id '0' wasn't found.",
+            foodController.read(0L).getBody().getError()
         );
 
         assertEquals(
-            "Food 0 not found",
-            foodController.updateFood(0L, null).getBody().getError()
+            "Food with id '0' wasn't found.",
+            foodController.update(0L, null).getBody().getError()
         );
     }
 }

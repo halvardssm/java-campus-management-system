@@ -4,11 +4,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
 import nl.tudelft.oopp.group39.room.dao.RoomDao;
 import nl.tudelft.oopp.group39.room.entities.Room;
-import nl.tudelft.oopp.group39.room.exceptions.RoomNotFoundException;
 import nl.tudelft.oopp.group39.room.repositories.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,11 +26,12 @@ public class RoomService {
      * Reads a room.
      *
      * @param id the room to be read
-     * @return   the requested room
-     * @throws RoomNotFoundException if the room wasn't found
+     * @return the requested room
+     * @throws NotFoundException if the room wasn't found
      */
-    public Room readRoom(Long id) throws RoomNotFoundException {
-        return roomRepository.findById(id).orElseThrow(() -> new RoomNotFoundException(id));
+    public Room readRoom(Long id) throws NotFoundException {
+        return roomRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException(Room.MAPPED_NAME, id));
     }
 
     /**
@@ -55,9 +56,9 @@ public class RoomService {
      * Update a room.
      *
      * @return the updated room
-     * @throws RoomNotFoundException if the room wasn't found
+     * @throws NotFoundException if the room wasn't found
      */
-    public Room updateRoom(Room newRoom, Long id) throws RoomNotFoundException {
+    public Room updateRoom(Room newRoom, Long id) throws NotFoundException {
         return roomRepository.findById(id)
             .map(room -> {
                 newRoom.setId(id);
@@ -65,7 +66,7 @@ public class RoomService {
                 mapFacilitiesForRooms(room);
 
                 return roomRepository.save(room);
-            }).orElseThrow(() -> new RoomNotFoundException(id));
+            }).orElseThrow(() -> new NotFoundException(Room.MAPPED_NAME, id));
     }
 
     /**
@@ -74,22 +75,22 @@ public class RoomService {
      * be present (if so their facility ids should be in the facilities array), the building name
      * and a string of the inputted location
      */
-    public List<Room> filterRooms(Map<String,String> allParams) {
+    public List<Room> filterRooms(Map<String, String> allParams) {
         return roomDao.roomFilter(allParams);
     }
 
     /**
      * Delete a room.
      *
-     * @throws RoomNotFoundException if the room wasn't found
+     * @throws NotFoundException if the room wasn't found
      */
-    public Room deleteRoom(Long id) throws RoomNotFoundException {
+    public Room deleteRoom(Long id) throws NotFoundException {
         try {
             Room rf = readRoom(id);
             roomRepository.delete(readRoom(id));
             return rf;
-        } catch (RoomNotFoundException e) {
-            throw new RoomNotFoundException(id);
+        } catch (NotFoundException e) {
+            throw new NotFoundException(Room.MAPPED_NAME, id);
         }
     }
 

@@ -13,6 +13,7 @@ import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 @Table(name = ReservationAmount.TABLE_NAME)
 public class ReservationAmount extends AbstractEntity<ReservationAmount, ReservationAmountDto> {
     public static final String TABLE_NAME = Reservation.TABLE_NAME + "_" + Reservable.TABLE_NAME;
+    public static final String MAPPED_NAME = "reservationAmount";
     public static final String COL_AMOUNT = "amount";
     public static final String COL_RESERVATION = "reservation";
     public static final String COL_RESERVABLE = "reservable";

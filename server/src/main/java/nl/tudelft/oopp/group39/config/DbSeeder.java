@@ -37,16 +37,26 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DbSeeder {
-    @Autowired private UserService userService;
-    @Autowired private RoomService roomService;
-    @Autowired private BuildingService buildingService;
-    @Autowired private FacilityService facilityService;
-    @Autowired private BookingService bookingService;
-    @Autowired private EventService eventService;
-    @Autowired private BikeService bikeService;
-    @Autowired private FoodService foodService;
-    @Autowired private ReservationService reservationService;
-    @Autowired private ReservationAmountService reservationAmountService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private RoomService roomService;
+    @Autowired
+    private BuildingService buildingService;
+    @Autowired
+    private FacilityService facilityService;
+    @Autowired
+    private BookingService bookingService;
+    @Autowired
+    private EventService eventService;
+    @Autowired
+    private BikeService bikeService;
+    @Autowired
+    private FoodService foodService;
+    @Autowired
+    private ReservationService reservationService;
+    @Autowired
+    private ReservationAmountService reservationAmountService;
 
     /**
      * Initiates the db with all the roles.
@@ -77,7 +87,7 @@ public class DbSeeder {
             Role.ADMIN
         );
 
-        userService.createUser(user);
+        userService.createUser(user, true);
 
         User user2 = new User(
             "student",
@@ -86,7 +96,7 @@ public class DbSeeder {
             null,
             Role.STUDENT
         );
-        userService.createUser(user2);
+        userService.createUser(user2, true);
         System.out.println("[SEED] Admin user created");
     }
 

@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.util.ArrayList;
 import java.util.List;
 import nl.tudelft.oopp.group39.AbstractTest;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
-import nl.tudelft.oopp.group39.facility.exceptions.FacilityNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,7 +70,7 @@ public class FacilityServiceTest extends AbstractTest {
 
     @Test
     void errorTest() {
-        assertThrows(FacilityNotFoundException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             facilityService.deleteFacility(0L);
         });
     }

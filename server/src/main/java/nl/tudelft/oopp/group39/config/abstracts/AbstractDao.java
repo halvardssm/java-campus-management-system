@@ -72,10 +72,17 @@ public abstract class AbstractDao<E> {
         ));
     }
 
-    protected <C> void predicateInRelation(
+    protected void predicateEqualForeign(String col, String colForeign, Object obj) {
+        predicates.add(builder.equal(
+            root.get(col).get(colForeign),
+            obj
+        ));
+    }
+
+    protected <C> void predicateInRelationManyOne(
+        String search,
         String table,
-        Class<C> subClazz,
-        String search
+        Class<C> subClazz
     ) {
         List<Long> idList = stringLongToList(search);
 
@@ -85,6 +92,24 @@ public abstract class AbstractDao<E> {
         subBuilder
             .select(subRoot.get(table))
             .where(subRoot.get(AbstractEntity.COL_ID).in(idList));
+
+        predicates.add(subRoot.in(entityManager.createQuery(subBuilder).getResultList()));
+    }
+
+    protected <C> void predicateInRelationManyMany(
+        String search,
+        String table,
+        String col,
+        Class<C> subClazz
+    ) {
+        List<Long> idList = stringLongToList(search);
+
+        CriteriaQuery<C> subBuilder = builder.createQuery(subClazz);
+        Root<C> subRoot = subBuilder.from(subClazz);
+
+        subBuilder
+            .select(subRoot.get(table))
+            .where(subRoot.get(table).get(col).in(idList));
 
         predicates.add(subRoot.in(entityManager.createQuery(subBuilder).getResultList()));
     }

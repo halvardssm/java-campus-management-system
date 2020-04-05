@@ -37,12 +37,12 @@ public class Food extends Reservable<Food, FoodDto> {
      * @param reservation the reservation
      */
     public Food(
-            Long id,
-            String name,
-            String description,
-            Double price,
-            Building building,
-            Set<ReservationAmount> reservation
+        Long id,
+        String name,
+        String description,
+        Double price,
+        Building building,
+        Set<ReservationAmount> reservation
     ) {
         super(id, price, building, reservation);
         setName(name);
@@ -107,7 +107,7 @@ public class Food extends Reservable<Food, FoodDto> {
      * Checks whether two foods are equal.
      *
      * @param o the other object
-     * @return  true if the two foods are equal, false otherwise
+     * @return true if the two foods are equal, false otherwise
      */
     @Override
     public boolean equals(Object o) {

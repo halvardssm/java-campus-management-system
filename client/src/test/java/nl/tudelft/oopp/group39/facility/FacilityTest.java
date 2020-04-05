@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.facility;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,15 +12,11 @@ class FacilityTest {
 
     private static Facility testFacility = new Facility(1L, "Blackboard");
 
-    private static String facilityJSON =
-        "{" +
-        "\"id\":1," +
-        "\"description\":\"Blackboard\"" +
-        "}";
+    private static String facilityJSON = "{\"id\":1,\"description\":\"Blackboard\"}";
 
     @Test
     void getId() {
-        assertEquals(testFacility.getId(),1L);
+        assertEquals(testFacility.getId(), 1L);
     }
 
     @Test
@@ -30,8 +27,8 @@ class FacilityTest {
     @Test
     void testEquals() throws JsonProcessingException {
         assertEquals(testFacility, new ObjectMapper().readValue(facilityJSON, Facility.class));
-        assertNotEquals(testFacility,null);
+        assertNotEquals(testFacility, null);
         assertNotEquals(testFacility, new Object());
-        assertEquals(testFacility,testFacility);
+        assertEquals(testFacility, testFacility);
     }
 }

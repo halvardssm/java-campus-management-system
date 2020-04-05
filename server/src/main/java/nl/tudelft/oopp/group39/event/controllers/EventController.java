@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.event.dto.EventDto;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.event.services.EventService;
@@ -24,11 +25,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(EventController.REST_MAPPING)
-public class EventController {
+public class EventController extends AbstractController {
     public static final String REST_MAPPING = "/event";
 
     @Autowired
@@ -44,10 +46,11 @@ public class EventController {
      * @return a list of events {@link Event}.
      */
     @GetMapping
-    public ResponseEntity<RestResponse<Object>> listEvents(
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> list(
         @RequestParam Map<String, String> params
     ) {
-        return RestResponse.create(Utils.listEntityToDto(eventService.listEvents(params)));
+        return restHandler(() -> Utils.listEntityToDto(eventService.listEvents(params)));
     }
 
     /**
@@ -56,19 +59,13 @@ public class EventController {
      * @return the created event {@link Event}.
      */
     @PostMapping
-    public ResponseEntity<RestResponse<Object>> createEvent(@RequestBody EventDto event) {
-        try {
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> create(@RequestBody EventDto event) {
+        return restHandler(HttpStatus.CREATED, () -> {
             Event event1 = event.toEntity();
             event1.setUser(userService.readUser(event.getUser()));
-
-            return RestResponse.create(
-                eventService.createEvent(event1).toDto(),
-                null,
-                HttpStatus.CREATED
-            );
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+            return eventService.createEvent(event1).toDto();
+        });
     }
 
     /**
@@ -76,13 +73,10 @@ public class EventController {
      *
      * @return the requested event {@link Event}.
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> readEvent(@PathVariable Long id) {
-        try {
-            return RestResponse.create(eventService.readEvent(id).toDto());
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+    @GetMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
+        return restHandler(() -> eventService.readEvent(id).toDto());
     }
 
     /**
@@ -90,12 +84,13 @@ public class EventController {
      *
      * @return the updated event {@link Event}.
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> updateEvent(
+    @PutMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> update(
         @PathVariable Long id,
         @RequestBody EventDto event
     ) {
-        try {
+        return restHandler(() -> {
             Set<Room> rooms = new HashSet<>();
 
             if (event.getRooms() != null && event.getRooms().size() > 0) {
@@ -123,19 +118,20 @@ public class EventController {
             );
             event1.setRooms(rooms);
 
-            return RestResponse.create(eventService.updateEvent(id, event1));
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+            return eventService.updateEvent(id, event1).toDto();
+        });
     }
 
     /**
      * DELETE Endpoint to delete event.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteEvent(@PathVariable Long id) {
-        eventService.deleteEvent(id);
+    @DeleteMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
+        return restHandler(() -> {
+            eventService.deleteEvent(id);
 
-        return RestResponse.create(null, null, HttpStatus.OK);
+            return null;
+        });
     }
 }

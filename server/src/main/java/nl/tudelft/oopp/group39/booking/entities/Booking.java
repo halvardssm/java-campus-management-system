@@ -25,6 +25,8 @@ public class Booking extends AbstractEntity<Booking, BookingDto> {
     public static final String TABLE_NAME = "bookings";
     public static final String MAPPED_NAME = "booking";
     public static final String COL_DATE = "date";
+    public static final String COL_START_TIME = "startTime";
+    public static final String COL_END_TIME = "endTime";
     public static final String COL_USER = "user";
     public static final String COL_ROOM = "room";
 
@@ -55,12 +57,12 @@ public class Booking extends AbstractEntity<Booking, BookingDto> {
      * @param room      room
      */
     public Booking(
-            Long id,
-            LocalDate date,
-            LocalTime startTime,
-            LocalTime endTime,
-            User user,
-            Room room
+        Long id,
+        LocalDate date,
+        LocalTime startTime,
+        LocalTime endTime,
+        User user,
+        Room room
     ) {
         setId(id);
         setDate(date);
@@ -181,7 +183,7 @@ public class Booking extends AbstractEntity<Booking, BookingDto> {
      * Checks whether two bookings are equal.
      *
      * @param o the other object to be checked
-     * @return  true if the bookings are the same, false otherwise
+     * @return true if the bookings are the same, false otherwise
      */
     @Override
     public boolean equals(Object o) {

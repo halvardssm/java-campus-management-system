@@ -18,7 +18,6 @@ import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,18 +35,10 @@ public class BuildingControllerTest extends AbstractControllerTest {
         null,
         null
     );
-    private final User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.ADMIN
-    );
-    private String jwt;
 
     @BeforeEach
     void setUp() {
-        User user = userService.createUser(testUser);
+        User user = userService.createUser(testUser, true);
         jwt = jwtService.encrypt(testUser);
 
         Building building = buildingService.createBuilding(testBuilding);
@@ -135,17 +126,19 @@ public class BuildingControllerTest extends AbstractControllerTest {
     void errorTest() {
         assertEquals(
             "java.lang.NullPointerException",
-            buildingController.createBuilding(null).getBody().getError()
+            buildingController.create(null).getBody().getError()
         );
 
-        assertEquals("Building with id 0 wasn't found.",
-            buildingController.readBuilding(0L).getBody().getError());
+        assertEquals(
+            "Building with id '0' wasn't found.",
+            buildingController.read(0L).getBody().getError()
+        );
 
         assertEquals(
             "The given id must not be null!; nested exception is "
                 + "java.lang.IllegalArgumentException: "
                 + "The given id must not be null!",
-            buildingController.updateBuilding(testBuilding.toDto(), null).getBody().getError()
+            buildingController.update(testBuilding.toDto(), null).getBody().getError()
         );
     }
 }

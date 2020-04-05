@@ -17,32 +17,21 @@ import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultMatcher;
 
 public class FacilityControllerTest extends AbstractControllerTest {
-    private final User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.ADMIN
-    );
     private final Facility testFacility = new Facility(
         "test",
         null
     );
-    private String jwt;
 
     @BeforeEach
     void setUp() {
-        User user = userService.createUser(testUser);
+        User user = userService.createUser(testUser, true);
         jwt = jwtService.encrypt(testUser);
 
         Facility facility = facilityService.createFacility(testFacility);
@@ -60,8 +49,10 @@ public class FacilityControllerTest extends AbstractControllerTest {
         mockMvc.perform(get(REST_MAPPING))
             .andExpect(jsonPath("$.body").isArray())
             .andExpect(jsonPath("$.body", hasSize(1)))
-            .andExpect(jsonPath("$.body[0].description",
-                is(testFacility.getDescription())));
+            .andExpect(jsonPath(
+                "$.body[0].description",
+                is(testFacility.getDescription())
+            ));
     }
 
     @Test
@@ -80,8 +71,10 @@ public class FacilityControllerTest extends AbstractControllerTest {
             .content(json)
             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.body.description",
-                is(testFacility.getDescription())))
+            .andExpect(jsonPath(
+                "$.body.description",
+                is(testFacility.getDescription())
+            ))
             .andDo((facility) -> {
                 String responseString = facility.getResponse().getContentAsString();
                 JsonNode productNode = new ObjectMapper().readTree(responseString);
@@ -93,8 +86,10 @@ public class FacilityControllerTest extends AbstractControllerTest {
     void readFacilityTest() throws Exception {
         mockMvc.perform(get(REST_MAPPING + "/" + testFacility.getId()))
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body.description",
-                is(testFacility.getDescription())));
+            .andExpect(jsonPath(
+                "$.body.description",
+                is(testFacility.getDescription())
+            ));
     }
 
     @Test
@@ -108,8 +103,10 @@ public class FacilityControllerTest extends AbstractControllerTest {
             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body.description",
-                is(testFacility.getDescription())));
+            .andExpect(jsonPath(
+                "$.body.description",
+                is(testFacility.getDescription())
+            ));
 
 
         testFacility.setDescription("test");
@@ -121,17 +118,19 @@ public class FacilityControllerTest extends AbstractControllerTest {
             "Target object must not be null; "
                 + "nested exception is java.lang.IllegalArgumentException: "
                 + "Target object must not be null",
-            facilityController.createFacility(null).getBody().getError()
+            facilityController.create(null).getBody().getError()
         );
 
-        assertEquals("Facility with id 0 wasn't found.",
-            facilityController.readFacility(0L).getBody().getError());
+        assertEquals(
+            "Facility with id '0' wasn't found.",
+            facilityController.read(0L).getBody().getError()
+        );
 
         assertEquals(
             "The given id must not be null!; nested exception is "
                 + "java.lang.IllegalArgumentException: "
                 + "The given id must not be null!",
-            facilityController.updateFacility(testFacility, null).getBody().getError()
+            facilityController.update(testFacility, null).getBody().getError()
         );
     }
 }

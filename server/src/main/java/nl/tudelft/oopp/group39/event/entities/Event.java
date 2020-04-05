@@ -166,7 +166,7 @@ public class Event extends AbstractEntity<Event, EventDto> {
      * Checks if two events are equal.
      *
      * @param o the other object
-     * @return  true if the two events are equal, false otherwise
+     * @return true if the two events are equal, false otherwise
      */
     @Override
     public boolean equals(Object o) {
@@ -199,7 +199,7 @@ public class Event extends AbstractEntity<Event, EventDto> {
             getStartsAt(),
             getEndsAt(),
             getIsGlobal(),
-            Utils.safeNull((p) -> getUser().getUsername()),
+            Utils.safeNull(() -> getUser().getUsername()),
             Utils.entitiesToIds(getRooms())
         );
     }

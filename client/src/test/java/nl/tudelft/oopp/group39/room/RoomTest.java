@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.room;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,21 +20,25 @@ class RoomTest {
 
     private static Building testBuilding = new Building(
         1L, "Test", "Test Location", "Test Description",
-        LocalTime.of(0,6, 9),
-        LocalTime.of(16,20, 0),
-        new HashSet<>());
+        LocalTime.of(0, 6, 9),
+        LocalTime.of(16, 20, 0),
+        new HashSet<>()
+    );
 
-    private static Room testRoom = new Room(1L,
+    private static Room testRoom = new Room(
+        1L,
         30,
         "Test",
         false,
         "Test Description",
         1L,
         null,
-        null);
+        null
+    );
 
     private static String facString = "[{\"id\": 1,\"description\": \"smartboard\"}]";
-    private static String bookString = "[{\"id\":4,\"date\":\"2020-04-01\",\"startTime\":\"13:00:00\",\"endTime\":\"15:00:00\",\"user\":\"admin\",\"room\":2}]";
+    private static String bookString = "[{\"id\":4,\"date\":\"2020-04-01\",\"startTime\":\"13:00"
+        + ":00\",\"endTime\":\"15:00:00\",\"user\":\"admin\",\"room\":2}]";
 
 
     @BeforeEach
@@ -94,25 +99,27 @@ class RoomTest {
 
     @Test
     void testEqualsNull() {
-        assertNotEquals(testRoom,null);
+        assertNotEquals(testRoom, null);
     }
 
     @Test
     void testEqualsDiffType() {
-        assertNotEquals(testRoom,testBuilding);
+        assertNotEquals(testRoom, testBuilding);
     }
 
     @Test
     void testEquals() throws JsonProcessingException {
 
-        Room testRoom2 = new Room(1L,
+        Room testRoom2 = new Room(
+            1L,
             30,
             "Test",
             false,
             "Test Description",
             1L,
             (ArrayNode) mapper.readTree(facString),
-            (ArrayNode) mapper.readTree(bookString));
+            (ArrayNode) mapper.readTree(bookString)
+        );
 
         assertEquals(testRoom, testRoom2);
     }
@@ -120,14 +127,16 @@ class RoomTest {
     @Test
     void testHashCode() throws JsonProcessingException {
 
-        Room testRoom2 = new Room(1L,
+        Room testRoom2 = new Room(
+            1L,
             30,
             "Test",
             false,
             "Test Description",
             1L,
             (ArrayNode) mapper.readTree(facString),
-            (ArrayNode) mapper.readTree(bookString));
+            (ArrayNode) mapper.readTree(bookString)
+        );
 
 
         assertNotEquals(testRoom.hashCode(), testRoom2);

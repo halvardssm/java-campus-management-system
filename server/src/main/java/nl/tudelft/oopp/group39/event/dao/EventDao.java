@@ -48,7 +48,11 @@ public class EventDao extends AbstractDao<Event> {
 
         checkParam(Event.COL_USER, (c, p) -> predicateEqual(c, userRepository.getOne(p)));
 
-        checkParam(Event.COL_ROOMS, (c, p) -> predicateInRelation(Event.TABLE_NAME, Room.class, p));
+        checkParam(Event.COL_ROOMS, (c, p) -> predicateInRelationManyOne(
+            p,
+            Event.TABLE_NAME,
+            Room.class
+        ));
 
         return result();
     }

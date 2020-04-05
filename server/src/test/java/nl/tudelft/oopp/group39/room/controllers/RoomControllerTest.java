@@ -19,7 +19,6 @@ import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,13 +26,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 public class RoomControllerTest extends AbstractControllerTest {
-    private final User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.ADMIN
-    );
     private final Building testBuilding = new Building(
         null,
         "Drebbelweg",
@@ -55,11 +47,10 @@ public class RoomControllerTest extends AbstractControllerTest {
         null,
         null
     );
-    private String jwt;
 
     @BeforeEach
     void setUp() {
-        User user = userService.createUser(testUser);
+        User user = userService.createUser(testUser, true);
         jwt = jwtService.encrypt(testUser);
 
         Building building = buildingService.createBuilding(testBuilding);
@@ -84,8 +75,10 @@ public class RoomControllerTest extends AbstractControllerTest {
         mockMvc.perform(get(REST_MAPPING))
             .andExpect(jsonPath("$.body").isArray())
             .andExpect(jsonPath("$.body", hasSize(1)))
-            .andExpect(jsonPath("$.body[0].building",
-                is(testRoom.getBuilding().getId().intValue())))
+            .andExpect(jsonPath(
+                "$.body[0].building",
+                is(testRoom.getBuilding().getId().intValue())
+            ))
             .andExpect(jsonPath("$.body[0].name", is(testRoom.getName())))
             .andExpect(jsonPath("$.body[0].capacity", is(testRoom.getCapacity())))
             .andExpect(jsonPath("$.body[0].onlyStaff", is(testRoom.getOnlyStaff())))
@@ -108,8 +101,10 @@ public class RoomControllerTest extends AbstractControllerTest {
             .content(json)
             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isCreated())
-            .andExpect(jsonPath("$.body.building",
-                is(testRoom.getBuilding().getId().intValue())))
+            .andExpect(jsonPath(
+                "$.body.building",
+                is(testRoom.getBuilding().getId().intValue())
+            ))
             .andExpect(jsonPath("$.body.name", is(testRoom.getName())))
             .andExpect(jsonPath("$.body.capacity", is(testRoom.getCapacity())))
             .andExpect(jsonPath("$.body.onlyStaff", is(testRoom.getOnlyStaff())))
@@ -125,8 +120,10 @@ public class RoomControllerTest extends AbstractControllerTest {
     void readRoomTest() throws Exception {
         mockMvc.perform(get(REST_MAPPING + "/" + testRoom.getId()))
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body.building",
-                is(testRoom.getBuilding().getId().intValue())))
+            .andExpect(jsonPath(
+                "$.body.building",
+                is(testRoom.getBuilding().getId().intValue())
+            ))
             .andExpect(jsonPath("$.body.name", is(testRoom.getName())))
             .andExpect(jsonPath("$.body.capacity", is(testRoom.getCapacity())))
             .andExpect(jsonPath("$.body.onlyStaff", is(testRoom.getOnlyStaff())))
@@ -145,8 +142,10 @@ public class RoomControllerTest extends AbstractControllerTest {
             .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body.building",
-                is(testRoom.getBuilding().getId().intValue())))
+            .andExpect(jsonPath(
+                "$.body.building",
+                is(testRoom.getBuilding().getId().intValue())
+            ))
             .andExpect(jsonPath("$.body.name", is(testRoom.getName())))
             .andExpect(jsonPath("$.body.capacity", is(testRoom.getCapacity())))
             .andExpect(jsonPath("$.body.onlyStaff", is(testRoom.getOnlyStaff())))
@@ -159,17 +158,19 @@ public class RoomControllerTest extends AbstractControllerTest {
     void errorTest() {
         assertEquals(
             "java.lang.NullPointerException",
-            roomController.createRoom(null).getBody().getError()
+            roomController.create(null).getBody().getError()
         );
 
-        assertEquals("Room with id 0 wasn't found.",
-            roomController.readRoom(0L).getBody().getError());
+        assertEquals(
+            "Room with id '0' wasn't found.",
+            roomController.read(0L).getBody().getError()
+        );
 
         assertEquals(
             "The given id must not be null!; nested exception is "
                 + "java.lang.IllegalArgumentException: "
                 + "The given id must not be null!",
-            roomController.updateRoom(testRoom.toDto(), null).getBody().getError()
+            roomController.update(testRoom.toDto(), null).getBody().getError()
         );
     }
 }
