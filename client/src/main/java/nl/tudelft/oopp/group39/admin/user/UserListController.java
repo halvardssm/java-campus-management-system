@@ -114,24 +114,27 @@ public class UserListController extends AdminPanelController {
         usertable.setVisible(true);
         usertable.getItems().clear();
         usertable.getColumns().clear();
-        ArrayNode body = (ArrayNode) mapper.readTree(users).get("body");
-        users = mapper.writeValueAsString(body);
+        System.out.println(users);
+        if(!users.contains("\"body\" : null,")) {
+            ArrayNode body = (ArrayNode) mapper.readTree(users).get("body");
+            users = mapper.writeValueAsString(body);
 
-        idCol.setCellValueFactory(new PropertyValueFactory<>("username"));
-        emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
-        statusCol.setCellValueFactory(new PropertyValueFactory<>("role"));
-        deleteCol.setCellValueFactory(
-            param -> new ReadOnlyObjectWrapper<>(param.getValue())
-        );
-        deleteCol.setCellFactory(param -> returnCell("Delete"));
-        updateCol.setCellValueFactory(
-            param -> new ReadOnlyObjectWrapper<>(param.getValue())
-        );
-        User[] list = mapper.readValue(users, User[].class);
-        updateCol.setCellFactory(param -> returnCell("Update"));
-        ObservableList<User> data = FXCollections.observableArrayList(list);
-        usertable.setItems(data);
-        usertable.getColumns().addAll(idCol, emailCol, statusCol, deleteCol, updateCol);
+            idCol.setCellValueFactory(new PropertyValueFactory<>("username"));
+            emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
+            statusCol.setCellValueFactory(new PropertyValueFactory<>("role"));
+            deleteCol.setCellValueFactory(
+                param -> new ReadOnlyObjectWrapper<>(param.getValue())
+            );
+            deleteCol.setCellFactory(param -> returnCell("Delete"));
+            updateCol.setCellValueFactory(
+                param -> new ReadOnlyObjectWrapper<>(param.getValue())
+            );
+            User[] list = mapper.readValue(users, User[].class);
+            updateCol.setCellFactory(param -> returnCell("Update"));
+            ObservableList<User> data = FXCollections.observableArrayList(list);
+            usertable.setItems(data);
+            usertable.getColumns().addAll(idCol, emailCol, statusCol, deleteCol, updateCol);
+        }
     }
     /**
      * Inserts the update and delete buttons into table.

@@ -194,10 +194,15 @@ public class ServerCommunication {
         String name,
         String role
     ) {
-        String urlString = url + "user/filter?name=" + name + "&role=" + role;
+        String urlString = url + "user?username=" + name;
+        if (!role.contentEquals("")) {
+            System.out.println(role);
+            urlString += "&role=" + role;
+        }
         HttpRequest request = HttpRequest.newBuilder()
             .header("Authorization", "Bearer " + AbstractSceneController.jwt)
             .GET().uri(URI.create(urlString)).build();
+        System.out.println(httpRequest(request));
         return httpRequest(request);
     }
 

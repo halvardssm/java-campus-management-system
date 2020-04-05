@@ -110,11 +110,14 @@ public class EventEditController extends EventListController {
             String endDate,
             String userId,
             boolean globalBool) throws IOException {
-        Event newEvent = new Event(title,startDate,endDate, globalBool, userId, new ArrayList<>());
-        createAlert(ServerCommunication.updateEvent(newEvent, Long.valueOf(id)));
-//        ServerCommunication.updateEvent(id, title, startDate, endDate, globalBool);
+        Event newEvent = new Event(title,
+            startDate,
+            endDate,
+            globalBool,
+            userId,
+            new ArrayList<>());
+        ServerCommunication.updateEvent(newEvent, Long.valueOf(id));
         getBack();
-//        createAlert("Updated: " + abcEvent.getTitle());
     }
     /**
      * Makes sure that values put into event are valid.
