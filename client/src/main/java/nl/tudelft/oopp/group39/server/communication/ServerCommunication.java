@@ -17,16 +17,16 @@ import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 import nl.tudelft.oopp.group39.user.model.User;
 
 public class ServerCommunication {
-    public static String user = "user/";
-    public static String building = "building/";
-    public static String room = "room/";
-    public static String authenticate = "authenticate/";
-    public static String facility = "facility/";
-    public static String booking = "booking/";
-    public static String reservation = "reservation/";
-    public static String food = "food/";
-    public static String bike = "bike/";
-    public static String event = "event/";
+    public static String user = "user";
+    public static String building = "building";
+    public static String room = "room";
+    public static String authenticate = "authenticate";
+    public static String facility = "facility";
+    public static String booking = "booking";
+    public static String reservation = "reservation";
+    public static String food = "food";
+    public static String bike = "bike";
+    public static String event = "event";
     private static HttpClient client = HttpClient.newBuilder().build();
     public static String url;
     private static ObjectMapper mapper =
@@ -51,7 +51,7 @@ public class ServerCommunication {
      */
     public static User getUser(String username) throws JsonProcessingException {
         HttpRequest request =
-            HttpRequest.newBuilder().GET().uri(URI.create(url + user + username)).build();
+            HttpRequest.newBuilder().GET().uri(URI.create(url + user + "/" + username)).build();
         JsonNode userJson = mapper.readTree(httpRequest(request)).get("body");
         String userAsString = mapper.writeValueAsString(userJson);
         return mapper.readValue(userAsString, User.class);
@@ -65,7 +65,7 @@ public class ServerCommunication {
      */
     public static String getBuilding(long id) {
         HttpRequest request = HttpRequest.newBuilder()
-            .GET().uri(URI.create(url + building + id)).build();
+            .GET().uri(URI.create(url + building + "/" + id)).build();
         return httpRequest(request);
     }
     /**
@@ -78,7 +78,7 @@ public class ServerCommunication {
 
     public static Building getTheBuilding(long id) throws JsonProcessingException {
         HttpRequest request = HttpRequest.newBuilder()
-                .GET().uri(URI.create(url + building + id)).build();
+                .GET().uri(URI.create(url + building + "/" + id)).build();
         JsonNode roomJson = mapper.readTree(httpRequest(request)).get("body");
         String roomAsString = mapper.writeValueAsString(roomJson);
         return mapper.readValue(roomAsString, Building.class);
@@ -143,7 +143,7 @@ public class ServerCommunication {
     public static Room getRoom(Long roomId) throws JsonProcessingException {
         HttpRequest request = HttpRequest.newBuilder()
             .GET()
-            .uri(URI.create(url + room + roomId))
+            .uri(URI.create(url + room + "/" + roomId))
             .build();
         JsonNode roomJson = mapper.readTree(httpRequest(request)).get("body");
         String roomAsString = mapper.writeValueAsString(roomJson);
@@ -211,7 +211,7 @@ public class ServerCommunication {
                 + "\", \"endTime\":\"" + endTime + "\", \"user\":\"" + user
                 + "\", \"room\":\"" + room + "\"}");
         HttpRequest request = HttpRequest.newBuilder().POST(newBooking)
-            .uri(URI.create(url + "booking/"))
+            .uri(URI.create(url + "booking"))
             .header("Content-Type", "application/json").build();
 
         HttpResponse<String> response;
@@ -245,7 +245,7 @@ public class ServerCommunication {
                 + "\", \"description\":\"" + description + "\", \"open\":\"" + open
                 + "\", \"closed\":\"" + closed + "\"}");
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
-            .uri(URI.create(url + "building/"))
+            .uri(URI.create(url + "building"))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }
@@ -266,7 +266,7 @@ public class ServerCommunication {
                 + roomCapacity + "\", \"description\":\"" + roomDescription
                     + "\", \"onlyStaff\":\"" + onlyStaff + "\", \"name\":\"" + name + "\"}");
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
-            .uri(URI.create(url + "room/"))
+            .uri(URI.create(url + "room"))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }
@@ -279,7 +279,7 @@ public class ServerCommunication {
             .ofString("{\"username\": \"" + username + "\", \"email\":\""
                 + email + "\", \"role\":\"" + role + "\", \"password\":\"" + password + "\"}");
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
-            .uri(URI.create(url + "user/"))
+            .uri(URI.create(url + "user"))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }
@@ -296,7 +296,7 @@ public class ServerCommunication {
                 .ofString("{\"title\": \"" + title + "\", \"startsAt\":\"" + startDate
                         + "\", \"endsAt\":\"" + endDate + "\"}");
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
-                .uri(URI.create(url + "event/"))
+                .uri(URI.create(url + "event"))
                 .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }
@@ -366,7 +366,7 @@ public class ServerCommunication {
         HttpRequest.BodyPublisher newEvent = HttpRequest.BodyPublishers
             .ofString(eventJson);
         HttpRequest request = HttpRequest.newBuilder().PUT(newEvent)
-            .uri(URI.create(url + event + id))
+            .uri(URI.create(url + event + "/" + id))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }
@@ -437,7 +437,7 @@ public class ServerCommunication {
                 + roomCapacity + "\", \"description\":\"" + roomDescription
                 + "\", \"bookings\":\"" + bookings + "\"}");
         HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding)
-            .uri(URI.create(url + room + id))
+            .uri(URI.create(url + room + "/" + id))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }
@@ -460,7 +460,7 @@ public class ServerCommunication {
                 + "\", \"description\":\"" + description + "\", \"open\":\"" + open
                 + "\", \"closed\":\"" + closed + "\"}");
         HttpRequest request = HttpRequest.newBuilder().PUT(newBuilding)
-            .uri(URI.create(url + building + id))
+            .uri(URI.create(url + building + "/" + id))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }
@@ -605,7 +605,7 @@ public class ServerCommunication {
     public static Bike getBike(Long bikeId) throws JsonProcessingException {
         HttpRequest request = HttpRequest.newBuilder()
             .GET()
-            .uri(URI.create(url + bike + bikeId))
+            .uri(URI.create(url + bike + "/" + bikeId))
             .build();
         String bikeString =
             mapper.writeValueAsString(mapper.readTree(httpRequest(request)).get("body"));
