@@ -25,7 +25,6 @@ import nl.tudelft.oopp.group39.admin.building.BuildingListController;
 import nl.tudelft.oopp.group39.admin.event.EventListController;
 import nl.tudelft.oopp.group39.admin.reservable.bike.BikeListController;
 import nl.tudelft.oopp.group39.admin.reservable.food.FoodListController;
-import nl.tudelft.oopp.group39.admin.reservable.reservation.ReservationListController;
 import nl.tudelft.oopp.group39.admin.room.RoomListController;
 import nl.tudelft.oopp.group39.admin.user.UserListController;
 import nl.tudelft.oopp.group39.booking.model.Booking;
@@ -184,17 +183,6 @@ public abstract class AbstractSceneController {
     public void goToAdminBikeScene() throws IOException {
         BikeListController controller =
             (BikeListController) goTo("/admin/reservable/BikeList.fxml");
-        controller.customInit();
-    }
-
-    /**
-     * Switches view to the admin Bike scene.
-     *
-     * @throws IOException if the scene wasn't found
-     */
-    public void goToAdminReservationScene() throws IOException {
-        ReservationListController controller =
-            (ReservationListController) goTo("/admin/reservable/ReservationList.fxml");
         controller.customInit();
     }
 
