@@ -43,7 +43,7 @@ public class FoodCreateController extends FoodListController {
     private TextField descriptionField;
 
     /**
-     * Initializes the data of a User and makes it usable.
+     * Initializes the data and makes it usable.
      * @throws JsonProcessingException when there is a processing exception.
      */
 
@@ -65,13 +65,18 @@ public class FoodCreateController extends FoodListController {
         descriptionField.setPromptText("description");
     }
 
+    /**
+     * Initializes the data of a building and makes it usable.
+     * @throws JsonProcessingException when there is a processing exception.
+     */
+
     public ObservableList<String> initBuildings() throws JsonProcessingException {
         String buildings = ServerCommunication.get(ServerCommunication.building);
         ArrayNode body = (ArrayNode) mapper.readTree(buildings).get("body");
         buildings = mapper.writeValueAsString(body);
         Building[] list = mapper.readValue(buildings, Building[].class);
         List<String> buildingNames = new ArrayList<>();
-        for(Building building : list) {
+        for (Building building : list) {
             buildingNames.add(building.getName());
             buildingIdsByName.put(building.getName(), Long.valueOf(building.getId()));
         }
@@ -102,13 +107,13 @@ public class FoodCreateController extends FoodListController {
         String priceInputSecond = priceFieldFirst.getText();
         priceInputSecond = priceInputSecond.contentEquals("") ? priceSecond : priceInputSecond;
         Double priceInput = getPrice(priceInputFirst, priceInputSecond);
-        Food newFoodItem = new Food(1l, nameInput, descriptionInput, priceInput, buildingInput);
+        Food newFoodItem = new Food(1L, nameInput, descriptionInput, priceInput, buildingInput);
         ServerCommunication.addFoodItem(newFoodItem);
         getBack();
     }
 
     public Double getPrice(String first, String second) {
-        return Double.valueOf(first+"."+second);
+        return Double.valueOf(first + "." + second);
     }
 
 }

@@ -96,7 +96,7 @@ public class RoomEditController extends RoomListController {
         name = name.contentEquals("") ? room.getName() : name;
         Object building = roomBuildingIdField.getValue();
         String roomCap = roomCapacityField.getText();
-        if (isValidNumb(roomCap)) {
+        if (!isValidNumb(roomCap)) {
             dateMessage.setStyle("-fx-text-fill: Red");
             dateMessage.setText("Please input a valid number as capacity!");
             return;

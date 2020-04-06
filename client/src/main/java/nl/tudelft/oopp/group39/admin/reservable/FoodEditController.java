@@ -71,13 +71,17 @@ public class FoodEditController extends FoodListController {
         descriptionField.setPromptText(description);
     }
 
+    /**
+     * Initializes the data of a building and makes it usable.
+     * @throws JsonProcessingException when there is a processing exception.
+     */
     public ObservableList<String> initBuildings() throws JsonProcessingException {
         String buildings = ServerCommunication.get(ServerCommunication.building);
         ArrayNode body = (ArrayNode) mapper.readTree(buildings).get("body");
         buildings = mapper.writeValueAsString(body);
         Building[] list = mapper.readValue(buildings, Building[].class);
         List<String> buildingNames = new ArrayList<>();
-        for(Building building : list) {
+        for (Building building : list) {
             buildingNames.add(building.getName());
             buildingIdsByName.put(building.getName(), Long.valueOf(building.getId()));
         }
@@ -102,7 +106,8 @@ public class FoodEditController extends FoodListController {
         String descriptionInput = descriptionField.getText();
         descriptionInput = descriptionInput.contentEquals("") ? description : descriptionInput;
         Object buildingObj = buildingBox.getValue();
-        Long buildingInput = buildingObj == null ?  buildingIdsByName.get(building) :  buildingIdsByName.get(buildingObj.toString());
+        Long buildingInput = buildingObj == null ?  buildingIdsByName.get(building) :
+            buildingIdsByName.get(buildingObj.toString());
         String priceInputFirst = priceFieldFirst.getText();
         priceInputFirst = priceInputFirst.contentEquals("") ? priceFirst : priceInputFirst;
         String priceInputSecond = priceFieldFirst.getText();
@@ -114,7 +119,7 @@ public class FoodEditController extends FoodListController {
     }
 
     public Double getPrice(String first, String second) {
-        return Double.valueOf(first+"."+second);
+        return Double.valueOf(first + "." + second);
     }
 
 }

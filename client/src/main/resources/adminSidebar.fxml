@@ -16,7 +16,7 @@
     <Hyperlink onAction="#goToAdminFoodAndBikeScene" styleClass="sidebar-item" text="Food and Bike View"/>
 
     <Hyperlink onAction="#goToAdminFoodScene" styleClass="sidebar-item" text="Food View"/>
-    <Hyperlink onAction="#goToAdminBikeScene" styleClass="sidebar-item" text="Food View"/>
+    <Hyperlink onAction="#goToAdminBikeScene" styleClass="sidebar-item" text="Bike View"/>
     <stylesheets>
         <URL value="@/style/style.css" />
     </stylesheets>
