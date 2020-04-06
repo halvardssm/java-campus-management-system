@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,8 +12,36 @@ import java.util.function.Supplier;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.config.abstracts.IEntity;
+import org.springframework.security.crypto.codec.Hex;
 
 public interface Utils {
+
+    /**
+     * Parses from byte array to string.
+     *
+     * @param bytes the byte array
+     * @return the string
+     */
+    static String fromByteToString(byte[] bytes) {
+        if (Arrays.equals(bytes, new byte[0])) {
+            return null;
+        }
+        return new String(Hex.encode(bytes));
+    }
+
+    /**
+     * Parses from string to byte array.
+     *
+     * @param image the string
+     * @return the byte array
+     */
+    static byte[] fromStringToByte(String image) {
+        if (image == null) {
+            return new byte[0];
+        }
+        return Hex.decode(image);
+    }
+
     static String firstLetterToUppercase(String string) {
         return string.substring(0, 1).toUpperCase() + string.substring(1);
     }
