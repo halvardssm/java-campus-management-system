@@ -12,12 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.admin.AdminPanelController;
@@ -50,6 +45,8 @@ public class BikeListController extends AdminPanelController {
     private ComboBox<String> roleBox;
     @FXML
     private TextField usernameField;
+    @FXML
+    private MenuBar navBar;
 
     /**
      * Initializes scene.
@@ -61,6 +58,7 @@ public class BikeListController extends AdminPanelController {
             e.printStackTrace();
         }
         Stage currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
 
     /**

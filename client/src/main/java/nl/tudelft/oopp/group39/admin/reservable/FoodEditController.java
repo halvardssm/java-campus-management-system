@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.admin.user.UserListController;
@@ -43,6 +44,9 @@ public class FoodEditController extends FoodListController {
     private TextField nameField;
     @FXML
     private TextField descriptionField;
+    @FXML
+    private MenuBar navBar;
+
 
 
     /**
@@ -53,6 +57,7 @@ public class FoodEditController extends FoodListController {
 
     public void initData(Food food) throws JsonProcessingException {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
         this.food = food;
         ObservableList<String> data = initBuildings();
         buildingBox.setItems(data);
