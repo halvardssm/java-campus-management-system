@@ -14,7 +14,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -51,8 +50,6 @@ public class BikeListController extends AdminPanelController {
     private ComboBox<String> roleBox;
     @FXML
     private TextField usernameField;
-    @FXML
-    private MenuBar navBar;
 
     /**
      * Initializes scene.
@@ -64,7 +61,6 @@ public class BikeListController extends AdminPanelController {
             e.printStackTrace();
         }
         Stage currentStage = (Stage) backbtn.getScene().getWindow();
-        setNavBar(navBar, currentStage);
     }
 
     /**
@@ -74,9 +70,9 @@ public class BikeListController extends AdminPanelController {
     @SuppressWarnings("checkstyle:CommentsIndentation")
     void loadBike() throws JsonProcessingException {
         bikeTable.setVisible(true);
-        String bikes = ServerCommunication.get(ServerCommunication.bike);
         bikeTable.getItems().clear();
         bikeTable.getColumns().clear();
+        String bikes = ServerCommunication.get(ServerCommunication.bike);
         System.out.println(bikes);
         if (!bikes.contains("\"body\" : null,")) {
             ArrayNode body = (ArrayNode) mapper.readTree(bikes).get("body");
@@ -99,10 +95,13 @@ public class BikeListController extends AdminPanelController {
             ObservableList<Bike> data = FXCollections.observableArrayList(list);
             bikeTable.setItems(data);
             bikeTable.getColumns().addAll(
-                    idCol,
-                    bikeTypeCol,
-                    priceCol,
-                    buildingCol, rentalDurationCol, deleteCol, updateCol);
+                idCol,
+                bikeTypeCol,
+                priceCol,
+                buildingCol,
+                rentalDurationCol,
+                deleteCol,
+                updateCol);
         }
     }
     /**

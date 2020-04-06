@@ -14,7 +14,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -50,20 +49,17 @@ public class FoodListController extends AdminPanelController {
     private ComboBox<String> roleBox;
     @FXML
     private TextField usernameField;
-    @FXML
-    private MenuBar navBar;
 
     /**
      * Initializes scene.
      */
-    public void customInit() throws JsonProcessingException {
+    public void customInit() {
         try {
             loadFood();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         Stage currentStage = (Stage) backbtn.getScene().getWindow();
-        setNavBar(navBar, currentStage);
     }
 
     /**
@@ -71,10 +67,10 @@ public class FoodListController extends AdminPanelController {
      */
 
     void loadFood() throws JsonProcessingException {
-        String foodItems = ServerCommunication.get(ServerCommunication.food);
         foodTable.setVisible(true);
         foodTable.getItems().clear();
         foodTable.getColumns().clear();
+        String foodItems = ServerCommunication.get(ServerCommunication.food);
         System.out.println(foodItems);
         if (!foodItems.contains("\"body\" : null,")) {
             ArrayNode body = (ArrayNode) mapper.readTree(foodItems).get("body");
@@ -97,7 +93,13 @@ public class FoodListController extends AdminPanelController {
             ObservableList<Food> data = FXCollections.observableArrayList(list);
             foodTable.setItems(data);
             foodTable.getColumns().addAll(
-                    idCol, nameCol, priceCol, buildingCol, descriptionCol, deleteCol, updateCol);
+                idCol,
+                nameCol,
+                priceCol,
+                buildingCol,
+                descriptionCol,
+                deleteCol,
+                updateCol);
         }
     }
     /**
