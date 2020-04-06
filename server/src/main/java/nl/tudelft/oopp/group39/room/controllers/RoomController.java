@@ -42,7 +42,7 @@ public class RoomController extends AbstractController {
     public ResponseEntity<RestResponse<Object>> list(
         @RequestParam Map<String, String> allParams
     ) {
-        return restHandler(() -> Utils.listEntityToDto(service.filterRooms(allParams)));
+        return restHandler(() -> Utils.listEntityToDto(service.listRooms(allParams)));
     }
 
     /**

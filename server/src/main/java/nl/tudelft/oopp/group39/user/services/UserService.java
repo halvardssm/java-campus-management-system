@@ -81,6 +81,10 @@ public class UserService implements UserDetailsService {
                 user.setEmail(newUser.getEmail());
                 user.setRole(newUser.getRole());
 
+                if (newUser.getImage() != null) {
+                    user.setImage(user.getImage());
+                }
+
                 return userRepository.save(user);
             }).orElseThrow(() -> new NotFoundException(User.MAPPED_NAME, id));
     }

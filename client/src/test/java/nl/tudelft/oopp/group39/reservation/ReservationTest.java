@@ -1,15 +1,14 @@
 package nl.tudelft.oopp.group39.reservation;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import nl.tudelft.oopp.group39.reservation.model.Reservation;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,8 +16,9 @@ class ReservationTest {
 
     private ObjectMapper mapper = new ObjectMapper();
 
-    private String rAJson = "[\n" +
-        "{\"id\": 2,\"amount\": 1,\"reservable\": 1}" + ","
+    private String reservationJson = "[\n"
+        + "{\"id\": 2,\"amount\": 1,\"reservable\": 1}"
+        + ","
         + "{\"id\": 1,\"amount\": 5,\"reservable\": 4}]";
 
     private Reservation testReservation = new Reservation(
@@ -31,12 +31,12 @@ class ReservationTest {
 
     @BeforeEach
     void setUp() throws JsonProcessingException {
-        testReservation.setReservationAmounts((ArrayNode) mapper.readTree(rAJson));
+        testReservation.setReservationAmounts((ArrayNode) mapper.readTree(reservationJson));
     }
 
     @Test
     void getId() {
-        assertEquals(testReservation.getId(),1);
+        assertEquals(testReservation.getId(), 1);
         assertNull(new Reservation().getId());
     }
 
@@ -57,12 +57,12 @@ class ReservationTest {
 
     @Test
     void getReservationAmounts() throws JsonProcessingException {
-        assertEquals(testReservation.getReservationAmounts(), mapper.readTree(rAJson));
+        assertEquals(testReservation.getReservationAmounts(), mapper.readTree(reservationJson));
     }
 
     @Test
     void getReservable() {
-        assertEquals(testReservation.getReservables(), Arrays.asList(1L,4L));
+        assertEquals(testReservation.getReservables(), Arrays.asList(1L, 4L));
     }
 
     @Test

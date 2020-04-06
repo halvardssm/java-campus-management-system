@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,11 +20,7 @@ public class RoomServiceTest extends AbstractTest {
     Set<Facility> facilities = new HashSet<>();
     private final Room testRoom = new Room(
         null,
-        null,
-        "Projectroom 1",
-        8,
-        true,
-        "This is another room for testing purposes",
+        "Projectroom 1", "This is another room for testing purposes", 8, true, null, null,
         null,
         facilities,
         null
@@ -42,7 +39,7 @@ public class RoomServiceTest extends AbstractTest {
 
     @Test
     void listRoomsTest() {
-        List<Room> rooms = roomService.listRooms();
+        List<Room> rooms = roomService.listRooms(new HashMap<>());
 
         assertEquals(1, rooms.size());
         assertEquals(testRoom.getId(), rooms.get(0).getId());
@@ -53,7 +50,7 @@ public class RoomServiceTest extends AbstractTest {
     void deleteAndCreateRoomTest() {
         roomService.deleteRoom(testRoom.getId());
 
-        assertEquals(new ArrayList<>(), roomService.listRooms());
+        assertEquals(new ArrayList<>(), roomService.listRooms(new HashMap<>()));
 
         Room room = roomService.createRoom(testRoom);
 

@@ -121,25 +121,27 @@ public class DbSeeder {
         LocalTime open = LocalTime.of(9, 0);//.minusHours(3);
         LocalTime closed = LocalTime.of(20, 0);//.plusHours(3);
         Building b = new Building(
-                null,
-                "Library",
-                "Prometheuseplein 1",
-                "A place where TU Delft students can study and lend books",
-                LocalTime.of(8, 0),
-                LocalTime.of(0, 0),
-                null,
-                null);
+            null,
+            "Library",
+            "Prometheuseplein 1",
+            "A place where TU Delft students can study and lend books",
+            LocalTime.of(8, 0),
+            LocalTime.of(0, 0),
+            null, null,
+            null
+        );
         buildingService.createBuilding(b);
 
         Building b1 = new Building(
-                null,
-                "Pulse",
-                "Landbergstraat 19",
-                "A new education building for TU Delft students to study and take lectures",
-                LocalTime.of(8, 0),
-                LocalTime.of(0, 0),
-                null,
-                null);
+            null,
+            "Pulse",
+            "Landbergstraat 19",
+            "A new education building for TU Delft students to study and take lectures",
+            LocalTime.of(8, 0),
+            LocalTime.of(0, 0),
+            null, null,
+            null
+        );
         buildingService.createBuilding(b1);
 
         Building b2 = new Building(
@@ -149,7 +151,7 @@ public class DbSeeder {
             "Faculty of Electrical Engineering, Maths and Computer Science",
             LocalTime.of(7, 0),
             LocalTime.of(18, 0),
-            null,
+            null, null,
             null
         );
         buildingService.createBuilding(b2);
@@ -161,7 +163,7 @@ public class DbSeeder {
             "Drebbelweg",
             LocalTime.of(6, 0),
             LocalTime.of(17, 30),
-            null,
+            null, null,
             null
         );
         buildingService.createBuilding(b3);
@@ -178,76 +180,55 @@ public class DbSeeder {
         final Building b3 = buildingService.readBuilding(3L);
         final Building b4 = buildingService.readBuilding(4L);
         roomService.createRoom(new Room(
-                null,
-                 b1,
-                "Congress",
-                10,
-                true,
-                "A congress place for staff to meet",
-                null,
-                null,
-                null));
+            null,
+            "Congress", "A congress place for staff to meet", 10, true, null, b1,
+            null,
+            null,
+            null
+        ));
 
         roomService.createRoom(new Room(
-                null,
-                 b1,
-                "Study room 1",
-                10,
-                false,
-                "A study place for students to\nwork in a group",
-                null,
-                null,
-                null));
+            null,
+            "Study room 1", "A study place for students to\nwork in a group", 10, false, null, b1,
+            null,
+            null,
+            null
+        ));
 
         Set<Facility> facilities = new HashSet<>();
         facilities.add(facilityService.readFacility(1L));
         roomService.createRoom(new Room(
             null,
-             b1,
-            "Study room 2",
-            10,
-            false,
-            "A study place for students to\nwork in a group",
+            "Study room 2", "A study place for students to\nwork in a group", 10, false, null, b1,
             null,
-             facilities,
+            facilities,
             null
         ));
 
         facilities.add(facilityService.readFacility(2L));
         roomService.createRoom(
             new Room(
-                    null,
-                     b2,
-                    "Pulse-Hall 3",
-                    60,
-                    true,
-                    "A lecture room for lecturers to give lectures",
-                    null,
-                     facilities,
-                    null));
+                null,
+                "Pulse-Hall 3", "A lecture room for lecturers to give lectures", 60, true, null, b2,
+                null,
+                facilities,
+                null
+            ));
 
         roomService.createRoom(new Room(
             null,
-            b3,
-            "Lecture Hall Ampere",
-            329,
-            true,
-            "Lecture hall in EEMCS",
+            "Lecture Hall Ampere", "Lecture hall in EEMCS", 329, true, null, b3,
             null,
             facilities,
             null
         ));
 
         roomService.createRoom(new Room(
-                null,
-                b3,
-                "Lecture Hall Boole",
-                197,
-                true,
-                "Lecture hall in EEMCS",
-                null,
-                facilities,
-                null
+            null,
+            "Lecture Hall Boole", "Lecture hall in EEMCS", 197, true, null, b3,
+            null,
+            facilities,
+            null
         ));
 
         Set<Facility> facilities2 = new HashSet<>();
@@ -255,98 +236,66 @@ public class DbSeeder {
         facilities2.add(facilityService.readFacility(3L));
 
         roomService.createRoom(new Room(
-                null,
-                b4,
-                "Projectruimte 1",
-                8,
-                false,
-                "Project Room 1",
-                null,
-                facilities2,
-                null
-        ));
-
-        roomService.createRoom(new Room(
-                null,
-                b4,
-                "Projectruimte 2",
-                8,
-                false,
-                "Project Room 2",
-                null,
-                facilities2,
-                null
-        ));
-
-        roomService.createRoom(new Room(
-                null,
-                b4,
-                "Projectruimte 3",
-                8,
-                false,
-                "Project Room 3",
-                null,
-                facilities2,
-                null
-        ));
-
-        roomService.createRoom(new Room(
-                null,
-                b4,
-                "Projectruimte 4",
-                8,
-                false,
-                "Project Room 4",
-                null,
-                facilities2,
-                null
-        ));
-
-        roomService.createRoom(new Room(
-                null,
-                b4,
-                "Projectruimte 5",
-                8,
-                false,
-                "Project Room 5",
-                null,
-                facilities2,
-                null
-        ));
-
-        roomService.createRoom(new Room(
-                null,
-                b4,
-                "Projectruimte 6",
-                8,
-                false,
-                "Project Room 6",
-                null,
-                facilities2,
-                null
-        ));
-
-        roomService.createRoom(new Room(
-                null,
-                b4,
-                "Projectruimte 7",
-                8,
-                false,
-                "Project Room 7",
-                null,
-                facilities2,
-                null
+            null,
+            "Projectruimte 1", "Project Room 1", 8, false, null, b4,
+            null,
+            facilities2,
+            null
         ));
 
         roomService.createRoom(new Room(
             null,
-             b4,
-            "Projectruimte 8",
-            8,
-            false,
-            "Project Room 8",
+            "Projectruimte 2", "Project Room 2", 8, false, null, b4,
             null,
-             facilities2,
+            facilities2,
+            null
+        ));
+
+        roomService.createRoom(new Room(
+            null,
+            "Projectruimte 3", "Project Room 3", 8, false, null, b4,
+            null,
+            facilities2,
+            null
+        ));
+
+        roomService.createRoom(new Room(
+            null,
+            "Projectruimte 4", "Project Room 4", 8, false, null, b4,
+            null,
+            facilities2,
+            null
+        ));
+
+        roomService.createRoom(new Room(
+            null,
+            "Projectruimte 5", "Project Room 5", 8, false, null, b4,
+            null,
+            facilities2,
+            null
+        ));
+
+        roomService.createRoom(new Room(
+            null,
+            "Projectruimte 6", "Project Room 6", 8, false, null, b4,
+            null,
+            facilities2,
+            null
+        ));
+
+        roomService.createRoom(new Room(
+            null,
+            "Projectruimte 7", "Project Room 7", 8, false, null, b4,
+            null,
+            facilities2,
+            null
+        ));
+
+        roomService.createRoom(new Room(
+            null,
+            "Projectruimte 8", "Project Room 8", 8, false, null, b4,
+            null,
+            facilities2,
             null
         ));
 
@@ -362,11 +311,7 @@ public class DbSeeder {
         Building b2 = buildingService.readBuilding(2L);
         Room room = new Room(
             null,
-             b2,
-            "Pulse-Hall 9",
-            60,
-            true,
-            "A lecture room for lecturers to give lectures",
+            "Pulse-Hall 9", "A lecture room for lecturers to give lectures", 60, true, null, b2,
             null,
             new HashSet<>(),
             new HashSet<>()
@@ -393,7 +338,7 @@ public class DbSeeder {
         LocalTime end = LocalTime.of(15, 0);
         User user = userService.readUser("admin");
 
-        List<Room> rooms = roomService.listRooms();
+        List<Room> rooms = roomService.listRooms(new HashMap<>());
 
         Booking b1 = new Booking(null, date, start, end, user, rooms.get(0));
         bookingService.createBooking(b1);
@@ -573,7 +518,7 @@ public class DbSeeder {
             null,
             LocalDateTime.now(),
             LocalDateTime.now().plusHours(2),
-            roomService.listRooms().get(0),
+            roomService.listRooms(new HashMap<>()).get(0),
             userService.readUser("admin"),
             null
         ));

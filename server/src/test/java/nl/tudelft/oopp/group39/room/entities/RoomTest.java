@@ -52,7 +52,7 @@ class RoomTest extends AbstractTest {
             "Faculty of Electrical Engineering, Maths and Computer Science",
             LocalTime.of(7, 0),
             LocalTime.of(18, 0),
-            null,
+            null, null,
             null
         );
         this.name = "Lecture Hall Ampere";
@@ -61,28 +61,27 @@ class RoomTest extends AbstractTest {
         this.description = "This is a room for testing purposes";
         this.facilities.addAll(initSet(facilities));
         this.bookings.addAll(initSet(bookings));
-        this.room1 = new Room(null, building, name,
-            capacity, onlyStaff, description,
+        this.room1 = new Room(null, name, description, capacity, onlyStaff, null, building,
             null, facilities, bookings
         );
-        this.room2 = new Room(null, building, name,
-            capacity, onlyStaff, description,
+        this.room2 = new Room(null, name, description, capacity, onlyStaff, null, building,
             null, facilities, bookings
         );
         this.room3 = new Room(
+            null,
+            "Projectroom 1",
+            "This is another room for testing purposes",
+            8,
+            true,
             null,
             new Building(null, "Drebbelweg",
                 "Drebbelweg 5",
                 "Drebbelweg",
                 LocalTime.of(6, 0),
                 LocalTime.of(17, 30),
-                null,
+                null, null,
                 null
             ),
-            "Projectroom 1",
-            8,
-            true,
-            "This is another room for testing purposes",
             null,
             facilities,
             bookings
@@ -122,8 +121,7 @@ class RoomTest extends AbstractTest {
     void getFacilitiesTest() {
         Set<Facility> facilities2 = new HashSet<>();
         facilities2.add(facilityService.readFacility(2L));
-        Room room4 = new Room(null, building, name,
-            capacity, onlyStaff, description,
+        Room room4 = new Room(null, name, description, capacity, onlyStaff, null, building,
             null, facilities2, bookings
         );
 
@@ -134,8 +132,7 @@ class RoomTest extends AbstractTest {
     @Test
     void getBookingsTest() {
         Set<Booking> bookings2 = new HashSet<>();
-        Room room4 = new Room(null, building, name,
-            capacity, onlyStaff, description,
+        Room room4 = new Room(null, name, description, capacity, onlyStaff, null, building,
             null, facilities, bookings2
         );
 
