@@ -26,7 +26,8 @@ class ReservationTest {
         "2020-04-01T16:09:00",
         "2020-04-01T22:00:00",
         1L,
-        null
+        null,
+        "admin"
     );
 
     @BeforeEach
@@ -73,5 +74,10 @@ class ReservationTest {
     @Test
     void getDeliveryTime() {
         assertEquals(LocalDateTime.parse("2020-04-01T16:09:00"), testReservation.getDeliveryTime());
+    }
+
+    @Test
+    void getUser() {
+        assertEquals("admin", testReservation.getUser());
     }
 }
