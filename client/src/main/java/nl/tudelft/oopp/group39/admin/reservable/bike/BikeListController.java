@@ -176,6 +176,9 @@ public class BikeListController extends AdminPanelController {
         switchFunc("/admin/AdminPanel.fxml");
     }
 
+    /**
+     * Switching helper function.
+     */
     private FXMLLoader switchFunc(String resource) throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
         return mainSwitch(resource, currentstage);
