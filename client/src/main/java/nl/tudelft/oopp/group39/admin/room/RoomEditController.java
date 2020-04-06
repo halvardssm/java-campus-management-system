@@ -13,11 +13,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.models.Building;
+import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
@@ -26,8 +25,8 @@ public class RoomEditController extends RoomListController {
     private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     private Room room;
-    private HashMap<String, Integer> buildingsByName = new HashMap<>();
-    private HashMap<Integer, String> buildingsById = new HashMap<>();
+    private HashMap<String, Long> buildingsByName = new HashMap<>();
+    private HashMap<Long, String> buildingsById = new HashMap<>();
     @FXML
     private Button backbtn;
     @FXML
@@ -68,7 +67,7 @@ public class RoomEditController extends RoomListController {
         String b = ServerCommunication.get(ServerCommunication.building);
         ObservableList<String> data = getData(b);
         roomBuildingIdField.setItems(data);
-        String romName = this.buildingsById.get(Integer.valueOf(Long.toString(room.getBuilding())));
+        String romName = this.buildingsById.get(room.getBuilding());
         roomBuildingIdField.setPromptText(romName);
         ObservableList<String> dataOptions = FXCollections.observableArrayList(options);
         roomOnlyStaffField.setItems(dataOptions);
@@ -102,7 +101,7 @@ public class RoomEditController extends RoomListController {
             return;
         }
         String buildingId = building == null ? Long.toString(
-                this.room.getBuilding()) : Integer.toString(
+                this.room.getBuilding()) : Long.toString(
                         this.buildingsByName.get(building.toString()));
         roomCap = roomCap.contentEquals("") ? Integer.toString(room.getCapacity()) : roomCap;
         String roomDesc = roomDescriptionField.getText();
@@ -120,7 +119,7 @@ public class RoomEditController extends RoomListController {
      */
     public boolean isValidNumb(String str) {
         try {
-            Integer.valueOf(str);
+            Integer.parseInt(str);
         } catch (NumberFormatException e) {
             return false;
         }

@@ -15,7 +15,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.admin.user.UserListController;
-import nl.tudelft.oopp.group39.models.Building;
+import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.reservable.model.Food;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
@@ -83,7 +83,7 @@ public class FoodEditController extends FoodListController {
         List<String> buildingNames = new ArrayList<>();
         for (Building building : list) {
             buildingNames.add(building.getName());
-            buildingIdsByName.put(building.getName(), Long.valueOf(building.getId()));
+            buildingIdsByName.put(building.getName(), building.getId());
         }
         return FXCollections.observableArrayList(buildingNames);
     }
@@ -113,7 +113,8 @@ public class FoodEditController extends FoodListController {
         String priceInputSecond = priceFieldFirst.getText();
         priceInputSecond = priceInputSecond.contentEquals("") ? priceSecond : priceInputSecond;
         Double priceInput = getPrice(priceInputFirst, priceInputSecond);
-        Food newFoodItem = new Food(food.getId(), nameInput, descriptionInput, priceInput, buildingInput);
+        Food newFoodItem =
+            new Food(food.getId(), nameInput, descriptionInput, priceInput, buildingInput);
         ServerCommunication.updateFoodItem(newFoodItem, food.getId());
         getBack();
     }
