@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Text?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="window" prefHeight="600.0" prefWidth="700.0"
             stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/8.0.171"
-            fx:controller="nl.tudelft.oopp.group39.admin.reservable.FoodListController">
+            fx:controller="nl.tudelft.oopp.group39.admin.reservable.food.FoodListController">
     <top>
         <HBox spacing="10" styleClass="bar">
             <padding>
