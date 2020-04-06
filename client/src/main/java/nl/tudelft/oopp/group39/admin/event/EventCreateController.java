@@ -182,7 +182,7 @@ public class EventCreateController extends EventListController {
      * If the event is selected to be global, this method disables the combobox to choose a user.
      */
     public void uncheckUserComboBox() {
-        if(globalCheckbox.isSelected()) {
+        if (globalCheckbox.isSelected()) {
             userComboBox.setDisable(true);
         } else {
             userComboBox.setDisable(false);

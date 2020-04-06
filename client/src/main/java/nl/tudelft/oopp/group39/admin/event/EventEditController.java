@@ -70,7 +70,7 @@ public class EventEditController extends EventListController {
         endField.setPromptText(abcEvent.getEndsAt().toString());
         setNavBar(navBar, currentStage);
         uncheckUserComboBox();
-}
+    }
 
     /**
      * Goes back to main Event panel.
@@ -161,7 +161,7 @@ public class EventEditController extends EventListController {
      * If the event is selected to be global, this method disables the combobox to choose a user.
      */
     public void uncheckUserComboBox() {
-        if(globalCheckbox.isSelected()) {
+        if (globalCheckbox.isSelected()) {
             System.out.println("It is now changed");
             userComboBox.setDisable(true);
         } else {
