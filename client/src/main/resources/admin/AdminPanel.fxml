@@ -18,15 +18,21 @@
             <Insets bottom="15" left="15" right="15" top="15" />
          </padding>
          <VBox prefHeight="0.0" prefWidth="100.0">
-            <Button id="menubtn" alignment="CENTER" onMouseClicked="#toggleAdminSidebar">
+            <Button id="menubtn" alignment="CENTER" onAction="#toggleAdminSidebar">
                <graphic>
                   <ImageView fitHeight="30" fitWidth="30">
-                     <Image url="@../icons/menu-icon.png"/>
+                     <Image url="@../icons/menu-icon.png" />
                   </ImageView>
                </graphic>
             </Button>
          </VBox>
          <Text id="title" text="Admin Navigation" />
+         <VBox fx:id="userBox" alignment="CENTER">
+            <padding>
+               <Insets left="450.0"/>
+            </padding>
+            <Button id="loginbtn" fx:id="userButton" onAction="#goToLoginScene" text="Login"/>
+         </VBox>
       </HBox>
    </top>
    <bottom>
@@ -39,7 +45,7 @@
    </bottom>
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <ImageView fitHeight="461.0" fitWidth="891.0" layoutY="150.0" opacity="0.58" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="15.0">
+         <ImageView fitHeight="478.0" fitWidth="892.0" layoutY="-2.0" opacity="0.58" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="-2.0">
             <Image url="@../icons/Library.png" />
          </ImageView>
          <Button fx:id="buildingView" layoutX="71.0" layoutY="59.0" mnemonicParsing="false" onAction="#switchBuildingView" prefHeight="112.0" prefWidth="165.0" text="Building View" AnchorPane.leftAnchor="70.0">

@@ -13,6 +13,8 @@
     <Hyperlink onAction="#goToAdminBookingsScene" styleClass="sidebar-item" text="Bookings View"/>
     <Hyperlink onAction="#goToAdminUserScene" styleClass="sidebar-item" text="User View"/>
     <Hyperlink onAction="#goToAdminEventScene" styleClass="sidebar-item" text="Event View"/>
+    <Hyperlink onAction="#goToAdminFoodAndBikeScene" styleClass="sidebar-item" text="Food and Bike View"/>
+
     <stylesheets>
         <URL value="@/style/style.css" />
     </stylesheets>
