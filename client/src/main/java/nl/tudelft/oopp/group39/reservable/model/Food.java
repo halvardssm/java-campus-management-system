@@ -1,6 +1,8 @@
 package nl.tudelft.oopp.group39.reservable.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(value = { "reservations" })
 public class Food extends Reservable {
     private String name;
     private String description;

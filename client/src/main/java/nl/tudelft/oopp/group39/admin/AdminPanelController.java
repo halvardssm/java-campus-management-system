@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.admin.booking.BookingListController;
 import nl.tudelft.oopp.group39.admin.building.BuildingListController;
 import nl.tudelft.oopp.group39.admin.event.EventListController;
+import nl.tudelft.oopp.group39.admin.reservable.FoodListController;
 import nl.tudelft.oopp.group39.admin.room.RoomListController;
 import nl.tudelft.oopp.group39.admin.user.UserListController;
 
@@ -105,6 +106,22 @@ public class AdminPanelController extends MainAdminController implements Initial
     private void switchEventView() throws IOException {
         Stage currentStage = (Stage) buildingView.getScene().getWindow();
         switchEventView(currentStage);
+    }
+
+    /**
+     * Used to switch to food list.
+     */
+
+    public void switchFoodView(Stage currentstage) throws IOException {
+        FXMLLoader loader = mainSwitch("/admin/reservable/FoodList.fxml", currentstage);
+        FoodListController controller = loader.getController();
+        controller.customInit();
+    }
+
+    @FXML
+    private void switchFoodView() throws IOException {
+        Stage currentStage = (Stage) buildingView.getScene().getWindow();
+        switchFoodView(currentStage);
     }
 
     @FXML

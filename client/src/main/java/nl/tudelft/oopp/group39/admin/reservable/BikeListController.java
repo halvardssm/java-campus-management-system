@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.admin.user;
+package nl.tudelft.oopp.group39.admin.reservable;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,7 +14,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -22,11 +21,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.admin.AdminPanelController;
+import nl.tudelft.oopp.group39.admin.user.UserCreateController;
+import nl.tudelft.oopp.group39.admin.user.UserEditController;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
 
-@SuppressWarnings("unchecked")
-public class UserListController extends AdminPanelController {
+public class BikeListController extends AdminPanelController {
 
     private ObjectMapper mapper = new ObjectMapper();
     private String lastSelectedRole;
@@ -92,7 +92,6 @@ public class UserListController extends AdminPanelController {
         usernameField.setText(lastSelectedName);
         roleBox.getItems().clear();
         String roles = ServerCommunication.getUserRoles();
-        System.out.println(roles);
         ArrayNode body = (ArrayNode) mapper.readTree(roles).get("body");
         roles = mapper.writeValueAsString(body);
         String[] list = mapper.readValue(roles, String[].class);
