@@ -74,9 +74,9 @@ public class BikeController extends AbstractController {
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> update(
         @PathVariable Long id,
-        @RequestBody Bike bike
+        @RequestBody BikeDto bike
     ) {
-        return restHandler(() -> bikeService.updateBike(id, bike).toDto());
+        return restHandler(() -> bikeService.updateBike(id, bike.toEntity()).toDto());
     }
 
     /**
