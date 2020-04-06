@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Text?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="window" prefHeight="600.0" prefWidth="700.0"
             stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/10.0.2-internal"
-            fx:controller="nl.tudelft.oopp.group39.admin.reservable.BikeCreateController">
+            fx:controller="nl.tudelft.oopp.group39.admin.reservable.bike.BikeCreateController">
     <top>
         <HBox spacing="10" styleClass="bar">
             <padding>
@@ -50,7 +50,7 @@
     </bottom>
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <Text layoutX="27.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update a Bike" underline="true">
+            <Text layoutX="27.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create a Bike" underline="true">
                 <font>
                     <Font name="System Bold" size="33.0" />
                 </font>

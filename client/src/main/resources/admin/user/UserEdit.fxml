@@ -62,7 +62,7 @@
                 </font>
             </Text>
             <TextField fx:id="emailField" layoutX="200.0" layoutY="138.0" prefHeight="31.0" prefWidth="200.0" promptText="email" />
-            <Text layoutX="27.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Building:">
+            <Text layoutX="27.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Role:">
                 <font>
                     <Font name="System Bold" size="17.0" />
                 </font>
