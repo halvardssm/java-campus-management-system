@@ -69,6 +69,7 @@ public class EventEditController extends EventListController {
         startField.setPromptText(abcEvent.getStartsAt().toString());
         endField.setPromptText(abcEvent.getEndsAt().toString());
         setNavBar(navBar, currentStage);
+        uncheckUserComboBox();
     }
 
     /**
@@ -154,5 +155,17 @@ public class EventEditController extends EventListController {
             return;
         }
         createEventFinal(id, title, startDate, endDate, userId, globalBool);
+    }
+
+    /**
+     * If the event is selected to be global, this method disables the combobox to choose a user.
+     */
+    public void uncheckUserComboBox() {
+        if (globalCheckbox.isSelected()) {
+            System.out.println("It is now changed");
+            userComboBox.setDisable(true);
+        } else {
+            userComboBox.setDisable(false);
+        }
     }
 }
