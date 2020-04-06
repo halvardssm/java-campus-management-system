@@ -2,7 +2,6 @@ package nl.tudelft.oopp.group39.room.dto;
 
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
-import java.sql.Blob;
 import java.util.HashSet;
 import java.util.Set;
 import nl.tudelft.oopp.group39.booking.dto.BookingDto;
@@ -20,7 +19,7 @@ public class RoomDto extends AbstractDto<Room, RoomDto> {
     private Integer capacity;
     private Boolean onlyStaff;
     private String description;
-    private Blob image;
+    private String image;
     private Set<Facility> facilities = new HashSet<>();
     private Set<BookingDto> bookings = new HashSet<>();
 
@@ -50,7 +49,7 @@ public class RoomDto extends AbstractDto<Room, RoomDto> {
         Integer capacity,
         Boolean onlyStaff,
         Long building,
-        Blob image,
+        String image,
         Set<Facility> facilities,
         Set<BookingDto> bookings
     ) {
@@ -156,11 +155,11 @@ public class RoomDto extends AbstractDto<Room, RoomDto> {
         this.description = description;
     }
 
-    public Blob getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Blob image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

@@ -2,7 +2,6 @@ package nl.tudelft.oopp.group39.building.dto;
 
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
-import java.sql.Blob;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,7 +19,7 @@ public class BuildingDto extends AbstractDto<Building, BuildingDto> {
     private String description;
     private LocalTime open;
     private LocalTime closed;
-    private Blob image;
+    private String image;
     private Set<RoomDto> rooms = new HashSet<>();
 
     /**
@@ -48,7 +47,7 @@ public class BuildingDto extends AbstractDto<Building, BuildingDto> {
         String description,
         LocalTime open,
         LocalTime closed,
-        Blob image,
+        String image,
         Set<RoomDto> rooms
     ) {
         setId(id);
@@ -151,11 +150,11 @@ public class BuildingDto extends AbstractDto<Building, BuildingDto> {
         this.closed = closed;
     }
 
-    public Blob getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Blob image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

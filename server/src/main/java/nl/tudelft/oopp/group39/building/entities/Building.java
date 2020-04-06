@@ -2,7 +2,6 @@ package nl.tudelft.oopp.group39.building.entities;
 
 import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
-import java.sql.Blob;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -43,7 +42,7 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
     @Lob
     @Basic(fetch = FetchType.EAGER)
     @LazyGroup("lobs")
-    private Blob image;
+    private byte[] image;
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
     private Set<Room> rooms = new HashSet<>();
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
@@ -74,7 +73,7 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
         String description,
         LocalTime open,
         LocalTime closed,
-        Blob image,
+        String image,
         Set<Room> rooms,
         Set<Reservable> reservables
     ) {
@@ -84,28 +83,9 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
         setDescription(description);
         setOpen(open);
         setClosed(closed);
+        setImage(image);
         getRooms().addAll(initSet(rooms));
         getReservables().addAll(initSet(reservables));
-    }
-
-    /**
-     * Method to convert a Building object to BuildingDto for JSON serializing.
-     *
-     * @return the BuildingDto converted from building
-     */
-    public BuildingDto toDto() {
-        Set<RoomDto> roomDtoSet = Utils.setEntityToDto(rooms);
-
-        return new BuildingDto(
-            getId(),
-            getName(),
-            getLocation(),
-            getDescription(),
-            getOpen(),
-            getClosed(),
-            getImage(),
-            roomDtoSet
-        );
     }
 
     /**
@@ -198,12 +178,22 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
         this.closed = closed;
     }
 
-    public Blob getImage() {
-        return image;
+    /**
+     * Gets the image.
+     *
+     * @return the image
+     */
+    public String getImage() {
+        return Utils.fromByteToString(image);
     }
 
-    public void setImage(Blob image) {
-        this.image = image;
+    /**
+     * Changes the image.
+     *
+     * @param image the new image
+     */
+    public void setImage(String image) {
+        this.image = Utils.fromStringToByte(image);
     }
 
     /**
@@ -240,6 +230,26 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
      */
     public void setReservables(Set<Reservable> reservables) {
         this.reservables = reservables;
+    }
+
+    /**
+     * Method to convert a Building object to BuildingDto for JSON serializing.
+     *
+     * @return the BuildingDto converted from building
+     */
+    public BuildingDto toDto() {
+        Set<RoomDto> roomDtoSet = Utils.setEntityToDto(rooms);
+
+        return new BuildingDto(
+            getId(),
+            getName(),
+            getLocation(),
+            getDescription(),
+            getOpen(),
+            getClosed(),
+            getImage(),
+            roomDtoSet
+        );
     }
 
     /**

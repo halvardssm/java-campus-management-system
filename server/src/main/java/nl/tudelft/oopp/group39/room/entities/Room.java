@@ -4,7 +4,6 @@ import static nl.tudelft.oopp.group39.config.Utils.initSet;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import java.sql.Blob;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -53,7 +52,7 @@ public class Room extends AbstractEntity<Room, RoomDto> {
     @Lob
     @Basic(fetch = FetchType.EAGER)
     @LazyGroup("lobs")
-    private Blob image;
+    private byte[] image;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Building.MAPPED_NAME)
     private Building building;
@@ -101,7 +100,7 @@ public class Room extends AbstractEntity<Room, RoomDto> {
         String description,
         Integer capacity,
         Boolean onlyStaff,
-        Blob image,
+        String image,
         Building building,
         Set<Event> events,
         Set<Facility> facilities,
@@ -209,12 +208,22 @@ public class Room extends AbstractEntity<Room, RoomDto> {
         this.description = description;
     }
 
-    public Blob getImage() {
-        return image;
+    /**
+     * Gets the image.
+     *
+     * @return the image
+     */
+    public String getImage() {
+        return Utils.fromByteToString(image);
     }
 
-    public void setImage(Blob image) {
-        this.image = image;
+    /**
+     * Changes the image.
+     *
+     * @param image the new image
+     */
+    public void setImage(String image) {
+        this.image = Utils.fromStringToByte(image);
     }
 
     /**

@@ -57,6 +57,7 @@ public class UserService implements UserDetailsService {
 
         } catch (NotFoundException e) {
 
+
             mapRoleForUser(newUser, isAdmin);
 
             newUser.setPassword(encryptPassword(newUser.getPassword()));
