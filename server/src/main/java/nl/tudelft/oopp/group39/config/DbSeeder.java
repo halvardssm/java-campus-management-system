@@ -120,10 +120,27 @@ public class DbSeeder {
     private void initBuildings() {
         LocalTime open = LocalTime.of(9, 0);//.minusHours(3);
         LocalTime closed = LocalTime.of(20, 0);//.plusHours(3);
-        Building b = new Building(null, "test", "test", "test", open, closed, null, null);
+        Building b = new Building(
+                null,
+                "Library",
+                "Prometheuseplein 1",
+                "A place where TU Delft students can study and lend books",
+                LocalTime.of(8, 0),
+                LocalTime.of(0, 0),
+                null,
+                null);
         buildingService.createBuilding(b);
-        b = new Building(null, "new", "new", "new", open, closed, null, null);
-        buildingService.createBuilding(b);
+
+        Building b1 = new Building(
+                null,
+                "Pulse",
+                "Landbergstraat 19",
+                "A new education building for TU Delft students to study and take lectures",
+                LocalTime.of(8, 0),
+                LocalTime.of(0, 0),
+                null,
+                null);
+        buildingService.createBuilding(b1);
 
         Building b2 = new Building(
             null,
@@ -159,52 +176,177 @@ public class DbSeeder {
         final Building b1 = buildingService.readBuilding(1L);
         final Building b2 = buildingService.readBuilding(2L);
         final Building b3 = buildingService.readBuilding(3L);
-        roomService.createRoom(new Room(null, b1, "test", 10, true, "test1", null, null, null));
+        final Building b4 = buildingService.readBuilding(4L);
+        roomService.createRoom(new Room(
+                null,
+                 b1,
+                "Congress",
+                10,
+                true,
+                "A congress place for staff to meet",
+                null,
+                null,
+                null));
 
-        roomService.createRoom(new Room(null, b1, "test", 10, true, "test1", null, null, null));
+        roomService.createRoom(new Room(
+                null,
+                 b1,
+                "Study room 1",
+                10,
+                false,
+                "A study place for students to\nwork in a group",
+                null,
+                null,
+                null));
 
         Set<Facility> facilities = new HashSet<>();
         facilities.add(facilityService.readFacility(1L));
         roomService.createRoom(new Room(
             null,
-            b1,
-            "lala",
-            6,
-            true,
-            "test2",
+             b1,
+            "Study room 2",
+            10,
+            false,
+            "A study place for students to\nwork in a group",
             null,
-            facilities,
+             facilities,
             null
         ));
 
         facilities.add(facilityService.readFacility(2L));
         roomService.createRoom(
-            new Room(null, b2, "another one", 15, false, "test3", null, facilities, null));
+            new Room(
+                    null,
+                     b2,
+                    "Pulse-Hall 3",
+                    60,
+                    true,
+                    "A lecture room for lecturers to give lectures",
+                    null,
+                     facilities,
+                    null));
 
         roomService.createRoom(new Room(
             null,
             b3,
             "Lecture Hall Ampere",
-            50,
-            false,
+            329,
+            true,
             "Lecture hall in EEMCS",
             null,
             facilities,
             null
         ));
 
+        roomService.createRoom(new Room(
+                null,
+                b3,
+                "Lecture Hall Boole",
+                197,
+                true,
+                "Lecture hall in EEMCS",
+                null,
+                facilities,
+                null
+        ));
+
         Set<Facility> facilities2 = new HashSet<>();
         facilities2.add(facilityService.readFacility(2L));
         facilities2.add(facilityService.readFacility(3L));
+
+        roomService.createRoom(new Room(
+                null,
+                b4,
+                "Projectruimte 1",
+                8,
+                false,
+                "Project Room 1",
+                null,
+                facilities2,
+                null
+        ));
+
+        roomService.createRoom(new Room(
+                null,
+                b4,
+                "Projectruimte 2",
+                8,
+                false,
+                "Project Room 2",
+                null,
+                facilities2,
+                null
+        ));
+
+        roomService.createRoom(new Room(
+                null,
+                b4,
+                "Projectruimte 3",
+                8,
+                false,
+                "Project Room 3",
+                null,
+                facilities2,
+                null
+        ));
+
+        roomService.createRoom(new Room(
+                null,
+                b4,
+                "Projectruimte 4",
+                8,
+                false,
+                "Project Room 4",
+                null,
+                facilities2,
+                null
+        ));
+
+        roomService.createRoom(new Room(
+                null,
+                b4,
+                "Projectruimte 5",
+                8,
+                false,
+                "Project Room 5",
+                null,
+                facilities2,
+                null
+        ));
+
+        roomService.createRoom(new Room(
+                null,
+                b4,
+                "Projectruimte 6",
+                8,
+                false,
+                "Project Room 6",
+                null,
+                facilities2,
+                null
+        ));
+
+        roomService.createRoom(new Room(
+                null,
+                b4,
+                "Projectruimte 7",
+                8,
+                false,
+                "Project Room 7",
+                null,
+                facilities2,
+                null
+        ));
+
         roomService.createRoom(new Room(
             null,
-            b3,
+             b4,
             "Projectruimte 8",
             8,
             false,
             "Project Room 8",
             null,
-            facilities2,
+             facilities2,
             null
         ));
 
@@ -217,14 +359,14 @@ public class DbSeeder {
     private void initEvents() {
         LocalDateTime today = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0));
         LocalDateTime tomorrow = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
-        Building b1 = buildingService.readBuilding(1L);
+        Building b2 = buildingService.readBuilding(2L);
         Room room = new Room(
             null,
-            b1,
-            "room 123",
-            23,
-            false,
-            "some room",
+             b2,
+            "Pulse-Hall 9",
+            60,
+            true,
+            "A lecture room for lecturers to give lectures",
             null,
             new HashSet<>(),
             new HashSet<>()
@@ -271,14 +413,35 @@ public class DbSeeder {
      */
     private void initBikes() {
         Building building = buildingService.listBuildings(new HashMap<>()).get(0);
+        Building building1 = buildingService.listBuildings(new HashMap<>()).get(1);
+        Building building2 = buildingService.listBuildings(new HashMap<>()).get(2);
+        Building building3 = buildingService.listBuildings(new HashMap<>()).get(3);
 
         Bike bike1 = new Bike(null, BikeType.CITY, 5.6, building, null);
-        Bike bike2 = new Bike(null, BikeType.CITY, 6.7, building, null);
-        Bike bike3 = new Bike(null, BikeType.CITY, 7.8, building, null);
+        Bike bike2 = new Bike(null, BikeType.CITY, 5.6, building, null);
+        Bike bike3 = new Bike(null, BikeType.CITY, 5.6, building, null);
+        Bike bike4 = new Bike(null, BikeType.ELECTRIC, 7.8, building1, null);
+        Bike bike5 = new Bike(null, BikeType.CITY, 5.6, building1, null);
+        Bike bike6 = new Bike(null, BikeType.ELECTRIC, 7.8, building1, null);
+        Bike bike7 = new Bike(null, BikeType.ELECTRIC, 7.8, building2, null);
+        Bike bike8 = new Bike(null, BikeType.ELECTRIC, 7.8, building2, null);
+        Bike bike9 = new Bike(null, BikeType.ELECTRIC, 7.8, building2, null);
+        Bike bike10 = new Bike(null, BikeType.CITY, 5.6, building3, null);
+        Bike bike11 = new Bike(null, BikeType.CITY, 5.6, building3, null);
+        Bike bike12 = new Bike(null, BikeType.ELECTRIC, 7.8, building3, null);
 
         bikeService.createBike(bike1);
         bikeService.createBike(bike2);
         bikeService.createBike(bike3);
+        bikeService.createBike(bike4);
+        bikeService.createBike(bike5);
+        bikeService.createBike(bike6);
+        bikeService.createBike(bike7);
+        bikeService.createBike(bike8);
+        bikeService.createBike(bike9);
+        bikeService.createBike(bike10);
+        bikeService.createBike(bike11);
+        bikeService.createBike(bike12);
 
         System.out.println("[SEED] Bikes created");
     }
@@ -288,6 +451,9 @@ public class DbSeeder {
      */
     private void initFoods() {
         Building building = buildingService.listBuildings(new HashMap<>()).get(0);
+        Building building1 = buildingService.listBuildings(new HashMap<>()).get(1);
+        Building building2 = buildingService.listBuildings(new HashMap<>()).get(2);
+        Building building3 = buildingService.listBuildings(new HashMap<>()).get(3);
 
         Food food1 = new Food(null, "Stew", "A warm pot of deliciousness", 5.6, building, null);
         Food food2 = new Food(null, "Meatballs", "Balls of meat", 6.7, building, null);
@@ -296,13 +462,104 @@ public class DbSeeder {
             "Carrot Cake",
             "I mean cake, it's simply good",
             7.8,
-            building,
+             building,
             null
         );
+
+        Food food4 = new Food(
+                null,
+                "Oliebollen",
+                "A typical Dutch snack",
+                2.5,
+                 building1,
+                null
+        );
+
+        Food food5 = new Food(
+                null,
+                "Stamppot",
+                "Mashed potatoes with\nvegetables",
+                4.5,
+                 building1,
+                null
+        );
+
+        Food food6 = new Food(
+                null,
+                "Spaghetti",
+                "Pasta with meatballs",
+                5.0,
+                 building1,
+                null
+        );
+
+        Food food7 = new Food(
+                null,
+                "Cookie",
+                "A chocolate chip cookie",
+                1.0,
+                 building2,
+                null
+        );
+
+        Food food8 = new Food(
+                null,
+                "Apple Juice",
+                "0% sugar",
+                1.5,
+                 building2,
+                null
+        );
+
+        Food food9 = new Food(
+                null,
+                "Bitterballen",
+                "12 bitterballen",
+                3.5,
+                 building2,
+                null
+        );
+
+        Food food10 = new Food(
+                null,
+                "Salad",
+                "Ham-cheese salad",
+                3.5,
+                 building3,
+                null
+        );
+
+        Food food11 = new Food(
+                null,
+                "Poffertjes",
+                "Small little pancakes",
+                4.0,
+                 building3,
+                null
+        );
+
+        Food food12 = new Food(
+                null,
+                "Noodles",
+                "Fresh noodles",
+                4.0,
+                 building3,
+                null
+        );
+
 
         foodService.createFood(food1);
         foodService.createFood(food2);
         foodService.createFood(food3);
+        foodService.createFood(food4);
+        foodService.createFood(food5);
+        foodService.createFood(food6);
+        foodService.createFood(food7);
+        foodService.createFood(food8);
+        foodService.createFood(food9);
+        foodService.createFood(food10);
+        foodService.createFood(food11);
+        foodService.createFood(food12);
 
         System.out.println("[SEED] Foods created");
     }
