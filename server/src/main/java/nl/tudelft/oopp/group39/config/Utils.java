@@ -16,6 +16,12 @@ import org.springframework.security.crypto.codec.Hex;
 
 public interface Utils {
 
+    /**
+     * Parses from byte array to string.
+     *
+     * @param bytes the byte array
+     * @return the string
+     */
     static String fromByteToString(byte[] bytes) {
         if (Arrays.equals(bytes, new byte[0])) {
             return null;
@@ -23,6 +29,12 @@ public interface Utils {
         return new String(Hex.encode(bytes));
     }
 
+    /**
+     * Parses from string to byte array.
+     *
+     * @param image the string
+     * @return the byte array
+     */
     static byte[] fromStringToByte(String image) {
         if (image == null) {
             return new byte[0];

@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.user.services;
 
 import java.util.List;
 import java.util.Map;
+import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.config.exceptions.ExistsException;
 import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import nl.tudelft.oopp.group39.config.exceptions.NotNullException;
@@ -52,12 +53,11 @@ public class UserService implements UserDetailsService {
      */
     public User createUser(User newUser, Boolean isAdmin) {
         try {
+            newUser.setImage(Utils.safeNull(newUser::getImage));
             readUser(newUser.getUsername());
             throw new ExistsException(User.MAPPED_NAME, newUser.getUsername());
 
         } catch (NotFoundException e) {
-
-
             mapRoleForUser(newUser, isAdmin);
 
             newUser.setPassword(encryptPassword(newUser.getPassword()));
@@ -65,6 +65,7 @@ public class UserService implements UserDetailsService {
             userRepository.save(newUser);
 
             return newUser;
+
         } catch (NullPointerException e) {
             throw new NotNullException(User.MAPPED_NAME);
         }
