@@ -29,7 +29,7 @@
                     </graphic>
                 </Button>
             </VBox>
-            <Text id="title" text="Admin: User View" />
+            <Text id="title" text="Admin: Food View" />
         </HBox>
     </top>
     <bottom>

@@ -29,7 +29,7 @@
                     </graphic>
                 </Button>
             </VBox>
-            <Text id="title" text="Admin: User View" />
+            <Text id="title" text="Admin: Food View" />
         </HBox>
     </top>
     <bottom>
@@ -42,7 +42,7 @@
     </bottom>
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <Text layoutX="27.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update a Food Item" underline="true">
+            <Text layoutX="27.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create a Food Item" underline="true">
                 <font>
                     <Font name="System Bold" size="33.0" />
                 </font>

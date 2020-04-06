@@ -29,7 +29,7 @@
                     </graphic>
                 </Button>
             </VBox>
-            <Text id="title" text="Admin: User List" />
+            <Text id="title" text="Admin: Food List" />
             <VBox fx:id="userBox" alignment="CENTER">
                 <children>
                     <Button id="loginbtn" fx:id="userButton" onAction="#goToLoginScene" text="Login" />

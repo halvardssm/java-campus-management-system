@@ -50,7 +50,7 @@
     </bottom>
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <Text layoutX="14.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Users" underline="true">
+            <Text layoutX="14.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List of Bikes" underline="true">
                 <font>
                     <Font name="System Bold" size="33.0" />
                 </font>
@@ -66,7 +66,7 @@
                     <TableColumn fx:id="updateCol" prefWidth="75.0" text="Update" />
                 </columns>
             </TableView>
-            <Button layoutX="604.0" layoutY="54.0" mnemonicParsing="false" onMouseClicked="#createBike" text="Add User" />
+            <Button layoutX="604.0" layoutY="54.0" mnemonicParsing="false" onMouseClicked="#createBike" text="Add Bike" />
          <MenuBar fx:id="navBar" prefHeight="35.0" prefWidth="897.0" />
         </AnchorPane>
     </center>
