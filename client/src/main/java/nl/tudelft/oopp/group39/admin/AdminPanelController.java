@@ -14,8 +14,8 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.admin.booking.BookingListController;
 import nl.tudelft.oopp.group39.admin.building.BuildingListController;
 import nl.tudelft.oopp.group39.admin.event.EventListController;
-import nl.tudelft.oopp.group39.admin.reservable.BikeListController;
-import nl.tudelft.oopp.group39.admin.reservable.FoodListController;
+import nl.tudelft.oopp.group39.admin.reservable.bike.BikeListController;
+import nl.tudelft.oopp.group39.admin.reservable.food.FoodListController;
 import nl.tudelft.oopp.group39.admin.room.RoomListController;
 import nl.tudelft.oopp.group39.admin.user.UserListController;
 

@@ -1,6 +1,7 @@
-package nl.tudelft.oopp.group39.admin.reservable;
+package nl.tudelft.oopp.group39.admin.reservable.bike;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,11 +15,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import nl.tudelft.oopp.group39.admin.reservable.bike.BikeListController;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.reservable.model.Bike;
+import nl.tudelft.oopp.group39.reservable.model.Food;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
-public class BikeCreateController extends BikeListController {
+public class BikeEditController extends BikeListController {
 
     private String building;
     private String rentalDuration;
@@ -26,6 +29,8 @@ public class BikeCreateController extends BikeListController {
     private String priceFirst;
     private String priceSecond;
     private Stage currentStage;
+    private ObjectMapper mapper = new ObjectMapper();
+    private Bike bike;
     private HashMap<String, Long> buildingIdsByName = new HashMap<>();
     @FXML
     private Button backbtn;
@@ -45,29 +50,34 @@ public class BikeCreateController extends BikeListController {
 
     /**
      * Initializes the data of a User and makes it usable.
+     * @param bike Object bike
      * @throws JsonProcessingException when there is a processing exception.
      */
 
-    public void initData() throws JsonProcessingException {
+    public void initData(Bike bike) throws JsonProcessingException {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
         setNavBar(navBar, currentStage);
+        this.bike = bike;
         ObservableList<String> data = initBuildings();
         buildingBox.setItems(data);
-        this.building = data.get(0);
+        this.building = bike.getBuildingObj().getName();
         buildingBox.getSelectionModel().select(building);
-        String price = Double.toString(0.0);
+        String price = Double.toString(bike.getPrice());
         System.out.println(price);
         String[] priceArray = price.split("\\.");
         this.priceFirst = priceArray[0];
         this.priceSecond = priceArray[1];
         priceFieldFirst.setPromptText(priceFirst);
         priceFieldSecond.setPromptText(priceSecond);
+        this.bikeType = bike.getBikeType();
         ObservableList<String> types = initTypes();
-        this.bikeType = types.get(0);
         bikeTypeField.setItems(types);
         bikeTypeField.getSelectionModel().select(bikeType);
-        this.rentalDuration = "";
+        this.rentalDuration = bike.getRentalDuration();
         rentalDurationField.setPromptText(rentalDuration);
+
+        String reservations = ServerCommunication.get(ServerCommunication.reservation);
+        System.out.println(reservations);
     }
 
     /**
@@ -82,7 +92,7 @@ public class BikeCreateController extends BikeListController {
         List<String> buildingNames = new ArrayList<>();
         for (Building building : list) {
             buildingNames.add(building.getName());
-            buildingIdsByName.put(building.getName(), building.getId());
+            buildingIdsByName.put(building.getName(), Long.valueOf(building.getId()));
         }
         return FXCollections.observableArrayList(buildingNames);
     }
@@ -92,6 +102,18 @@ public class BikeCreateController extends BikeListController {
      * @throws JsonProcessingException when there is a processing exception.
      */
     public ObservableList<String> initTypes() throws JsonProcessingException {
+        String types = ServerCommunication.getBikeTypes();
+        ArrayNode body = (ArrayNode) mapper.readTree(types).get("body");
+        types = mapper.writeValueAsString(body);
+        String[] list = mapper.readValue(types, String[].class);
+        return FXCollections.observableArrayList(list);
+    }
+
+    /**
+     * Initializes the data of all types and makes it usable.
+     * @throws JsonProcessingException when there is a processing exception.
+     */
+    public ObservableList<String> init() throws JsonProcessingException {
         String types = ServerCommunication.getBikeTypes();
         ArrayNode body = (ArrayNode) mapper.readTree(types).get("body");
         types = mapper.writeValueAsString(body);
@@ -111,12 +133,10 @@ public class BikeCreateController extends BikeListController {
      * Edits user values and sends them to database.
      */
 
-    public void addBike() throws IOException {
-        Object typeObj = bikeTypeField.getValue();
+    public void editBike() throws IOException {
         String rentalDurationInput = rentalDurationField.getText();
         rentalDurationInput = rentalDurationInput.contentEquals("")
             ? rentalDuration : rentalDurationInput;
-        String typeInput = typeObj == null ? bikeType : typeObj.toString();
         Object buildingObj = buildingBox.getValue();
         Long buildingInput = buildingObj == null ?  buildingIdsByName.get(building) :
             buildingIdsByName.get(buildingObj.toString());
@@ -125,8 +145,11 @@ public class BikeCreateController extends BikeListController {
         String priceInputSecond = priceFieldSecond.getText();
         priceInputSecond = priceInputSecond.contentEquals("") ? priceSecond : priceInputSecond;
         Double priceInput = getPrice(priceInputFirst, priceInputSecond);
-        Bike newBike = new Bike(-1L,priceInput,buildingInput,typeInput,rentalDurationInput);
-        ServerCommunication.addBike(newBike);
+        Object typeObj = bikeTypeField.getValue();
+        String typeInput = typeObj == null ? bikeType : typeObj.toString();
+        Bike newBike = new Bike(
+                bike.getId(),priceInput,buildingInput,typeInput,rentalDurationInput);
+        ServerCommunication.updateBike(newBike, bike.getId());
         goToAdminBikeScene();
     }
 

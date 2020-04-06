@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.group39.reservation.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,9 @@ public class Reservation {
     private String timeOfPickup;
     private Long room;
     private ArrayNode reservationAmounts;
+    private String user;
+    @JsonIgnore
+    private List<ReservableNode> reservables;
 
     /**
      * Creates a reservation.
@@ -32,13 +37,15 @@ public class Reservation {
         String timeOfDelivery,
         String timeOfPickup,
         Long room,
-        ArrayNode reservationAmounts
+        ArrayNode reservationAmounts,
+        String user
     ) {
         this.id = id;
         this.timeOfDelivery = timeOfDelivery;
         this.timeOfPickup = timeOfPickup;
         this.room = room;
         this.reservationAmounts = reservationAmounts;
+        this.user = user;
     }
 
     /**
@@ -117,6 +124,38 @@ public class Reservation {
     public LocalDateTime getDeliveryTime() {
         return LocalDateTime.parse(timeOfDelivery.replace(" ", "T"));
     }
+
+    /**
+     * Gets the delivery time for the reservation.
+     *
+     * @return the delivery time for the reservation
+     */
+    public List<ReservableNode> getReservationItems() {
+        return reservables;
+    }
+
+    /**
+     * Gets the user for the reservation.
+     *
+     * @return the user for the reservation
+     */
+    public String getUser() {
+        return user;
+    }
+
+//    public void setReservables(ArrayNode reservationAmounts) {
+//        List<ReservableNode> reservableNodeList = new ArrayList<>();
+//        ReservableNode rs = new ReservableNode();
+//        for (JsonNode object : reservationAmounts) {
+//            Integer id = object.get("id").asInt();
+//            Integer amount = object.get("amount").asInt();
+//            Integer reservable = object.get("reservable").asInt();
+//            System.out.println(id + " : " + amount + " : " + reservable);
+//            rs = new ReservableNode(id, amount, reservable);
+//            reservableNodeList.add(rs);
+//        }
+//        this.reservables = reservableNodeList;
+//    }
 
     /**
      * Sets reservation amount.

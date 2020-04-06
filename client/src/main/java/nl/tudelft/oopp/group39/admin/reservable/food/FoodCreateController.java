@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.admin.reservable;
+package nl.tudelft.oopp.group39.admin.reservable.food;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ArrayNode;

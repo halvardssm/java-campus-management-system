@@ -51,7 +51,7 @@
     </bottom>
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <Text layoutX="17.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Update a room" underline="true">
+            <Text layoutX="17.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="View a room" underline="true">
                 <font>
                     <Font name="System Bold" size="33.0" />
                 </font>

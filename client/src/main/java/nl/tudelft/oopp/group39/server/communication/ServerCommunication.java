@@ -13,6 +13,7 @@ import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.event.model.Event;
 import nl.tudelft.oopp.group39.reservable.model.Bike;
 import nl.tudelft.oopp.group39.reservable.model.Food;
+import nl.tudelft.oopp.group39.reservation.model.Reservation;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 import nl.tudelft.oopp.group39.user.model.User;
@@ -28,6 +29,7 @@ public class ServerCommunication {
     public static String food = "food";
     public static String bike = "bike";
     public static String event = "event";
+    public static String reservable = "reservable";
     private static HttpClient client = HttpClient.newBuilder().build();
     public static String url;
     private static ObjectMapper mapper =
@@ -73,6 +75,21 @@ public class ServerCommunication {
             .header("Authorization", "Bearer " + AbstractSceneController.jwt)
             .GET().uri(URI.create(url + building + "/" + id)).build();
         return httpRequest(request);
+    }
+
+    /**
+     * Retrieves reservations filtered on id.
+     *
+     * @param id of wanted building
+     * @return the body of a get request to the server.
+     */
+    public static Reservation getReservation(long id) throws JsonProcessingException {
+        HttpRequest request = HttpRequest.newBuilder()
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .GET().uri(URI.create(url + reservation + "/" + id)).build();
+        JsonNode roomJson = mapper.readTree(httpRequest(request)).get("body");
+        String roomAsString = mapper.writeValueAsString(roomJson);
+        return mapper.readValue(roomAsString, Reservation.class);
     }
     /**
      * Retrieves building filtered on id. The difference between the other getBuilding method
@@ -456,6 +473,22 @@ public class ServerCommunication {
         HttpRequest request = HttpRequest.newBuilder().PUT(newFoodItem)
             .header("Authorization", "Bearer " + AbstractSceneController.jwt)
             .uri(URI.create(url + food + "/" + id))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Updates event in the server.
+     *
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public static String updateReservation(Reservation resObj, Long id) throws JsonProcessingException {
+        String eventJson = mapper.writeValueAsString(resObj);
+        HttpRequest.BodyPublisher newFoodItem = HttpRequest.BodyPublishers
+            .ofString(eventJson);
+        HttpRequest request = HttpRequest.newBuilder().PUT(newFoodItem)
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .uri(URI.create(url + reservation + "/" + id))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }

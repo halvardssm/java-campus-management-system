@@ -1,4 +1,4 @@
-package nl.tudelft.oopp.group39.admin.reservable;
+package nl.tudelft.oopp.group39.admin.reservable.bike;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -18,26 +18,26 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.admin.AdminPanelController;
-import nl.tudelft.oopp.group39.reservable.model.Food;
+import nl.tudelft.oopp.group39.reservable.model.Bike;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
-public class FoodListController extends AdminPanelController {
+public class BikeListController extends AdminPanelController {
 
     private String lastSelectedRole;
     private String lastSelectedName;
     private String allRoles = "ALL ROLES";
     @FXML
     private Button backbtn;
-    @FXML private TableView<Food> foodTable;
-    @FXML private TableColumn<Food, String> idCol;
-    @FXML private TableColumn<Food, String> nameCol;
-    @FXML private TableColumn<Food, String> descriptionCol;
-    @FXML private TableColumn<Food, Double> priceCol;
-    @FXML private TableColumn<Food, String> buildingCol;
+    @FXML private TableView<Bike> bikeTable;
+    @FXML private TableColumn<Bike, String> idCol;
+    @FXML private TableColumn<Bike, String> bikeTypeCol;
+    @FXML private TableColumn<Bike, String> rentalDurationCol;
+    @FXML private TableColumn<Bike, Double> priceCol;
+    @FXML private TableColumn<Bike, String> buildingCol;
     @FXML
-    private TableColumn<Food, Food> deleteCol = new TableColumn<>("Delete");
+    private TableColumn<Bike, Bike> deleteCol = new TableColumn<>("Delete");
     @FXML
-    private TableColumn<Food, Food> updateCol = new TableColumn<>("Update");
+    private TableColumn<Bike, Bike> updateCol = new TableColumn<>("Update");
     @FXML
     private ComboBox<String> roleBox;
     @FXML
@@ -50,7 +50,7 @@ public class FoodListController extends AdminPanelController {
      */
     public void customInit() {
         try {
-            loadFood();
+            loadBike();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -62,21 +62,21 @@ public class FoodListController extends AdminPanelController {
      * Display users and data into tableView named userTable.
      */
 
-    void loadFood() throws JsonProcessingException {
-        foodTable.setVisible(true);
-        foodTable.getItems().clear();
-        foodTable.getColumns().clear();
-        String foodItems = ServerCommunication.get(ServerCommunication.food);
-        System.out.println(foodItems);
-        if (!foodItems.contains("\"body\" : null,")) {
-            ArrayNode body = (ArrayNode) mapper.readTree(foodItems).get("body");
-            foodItems = mapper.writeValueAsString(body);
+    @SuppressWarnings("checkstyle:CommentsIndentation")
+    void loadBike() throws JsonProcessingException {
+        bikeTable.setVisible(true);
+        bikeTable.getItems().clear();
+        bikeTable.getColumns().clear();
+        String bikes = ServerCommunication.get(ServerCommunication.bike);
+        if (!bikes.contains("\"body\" : null,")) {
+            ArrayNode body = (ArrayNode) mapper.readTree(bikes).get("body");
+            bikes = mapper.writeValueAsString(body);
 
             idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-            nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+            bikeTypeCol.setCellValueFactory(new PropertyValueFactory<>("bikeType"));
             priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
             buildingCol.setCellValueFactory(new PropertyValueFactory<>("building"));
-            descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+            rentalDurationCol.setCellValueFactory(new PropertyValueFactory<>("rentalDuration"));
             deleteCol.setCellValueFactory(
                 param -> new ReadOnlyObjectWrapper<>(param.getValue())
             );
@@ -84,16 +84,16 @@ public class FoodListController extends AdminPanelController {
             updateCol.setCellValueFactory(
                 param -> new ReadOnlyObjectWrapper<>(param.getValue())
             );
-            Food[] list = mapper.readValue(foodItems, Food[].class);
+            Bike[] list = mapper.readValue(bikes, Bike[].class);
             updateCol.setCellFactory(param -> returnCell("Update"));
-            ObservableList<Food> data = FXCollections.observableArrayList(list);
-            foodTable.setItems(data);
-            foodTable.getColumns().addAll(
+            ObservableList<Bike> data = FXCollections.observableArrayList(list);
+            bikeTable.setItems(data);
+            bikeTable.getColumns().addAll(
                 idCol,
-                nameCol,
+                bikeTypeCol,
                 priceCol,
                 buildingCol,
-                descriptionCol,
+                rentalDurationCol,
                 deleteCol,
                 updateCol);
         }
@@ -102,15 +102,15 @@ public class FoodListController extends AdminPanelController {
      * Inserts the update and delete buttons into table.
      */
 
-    public TableCell<Food, Food> returnCell(String button) {
+    public TableCell<Bike, Bike> returnCell(String button) {
         return new TableCell<>() {
             private final Button updateButton = new Button(button);
 
             @Override
-            protected void updateItem(Food food, boolean empty) {
-                super.updateItem(food, empty);
+            protected void updateItem(Bike bike, boolean empty) {
+                super.updateItem(bike, empty);
 
-                if (food == null) {
+                if (bike == null) {
                     setGraphic(null);
                     return;
                 }
@@ -121,10 +121,10 @@ public class FoodListController extends AdminPanelController {
                         try {
                             switch (button) {
                                 case "Update":
-                                    editFoodItem(food);
+                                    editBikeItem(bike);
                                     break;
                                 case "Delete":
-                                    deleteFoodItem(food);
+                                    deleteBikeItem(bike);
                                     break;
                                 default:
                                     break;
@@ -142,9 +142,9 @@ public class FoodListController extends AdminPanelController {
     /**
      * Switches scene to the createUser one.
      */
-    public void createFoodItem() throws IOException {
-        FXMLLoader loader = switchFunc("/admin/reservable/FoodCreate.fxml");
-        FoodCreateController controller = loader.getController();
+    public void createBike() throws IOException {
+        FXMLLoader loader = switchFunc("/admin/reservable/BikeCreate.fxml");
+        BikeCreateController controller = loader.getController();
         controller.initData();
         controller.changeUserBox();
     }
@@ -152,19 +152,19 @@ public class FoodListController extends AdminPanelController {
      * Deletes selected user.
      */
 
-    public void deleteFoodItem(Food food) throws IOException {
-        String id = Long.toString(food.getId());
-        ServerCommunication.removeFoodItem(id);
-        loadFood();
+    public void deleteBikeItem(Bike bike) throws IOException {
+        String id = Long.toString(bike.getId());
+        ServerCommunication.removeBike(id);
+        loadBike();
     }
     /**
      * Sends user to the user edit page.
      */
 
-    public void editFoodItem(Food food) throws IOException {
-        FXMLLoader loader = switchFunc("/admin/reservable/FoodEdit.fxml");
-        FoodEditController controller = loader.getController();
-        controller.initData(food);
+    public void editBikeItem(Bike bike) throws IOException {
+        FXMLLoader loader = switchFunc("/admin/reservable/BikeEdit.fxml");
+        BikeEditController controller = loader.getController();
+        controller.initData(bike);
         controller.changeUserBox();
     }
 
