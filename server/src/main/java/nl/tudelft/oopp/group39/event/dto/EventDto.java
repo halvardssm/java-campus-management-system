@@ -6,10 +6,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
 import nl.tudelft.oopp.group39.event.entities.Event;
-import nl.tudelft.oopp.group39.room.entities.Room;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -201,7 +199,7 @@ public class EventDto extends AbstractDto<Event, EventDto> {
             getEndsAt(),
             getIsGlobal(),
             null,
-            Utils.idsToComponentSet(getRooms(), Room.class)
+            null
         );
     }
 }

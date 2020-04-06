@@ -9,12 +9,25 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractDto;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.config.abstracts.IEntity;
 import org.springframework.security.crypto.codec.Hex;
 
 public interface Utils {
+
+    /**
+     * From list to String separated by comma.
+     *
+     * @param list the list
+     * @return the string
+     */
+    static String listToString(List<?> list) {
+        return list == null ? "" : list.stream()
+            .map(String::valueOf)
+            .collect(Collectors.joining(","));
+    }
 
     /**
      * Parses from byte array to string.

@@ -64,6 +64,13 @@ public class EventController extends AbstractController {
         return restHandler(HttpStatus.CREATED, () -> {
             Event event1 = event.toEntity();
             event1.setUser(userService.readUser(event.getUser()));
+
+            if (event.getRooms() != null && !event.getRooms().isEmpty()) {
+                Map<String, String> params = new HashMap<>();
+                params.put(Room.COL_ID, Utils.listToString(event.getRooms()));
+                event1.setRooms(new HashSet<>(roomService.listRooms(params)));
+            }
+
             return eventService.createEvent(event1).toDto();
         });
     }
