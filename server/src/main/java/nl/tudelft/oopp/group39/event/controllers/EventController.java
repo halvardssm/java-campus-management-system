@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
@@ -100,23 +99,13 @@ public class EventController extends AbstractController {
         return restHandler(() -> {
             Set<Room> rooms = new HashSet<>();
 
-            if (event.getRooms() != null && event.getRooms().size() > 0) {
-                Map<String, String> roomMap = new HashMap<>();
-
-                roomMap.put(
-                    Room.COL_ID,
-                    String.join(
-                        ",",
-                        event.getRooms().stream()
-                            .map(String::valueOf)
-                            .collect(Collectors.joining(","))
-                    )
-                );
-
-                rooms.addAll(roomService.listRooms(roomMap));
-            }
-
             Event event1 = event.toEntity();
+
+            if (event.getRooms() != null && !event.getRooms().isEmpty()) {
+                Map<String, String> params = new HashMap<>();
+                params.put(Room.COL_ID, Utils.listToString(event.getRooms()));
+                event1.setRooms(new HashSet<>(roomService.listRooms(params)));
+            }
 
             event1.setUser(
                 event.getUser() != null
