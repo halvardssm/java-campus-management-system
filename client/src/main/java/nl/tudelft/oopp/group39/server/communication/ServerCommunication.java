@@ -260,6 +260,7 @@ public class ServerCommunication {
                 + "\", \"description\":\"" + description + "\", \"open\":\"" + open
                 + "\", \"closed\":\"" + closed + "\"}");
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
             .uri(URI.create(url + "building"))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
