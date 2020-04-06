@@ -124,7 +124,7 @@ public class DbSeeder {
             null,
             "Library",
             "Prometheuseplein 1",
-            "A place where TU Delft students can study and lend books",
+            "A place where TU Delft students\ncan study and lend books",
             LocalTime.of(8, 0),
             LocalTime.of(23, 59),
             null, null,
@@ -136,7 +136,7 @@ public class DbSeeder {
             null,
             "Pulse",
             "Landbergstraat 19",
-            "A new education building for TU Delft students to study and take lectures",
+            "A new education building for\nTU Delft students to study",
             LocalTime.of(8, 0),
             LocalTime.of(23, 59),
             null, null,
@@ -148,7 +148,7 @@ public class DbSeeder {
             null,
             "EEMCS",
             "Mekelweg 4",
-            "Faculty of Electrical Engineering, Maths and Computer Science",
+            "Faculty of Electrical Engineering,\nMaths and Computer Science",
             LocalTime.of(7, 0),
             LocalTime.of(18, 0),
             null, null,
@@ -160,7 +160,7 @@ public class DbSeeder {
             null,
             "Drebbelweg",
             "Drebbelweg 5",
-            "Drebbelweg",
+            "Shared lab building",
             LocalTime.of(6, 0),
             LocalTime.of(17, 30),
             null, null,
@@ -209,7 +209,7 @@ public class DbSeeder {
         roomService.createRoom(
             new Room(
                 null,
-                "Pulse-Hall 3", "A lecture room for lecturers to give lectures", 60, true, null, b2,
+                "Pulse-Hall 3", "A lecture room for lecturers to\ngive lectures", 60, true, null, b2,
                 null,
                 facilities,
                 null
@@ -311,7 +311,7 @@ public class DbSeeder {
         Building b2 = buildingService.readBuilding(2L);
         Room room = new Room(
             null,
-            "Pulse-Hall 9", "A lecture room for lecturers to give lectures", 60, true, null, b2,
+            "Pulse-Hall 9", "A lecture room for lecturers to\ngive lectures", 60, true, null, b2,
             null,
             new HashSet<>(),
             new HashSet<>()
