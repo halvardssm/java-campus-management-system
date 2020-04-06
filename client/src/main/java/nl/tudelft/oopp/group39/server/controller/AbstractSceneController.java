@@ -251,7 +251,7 @@ public abstract class AbstractSceneController {
     }
 
     /**
-     * Switches view to the food order scene.
+     * Switches view to the calendar scene.
      *
      * @throws IOException if the scene wasn't found
      */

@@ -29,6 +29,14 @@
                 </Button>
             </VBox>
             <Text id="title" text="Admin: Event View" />
+         <VBox fx:id="userBox" alignment="CENTER">
+            <children>
+               <Button id="loginbtn" fx:id="userButton" onAction="#goToLoginScene" text="Login" />
+            </children>
+            <padding>
+               <Insets left="450.0" />
+            </padding>
+         </VBox>
         </HBox>
     </top>
     <bottom>
