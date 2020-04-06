@@ -10,32 +10,28 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 @JsonIgnoreProperties(value = { "reservables", "rooms" })
 public class Building {
-
     private Integer id;
-
     private String name;
-
     private String location;
-
     private String description;
-
     private String open;
-
     private String closed;
 
+    /**
+     * Creates a building.
+     */
     public Building() {
-
     }
 
     /**
-     * Doc.
+     * Creates a building.
      *
-     * @param id          id
-     * @param name        name
-     * @param location    location
-     * @param description description
-     * @param open        open
-     * @param closed      closed
+     * @param id          the id of the building
+     * @param name        the name of the building
+     * @param location    the location of the building
+     * @param description the description of the building
+     * @param open        the opening time of the building
+     * @param closed      the closing time of the building
      */
     public Building(
         Integer id,
@@ -53,26 +49,56 @@ public class Building {
         this.closed = closed;
     }
 
+    /**
+     * Gets the id of the building.
+     *
+     * @return the id of the building
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * Gets the name of the building.
+     *
+     * @return the name of the building
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the address of the building.
+     *
+     * @return the location of the building
+     */
     public String getLocation() {
         return location;
     }
 
+    /**
+     * Gets the description of the building.
+     *
+     * @return the description of the building
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Gets the opening time of the building.
+     *
+     * @return the opening time of the building
+     */
     public String getOpen() {
         return open;
     }
 
+    /**
+     * Gets the closing time of the building.
+     *
+     * @return the closing time of the building
+     */
     public String getClosed() {
         return closed;
     }
@@ -101,6 +127,5 @@ public class Building {
             }
             return maxCapacity;
         }
-
     }
 }

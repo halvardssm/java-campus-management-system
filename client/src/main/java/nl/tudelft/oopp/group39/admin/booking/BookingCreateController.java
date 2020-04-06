@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -27,7 +26,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
 
 public class BookingCreateController extends BookingListController {
-
     private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     private String date;
@@ -84,6 +82,13 @@ public class BookingCreateController extends BookingListController {
         }
     }
 
+    /**
+     * Gets the building.
+     *
+     * @param room                     the room of the building
+     * @return                         the building of the room
+     * @throws JsonProcessingException when there is a processing exception
+     */
     private Building getBuilding(Room room) throws JsonProcessingException {
         String buildingString = ServerCommunication.getBuilding(room.getBuilding());
         ObjectNode buildingBody = (ObjectNode) mapper.readTree(buildingString).get("body");
@@ -91,6 +96,11 @@ public class BookingCreateController extends BookingListController {
         return mapper.readValue(buildingString, Building.class);
     }
 
+    /**
+     * Initializes the rooms.
+     *
+     * @throws JsonProcessingException when there is a processing exception
+     */
     private void initRooms() throws JsonProcessingException {
         String rooms = ServerCommunication.get(ServerCommunication.room);
         ArrayNode body = (ArrayNode) mapper.readTree(rooms).get("body");
@@ -110,6 +120,12 @@ public class BookingCreateController extends BookingListController {
         roomBox.setItems(data);
     }
 
+    /**
+     * Sets the time slots for the booking.
+     *
+     * @param date                     the date for the time slots
+     * @throws JsonProcessingException when there is a processing exception
+     */
     private void setTimeSlots(String date) throws JsonProcessingException {
         List<String> timeSlots = initiateTimeslots(date);
         ObservableList<String> listString = FXCollections.observableArrayList(timeSlots);
@@ -123,6 +139,11 @@ public class BookingCreateController extends BookingListController {
         endTimeBox.setItems(listString);
     }
 
+    /**
+     * Initializes the users.
+     *
+     * @throws JsonProcessingException when there is a processing exception
+     */
     private void initUsers() throws JsonProcessingException {
         String users = ServerCommunication.get(ServerCommunication.user);
         ArrayNode body = (ArrayNode) mapper.readTree(users).get("body");
@@ -139,6 +160,13 @@ public class BookingCreateController extends BookingListController {
         userBoxN.setItems(data);
     }
 
+    /**
+     * Initializes the time slots.
+     *
+     * @param date                     the date of the reservation
+     * @return                         a list of the times
+     * @throws JsonProcessingException when there is a processing exception
+     */
     private List<String> initiateTimeslots(String date) throws JsonProcessingException {
         List<String> times = new ArrayList<>();
         int open = Integer.parseInt(building.getOpen().split(":")[0]);
@@ -170,10 +198,12 @@ public class BookingCreateController extends BookingListController {
         }
         return times;
     }
+
     /**
      * Returns a list containing times where there is a booking.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
-
     public List<Integer> getBookedTimes(String date) throws JsonProcessingException {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         String roomDate = "room=" + room.getId() + "&date=" + date;
@@ -194,8 +224,9 @@ public class BookingCreateController extends BookingListController {
 
     /**
      * Goes back to main booking panel.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     @FXML
     private void getBack() throws IOException {
         switchBookingsView(currentStage);
@@ -203,9 +234,9 @@ public class BookingCreateController extends BookingListController {
 
     /**
      * Creates a booking for the user.
+     *
      * @throws IOException when there is an issue with input.
      */
-
     public void createBooking() throws IOException {
         Object roomObj = roomBox.getValue();
         String roomId = roomObj == null ? Long.toString(
@@ -232,5 +263,4 @@ public class BookingCreateController extends BookingListController {
         getBack();
         createAlert("Updated the booking!");
     }
-
 }

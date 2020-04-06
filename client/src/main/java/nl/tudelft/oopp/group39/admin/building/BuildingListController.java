@@ -27,7 +27,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 @SuppressWarnings("unchecked")
 public class BuildingListController extends AdminPanelController {
-
     private String start;
     private String end;
     private ObjectMapper mapper = new ObjectMapper();
@@ -77,8 +76,9 @@ public class BuildingListController extends AdminPanelController {
 
     /**
      * loads all buildings.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
-
     public void loadAllBuildings() throws JsonProcessingException {
         String buildings = ServerCommunication.get(ServerCommunication.building);
         loadFiltering();
@@ -87,6 +87,8 @@ public class BuildingListController extends AdminPanelController {
 
     /**
      * Sets the list of possible times into Time combo boxes.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
     public void loadTimeSlots() throws JsonProcessingException {
         List<String> timeSlots = initiateTimeslots();
@@ -98,20 +100,21 @@ public class BuildingListController extends AdminPanelController {
         openingBox.setPromptText(this.start);
         closingBox.setPromptText(this.end);
     }
+
     /**
      * Clears filtering boxes.
      */
-
     public void loadFiltering() {
         nameFilter.clear();
         descriptionFilter.clear();
         locationFilter.clear();
     }
+
     /**
      * Filters buildings.
+     *
      * @throws JsonProcessingException when there is a processing exception
      */
-
     public void filterBuildings() throws JsonProcessingException {
         String name = nameFilter.getText();
         name = name == null ? "" : name;
@@ -132,12 +135,11 @@ public class BuildingListController extends AdminPanelController {
         loadBuildings(buildings);
     }
 
-
     /**
      * Display buildings and data in tableView buildingTable.
+     *
      * @throws JsonProcessingException when there is a processing exception
      */
-
     void loadBuildings(String buildings) throws JsonProcessingException {
         buildingTable.setVisible(true);
         buildingTable.getItems().clear();
@@ -172,10 +174,10 @@ public class BuildingListController extends AdminPanelController {
              deleteCol,
              updateCol);
     }
+
     /**
      * Inserts the update and delete buttons into table.
      */
-
     public TableCell<Building, Building> returnCell(String button) {
         return new TableCell<>() {
             private final Button updateButton = new Button(button);
@@ -215,25 +217,31 @@ public class BuildingListController extends AdminPanelController {
 
     /**
      * Sends user to Building Create scene.
+     *
+     * @throws IOException if an error occurs during loading
      */
     public void createBuilding() throws IOException {
         FXMLLoader loader = switchFunc("/admin/building/BuildingCreate.fxml");
         BuildingCreateController controller = loader.getController();
         controller.customInit();
     }
+
     /**
      * Deletes selected building.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
-
-    public void deleteBuilding(Building building) throws IOException {
+    public void deleteBuilding(Building building) throws JsonProcessingException {
         String id = Long.toString(building.getId());
         ServerCommunication.removeBuilding(id);
         loadAllBuildings();
     }
+
     /**
      * Sends user to the building edit page.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     public void editBuilding(Building building) throws IOException {
         FXMLLoader loader = switchFunc("/admin/building/BuildingEdit.fxml");
         BuildingEditController controller = loader.getController();
@@ -242,12 +250,20 @@ public class BuildingListController extends AdminPanelController {
 
     /**
      * Goes back to main admin panel.
+     *
+     * @throws IOException if an error occurs during loading
      */
     @FXML
     private void switchBack() throws IOException {
         switchFunc("/admin/AdminPanel.fxml");
     }
 
+    /**
+     * Switches screen.
+     *
+     * @param resource     the resource
+     * @throws IOException if an error occurs during loading
+     */
     private FXMLLoader switchFunc(String resource) throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
         return mainSwitch(resource, currentstage);
@@ -255,6 +271,8 @@ public class BuildingListController extends AdminPanelController {
 
     /**
      * Used to make list of possible times.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
     public List<String> initiateTimeslots() throws JsonProcessingException {
         List<String> times = new ArrayList<>();
@@ -269,7 +287,4 @@ public class BuildingListController extends AdminPanelController {
         }
         return times;
     }
-
-
-
 }

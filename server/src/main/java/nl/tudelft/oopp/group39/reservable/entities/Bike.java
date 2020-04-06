@@ -47,10 +47,20 @@ public class Bike extends Reservable<Bike, BikeDto> {
         setBikeType(bikeType != null ? bikeType : BikeType.CITY);
     }
 
+    /**
+     * Gets the bike type.
+     *
+     * @return the bike type
+     */
     public BikeType getBikeType() {
         return bikeType;
     }
 
+    /**
+     * Changes the bike type.
+     *
+     * @param bikeType the new bike type
+     */
     public void setBikeType(BikeType bikeType) {
         this.bikeType = bikeType;
     }

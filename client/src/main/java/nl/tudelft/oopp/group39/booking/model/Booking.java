@@ -7,7 +7,6 @@ import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 public class Booking {
-
     private Integer id;
     private String date;
     private String startTime;
@@ -19,7 +18,6 @@ public class Booking {
      * Creates a booking.
      */
     public Booking() {
-
     }
 
     /**
@@ -111,6 +109,12 @@ public class Booking {
         return ServerCommunication.getRoom(room);
     }
 
+    /**
+     * Checks whether two bookings are equal.
+     *
+     * @param o the other object
+     * @return  true if the two rooms are equal, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {

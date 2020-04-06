@@ -22,7 +22,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 // Suppress all only used for Suspicious call to 'HashMap.get' in line 126
 @SuppressWarnings("MismatchedQueryAndUpdateOfCollection, ALL")
 public class RoomCreateController extends RoomListController {
-
     private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     private HashMap<String, Integer> buildingsByName = new HashMap<>();
@@ -54,6 +53,7 @@ public class RoomCreateController extends RoomListController {
 
     /**
      * Creates a list of buildings.
+     *
      * @throws JsonProcessingException when there is a processing exception.
      */
     public List<Building> getBuildings(String buildings) throws JsonProcessingException {
@@ -79,9 +79,9 @@ public class RoomCreateController extends RoomListController {
 
     /**
      * Initializes data for usage in creating room.
+     *
      * @throws JsonProcessingException when there is a processing exception.
      */
-
     public void initData() throws JsonProcessingException {
         String b = ServerCommunication.get(ServerCommunication.building);
         ObservableList<String> data = getData(b);
@@ -98,8 +98,9 @@ public class RoomCreateController extends RoomListController {
 
     /**
      * Goes back to main Room panel.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     @FXML
     private void getBack() throws IOException {
         switchRoomView(currentStage);
@@ -107,8 +108,9 @@ public class RoomCreateController extends RoomListController {
 
     /**
      * Creates a room.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     public void createRoom() throws IOException {
         String name = roomNameField.getText();
         name = name == null ? "" : name;
@@ -126,5 +128,4 @@ public class RoomCreateController extends RoomListController {
         ServerCommunication.addRoom(buildingId, roomCap, roomDesc, onlyStaff, name);
         getBack();
     }
-
 }

@@ -11,8 +11,10 @@ public class Reservation {
     private Long room;
     private ArrayNode reservationAmounts;
 
+    /**
+     * Creates a reservation.
+     */
     public Reservation() {
-
     }
 
     /**
@@ -37,35 +39,75 @@ public class Reservation {
         this.reservationAmounts = reservationAmounts;
     }
 
+    /**
+     * Gets the id of the reservation.
+     *
+     * @return the id of the reservation
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * Gets the time of delivery for the reservation.
+     *
+     * @return the time of delivery for the reservation
+     */
     public String getTimeOfDelivery() {
         return timeOfDelivery;
     }
 
+    /**
+     * Gets the pick up time for the reservation.
+     *
+     * @return the pick up time for the reservation
+     */
     public String getTimeOfPickup() {
         return timeOfPickup;
     }
 
+    /**
+     * Gets the room for the reservation.
+     *
+     * @return the room for the reservation
+     */
     public Long getRoom() {
         return room;
     }
 
+    /**
+     * Gets the reservable and corresponding amounts.
+     *
+     * @return the reservables and the corresponding amounts
+     */
     public ArrayNode getReservationAmounts() {
         return reservationAmounts;
     }
 
+    /**
+     * Gets the reservable.
+     *
+     * @return the reservable
+     */
     public Long getReservable() {
         JsonNode reservationAmount = reservationAmounts.get(0);
         return reservationAmount.get("reservable").asLong();
     }
 
+    /**
+     * Gets the pick up time for the reservation.
+     *
+     * @return the pick up time for the reservation
+     */
     public LocalDateTime getPickupTime() {
         return LocalDateTime.parse(timeOfPickup.replace(" ", "T"));
     }
 
+    /**
+     * Gets the delivery time for the reservation.
+     *
+     * @return the delivery time for the reservation
+     */
     public LocalDateTime getDeliveryTime() {
         return LocalDateTime.parse(timeOfDelivery.replace(" ", "T"));
     }

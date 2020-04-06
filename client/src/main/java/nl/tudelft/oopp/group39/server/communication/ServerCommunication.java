@@ -264,8 +264,6 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
-
-
     /**
      * Adds a room on the server.
      *
@@ -299,10 +297,10 @@ public class ServerCommunication {
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }
+
     /**
      * Adds an event to the server.
      */
-
     public static String addEvent(
             String title,
             String startDate,
@@ -352,10 +350,10 @@ public class ServerCommunication {
         String eventAsString = mapper.writeValueAsString(eventJson);
         return mapper.readValue(eventAsString, Event[].class);
     }
+
     /**
      * Updates events on the server.
      */
-
     public static String updateEvent(
             String id,
             String title,
@@ -416,8 +414,6 @@ public class ServerCommunication {
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }
-
-
 
     /**
      * Updates Rooms on the server.
@@ -491,7 +487,6 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
-
     /**
      * Updates the user on the server.
      *
@@ -518,7 +513,6 @@ public class ServerCommunication {
      * Updates the user on the server.
      *
      */
-
     public static String updateUserAdmin(
         String username,
         String email,
@@ -543,11 +537,11 @@ public class ServerCommunication {
             .uri(URI.create(url + "building/" + id)).build();
         httpRequest(request);
     }
+
     /**
      * DELETE HTTP request to remove a User.
      * @param id events id
      */
-
     public static void removeUser(String id) {
         HttpRequest request = HttpRequest.newBuilder().DELETE()
             .header("Authorization", "Bearer " + AbstractSceneController.jwt)
@@ -575,8 +569,6 @@ public class ServerCommunication {
             .uri(URI.create(url + "room/" + id)).build();
         httpRequest(request);
     }
-
-
 
     /**
      * Retrieves all bookings from the server.
@@ -613,7 +605,6 @@ public class ServerCommunication {
             .uri(URI.create(url + "booking/" + id)).build();
         httpRequest(request);
     }
-
 
     /**
      * Retrieves bikes filtered on building id.

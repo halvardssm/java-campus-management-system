@@ -23,7 +23,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 //Supress ALL only suppresses booleans on line 110 not being used
 @SuppressWarnings("ALL")
 public class EventEditController extends EventListController {
-
     private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     private Event abcEvent;
@@ -48,8 +47,9 @@ public class EventEditController extends EventListController {
 
     /**
      * Initializes data for usage in editing event.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
-
     public void initData(Event abcEvent) throws JsonProcessingException {
         customInit();
         this.abcEvent = abcEvent;
@@ -70,8 +70,9 @@ public class EventEditController extends EventListController {
 
     /**
      * Goes back to main Event panel.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     @FXML
     private void getBack() throws IOException {
         switchEventView(currentStage);
@@ -79,8 +80,9 @@ public class EventEditController extends EventListController {
 
     /**
      * Edits the values of an event.
+     *
+     * @throws IOException when there is an IO exception
      */
-
     public void editEvent() throws IOException {
         String title = titleField.getText();
         title = title.contentEquals("") ? abcEvent.getTitle() : title;
@@ -96,10 +98,10 @@ public class EventEditController extends EventListController {
         String id = Long.toString(abcEvent.getId());
         checkValidity(id, startDate, endDate, startNull, endNull, title, userId, globalBool);
     }
+
     /**
      * Communicates edit of event to server.
      */
-
     public void createEventFinal(
             String id,
             String title,
@@ -116,10 +118,10 @@ public class EventEditController extends EventListController {
         ServerCommunication.updateEvent(newEvent, Long.valueOf(id));
         getBack();
     }
+
     /**
      * Makes sure that values put into event are valid.
      */
-
     public void checkValidity(
             String id,
             String startDate,
@@ -150,5 +152,4 @@ public class EventEditController extends EventListController {
         }
         createEventFinal(id, title, startDate, endDate, userId, globalBool);
     }
-
 }

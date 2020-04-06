@@ -19,7 +19,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
 
 public class UserCreateController extends UserListController {
-
     private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     private List<User> users;
@@ -41,7 +40,6 @@ public class UserCreateController extends UserListController {
     /**
      * Initialize function.
      */
-
     public void customInit() {
         try {
             initData();
@@ -50,11 +48,12 @@ public class UserCreateController extends UserListController {
         }
         this.currentStage = (Stage) backbtn.getScene().getWindow();
     }
+
     /**
      * Initializes data needed for user.
+     *
      * @throws JsonProcessingException when there is a processing exception.
      */
-
     public void initData() throws JsonProcessingException {
         userMessage.setText("");
         String roles = ServerCommunication.getUserRoles();
@@ -76,17 +75,19 @@ public class UserCreateController extends UserListController {
 
     /**
      * Goes back to main User panel.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     @FXML
     private void getBack() throws IOException {
         switchUserView(currentStage);
     }
+
     /**
      * Gets the values inputted by admin to be used for creating user.
+     *
      * @throws IOException when no values have been inputted.
      */
-
     @FXML
     public void createUser() throws IOException {
         userMessage.setText("");
@@ -97,13 +98,14 @@ public class UserCreateController extends UserListController {
         boolean roleNull = roleObj == null;
         verifyInputs(email, roleObj, roleNull, password, passwordConfirmation);
     }
+
     /**
      * Checks to see if input is valid.
-     * @param name Name inputted
+     *
+     * @param name     Name inputted
      * @param roleNull has a role been picked?
      * @param password and passwordConfirmation the password to be set for user.
      */
-
     public void verifyInputs(
         String name,
         String roleObj,
@@ -151,5 +153,4 @@ public class UserCreateController extends UserListController {
         ServerCommunication.createUser(name, email, roleObj, password);
         getBack();
     }
-
 }

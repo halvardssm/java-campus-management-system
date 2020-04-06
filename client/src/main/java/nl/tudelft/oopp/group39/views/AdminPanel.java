@@ -14,7 +14,15 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 public class AdminPanel extends Application {
+    private static Stage window;
+    private static Parent root;
 
+    /**
+     * Starts the admin panel.
+     *
+     * @param primaryStage the stage that you want to load
+     * @throws IOException if an error occurs during loading
+     */
     @Override
     public void start(Stage primaryStage) throws IOException {
         Properties properties = new Properties();
@@ -44,9 +52,6 @@ public class AdminPanel extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
-    private static Stage window;
-    private static Parent root;
 
     /**
      * SceneHandler function to help change scenes.

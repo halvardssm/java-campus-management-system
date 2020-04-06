@@ -54,7 +54,7 @@ public class EventController extends AbstractController {
     }
 
     /**
-     * POST Endpoint to create event.
+     * POST Endpoint to create an event.
      *
      * @return the created event {@link Event}.
      */
@@ -69,7 +69,7 @@ public class EventController extends AbstractController {
     }
 
     /**
-     * GET Endpoint to retrieve event.
+     * GET Endpoint to retrieve an event.
      *
      * @return the requested event {@link Event}.
      */
@@ -80,7 +80,7 @@ public class EventController extends AbstractController {
     }
 
     /**
-     * PUT Endpoint to update event.
+     * PUT Endpoint to update an event.
      *
      * @return the updated event {@link Event}.
      */
@@ -123,7 +123,7 @@ public class EventController extends AbstractController {
     }
 
     /**
-     * DELETE Endpoint to delete event.
+     * DELETE Endpoint to delete an event.
      */
     @DeleteMapping(PATH_ID)
     @ResponseBody

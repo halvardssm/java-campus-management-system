@@ -41,6 +41,12 @@ public class Facility {
         return description;
     }
 
+    /**
+     * Checks whether two facilities are equal.
+     *
+     * @param o the other object
+     * @return  true if the two buildings are equal, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {

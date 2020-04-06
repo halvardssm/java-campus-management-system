@@ -28,7 +28,6 @@ import nl.tudelft.oopp.group39.user.model.User;
 
 
 public class EventCreateController extends EventListController {
-
     private ObjectMapper mapper = new ObjectMapper();
     private Stage currentStage;
     @FXML
@@ -57,10 +56,12 @@ public class EventCreateController extends EventListController {
         }
         this.currentStage = (Stage) backbtn.getScene().getWindow();
     }
-    /**
-     * .
-     */
 
+    /**
+     * Initializes the data.
+     *
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public void initData() throws JsonProcessingException {
         dateMessage.setText("");
 
@@ -70,10 +71,12 @@ public class EventCreateController extends EventListController {
         startField.setPromptText(LocalDate.now().toString());
         endField.setPromptText(LocalDate.now().toString());
     }
+
     /**
      * Gains the information needed to create event.
+     *
+     * @throws IOException when there is an IO exception
      */
-
     public void createEvent() throws IOException {
         dateMessage.setText("");
         String title = titleField.getText();
@@ -89,10 +92,10 @@ public class EventCreateController extends EventListController {
         String endDate = endNull ? LocalDateTime.now().toString() : end.toString() + " 23:59:00";
         checkValidity(startDate, endDate, startNull, endNull, title, globalBool, userId);
     }
+
     /**
      * Communicates information to create event to server.
      */
-
     public void createEventFinal(
             String title, String startDate, String endDate,
             boolean globalBool, String userId) throws IOException {
@@ -101,10 +104,10 @@ public class EventCreateController extends EventListController {
         getBack();
         createAlert("Created an event of type: " + title);
     }
+
     /**
      * Makes sure that values put into event are valid.
      */
-
     public void checkValidity(
           String startDate,
           String endDate,
@@ -164,13 +167,14 @@ public class EventCreateController extends EventListController {
         dateMessage.setStyle("-fx-text-fill: Red");
         dateMessage.setText("Please input a start date or an end date.");
     }
+
     /**
      * Goes back to main admin panel.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     @FXML
     private void getBack() throws IOException {
         switchEventView(currentStage);
     }
-
 }

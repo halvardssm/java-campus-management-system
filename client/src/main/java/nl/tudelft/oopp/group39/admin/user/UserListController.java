@@ -27,7 +27,6 @@ import nl.tudelft.oopp.group39.user.model.User;
 
 @SuppressWarnings("unchecked")
 public class UserListController extends AdminPanelController {
-
     private ObjectMapper mapper = new ObjectMapper();
     private String lastSelectedRole;
     private String lastSelectedName;
@@ -58,11 +57,12 @@ public class UserListController extends AdminPanelController {
         }
         Stage currentStage = (Stage) backbtn.getScene().getWindow();
     }
+
     /**
      * Loads users when no filtering is enabled.
+     *
      * @throws JsonProcessingException when there is a processing exception
      */
-
     public void loadUsersStandard() throws JsonProcessingException {
         this.lastSelectedRole = allRoles;
         this.lastSelectedName = "";
@@ -70,11 +70,12 @@ public class UserListController extends AdminPanelController {
         System.out.println(users);
         loadUsers(users);
     }
+
     /**
      * First filters through users based on criteria and then calls loadUsers.
+     *
      * @throws JsonProcessingException when there is a processing exception
      */
-
     public void filterUsers() throws JsonProcessingException {
         String name = usernameField.getText();
         name = name == null ? "" : name;
@@ -87,6 +88,11 @@ public class UserListController extends AdminPanelController {
         loadUsers(users);
     }
 
+    /**
+     * Loads the filtering.
+     *
+     * @throws JsonProcessingException when there is a processing exception
+     */
     void loadFiltering() throws JsonProcessingException {
         usernameField.clear();
         usernameField.setText(lastSelectedName);
@@ -102,10 +108,12 @@ public class UserListController extends AdminPanelController {
         roleBox.setItems(data);
         roleBox.getSelectionModel().select(this.lastSelectedRole);
     }
+
     /**
      * Display users and data into tableView named userTable.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
-
     void loadUsers(String users) throws JsonProcessingException {
         loadFiltering();
         usertable.setVisible(true);
@@ -133,10 +141,10 @@ public class UserListController extends AdminPanelController {
             usertable.getColumns().addAll(idCol, emailCol, statusCol, deleteCol, updateCol);
         }
     }
+
     /**
      * Inserts the update and delete buttons into table.
      */
-
     public TableCell<User, User> returnCell(String button) {
         return new TableCell<>() {
             private final Button updateButton = new Button(button);
@@ -176,25 +184,31 @@ public class UserListController extends AdminPanelController {
 
     /**
      * Switches scene to the createUser one.
+     *
+     * @throws IOException if an error occurs during loading
      */
     public void createUser() throws IOException {
         FXMLLoader loader = switchFunc("/admin/user/UserCreate.fxml");
         UserCreateController controller = loader.getController();
         controller.customInit();
     }
+
     /**
      * Deletes selected user.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
-
-    public void deleteUser(User user) throws IOException {
+    public void deleteUser(User user) throws JsonProcessingException {
         String id = user.getUsername();
         ServerCommunication.removeUser(id);
         loadUsersStandard();
     }
+
     /**
      * Sends user to the user edit page.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     public void editUser(User user) throws IOException {
         FXMLLoader loader = switchFunc("/admin/user/UserEdit.fxml");
         UserEditController controller = loader.getController();
@@ -203,15 +217,22 @@ public class UserListController extends AdminPanelController {
 
     /**
      * Goes back to main admin panel.
+     *
+     * @throws IOException if an error occurs during loading
      */
     @FXML
     private void switchBack() throws IOException {
         switchFunc("/admin/AdminPanel.fxml");
     }
 
+    /**
+     * Switches screen.
+     *
+     * @param resource     the resource
+     * @throws IOException if an error occurs during loading
+     */
     private FXMLLoader switchFunc(String resource) throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
         return mainSwitch(resource, currentstage);
     }
-
 }

@@ -19,10 +19,8 @@ import nl.tudelft.oopp.group39.admin.AdminPanelController;
 import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
-
 @SuppressWarnings("unchecked")
 public class BookingListController extends AdminPanelController {
-
     @FXML
     private Button backbtn;
     @FXML
@@ -59,6 +57,8 @@ public class BookingListController extends AdminPanelController {
 
     /**
      * Creates observable list containing booking data needed for table.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
     public ObservableList<Booking> getData() throws JsonProcessingException {
         String b = ServerCommunication.get(ServerCommunication.booking);
@@ -67,10 +67,12 @@ public class BookingListController extends AdminPanelController {
         Booking[] list = mapper.readValue(b, Booking[].class);
         return FXCollections.observableArrayList(list);
     }
+
     /**
      * Display and load bookings and data into tableView named reservationTable.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
-
     void loadReservations() throws JsonProcessingException {
         reservationTable.setVisible(true);
         reservationTable.getItems().clear();
@@ -102,10 +104,10 @@ public class BookingListController extends AdminPanelController {
               deleteCol,
               updateCol);
     }
+
     /**
      * Inserts the update and delete buttons into table.
      */
-
     public TableCell<Booking, Booking> returnCell(String button) {
         return new TableCell<>() {
             private final Button updateButton = new Button(button);
@@ -145,26 +147,32 @@ public class BookingListController extends AdminPanelController {
 
     /**
      * Sends user to create booking scene.
+     *
+     * @throws IOException if an error occurs during loading
      */
     public void createBooking() throws IOException {
         FXMLLoader loader = switchFunc("/admin/booking/BookingCreate.fxml");
         BookingCreateController controller = loader.getController();
         controller.customInit();
     }
+
     /**
      * Deletes selected booking.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
-
-    public void deleteBooking(Booking booking) throws IOException {
+    public void deleteBooking(Booking booking) throws JsonProcessingException {
         String id = Integer.toString(booking.getId());
         ServerCommunication.removeBooking(id);
         createAlert("Removed the booking");
         loadReservations();
     }
+
     /**
      * Sends user to the booking edit page.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     public void editBooking(Booking booking) throws IOException {
         FXMLLoader loader = switchFunc("/admin/booking/BookingEdit.fxml");
         BookingEditController controller = loader.getController();
@@ -172,11 +180,22 @@ public class BookingListController extends AdminPanelController {
     }
 
 
+    /**
+     * Switches back.
+     *
+     * @throws IOException if an error occurs during loading
+     */
     @FXML
     private void switchBack() throws IOException {
         switchFunc("/admin/AdminPanel.fxml");
     }
 
+    /**
+     * Switches screen.
+     *
+     * @param resource     the resource
+     * @throws IOException if an error occurs during loading
+     */
     private FXMLLoader switchFunc(String resource) throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
         return mainSwitch(resource, currentstage);

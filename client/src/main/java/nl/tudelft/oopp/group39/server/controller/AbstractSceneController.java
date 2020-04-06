@@ -102,7 +102,6 @@ public abstract class AbstractSceneController {
      * @throws IOException if said xml file does not exist.
      *
      */
-
     public AbstractSceneController goToAdmin(String location) throws IOException {
         AbstractSceneController controller = AdminPanel.sceneControllerHandler(location);
         controller.changeUserBox();
@@ -114,7 +113,6 @@ public abstract class AbstractSceneController {
      *
      * @throws IOException if the scene wasn't found
      */
-
     public void goToAdminBuildingScene() throws IOException {
         goToAdmin("/admin/building/BuildingList.fxml");
     }
@@ -127,21 +125,21 @@ public abstract class AbstractSceneController {
     public void goToAdminRoomScene() throws IOException {
         goToAdmin("/admin/room/RoomList.fxml");
     }
+
     /**
      * Switches view to the admin bookings scene.
      *
      * @throws IOException if the scene wasn't found
      */
-
     public void goToAdminBookingsScene() throws IOException {
         goToAdmin("/admin/booking/BookingList.fxml");
     }
+
     /**
      * Switches view to the admin user scene.
      *
      * @throws IOException if the scene wasn't found
      */
-
     public void goToAdminUserScene() throws IOException {
         goToAdmin("/admin/user/UserList.fxml");
     }
@@ -185,7 +183,6 @@ public abstract class AbstractSceneController {
         goTo("/user/login.fxml");
     }
 
-
     /**
      * Switches view to the Signup scene.
      *
@@ -217,7 +214,6 @@ public abstract class AbstractSceneController {
         RoomSceneController controller = (RoomSceneController) goTo("/room/roomView.fxml");
         controller.setup();
     }
-
 
     /**
      * Goes to reservation scene.
@@ -326,7 +322,6 @@ public abstract class AbstractSceneController {
      *
      * @throws IOException if view wasn't found.
      */
-
     public void toggleAdminSidebar() throws IOException {
         if (window.getLeft() == null) {
             sidebar = FXMLLoader.load(
@@ -337,7 +332,6 @@ public abstract class AbstractSceneController {
         }
         window.setLeft(null);
     }
-
 
     /**
      * Sets the capacity Slider for filtering in rooms and buildings.
@@ -407,5 +401,4 @@ public abstract class AbstractSceneController {
     public void goToAdminScene() throws IOException {
         UsersDisplay.sceneHandler("/admin/AdminPanel.fxml");
     }
-
 }

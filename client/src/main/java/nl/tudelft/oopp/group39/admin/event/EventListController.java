@@ -25,7 +25,6 @@ import nl.tudelft.oopp.group39.user.model.User;
 
 @SuppressWarnings("unchecked")
 public class EventListController extends AdminPanelController {
-
     private ObjectMapper mapper = new ObjectMapper();
     @FXML
     private Button backbtn;
@@ -52,20 +51,24 @@ public class EventListController extends AdminPanelController {
         }
         Stage currentStage = (Stage) backbtn.getScene().getWindow();
     }
+
     /**
      * Ensures that all events are put into table view.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
-
     void loadAllEvents() throws JsonProcessingException {
 
         String events = ServerCommunication.get(ServerCommunication.event);
         System.out.println(events);
         loadEvents(events);
     }
+
     /**
      * Display events and data in tableView named eventTable.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
-
     void loadEvents(String events) throws JsonProcessingException {
         eventTable.setVisible(true);
         eventTable.getItems().clear();
@@ -96,8 +99,9 @@ public class EventListController extends AdminPanelController {
 
     /**
      * Gets all (String) User ids.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
-
     public ObservableList<String> getUserIds() throws JsonProcessingException {
         String users = ServerCommunication.get(ServerCommunication.user);
         ArrayNode body = (ArrayNode) mapper.readTree(users).get("body");
@@ -109,10 +113,10 @@ public class EventListController extends AdminPanelController {
         }
         return FXCollections.observableArrayList(dataList);
     }
+
     /**
      * Inserts the update and delete buttons into table.
      */
-
     public TableCell<Event, Event> returnCell(String button) {
         return new TableCell<>() {
             private final Button updateButton = new Button(button);
@@ -149,10 +153,12 @@ public class EventListController extends AdminPanelController {
             }
         };
     }
+
     /**
      * Sends user to Create Event page.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     public void createEvent() throws IOException {
         FXMLLoader loader = switchFunc("/admin/event/EventCreate.fxml");
         EventCreateController controller = loader.getController();
@@ -161,9 +167,10 @@ public class EventListController extends AdminPanelController {
 
     /**
      * Deletes selected event.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
-
-    public void deleteEvent(Event event) throws IOException {
+    public void deleteEvent(Event event) throws JsonProcessingException {
         String id = Long.toString(event.getId());
         ServerCommunication.removeEvent(id);
         loadAllEvents();
@@ -171,6 +178,8 @@ public class EventListController extends AdminPanelController {
 
     /**
      * Sends user to the event edit page.
+     *
+     * @throws IOException if an error occurs during loading
      */
     public void editEvent(Event event) throws IOException {
         FXMLLoader loader = switchFunc("/admin/event/EventEdit.fxml");
@@ -180,6 +189,8 @@ public class EventListController extends AdminPanelController {
 
     /**
      * Goes back to main admin panel.
+     *
+     * @throws IOException if an error occurs during loading
      */
     @FXML
     private void switchBack() throws IOException {
@@ -188,11 +199,12 @@ public class EventListController extends AdminPanelController {
 
     /**
      * Used to switch windows.
+     *
+     * @throws IOException if an error occurs during loading
      */
     private FXMLLoader switchFunc(String resource) throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
         return mainSwitch(resource, currentstage);
     }
-
 }
 

@@ -21,7 +21,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 public class CalendarController extends AbstractSceneController {
-
     /**
      * Creates calendarView of events, bookings and food/bike orders and shows it.
      *
@@ -232,5 +231,4 @@ public class CalendarController extends AbstractSceneController {
             null);
         ServerCommunication.addEvent(event);
     }
-
 }

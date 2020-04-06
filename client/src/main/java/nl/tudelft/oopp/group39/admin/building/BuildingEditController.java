@@ -16,7 +16,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 
 public class BuildingEditController extends BuildingListController {
-
     private Stage currentStage;
     private String start;
     private String end;
@@ -34,14 +33,18 @@ public class BuildingEditController extends BuildingListController {
     @FXML
     private ComboBox<String> timeClosedFieldNew;
 
+    /**
+     * Initialize data into tableView.
+     */
     public void customInit() {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
     }
 
     /**
      * Initializes data into their respective boxes to be used for editing.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
-
     public void initData(Building building) throws JsonProcessingException {
         customInit();
         this.building = building;
@@ -60,16 +63,19 @@ public class BuildingEditController extends BuildingListController {
 
     /**
      * Goes back to main building panel.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     @FXML
     private void getBack() throws IOException {
         switchBuildingView(currentStage);
     }
+
     /**
      * Retrieves data from boxes and sends to database.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     public void updateBuilding() throws IOException {
         String name = nameFieldNew.getText();
         name = name.contentEquals("") ? building.getName() : name;
@@ -93,5 +99,4 @@ public class BuildingEditController extends BuildingListController {
         locationFieldNew.clear();
         descriptionFieldNew.clear();
     }
-
 }

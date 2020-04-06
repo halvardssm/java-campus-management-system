@@ -23,7 +23,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 
 public class RoomEditController extends RoomListController {
-
     private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
     private Room room;
@@ -44,13 +43,18 @@ public class RoomEditController extends RoomListController {
     @FXML
     private TextArea dateMessage;
 
+    /**
+     * Initializes the scene.
+     */
     public void customInit() {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
     }
+
     /**
      * Initializes data into their respective boxes to be used for editing.
+     *
+     * @throws JsonProcessingException when there is a processing exception.
      */
-
     public void initData(Room room) throws JsonProcessingException {
         customInit();
         this.room = room;
@@ -74,16 +78,19 @@ public class RoomEditController extends RoomListController {
 
     /**
      * Goes back to main Room panel.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     @FXML
     private void getBack() throws IOException {
         switchRoomView(currentStage);
     }
+
     /**
      * Edits the values of the room and communicates it  to server.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     public void editRoom() throws IOException {
         String name = roomNameField.getText();
         name = name.contentEquals("") ? room.getName() : name;
@@ -109,9 +116,8 @@ public class RoomEditController extends RoomListController {
     }
 
     /**
-     * Checks is string is a number.
+     * Checks if string is a number.
      */
-
     public boolean isValidNumb(String str) {
         try {
             Integer.valueOf(str);
@@ -120,10 +126,12 @@ public class RoomEditController extends RoomListController {
         }
         return true;
     }
+
     /**
      * Gets a list of buildings.
+     *
+     * @throws JsonProcessingException when there is a processing exception.
      */
-
     public List<Building> getBuildings(String buildings) throws JsonProcessingException {
         System.out.println(buildings);
         ArrayNode body = (ArrayNode) mapper.readTree(buildings).get("body");
@@ -131,10 +139,10 @@ public class RoomEditController extends RoomListController {
         Building[] list = mapper.readValue(buildings, Building[].class);
         return Arrays.asList(list);
     }
+
     /**
      * Gets the names of buildings.
      */
-
     public List<String> getBuildingNames(List<Building> buildings) {
         List<String> a = new ArrayList<>();
         for (Building building : buildings) {
@@ -144,5 +152,4 @@ public class RoomEditController extends RoomListController {
         }
         return a;
     }
-
 }

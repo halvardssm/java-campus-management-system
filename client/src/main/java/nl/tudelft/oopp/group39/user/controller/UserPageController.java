@@ -211,8 +211,6 @@ public class UserPageController extends AbstractSceneController {
         } catch (IOException e) {
             createAlert("Error: Wrong IO");
         }
-
-
     }
 
     /**

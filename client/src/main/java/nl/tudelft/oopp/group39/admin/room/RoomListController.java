@@ -70,7 +70,6 @@ public class RoomListController extends AdminPanelController {
     @FXML
     public TextField descriptionFilter;
 
-
     /**
      * Initialize function.
      */
@@ -99,11 +98,11 @@ public class RoomListController extends AdminPanelController {
 
     /**
      * Gets only the names of facilities.
+     *
      * @param b facilities
      * @return list of facility data.
      * @throws JsonProcessingException when there is a processing exception.
      */
-
     public ObservableList<String> getFacilityData(String b) throws JsonProcessingException {
         List<Facility> facilities = getFacility(b);
         List<String> facilityNames = getFacilityNames(facilities);
@@ -112,6 +111,7 @@ public class RoomListController extends AdminPanelController {
 
     /**
      * Loads the values of rooms and puts them into tableView.
+     *
      * @throws JsonProcessingException when there is a processing exception.
      */
     public void loadAllRooms() throws JsonProcessingException {
@@ -128,6 +128,7 @@ public class RoomListController extends AdminPanelController {
 
     /**
      * Loads up data needed to set up filtering.
+     *
      * @throws JsonProcessingException when there is a processing exception.
      */
     public void loadFiltering(String f) throws JsonProcessingException {
@@ -148,9 +149,9 @@ public class RoomListController extends AdminPanelController {
 
     /**
      * Loads the values of rooms and puts them into tableView.
+     *
      * @throws JsonProcessingException when there is a processing exception.
      */
-
     void loadRooms(String rooms) throws JsonProcessingException {
         roomTable.setVisible(true);
         roomTable.getItems().clear();
@@ -197,10 +198,10 @@ public class RoomListController extends AdminPanelController {
               nameCol,
               deleteCol, updateCol, viewCol);
     }
+
     /**
      * Inserts the update and delete buttons into table.
      */
-
     public TableCell<Room, Room> returnCell(String button) {
         return new TableCell<>() {
             private final Button updateButton = new Button(button);
@@ -240,46 +241,56 @@ public class RoomListController extends AdminPanelController {
             }
         };
     }
+
     /**
      * Sends user to the room create page.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     public void createRoom() throws IOException {
         FXMLLoader loader = switchFunc("/admin/room/RoomCreate.fxml");
         RoomCreateController controller = loader.getController();
         controller.customInit();
     }
+
     /**
      * Deletes selected room.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     public void deleteRoom(Room room) throws IOException {
         String id = Long.toString(room.getId());
         ServerCommunication.removeRoom(id);
         loadAllRooms();
     }
+
     /**
      * Sends user to the room edit page.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     public void editRoom(Room room) throws IOException {
         FXMLLoader loader = switchFunc("/admin/room/RoomEdit.fxml");
         RoomEditController controller = loader.getController();
         controller.initData(room);
     }
+
     /**
      * Sends user to the room view page.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     public void viewRoom(Room room) throws IOException {
         FXMLLoader loader = switchFunc("/admin/room/RoomView.fxml");
         RoomViewController controller = loader.getController();
         controller.initData(room);
     }
+
     /**
      * Gets a list of buildings.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
-
     public List<Building> getBuildings(String buildings) throws JsonProcessingException {
         System.out.println(buildings);
         ArrayNode body = (ArrayNode) mapper.readTree(buildings).get("body");
@@ -287,10 +298,10 @@ public class RoomListController extends AdminPanelController {
         Building[] list = mapper.readValue(buildings, Building[].class);
         return Arrays.asList(list);
     }
+
     /**
      * Gets a list of building names.
      */
-
     public List<String> getBuildingNames(List<Building> buildings) {
         List<String> a = new ArrayList<>();
         for (Building building : buildings) {
@@ -300,20 +311,22 @@ public class RoomListController extends AdminPanelController {
         }
         return a;
     }
+
     /**
      * Gets a list of facilities and their values.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
-
     public List<Facility> getFacility(String facilities) throws JsonProcessingException {
         ArrayNode body = (ArrayNode) mapper.readTree(facilities).get("body");
         facilities = mapper.writeValueAsString(body);
         Facility[] list = mapper.readValue(facilities, Facility[].class);
         return Arrays.asList(list);
     }
+
     /**
      * Gets a list of facility names.
      */
-
     public List<String> getFacilityNames(List<Facility> facilities) {
         List<String> a = new ArrayList<>();
         for (Facility facility : facilities) {
@@ -323,10 +336,10 @@ public class RoomListController extends AdminPanelController {
         }
         return a;
     }
-    /**
-     * Gets rooms only accesible to staff.
-     */
 
+    /**
+     * Gets rooms only accessible to staff.
+     */
     public String getOnlyStaff(Room room) {
         return room.isOnlyStaff() ? "Only staff" : "All users";
     }
@@ -336,16 +349,32 @@ public class RoomListController extends AdminPanelController {
                 false);
     }
 
+    /**
+     * Goes back to the admin panel.
+     *
+     * @throws IOException if an error occurs during loading
+     */
     @FXML
     private void switchBack() throws IOException {
         switchFunc("/admin/AdminPanel.fxml");
     }
 
+    /**
+     * Switches screen.
+     *
+     * @param resource     the resource
+     * @throws IOException if an error occurs during loading
+     */
     private FXMLLoader switchFunc(String resource) throws IOException {
         Stage currentstage = (Stage) backbtn.getScene().getWindow();
         return mainSwitch(resource, currentstage);
     }
 
+    /**
+     * Filters the rooms.
+     *
+     * @throws JsonProcessingException when there is a processing exception
+     */
     @FXML
     private void filterRooms() throws JsonProcessingException {
         String filters = "";
