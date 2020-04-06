@@ -38,6 +38,8 @@ public class RoomCreateController extends RoomListController {
     private ComboBox<String> roomOnlyStaffField;
     @FXML
     private TextField roomCapacityField;
+    @FXML
+    private MenuBar navBar;
 
     /**
      * Initializes the scene.
@@ -49,6 +51,7 @@ public class RoomCreateController extends RoomListController {
             e.printStackTrace();
         }
         this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
 
     /**

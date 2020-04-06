@@ -19,6 +19,8 @@ public class BuildingCreateController extends BuildingListController {
     private String start;
     private String end;
     @FXML
+    private MenuBar navBar;
+    @FXML
     private Button backbtn;
     @FXML
     private TextField nameFieldNew;
@@ -37,6 +39,7 @@ public class BuildingCreateController extends BuildingListController {
      */
     public void customInit() {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
         List<String> timeSlots = null;
         try {
             timeSlots = initiateTimeslots();

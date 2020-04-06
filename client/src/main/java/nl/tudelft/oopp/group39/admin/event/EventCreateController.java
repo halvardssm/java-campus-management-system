@@ -33,6 +33,8 @@ public class EventCreateController extends EventListController {
     @FXML
     private Button backbtn;
     @FXML
+    private MenuBar navBar;
+    @FXML
     private TextField titleField;
     @FXML
     private DatePicker startField;
@@ -55,6 +57,7 @@ public class EventCreateController extends EventListController {
             e.printStackTrace();
         }
         this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
 
     /**

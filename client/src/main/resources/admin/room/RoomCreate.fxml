@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -87,6 +88,7 @@
             <TextField fx:id="roomDescriptionField" layoutX="200.0" layoutY="225.0" prefHeight="31.0" prefWidth="200.0" promptText="description" />
             <Button layoutX="600.0" layoutY="450.0" mnemonicParsing="false" onMouseClicked="#createRoom" text="Add Room" />
             <TextArea fx:id="dateMessage" disable="true" layoutX="443.0" layoutY="104.0" prefHeight="212.0" prefWidth="417.0" />
+         <MenuBar fx:id="navBar" prefHeight="35.0" prefWidth="897.0" />
 
         </AnchorPane>
     </center>

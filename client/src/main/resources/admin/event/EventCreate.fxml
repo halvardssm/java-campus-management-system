@@ -5,6 +5,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -89,6 +90,7 @@
                 </font>
             </Text>
             <CheckBox fx:id="globalCheckbox" layoutX="201.0" layoutY="400.0" mnemonicParsing="false" />
+         <MenuBar fx:id="navBar" prefHeight="35.0" prefWidth="897.0" />
         </AnchorPane>
     </center>
 </BorderPane>

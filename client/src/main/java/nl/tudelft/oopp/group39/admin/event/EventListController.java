@@ -28,6 +28,8 @@ public class EventListController extends AdminPanelController {
     private ObjectMapper mapper = new ObjectMapper();
     @FXML
     private Button backbtn;
+    @FXML
+    private MenuBar navBar;
     @FXML private TableView<Event> eventTable;
     @FXML private TableColumn<Event, String> idCol;
     @FXML private TableColumn<Event, String> typeCol;
@@ -50,6 +52,7 @@ public class EventListController extends AdminPanelController {
             e.printStackTrace();
         }
         Stage currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
 
     /**

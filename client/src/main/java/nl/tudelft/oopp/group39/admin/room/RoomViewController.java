@@ -33,12 +33,15 @@ public class RoomViewController extends RoomListController {
     private TextField capacityFieldView;
     @FXML
     private TextArea facilitiesBox;
+    @FXML
+    private MenuBar navBar;
 
     /**
      * Initialize function.
      */
     public void customInit() {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
 
     /**

@@ -35,6 +35,8 @@ public class BuildingListController extends AdminPanelController {
     @FXML
     private ComboBox<String> closingBox;
     @FXML
+    private MenuBar navBar;
+    @FXML
     private Button backbtn;
     @FXML
     private TextField nameFilter;
@@ -72,6 +74,7 @@ public class BuildingListController extends AdminPanelController {
             e.printStackTrace();
         }
         Stage currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
 
     /**

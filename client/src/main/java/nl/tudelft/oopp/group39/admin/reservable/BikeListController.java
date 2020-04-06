@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -50,6 +51,8 @@ public class BikeListController extends AdminPanelController {
     private ComboBox<String> roleBox;
     @FXML
     private TextField usernameField;
+    @FXML
+    private MenuBar navBar;
 
     /**
      * Initializes scene.
@@ -61,6 +64,7 @@ public class BikeListController extends AdminPanelController {
             e.printStackTrace();
         }
         Stage currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
 
     /**
@@ -69,8 +73,8 @@ public class BikeListController extends AdminPanelController {
 
     @SuppressWarnings("checkstyle:CommentsIndentation")
     void loadBike() throws JsonProcessingException {
-        String bikes = ServerCommunication.get(ServerCommunication.bike);
         bikeTable.setVisible(true);
+        String bikes = ServerCommunication.get(ServerCommunication.bike);
         bikeTable.getItems().clear();
         bikeTable.getColumns().clear();
         System.out.println(bikes);
@@ -94,7 +98,11 @@ public class BikeListController extends AdminPanelController {
             updateCol.setCellFactory(param -> returnCell("Update"));
             ObservableList<Bike> data = FXCollections.observableArrayList(list);
             bikeTable.setItems(data);
-            bikeTable.getColumns().addAll(idCol, bikeTypeCol, priceCol, buildingCol, rentalDurationCol, deleteCol, updateCol);
+            bikeTable.getColumns().addAll(
+                    idCol,
+                    bikeTypeCol,
+                    priceCol,
+                    buildingCol, rentalDurationCol, deleteCol, updateCol);
         }
     }
     /**
@@ -161,8 +169,8 @@ public class BikeListController extends AdminPanelController {
 
     public void editBikeItem(Bike bike) throws IOException {
         FXMLLoader loader = switchFunc("/admin/reservable/BikeEdit.fxml");
-//        FoodEditController controller = loader.getController();
-//        controller.initData(bike);
+        //        FoodEditController controller = loader.getController();
+        //        controller.initData(bike);
     }
 
     /**

@@ -21,6 +21,8 @@ public class BuildingEditController extends BuildingListController {
     private String end;
     private Building building;
     @FXML
+    private MenuBar navBar;
+    @FXML
     private Button backbtn;
     @FXML
     private TextField nameFieldNew;
@@ -59,6 +61,7 @@ public class BuildingEditController extends BuildingListController {
         timeClosedFieldNew.setPromptText(end);
         timeOpenFieldNew.setItems(list);
         timeClosedFieldNew.setItems(list);
+        setNavBar(navBar, currentStage);
     }
 
     /**

@@ -69,6 +69,8 @@ public class RoomListController extends AdminPanelController {
     public TextField nameFilter;
     @FXML
     public TextField descriptionFilter;
+    @FXML
+    private MenuBar navBar;
 
     /**
      * Initialize function.
@@ -80,6 +82,7 @@ public class RoomListController extends AdminPanelController {
             e.printStackTrace();
         }
         Stage currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
 
     /**

@@ -111,7 +111,7 @@ public abstract class AbstractSceneController {
      */
     public AbstractSceneController goToAdmin(String location) throws IOException {
         AbstractSceneController controller = UsersDisplay.sceneControllerHandler(location);
-//        controller.changeUserBox();
+        //        controller.changeUserBox();
         return controller;
     }
 
@@ -192,7 +192,8 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminBikeScene() throws IOException {
-        BikeListController controller = (BikeListController) goToAdmin("/admin/reservable/BikeList.fxml");
+        BikeListController controller = (BikeListController) goToAdmin(
+                "/admin/reservable/BikeList.fxml");
         controller.customInit();
     }
     /**
@@ -200,6 +201,7 @@ public abstract class AbstractSceneController {
      *
      * @throws IOException if the scene wasn't found
      */
+
     public void goToBuildingScene() throws IOException {
         goTo("/building/buildingListView.fxml");
     }

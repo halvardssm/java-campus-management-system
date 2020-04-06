@@ -31,6 +31,8 @@ public class EventEditController extends EventListController {
     @FXML
     private TextField titleField;
     @FXML
+    private MenuBar navBar;
+    @FXML
     private DatePicker startField;
     @FXML
     private DatePicker endField;
@@ -66,6 +68,7 @@ public class EventEditController extends EventListController {
         }
         startField.setPromptText(abcEvent.getStartsAt().toString());
         endField.setPromptText(abcEvent.getEndsAt().toString());
+        setNavBar(navBar, currentStage);
     }
 
     /**

@@ -36,6 +36,8 @@ public class UserCreateController extends UserListController {
     private TextField passwordField;
     @FXML
     private TextField passwordConfirmField;
+    @FXML
+    private MenuBar navBar;
 
     /**
      * Initialize function.
@@ -47,6 +49,7 @@ public class UserCreateController extends UserListController {
             e.printStackTrace();
         }
         this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
 
     /**

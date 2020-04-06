@@ -24,6 +24,8 @@ public class BookingListController extends AdminPanelController {
     @FXML
     private Button backbtn;
     @FXML
+    private MenuBar navBar;
+    @FXML
     private TableView<Booking> reservationTable = new TableView<>();
     @FXML
     private TableColumn<Booking, String> reservationIdCol = new TableColumn<>("ID");
@@ -53,6 +55,8 @@ public class BookingListController extends AdminPanelController {
             e.printStackTrace();
         }
         Stage currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
+
     }
 
     /**

@@ -42,6 +42,8 @@ public class RoomEditController extends RoomListController {
     private TextField roomCapacityField;
     @FXML
     private TextArea dateMessage;
+    @FXML
+    private MenuBar navBar;
 
     /**
      * Initializes the scene.
@@ -57,6 +59,7 @@ public class RoomEditController extends RoomListController {
      */
     public void initData(Room room) throws JsonProcessingException {
         customInit();
+        setNavBar(navBar, currentStage);
         this.room = room;
         System.out.println(
                 room.getBuilding() + " " + this.buildingsById + " " + this.buildingsById.keySet());

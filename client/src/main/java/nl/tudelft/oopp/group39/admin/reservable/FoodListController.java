@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -49,6 +50,8 @@ public class FoodListController extends AdminPanelController {
     private ComboBox<String> roleBox;
     @FXML
     private TextField usernameField;
+    @FXML
+    private MenuBar navBar;
 
     /**
      * Initializes scene.
@@ -60,6 +63,7 @@ public class FoodListController extends AdminPanelController {
             e.printStackTrace();
         }
         Stage currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
 
     /**
@@ -92,7 +96,8 @@ public class FoodListController extends AdminPanelController {
             updateCol.setCellFactory(param -> returnCell("Update"));
             ObservableList<Food> data = FXCollections.observableArrayList(list);
             foodTable.setItems(data);
-            foodTable.getColumns().addAll(idCol, nameCol, priceCol, buildingCol, descriptionCol, deleteCol, updateCol);
+            foodTable.getColumns().addAll(
+                    idCol, nameCol, priceCol, buildingCol, descriptionCol, deleteCol, updateCol);
         }
     }
     /**

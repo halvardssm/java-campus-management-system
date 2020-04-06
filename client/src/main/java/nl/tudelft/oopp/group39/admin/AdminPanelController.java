@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.admin.booking.BookingListController;
 import nl.tudelft.oopp.group39.admin.building.BuildingListController;
 import nl.tudelft.oopp.group39.admin.event.EventListController;
+import nl.tudelft.oopp.group39.admin.reservable.BikeListController;
 import nl.tudelft.oopp.group39.admin.reservable.FoodListController;
 import nl.tudelft.oopp.group39.admin.room.RoomListController;
 import nl.tudelft.oopp.group39.admin.user.UserListController;
@@ -34,6 +35,97 @@ public class AdminPanelController extends MainAdminController implements Initial
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
+
+    /**
+     * Horizontal navigation bar to switch scenes in admin panel.
+     */
+    public void setNavBar(MenuBar menuBar, Stage currentstage) {
+        Label userListLabel = new Label("User list");
+        userListLabel.setStyle("-fx-text-fill: black");
+        userListLabel.setOnMouseClicked(event -> {
+            try {
+                switchUserView(currentstage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        Menu fileMenuButton1 = new Menu();
+        fileMenuButton1.setGraphic(userListLabel);
+        menuBar.getMenus().add(fileMenuButton1);
+        Label roomListLabel = new Label("Room list");
+        roomListLabel.setStyle("-fx-text-fill: black");
+        roomListLabel.setOnMouseClicked(event -> {
+            try {
+                switchRoomView(currentstage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        Menu fileMenuButton2 = new Menu();
+        fileMenuButton2.setGraphic(roomListLabel);
+        menuBar.getMenus().add(fileMenuButton2);
+        Label eventListLabel = new Label("Event list");
+        eventListLabel.setStyle("-fx-text-fill: black");
+        eventListLabel.setOnMouseClicked(event -> {
+            try {
+                switchEventView(currentstage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        Menu fileMenuButton3 = new Menu();
+        fileMenuButton3.setGraphic(eventListLabel);
+        menuBar.getMenus().add(fileMenuButton3);
+        Label buildingListLabel = new Label("Building list");
+        buildingListLabel.setStyle("-fx-text-fill: black");
+        buildingListLabel.setOnMouseClicked(event -> {
+            try {
+                switchBuildingView(currentstage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        Menu fileMenuButton4 = new Menu();
+        fileMenuButton4.setGraphic(buildingListLabel);
+        menuBar.getMenus().add(fileMenuButton4);
+        Label reservationListLabel = new Label("Bookings list");
+        reservationListLabel.setStyle("-fx-text-fill: black");
+        reservationListLabel.setOnMouseClicked(event -> {
+            try {
+                switchBookingsView(currentstage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        Menu fileMenuButton5 = new Menu();
+        fileMenuButton5.setGraphic(reservationListLabel);
+        menuBar.getMenus().add(fileMenuButton5);
+        Label foodListLabel = new Label("Food list");
+        foodListLabel.setStyle("-fx-text-fill: black");
+        foodListLabel.setOnMouseClicked(event -> {
+            try {
+                switchFoodView(currentstage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        Menu fileMenuButton6 = new Menu();
+        fileMenuButton6.setGraphic(foodListLabel);
+        menuBar.getMenus().add(fileMenuButton6);
+        Label bikeListLabel = new Label("Bike list");
+        bikeListLabel.setStyle("-fx-text-fill: black");
+        bikeListLabel.setOnMouseClicked(event -> {
+            try {
+                switchBikeView(currentstage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        Menu fileMenuButton7 = new Menu();
+        fileMenuButton7.setGraphic(bikeListLabel);
+        menuBar.getMenus().add(fileMenuButton7);
+    }
+
 
     /**
      * Used to switch to bookings list.
@@ -159,6 +251,22 @@ public class AdminPanelController extends MainAdminController implements Initial
     private void switchFoodView() throws IOException {
         Stage currentStage = (Stage) buildingView.getScene().getWindow();
         switchFoodView(currentStage);
+    }
+
+    /**
+     * Used to switch to bike list.
+     */
+
+    public void switchBikeView(Stage currentstage) throws IOException {
+        FXMLLoader loader = mainSwitch("/admin/reservable/BikeList.fxml", currentstage);
+        BikeListController controller = loader.getController();
+        controller.customInit();
+    }
+
+    @FXML
+    private void switchBikeView() throws IOException {
+        Stage currentStage = (Stage) buildingView.getScene().getWindow();
+        switchBikeView(currentStage);
     }
 
     /**

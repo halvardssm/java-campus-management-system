@@ -29,9 +29,9 @@
          <Text id="title" text="Admin Navigation" />
          <VBox fx:id="userBox" alignment="CENTER">
             <padding>
-               <Insets left="450.0"/>
+               <Insets left="450.0" />
             </padding>
-            <Button id="loginbtn" fx:id="userButton" onAction="#goToLoginScene" text="Login"/>
+            <Button id="loginbtn" fx:id="userButton" onAction="#goToLoginScene" text="Login" />
          </VBox>
       </HBox>
    </top>
@@ -68,7 +68,17 @@
                <Font name="System Bold" size="19.0" />
             </font>
          </Button>
-         <Button layoutX="363.0" layoutY="182.0" mnemonicParsing="false" onAction="#switchBookingsView" prefHeight="112.0" prefWidth="165.0" text="Bookings View">
+         <Button layoutX="363.0" layoutY="186.0" mnemonicParsing="false" onAction="#switchBookingsView" prefHeight="112.0" prefWidth="165.0" text="Bookings View">
+            <font>
+               <Font name="System Bold" size="19.0" />
+            </font>
+         </Button>
+         <Button layoutX="363.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchFoodView" prefHeight="112.0" prefWidth="165.0" text="Food View">
+            <font>
+               <Font name="System Bold" size="19.0" />
+            </font>
+         </Button>
+         <Button layoutX="364.0" layoutY="354.0" mnemonicParsing="false" onAction="#switchBikeView" prefHeight="112.0" prefWidth="165.0" text="Bike View">
             <font>
                <Font name="System Bold" size="19.0" />
             </font>
