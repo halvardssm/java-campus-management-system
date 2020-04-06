@@ -181,7 +181,7 @@ public class DbSeeder {
         final Building b4 = buildingService.readBuilding(4L);
         roomService.createRoom(new Room(
             null,
-            "Congress", "A congress place for staff to meet", 10, true, null, b1,
+            "Congress hall", "A congress place for staff to meet", 10, true, null, b1,
             null,
             null,
             null
@@ -209,7 +209,11 @@ public class DbSeeder {
         roomService.createRoom(
             new Room(
                 null,
-                "Pulse-Hall 3", "A lecture room for lecturers to\ngive lectures", 60, true, null, b2,
+                "Pulse-Hall 3",
+                    "A lecture room for lecturers to\ngive lectures",
+                    60,
+                    true,
+                    null, b2,
                 null,
                 facilities,
                 null

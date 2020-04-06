@@ -143,20 +143,6 @@ public class Reservation {
         return user;
     }
 
-//    public void setReservables(ArrayNode reservationAmounts) {
-//        List<ReservableNode> reservableNodeList = new ArrayList<>();
-//        ReservableNode rs = new ReservableNode();
-//        for (JsonNode object : reservationAmounts) {
-//            Integer id = object.get("id").asInt();
-//            Integer amount = object.get("amount").asInt();
-//            Integer reservable = object.get("reservable").asInt();
-//            System.out.println(id + " : " + amount + " : " + reservable);
-//            rs = new ReservableNode(id, amount, reservable);
-//            reservableNodeList.add(rs);
-//        }
-//        this.reservables = reservableNodeList;
-//    }
-
     /**
      * Sets reservation amount.
      *

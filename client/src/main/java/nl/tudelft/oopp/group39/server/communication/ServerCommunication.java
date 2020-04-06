@@ -83,7 +83,7 @@ public class ServerCommunication {
      * @param id of wanted building
      * @return the body of a get request to the server.
      */
-    public static Reservation getReservation(long id) throws JsonProcessingException {
+    public static Reservation getReservationById(long id) throws JsonProcessingException {
         HttpRequest request = HttpRequest.newBuilder()
             .header("Authorization", "Bearer " + AbstractSceneController.jwt)
             .GET().uri(URI.create(url + reservation + "/" + id)).build();
@@ -482,7 +482,9 @@ public class ServerCommunication {
      *
      * @throws JsonProcessingException when there is a processing exception
      */
-    public static String updateReservation(Reservation resObj, Long id) throws JsonProcessingException {
+    public static String updateReservation(
+            Reservation resObj,
+            Long id) throws JsonProcessingException {
         String eventJson = mapper.writeValueAsString(resObj);
         HttpRequest.BodyPublisher newFoodItem = HttpRequest.BodyPublishers
             .ofString(eventJson);
@@ -814,7 +816,7 @@ public class ServerCommunication {
      * @param user           netid of user making the order
      * @param roomId         id of the room the food needs to be delivered to
      * @param reservable     list of reservables
-     * @return @return the body of a post request to the server.
+     * @return               the body of a post request to the server.
      */
     public static String orderFoodBike(
         String timeOfPickup,
