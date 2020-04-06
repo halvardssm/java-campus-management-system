@@ -1,10 +1,14 @@
 package nl.tudelft.oopp.group39.reservation.controllers;
 
+import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationDto;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.reservation.services.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,12 +17,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(ReservationController.REST_MAPPING)
-public class ReservationController {
+public class ReservationController extends AbstractController {
     public static final String REST_MAPPING = "/reservation";
 
     @Autowired
@@ -29,9 +36,11 @@ public class ReservationController {
      *
      * @return a list of reservations {@link Reservation}.
      */
-    @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listReservations() {
-        return RestResponse.create(reservationService.listReservations());
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
+        return restHandler(() ->
+            Utils.listEntityToDto(reservationService.filterReservations(params)));
     }
 
     /**
@@ -39,59 +48,67 @@ public class ReservationController {
      *
      * @return the created reservation {@link Reservation}.
      */
-    @PostMapping("")
-    public ResponseEntity<RestResponse<Object>> createReservation(
+    @PostMapping
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> create(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
         @RequestBody ReservationDto reservation
     ) {
-        try {
-            return RestResponse.create(
-                reservationService.createReservation(reservation),
-                null,
-                HttpStatus.CREATED
-            );
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+        return restHandler(
+            header,
+            HttpStatus.CREATED,
+            reservation::getUser,
+            () -> reservationService.createReservation(reservation).toDto()
+        );
     }
 
     /**
-     * GET Endpoint to retrieve an reservation.
+     * GET Endpoint to retrieve a reservation.
      *
      * @return the requested reservation {@link Reservation}.
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> readReservation(@PathVariable Integer id) {
-        try {
-            return RestResponse.create(reservationService.readReservation(id));
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+    @GetMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
+        return restHandler(() -> reservationService.readReservation(id).toDto());
     }
 
     /**
-     * PUT Endpoint to update an reservation.
+     * PUT Endpoint to update a reservation.
      *
      * @return the updated reservation {@link Reservation}.
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> updateReservation(
-        @PathVariable Integer id,
+    @PutMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> update(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
+        @PathVariable Long id,
         @RequestBody ReservationDto reservation
     ) {
-        try {
-            return RestResponse.create(reservationService.updateReservation(id, reservation));
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+        return restHandler(
+            header,
+            reservation::getUser,
+            () -> reservationService.updateReservation(id, reservation).toDto()
+        );
     }
 
     /**
-     * DELETE Endpoint to delete am reservation.
+     * DELETE Endpoint to delete a reservation.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteReservation(@PathVariable Integer id) {
-        reservationService.deleteReservation(id);
+    @DeleteMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> delete(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
+        @PathVariable Long id
+    ) {
+        return restHandler(
+            header,
+            () -> reservationService.readReservation(id).getUser().getUsername(),
+            () -> {
+                reservationService.deleteReservation(id);
 
-        return RestResponse.create(null, null, HttpStatus.OK);
+                return null;
+            }
+        );
     }
 }

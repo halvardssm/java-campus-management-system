@@ -2,9 +2,8 @@ package nl.tudelft.oopp.group39.facility.services;
 
 import java.util.List;
 import java.util.Set;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
-import nl.tudelft.oopp.group39.facility.exceptions.FacilityExistsException;
-import nl.tudelft.oopp.group39.facility.exceptions.FacilityNotFoundException;
 import nl.tudelft.oopp.group39.facility.repositories.FacilityRepository;
 import nl.tudelft.oopp.group39.room.entities.Room;
 import nl.tudelft.oopp.group39.room.repositories.RoomRepository;
@@ -13,48 +12,59 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FacilityService {
-
-
     @Autowired
     private FacilityRepository facilityRepository;
     @Autowired
     private RoomRepository roomRepository;
 
-    public Facility readFacility(long id) throws FacilityNotFoundException {
+    /**
+     * Reads a facility.
+     *
+     * @param id the id of the facility that you want to get
+     * @return the requested facility
+     * @throws NotFoundException if the facility wasn't found
+     */
+    public Facility readFacility(Long id) throws NotFoundException {
         return facilityRepository.findById(id)
-            .orElseThrow(() -> new FacilityNotFoundException((int) id));
+            .orElseThrow(() -> new NotFoundException(Facility.MAPPED_NAME, id));
     }
 
+    /**
+     * Lists all facilities.
+     *
+     * @return a list of facilities
+     */
     public List<Facility> listFacilities() {
         return facilityRepository.findAll();
     }
 
     /**
-     * Doc. TODO Sven
+     * Create a facility.
+     *
+     * @return the created facility
      */
     public Facility createFacility(Facility newFacility) {
-        try {
-            Facility facility = readFacility((int) newFacility.getId());
-            throw new FacilityExistsException((int) facility.getId());
-        } catch (FacilityNotFoundException e) {
-            facilityRepository.save(newFacility);
-            return newFacility;
-        }
+        return facilityRepository.save(newFacility);
     }
 
     /**
-     * Doc. TODO Sven
+     * Update a facility.
+     *
+     * @return the updated facility
+     * @throws NotFoundException if the facility wasn't found
      */
-    public Facility updateFacility(Facility newFacility, int id) throws FacilityNotFoundException {
-        return facilityRepository.findById((long) id)
+    public Facility updateFacility(Facility newFacility, Long id) throws NotFoundException {
+        return facilityRepository.findById(id)
             .map(facility -> facilityRepository.save(newFacility))
-            .orElseThrow(() -> new FacilityNotFoundException(id));
+            .orElseThrow(() -> new NotFoundException(Facility.MAPPED_NAME, id));
     }
 
     /**
-     * Doc. TODO Sven
+     * Delete a facility.
+     *
+     * @throws NotFoundException if the facility wasn't found
      */
-    public Facility deleteFacility(int id) throws FacilityNotFoundException {
+    public Facility deleteFacility(Long id) throws NotFoundException {
         try {
             Facility rf = readFacility(id);
             Room newRoom = new Room();
@@ -66,9 +76,8 @@ public class FacilityService {
             }
             facilityRepository.delete(readFacility(id));
             return rf;
-        } catch (FacilityNotFoundException e) {
-            throw new FacilityNotFoundException(id);
+        } catch (NotFoundException e) {
+            throw new NotFoundException(Facility.MAPPED_NAME, id);
         }
     }
-
 }

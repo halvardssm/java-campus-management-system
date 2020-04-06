@@ -18,7 +18,6 @@ import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.reservable.entities.Food;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.user.entities.User;
-import nl.tudelft.oopp.group39.user.enums.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,21 +25,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 class FoodControllerTest extends AbstractControllerTest {
-    private final User testUser = new User(
-        "test",
-        "test@tudelft.nl",
-        "test",
-        null,
-        Role.ADMIN,
-        null,
-        null
-    );
-    private final Food testFood = new Food("Food", "Piece of yummy food", 5.6, null, null);
-    private String jwt;
+    private final Food testFood = new Food(null, "Food", "Piece of yummy food", 5.6, null, null);
 
     @BeforeEach
     void setUp() {
-        User user = userService.createUser(testUser);
+        User user = userService.createUser(testUser, true);
         jwt = jwtService.encrypt(testUser);
 
         Food food = foodService.createFood(testFood);
@@ -59,7 +48,7 @@ class FoodControllerTest extends AbstractControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isArray())
             .andExpect(jsonPath("$.body", hasSize(1)))
-            .andExpect(jsonPath("$.body[0]." + Food.COL_ID, is(testFood.getId())))
+            .andExpect(jsonPath("$.body[0]." + Food.COL_ID, is(testFood.getId().intValue())))
             .andExpect(jsonPath("$.body[0]." + Food.COL_NAME, is(testFood.getName())))
             .andExpect(jsonPath("$.body[0]." + Food.COL_DESCRIPTION, is(testFood.getDescription())))
             .andExpect(jsonPath("$.body[0]." + Food.COL_PRICE, is(testFood.getPrice())));
@@ -68,16 +57,16 @@ class FoodControllerTest extends AbstractControllerTest {
     @Test
     void deleteAndCreateFood() throws Exception {
         mockMvc.perform(delete(REST_MAPPING + "/" + testFood.getId())
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").doesNotExist());
 
-        String json = objectMapper.writeValueAsString(testFood);
+        String json = objectMapper.writeValueAsString(testFood.toDto());
 
         mockMvc.perform(post(REST_MAPPING)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(json)
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.body").isMap())
             .andExpect(jsonPath("$.body." + Food.COL_ID).isNumber())
@@ -87,7 +76,7 @@ class FoodControllerTest extends AbstractControllerTest {
             .andDo((food) -> {
                 String responseString = food.getResponse().getContentAsString();
                 JsonNode productNode = new ObjectMapper().readTree(responseString);
-                testFood.setId(productNode.get("body").get("id").intValue());
+                testFood.setId(productNode.get("body").get("id").longValue());
             });
     }
 
@@ -96,7 +85,7 @@ class FoodControllerTest extends AbstractControllerTest {
         mockMvc.perform(get(REST_MAPPING + "/" + testFood.getId()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
-            .andExpect(jsonPath("$.body." + Reservation.COL_ID, is(testFood.getId())))
+            .andExpect(jsonPath("$.body." + Reservation.COL_ID, is(testFood.getId().intValue())))
             .andExpect(jsonPath("$.body." + Food.COL_NAME, is(testFood.getName())))
             .andExpect(jsonPath("$.body." + Food.COL_DESCRIPTION, is(testFood.getDescription())))
             .andExpect(jsonPath("$.body." + Food.COL_PRICE, is(testFood.getPrice())));
@@ -108,12 +97,12 @@ class FoodControllerTest extends AbstractControllerTest {
         testFood.setName("Other name");
         testFood.setDescription("Other description");
 
-        String json = objectMapper.writeValueAsString(testFood);
+        String json = objectMapper.writeValueAsString(testFood.toDto());
 
         mockMvc.perform(put(REST_MAPPING + "/" + testFood.getId())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(json)
-                            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.body").isMap())
             .andExpect(jsonPath("$.body." + Food.COL_NAME, is(testFood.getName())))
@@ -124,19 +113,18 @@ class FoodControllerTest extends AbstractControllerTest {
     @Test
     void testError() {
         assertEquals(
-            "Target object must not be null; nested exception is java.lang"
-                + ".IllegalArgumentException: Target object must not be null",
-            foodController.createFood(null).getBody().getError()
+            "java.lang.NullPointerException",
+            foodController.create(null).getBody().getError()
         );
 
         assertEquals(
-            "Food 0 not found",
-            foodController.readFood(0).getBody().getError()
+            "Food with id '0' wasn't found.",
+            foodController.read(0L).getBody().getError()
         );
 
         assertEquals(
-            "Food 0 not found",
-            foodController.updateFood(0, null).getBody().getError()
+            "Food with id '0' wasn't found.",
+            foodController.update(0L, null).getBody().getError()
         );
     }
 }

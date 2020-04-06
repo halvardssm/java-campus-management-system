@@ -1,9 +1,15 @@
 package nl.tudelft.oopp.group39.user.controllers;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.user.entities.User;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import nl.tudelft.oopp.group39.user.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,13 +18,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(UserController.REST_MAPPING)
-public class UserController {
+public class UserController extends AbstractController {
     public static final String REST_MAPPING = "/user";
+    public static final String REST_MAPPING_ROLE = "/roles";
 
     @Autowired
     private UserService service;
@@ -28,9 +38,23 @@ public class UserController {
      *
      * @return a list of users {@link User}.
      */
-    @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listUsers() {
-        return RestResponse.create(service.listUsers());
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> list(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
+        @RequestParam Map<String, String> params
+    ) {
+        return restHandler(
+            header,
+            null,
+            () -> service.listUsers(params)
+        );
+    }
+
+    @GetMapping(REST_MAPPING_ROLE)
+    public ResponseEntity<RestResponse<Object>> listUserRoles() {
+        List<Role> enums = Arrays.asList(Role.values());
+        return RestResponse.create(enums);
     }
 
     /**
@@ -38,13 +62,24 @@ public class UserController {
      *
      * @return the created user {@link User}.
      */
-    @PostMapping("")
-    public ResponseEntity<RestResponse<Object>> createUser(@RequestBody User user) {
-        try {
-            return RestResponse.create(service.createUser(user), null, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+    @PostMapping
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> create(
+        @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String header,
+        @RequestBody User user
+    ) {
+        return restHandler(HttpStatus.CREATED, () -> {
+            Boolean isAdmin = false;
+            String token = getTokenFromHeader(header);
+
+            if (token != null) {
+                String username = jwtService.decryptUsername(getTokenFromHeader(header));
+
+                isAdmin = service.readUser(username).getRole() == Role.ADMIN;
+            }
+
+            return service.createUser(user, isAdmin);
+        });
     }
 
     /**
@@ -52,13 +87,17 @@ public class UserController {
      *
      * @return the requested user {@link User}.
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> readUser(@PathVariable String id) {
-        try {
-            return RestResponse.create(service.readUser(id));
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+    @GetMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> read(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
+        @PathVariable String id
+    ) {
+        return restHandler(
+            header,
+            () -> service.readUser(id).getUsername(),
+            () -> service.readUser(id)
+        );
     }
 
     /**
@@ -66,25 +105,48 @@ public class UserController {
      *
      * @return the updated user {@link User}.
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> updateUser(
+    @PutMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> update(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
         @PathVariable String id,
         @RequestBody User user
     ) {
-        try {
-            return RestResponse.create(service.updateUser(id, user));
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+        return restHandler(
+            header,
+            () -> service.readUser(id).getUsername(),
+            () -> {
+                Boolean isAdmin = false;
+                String token = getTokenFromHeader(header);
+
+                if (token != null) {
+                    String username = jwtService.decryptUsername(getTokenFromHeader(header));
+
+                    isAdmin = service.readUser(username).getRole() == Role.ADMIN;
+                }
+
+                return service.updateUser(id, user, isAdmin);
+            }
+        );
     }
 
     /**
      * DELETE Endpoint to delete user.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteUser(@PathVariable String id) {
-        service.deleteUser(id);
+    @DeleteMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> delete(
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String header,
+        @PathVariable String id
+    ) {
+        return restHandler(
+            header,
+            () -> service.readUser(id).getUsername(),
+            () -> {
+                service.deleteUser(id);
 
-        return RestResponse.create(null, null, HttpStatus.OK);
+                return null;
+            }
+        );
     }
 }

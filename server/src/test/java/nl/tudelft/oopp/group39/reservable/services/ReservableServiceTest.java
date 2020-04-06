@@ -4,15 +4,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.HashMap;
 import java.util.List;
-import javassist.NotFoundException;
 import nl.tudelft.oopp.group39.AbstractTest;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ReservableServiceTest extends AbstractTest {
-    private final Reservable testReservable = new Reservable(5.6, null, null);
+    private final Reservable testReservable = new Reservable(null, 5.6, null, null);
 
     @BeforeEach
     void setUp() {
@@ -60,8 +60,10 @@ class ReservableServiceTest extends AbstractTest {
     void updateReservable() throws NotFoundException {
         testReservable.setPrice(6.7);
 
-        Reservable reservable = reservableService.updateReservable(testReservable.getId(),
-                                                                   testReservable);
+        Reservable reservable = reservableService.updateReservable(
+            testReservable.getId(),
+            testReservable
+        );
 
         assertEquals(testReservable.getId(), reservable.getId());
         assertEquals(testReservable.getPrice(), reservable.getPrice());

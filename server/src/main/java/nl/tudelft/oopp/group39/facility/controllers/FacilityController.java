@@ -1,6 +1,7 @@
 package nl.tudelft.oopp.group39.facility.controllers;
 
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,47 +19,70 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(FacilityController.REST_MAPPING)
-public class FacilityController {
+public class FacilityController extends AbstractController {
 
     public static final String REST_MAPPING = "/facility";
 
     @Autowired
     private FacilityService service;
 
-    @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listFacilities() {
-        return RestResponse.create(service.listFacilities());
+    /**
+     * GET endpoint to retrieve all facilities.
+     *
+     * @return a list of facilities
+     */
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> list() {
+        return restHandler(() -> service.listFacilities());
     }
 
-    @PostMapping("")
+    /**
+     * POST endpoint to create a facility.
+     *
+     * @return the created facility
+     */
+    @PostMapping
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> createFacility(@RequestBody Facility facility) {
-        return RestResponse.create(service.createFacility(facility), null, HttpStatus.CREATED);
+    public ResponseEntity<RestResponse<Object>> create(@RequestBody Facility facility) {
+        return restHandler(HttpStatus.CREATED, () -> service.createFacility(facility));
     }
 
-    @GetMapping("/{id}")
+    /**
+     * GET endpoint to retrieve the facility.
+     *
+     * @return the requested facility
+     */
+    @GetMapping(PATH_ID)
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> readFacility(@PathVariable int id) {
-        return RestResponse.create(service.readFacility(id));
+    public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
+        return restHandler(() -> service.readFacility(id));
     }
 
-    @PutMapping("/{id}")
+    /**
+     * PUT endpoint to update the facility.
+     *
+     * @return the updated facility
+     */
+    @PutMapping(PATH_ID)
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> updateFacility(
+    public ResponseEntity<RestResponse<Object>> update(
         @RequestBody Facility updated,
-        @PathVariable int id
+        @PathVariable Long id
     ) {
-        return RestResponse.create(service.updateFacility(updated, id));
+        return restHandler(() -> service.updateFacility(updated, id));
     }
 
     /**
      * Doc. TODO Sven
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteFacility(@PathVariable int id) {
-        service.deleteFacility(id);
+    @DeleteMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
+        return restHandler(() -> {
+            service.deleteFacility(id);
 
-        return RestResponse.create(null, null, HttpStatus.OK);
+            return null;
+        });
     }
-
 }

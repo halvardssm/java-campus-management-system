@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.layout.VBox?>
+
+
+<?import java.net.URL?>
+<VBox fx:controller="nl.tudelft.oopp.group39.server.controller.BarController" xmlns:fx="http://javafx.com/fxml/1"
+      fx:id="adminsidebar"
+      id="adminsidebar">
+    <Hyperlink onAction="#goToAdminBuildingScene" styleClass="sidebar-item" text="Building View"/>
+    <Hyperlink onAction="#goToAdminRoomScene" styleClass="sidebar-item" text="Room View"/>
+    <Hyperlink onAction="#goToAdminBookingsScene" styleClass="sidebar-item" text="Bookings View"/>
+    <Hyperlink onAction="#goToAdminUserScene" styleClass="sidebar-item" text="User View"/>
+    <Hyperlink onAction="#goToAdminEventScene" styleClass="sidebar-item" text="Event View"/>
+    <stylesheets>
+        <URL value="@/style/style.css" />
+    </stylesheets>
+</VBox>

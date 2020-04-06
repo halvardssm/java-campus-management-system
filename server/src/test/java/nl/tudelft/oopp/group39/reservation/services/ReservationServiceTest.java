@@ -4,10 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import javassist.NotFoundException;
 import nl.tudelft.oopp.group39.AbstractTest;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationDto;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import org.junit.jupiter.api.AfterEach;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 
 class ReservationServiceTest extends AbstractTest {
     private final Reservation testReservation = new Reservation(
+        null,
         LocalDateTime.now(ZoneId.of("Europe/Paris")),
         LocalDateTime.now(ZoneId.of("Europe/Paris")).plusHours(2),
         null,
@@ -23,6 +25,7 @@ class ReservationServiceTest extends AbstractTest {
         null
     );
     private final ReservationDto testReservationDto = new ReservationDto(
+        null,
         testReservation.getTimeOfPickup().plusDays(2),
         testReservation.getTimeOfDelivery().plusDays(5),
         null,
@@ -48,8 +51,19 @@ class ReservationServiceTest extends AbstractTest {
 
         assertEquals(1, reservations.size());
         assertEquals(testReservation.getId(), reservations.get(0).getId());
-        assertEquals(testReservation.getTimeOfPickup(), reservations.get(0).getTimeOfPickup());
-        assertEquals(testReservation.getTimeOfDelivery(), reservations.get(0).getTimeOfDelivery());
+        assertEquals(
+            testReservation.getTimeOfPickup()
+                .format(DateTimeFormatter.ISO_DATE),
+            reservations.get(0).getTimeOfPickup()
+                .format(DateTimeFormatter.ISO_DATE)
+        );
+
+        assertEquals(
+            testReservation.getTimeOfDelivery()
+                .format(DateTimeFormatter.ISO_DATE),
+            reservations.get(0).getTimeOfDelivery()
+                .format(DateTimeFormatter.ISO_DATE)
+        );
     }
 
     @Test

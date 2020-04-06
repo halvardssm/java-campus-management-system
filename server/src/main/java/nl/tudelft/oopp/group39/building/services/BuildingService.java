@@ -1,100 +1,82 @@
 package nl.tudelft.oopp.group39.building.services;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import nl.tudelft.oopp.group39.building.dao.BuildingDao;
 import nl.tudelft.oopp.group39.building.entities.Building;
-import nl.tudelft.oopp.group39.building.exceptions.BuildingExistsException;
-import nl.tudelft.oopp.group39.building.exceptions.BuildingNotFoundException;
 import nl.tudelft.oopp.group39.building.repositories.BuildingRepository;
-import nl.tudelft.oopp.group39.room.repositories.RoomRepository;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BuildingService {
     @Autowired
-    private RoomRepository roomRepository;
-    @Autowired
     private BuildingRepository buildingRepository;
+    @Autowired
+    private BuildingDao buildingDao;
 
     /**
-     * Doc. TODO Sven
+     * List all buildings.
+     *
+     * @return a list of buildings
      */
-    public List<Building> filterBuildings(
-        int capacity,
-        String building,
-        String location,
-        LocalTime open,
-        LocalTime closed
-    ) {
-        int[] buildingIds = buildingRepository.filterBuildingsOnLocationAndNameAndTime(
-            building,
-            location,
-            open,
-            closed
-        );
-        List<Long> resBuildingIds = new ArrayList<>();
-        for (int buildingId : buildingIds) {
-            if (roomRepository.getRoomsByBuildingId(buildingId).size() > 0) {
-                int maxCapacity = roomRepository.getMaxRoomCapacityByBuildingId(buildingId);
-                if (capacity <= maxCapacity) {
-                    resBuildingIds.add((long) buildingId);
-                }
-            }
-        }
-        return resBuildingIds.size() > 0
-               ? buildingRepository.getAllBuildingsByIds(resBuildingIds)
-               : new ArrayList<>();
+    public List<Building> listBuildings(Map<String, String> params) {
+        return buildingDao.buildingFilter(params);
     }
 
-    public List<Building> listBuildings() {
-        return buildingRepository.findAll();
-    }
-
-    public Building readBuilding(long id) throws BuildingNotFoundException {
+    /**
+     * Reads the building inside the database using its id.
+     *
+     * @param id the id of the building
+     * @return the Building that was found.
+     * @throws NotFoundException when no building is found.
+     */
+    public Building readBuilding(Long id) throws NotFoundException {
         return buildingRepository.findById(id)
-            .orElseThrow(() -> new BuildingNotFoundException((int) id));
+            .orElseThrow(() -> new NotFoundException(Building.MAPPED_NAME, id));
     }
 
     /**
-     * Doc. TODO Sven
+     * Deletes a building.
+     *
+     * @param id the id of the building
+     * @throws NotFoundException if the building wasn't found
      */
-    public Building deleteBuilding(long id) throws BuildingNotFoundException {
+    public Building deleteBuilding(Long id) throws NotFoundException {
         try {
             Building rf = readBuilding(id);
             buildingRepository.delete(readBuilding(id));
             return rf;
-
-        } catch (BuildingNotFoundException e) {
-            throw new BuildingNotFoundException((int) id);
+        } catch (NotFoundException e) {
+            throw new NotFoundException(Building.MAPPED_NAME, id);
         }
     }
 
     /**
-     * Doc. TODO Sven
+     * Creates a building.
+     *
+     * @param newBuilding the new building that you want to create
+     * @return the created building
      */
     public Building createBuilding(Building newBuilding) {
-        try {
-            Building building = readBuilding((int) newBuilding.getId());
-            throw new BuildingExistsException((int) building.getId());
-
-        } catch (BuildingNotFoundException e) {
-            buildingRepository.save(newBuilding);
-            return newBuilding;
-        }
+        return buildingRepository.save(newBuilding);
     }
 
     /**
-     * Doc. TODO Sven
+     * Updates a building.
+     *
+     * @param id          the id of the building that you want to update
+     * @param newBuilding the new building
+     * @return the updated booking
+     * @throws NotFoundException if the building wasn't found
      */
-    public Building updateBuilding(int id, Building newBuilding) throws BuildingNotFoundException {
-        return buildingRepository.findById((long) id)
+    public Building updateBuilding(Long id, Building newBuilding) throws NotFoundException {
+        return buildingRepository.findById(id)
             .map(building -> {
                 newBuilding.setId(id);
                 building = newBuilding;
                 return buildingRepository.save(building);
-            }).orElseThrow(() -> new BuildingNotFoundException(id));
+            }).orElseThrow(() -> new NotFoundException(Building.MAPPED_NAME, id));
     }
-
 }

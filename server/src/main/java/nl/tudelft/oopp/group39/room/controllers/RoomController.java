@@ -1,10 +1,11 @@
 package nl.tudelft.oopp.group39.room.controllers;
 
-import java.util.List;
 import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.room.dao.RoomDao;
-import nl.tudelft.oopp.group39.room.entities.Room;
+import nl.tudelft.oopp.group39.room.dto.RoomDto;
 import nl.tudelft.oopp.group39.room.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,56 +23,78 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(RoomController.REST_MAPPING)
-public class RoomController {
+public class RoomController extends AbstractController {
     public static final String REST_MAPPING = "/room";
 
     @Autowired
     private RoomService service;
 
-    @Autowired
-    private RoomDao roomDao;
-
-    /**TODO.
+    /**
+     * Method that gets all the parameters from a user, and then lists them.
+     * If the parameters are not entered via a get request, then it returns all rooms.
      *
-     * @param allParams parameters.
-     * @return filtered list.
+     * @param allParams parameters that is entered by the user.
+     * @return filtered list in accordance to the parameters entered.
+     * @see RoomDao#roomFilter(Map)
      */
-    @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listRooms(
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> list(
         @RequestParam Map<String, String> allParams
     ) {
-        List<Room> result = roomDao.roomFilter(allParams);
-        return RestResponse.create(result);
-    }
-
-    @PostMapping("")
-    @ResponseBody
-    public ResponseEntity<RestResponse<Object>> createRoom(@RequestBody Room newRoom) {
-        return RestResponse.create(service.createRoom(newRoom), null, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/{id}")
-    @ResponseBody
-    public ResponseEntity<RestResponse<Object>> readRoom(@PathVariable int id) {
-        return RestResponse.create(service.readRoom(id));
-    }
-
-    @PutMapping("/{id}")
-    @ResponseBody
-    public ResponseEntity<RestResponse<Object>> updateRoom(
-        @RequestBody Room updated,
-        @PathVariable int id
-    ) {
-        return RestResponse.create(service.updateRoom(updated, id));
+        return restHandler(() -> Utils.listEntityToDto(service.filterRooms(allParams)));
     }
 
     /**
-     * Doc. TODO Sven
+     * Creates a room with the dto supplied by the curl request.
+     *
+     * @param newRoom the dto values of the room to be created
+     * @return the inserted value converted back to dto
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteRoom(@PathVariable int id) {
-        service.deleteRoom(id);
+    @PostMapping
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> create(@RequestBody RoomDto newRoom) {
+        return restHandler(
+            HttpStatus.CREATED,
+            () -> service.createRoom(newRoom.toEntity()).toDto()
+        );
+    }
 
-        return RestResponse.create(null, null, HttpStatus.OK);
+    /**
+     * GET Endpoint to get a room.
+     *
+     * @return the requested room
+     */
+    @GetMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
+        return restHandler(() -> service.readRoom(id).toDto());
+    }
+
+    /**
+     * PUT Endpoint to update a room.
+     *
+     * @return the updated room
+     */
+    @PutMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> update(
+        @RequestBody RoomDto updated,
+        @PathVariable Long id
+    ) {
+        return restHandler(() -> service.updateRoom(updated.toEntity(), id).toDto());
+    }
+
+    /**
+     * Delete Endpoint to delete a room.
+     */
+    @DeleteMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
+        return restHandler(() -> {
+            service.deleteRoom(id);
+
+            return null;
+        });
     }
 }

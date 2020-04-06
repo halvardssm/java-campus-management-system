@@ -12,7 +12,6 @@ import nl.tudelft.oopp.group39.booking.services.BookingService;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.event.entities.Event;
-import nl.tudelft.oopp.group39.event.enums.EventTypes;
 import nl.tudelft.oopp.group39.event.services.EventService;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.facility.services.FacilityService;
@@ -85,26 +84,25 @@ public class DbSeeder {
             "admin@tudelft.nl",
             "pwd",
             null,
-            Role.ADMIN,
-            null,
-            null
+            Role.ADMIN
         );
 
-        userService.createUser(user);
+        userService.createUser(user, true);
 
         User user2 = new User(
             "student",
             "student@student.tudelft.nl",
             "student123",
             null,
-            Role.STUDENT,
-            null,
-            null
+            Role.STUDENT
         );
-        userService.createUser(user2);
+        userService.createUser(user2, true);
         System.out.println("[SEED] Admin user created");
     }
 
+    /**
+     * Initiates the database with the facilities.
+     */
     private void initFacilities() {
         Set<Room> rooms = new HashSet<>();
         facilityService.createFacility(new Facility("smartboard", rooms));
@@ -116,81 +114,137 @@ public class DbSeeder {
         System.out.println("[SEED] Facilities created");
     }
 
+    /**
+     * Initiates the database with the buildings.
+     */
     private void initBuildings() {
         LocalTime open = LocalTime.of(9, 0);//.minusHours(3);
         LocalTime closed = LocalTime.of(20, 0);//.plusHours(3);
-        Building b = new Building("test", "test", "test", open, closed, null);
+        Building b = new Building(null, "test", "test", "test", open, closed, null, null);
         buildingService.createBuilding(b);
-        b = new Building("new", "new", "new", open, closed, null);
+        b = new Building(null, "new", "new", "new", open, closed, null, null);
         buildingService.createBuilding(b);
 
-        Building b2 = new Building("EEMCS",
+        Building b2 = new Building(
+            null,
+            "EEMCS",
             "Mekelweg 4",
             "Faculty of Electrical Engineering, Maths and Computer Science",
             LocalTime.of(7, 0),
             LocalTime.of(18, 0),
-            null);
+            null,
+            null
+        );
         buildingService.createBuilding(b2);
 
-        Building b3 = new Building("Drebbelweg",
+        Building b3 = new Building(
+            null,
+            "Drebbelweg",
             "Drebbelweg 5",
             "Drebbelweg",
             LocalTime.of(6, 0),
             LocalTime.of(17, 30),
-            null);
+            null,
+            null
+        );
         buildingService.createBuilding(b3);
 
         System.out.println("[SEED] Buildings created");
     }
 
+    /**
+     * Initiates the database with the rooms.
+     */
     private void initRooms() {
+        final Building b1 = buildingService.readBuilding(1L);
+        final Building b2 = buildingService.readBuilding(2L);
+        final Building b3 = buildingService.readBuilding(3L);
+        roomService.createRoom(new Room(null, b1, "test", 10, true, "test1", null, null, null));
+
+        roomService.createRoom(new Room(null, b1, "test", 10, true, "test1", null, null, null));
+
         Set<Facility> facilities = new HashSet<>();
-        Set<Booking> bookings = new HashSet<>();
+        facilities.add(facilityService.readFacility(1L));
+        roomService.createRoom(new Room(
+            null,
+            b1,
+            "lala",
+            6,
+            true,
+            "test2",
+            null,
+            facilities,
+            null
+        ));
 
-        roomService.createRoom(new Room(1, "test", 10, true, "test1", facilities, bookings));
-
-        facilities.add(facilityService.readFacility(1));
-        roomService.createRoom(new Room(1, "lala", 6, true, "test2", facilities, bookings));
-
-        facilities.add(facilityService.readFacility(2));
+        facilities.add(facilityService.readFacility(2L));
         roomService.createRoom(
-            new Room(2, "another one", 15, false, "test3", facilities, bookings));
+            new Room(null, b2, "another one", 15, false, "test3", null, facilities, null));
 
         roomService.createRoom(new Room(
-            3,
+            null,
+            b3,
             "Lecture Hall Ampere",
             50,
             false,
             "Lecture hall in EEMCS",
+            null,
             facilities,
-            bookings));
+            null
+        ));
 
         Set<Facility> facilities2 = new HashSet<>();
-        facilities2.add(facilityService.readFacility(2));
-        facilities2.add(facilityService.readFacility(3));
+        facilities2.add(facilityService.readFacility(2L));
+        facilities2.add(facilityService.readFacility(3L));
         roomService.createRoom(new Room(
-            4,
+            null,
+            b3,
             "Projectruimte 8",
             8,
             false,
             "Project Room 8",
+            null,
             facilities2,
-            bookings));
-
+            null
+        ));
 
         System.out.println("[SEED] Rooms created");
     }
 
+    /**
+     * Initiates the database with events.
+     */
     private void initEvents() {
-        LocalDate today = LocalDate.now();
-        LocalDate tomorrow = today.plusDays(1);
-        Room room = new Room(1, "lala", 0, false, null, new HashSet<>(), new HashSet<>());
+        LocalDateTime today = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0));
+        LocalDateTime tomorrow = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
+        Building b1 = buildingService.readBuilding(1L);
+        Room room = new Room(
+            null,
+            b1,
+            "room 123",
+            23,
+            false,
+            "some room",
+            null,
+            new HashSet<>(),
+            new HashSet<>()
+        );
         HashSet<Room> rooms = new HashSet<>(List.of(room));
-        eventService.createEvent(new Event(EventTypes.EVENT, today, tomorrow, rooms));
+        eventService.createEvent(new Event(
+            null, "Special day",
+            today,
+            tomorrow,
+            true,
+            userService.readUser("admin"),
+            rooms
+        ));
 
         System.out.println("[SEED] Events created");
     }
 
+    /**
+     * Initiates the database with bookings.
+     */
     private void initBookings() {
         LocalDate date = LocalDate.now();
         LocalTime start = LocalTime.of(13, 0);
@@ -199,25 +253,28 @@ public class DbSeeder {
 
         List<Room> rooms = roomService.listRooms();
 
-        Booking b1 = new Booking(date, start, end, user, rooms.get(0));
+        Booking b1 = new Booking(null, date, start, end, user, rooms.get(0));
         bookingService.createBooking(b1);
-        Booking b2 = new Booking(date, start, end, user, rooms.get(1));
+        Booking b2 = new Booking(null, date, start, end, user, rooms.get(1));
         bookingService.createBooking(b2);
 
-        Booking b3 = new Booking(date.plusDays(1), start, end, user, rooms.get(0));
+        Booking b3 = new Booking(null, date.plusDays(1), start, end, user, rooms.get(0));
         bookingService.createBooking(b3);
-        Booking b4 = new Booking(date.plusDays(1), start, end, user, rooms.get(1));
+        Booking b4 = new Booking(null, date.plusDays(1), start, end, user, rooms.get(1));
         bookingService.createBooking(b4);
 
         System.out.println("[SEED] Bookings created");
     }
 
+    /**
+     * Initiates the database with bikes.
+     */
     private void initBikes() {
-        Building building = buildingService.listBuildings().get(0);
+        Building building = buildingService.listBuildings(new HashMap<>()).get(0);
 
-        Bike bike1 = new Bike(BikeType.CITY, 5.6, building, null);
-        Bike bike2 = new Bike(BikeType.CITY, 6.7, building, null);
-        Bike bike3 = new Bike(BikeType.CITY, 7.8, building, null);
+        Bike bike1 = new Bike(null, BikeType.CITY, 5.6, building, null);
+        Bike bike2 = new Bike(null, BikeType.CITY, 6.7, building, null);
+        Bike bike3 = new Bike(null, BikeType.CITY, 7.8, building, null);
 
         bikeService.createBike(bike1);
         bikeService.createBike(bike2);
@@ -226,12 +283,22 @@ public class DbSeeder {
         System.out.println("[SEED] Bikes created");
     }
 
+    /**
+     * Initiates the database with food.
+     */
     private void initFoods() {
-        Building building = buildingService.listBuildings().get(0);
+        Building building = buildingService.listBuildings(new HashMap<>()).get(0);
 
-        Food food1 = new Food("Stew", "A warm pot of deliciousness", 5.6, building, null);
-        Food food2 = new Food("Meatballs", "Balls of meat", 6.7, building, null);
-        Food food3 = new Food("Carrot Cake", "I mean cake, it's simply good", 7.8, building, null);
+        Food food1 = new Food(null, "Stew", "A warm pot of deliciousness", 5.6, building, null);
+        Food food2 = new Food(null, "Meatballs", "Balls of meat", 6.7, building, null);
+        Food food3 = new Food(
+            null,
+            "Carrot Cake",
+            "I mean cake, it's simply good",
+            7.8,
+            building,
+            null
+        );
 
         foodService.createFood(food1);
         foodService.createFood(food2);
@@ -240,9 +307,13 @@ public class DbSeeder {
         System.out.println("[SEED] Foods created");
     }
 
+    /**
+     * Initiates the database with reservations.
+     */
     private void initReservations() {
 
         Reservation reservation = reservationService.createReservation(new Reservation(
+            null,
             LocalDateTime.now(),
             LocalDateTime.now().plusHours(2),
             roomService.listRooms().get(0),
@@ -251,11 +322,13 @@ public class DbSeeder {
         ));
 
         ReservationAmount reservationAmount1 = new ReservationAmount(
+            null,
             5,
             reservation,
             foodService.listFoods(new HashMap<>()).get(0)
         );
         ReservationAmount reservationAmount2 = new ReservationAmount(
+            null,
             1,
             reservation,
             bikeService.listBikes(new HashMap<>()).get(0)

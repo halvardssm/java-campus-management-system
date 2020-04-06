@@ -2,6 +2,9 @@ package nl.tudelft.oopp.group39.reservable.controllers;
 
 import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
+import nl.tudelft.oopp.group39.reservable.dto.BikeDto;
 import nl.tudelft.oopp.group39.reservable.entities.Bike;
 import nl.tudelft.oopp.group39.reservable.services.BikeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +18,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(BikeController.REST_MAPPING)
-public class BikeController {
+public class BikeController extends AbstractController {
     public static final String REST_MAPPING = "/bike";
 
     @Autowired
@@ -30,11 +34,10 @@ public class BikeController {
      *
      * @return a list of bikes {@link Bike}.
      */
-    @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listBikes(
-        @RequestParam Map<String, String> params
-    ) {
-        return RestResponse.create(bikeService.listBikes(params));
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
+        return restHandler(() -> Utils.listEntityToDto(bikeService.listBikes(params)));
     }
 
     /**
@@ -42,13 +45,13 @@ public class BikeController {
      *
      * @return the created bike {@link Bike}.
      */
-    @PostMapping("")
-    public ResponseEntity<RestResponse<Object>> createBike(@RequestBody Bike bike) {
-        try {
-            return RestResponse.create(bikeService.createBike(bike), null, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+    @PostMapping
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> create(@RequestBody BikeDto bike) {
+        return restHandler(
+            HttpStatus.CREATED,
+            () -> bikeService.createBike(bike.toEntity()).toDto()
+        );
     }
 
     /**
@@ -56,13 +59,10 @@ public class BikeController {
      *
      * @return the requested bike {@link Bike}.
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> readBike(@PathVariable Integer id) {
-        try {
-            return RestResponse.create(bikeService.readBike(id));
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+    @GetMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
+        return restHandler(() -> bikeService.readBike(id).toDto());
     }
 
     /**
@@ -70,25 +70,25 @@ public class BikeController {
      *
      * @return the updated bike {@link Bike}.
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> updateBike(
-        @PathVariable Integer id,
+    @PutMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> update(
+        @PathVariable Long id,
         @RequestBody Bike bike
     ) {
-        try {
-            return RestResponse.create(bikeService.updateBike(id, bike));
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+        return restHandler(() -> bikeService.updateBike(id, bike).toDto());
     }
 
     /**
      * DELETE Endpoint to delete a bike.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteBike(@PathVariable Integer id) {
-        bikeService.deleteBike(id);
+    @DeleteMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
+        return restHandler(() -> {
+            bikeService.deleteBike(id);
 
-        return RestResponse.create(null, null, HttpStatus.OK);
+            return null;
+        });
     }
 }

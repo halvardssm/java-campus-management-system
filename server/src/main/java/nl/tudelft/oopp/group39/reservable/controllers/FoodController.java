@@ -2,6 +2,9 @@ package nl.tudelft.oopp.group39.reservable.controllers;
 
 import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
+import nl.tudelft.oopp.group39.reservable.dto.FoodDto;
 import nl.tudelft.oopp.group39.reservable.entities.Food;
 import nl.tudelft.oopp.group39.reservable.services.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +18,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(FoodController.REST_MAPPING)
-public class FoodController {
+public class FoodController extends AbstractController {
     public static final String REST_MAPPING = "/food";
 
     @Autowired
@@ -30,11 +34,10 @@ public class FoodController {
      *
      * @return a list of foods {@link Food}.
      */
-    @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listFoods(
-        @RequestParam Map<String, String> params
-    ) {
-        return RestResponse.create(foodService.listFoods(params));
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
+        return restHandler(() -> Utils.listEntityToDto(foodService.listFoods(params)));
     }
 
     /**
@@ -42,13 +45,13 @@ public class FoodController {
      *
      * @return the created food {@link Food}.
      */
-    @PostMapping("")
-    public ResponseEntity<RestResponse<Object>> createFood(@RequestBody Food food) {
-        try {
-            return RestResponse.create(foodService.createFood(food), null, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+    @PostMapping
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> create(@RequestBody FoodDto food) {
+        return restHandler(
+            HttpStatus.CREATED,
+            () -> foodService.createFood(food.toEntity()).toDto()
+        );
     }
 
     /**
@@ -56,13 +59,10 @@ public class FoodController {
      *
      * @return the requested food {@link Food}.
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> readFood(@PathVariable Integer id) {
-        try {
-            return RestResponse.create(foodService.readFood(id));
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+    @GetMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
+        return restHandler(() -> foodService.readFood(id).toDto());
     }
 
     /**
@@ -70,25 +70,25 @@ public class FoodController {
      *
      * @return the updated food {@link Food}.
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> updateFood(
-        @PathVariable Integer id,
+    @PutMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> update(
+        @PathVariable Long id,
         @RequestBody Food food
     ) {
-        try {
-            return RestResponse.create(foodService.updateFood(id, food));
-        } catch (Exception e) {
-            return RestResponse.error(e);
-        }
+        return restHandler(() -> foodService.updateFood(id, food).toDto());
     }
 
     /**
      * DELETE Endpoint to delete am food.
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteFood(@PathVariable Integer id) {
-        foodService.deleteFood(id);
+    @DeleteMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
+        return restHandler(() -> {
+            foodService.deleteFood(id);
 
-        return RestResponse.create(null, null, HttpStatus.OK);
+            return null;
+        });
     }
 }

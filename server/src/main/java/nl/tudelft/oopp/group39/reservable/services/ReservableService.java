@@ -2,7 +2,7 @@ package nl.tudelft.oopp.group39.reservable.services;
 
 import java.util.List;
 import java.util.Map;
-import javassist.NotFoundException;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
 import nl.tudelft.oopp.group39.reservable.dao.ReservableDao;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.reservable.repositories.ReservableRepository;
@@ -16,7 +16,7 @@ public class ReservableService {
     @Autowired
     private ReservableRepository reservableRepository;
     @Autowired
-    private ReservableDao reservableDao;
+    private ReservableDao<Reservable> reservableDao;
 
     /**
      * List all reservables.
@@ -32,11 +32,9 @@ public class ReservableService {
      *
      * @return reservable by id {@link Reservable}.
      */
-    public Reservable readReservable(Integer id) throws NotFoundException {
+    public Reservable readReservable(Long id) {
         return reservableRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException(
-                String.format(EXCEPTION_RESERVABLE_NOT_FOUND, id)
-            ));
+            .orElseThrow(() -> new NotFoundException(Reservable.MAPPED_NAME, id));
     }
 
     /**
@@ -53,7 +51,7 @@ public class ReservableService {
      *
      * @return the updated reservable {@link Reservable}.
      */
-    public Reservable updateReservable(Integer id, Reservable newReservable)
+    public Reservable updateReservable(Long id, Reservable newReservable)
         throws NotFoundException {
         return reservableRepository.findById(id)
             .map(reservable -> {
@@ -62,16 +60,13 @@ public class ReservableService {
 
                 return reservableRepository.save(reservable);
             })
-            .orElseThrow(() -> new NotFoundException(String.format(
-                EXCEPTION_RESERVABLE_NOT_FOUND,
-                id
-            )));
+            .orElseThrow(() -> new NotFoundException(Reservable.MAPPED_NAME, id));
     }
 
     /**
      * Delete an reservable {@link Reservable}.
      */
-    public void deleteReservable(Integer id) {
+    public void deleteReservable(Long id) {
         reservableRepository.deleteById(id);
     }
 }

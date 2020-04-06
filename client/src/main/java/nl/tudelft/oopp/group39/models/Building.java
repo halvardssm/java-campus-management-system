@@ -1,5 +1,14 @@
 package nl.tudelft.oopp.group39.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import nl.tudelft.oopp.group39.room.model.Room;
+import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
+
+@JsonIgnoreProperties(value = { "reservables", "rooms" })
 public class Building {
 
     private Integer id;
@@ -19,8 +28,9 @@ public class Building {
     }
 
     /**
-     * Doc. TODO Sven
+     * Doc.
      *
+     * @param id          id
      * @param name        name
      * @param location    location
      * @param description description
@@ -65,5 +75,32 @@ public class Building {
 
     public String getClosed() {
         return closed;
+    }
+
+    /**
+     * Finds the max capacity of the building.
+     *
+     * @return int of max capacity of building
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public int getMaxCapacity() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        String roomString = ServerCommunication.getRooms(id);
+        ArrayNode body = (ArrayNode) mapper.readTree(roomString).get("body");
+        if (body.isEmpty()) {
+            return 0;
+        } else {
+            roomString = mapper.writeValueAsString(body);
+            Room[] rooms = mapper.readValue(roomString, Room[].class);
+            int maxCapacity = rooms[0].getCapacity();
+            for (Room room : rooms) {
+                if (room.getCapacity() > maxCapacity) {
+                    maxCapacity = room.getCapacity();
+                }
+            }
+            return maxCapacity;
+        }
+
     }
 }

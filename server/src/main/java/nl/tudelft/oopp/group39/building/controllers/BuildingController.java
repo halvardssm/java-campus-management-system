@@ -1,11 +1,12 @@
 package nl.tudelft.oopp.group39.building.controllers;
 
-import java.util.List;
 import java.util.Map;
-import nl.tudelft.oopp.group39.building.dao.BuildingDao;
+import nl.tudelft.oopp.group39.building.dto.BuildingDto;
 import nl.tudelft.oopp.group39.building.entities.Building;
 import nl.tudelft.oopp.group39.building.services.BuildingService;
 import nl.tudelft.oopp.group39.config.RestResponse;
+import nl.tudelft.oopp.group39.config.Utils;
+import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(BuildingController.REST_MAPPING)
-public class BuildingController {
+public class BuildingController extends AbstractController {
     public static final String REST_MAPPING = "/building";
-
     public static final String PARAM_CAPACITY = "capacity";
     public static final String PARAM_OPEN = "open";
     public static final String PARAM_CLOSED = "closed";
@@ -34,61 +34,66 @@ public class BuildingController {
     @Autowired
     private BuildingService buildingService;
 
-    @Autowired
-    private BuildingDao buildingDao;
-
-    /** TODO Sven.
+    /**
+     * GET endpoint to retrieve all buildings.
+     *
+     * @return a list of buildings
      */
-    @GetMapping("")
-    public ResponseEntity<RestResponse<Object>> listBuildings(
-        @RequestParam Map<String, String> params
-    ) {
-        List<Building> result = buildingDao.buildingFilter(params);
-        return RestResponse.create(result);
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
+        return restHandler(() -> Utils.listEntityToDto(buildingService.listBuildings(params)));
     }
 
     /**
-     * Create building. TODO Sven
+     * POST endpoint to create a building.
      *
-     * @param building building
-     * @return building
+     * @return the created building
      */
-    @PostMapping("")
+    @PostMapping
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> createBuilding(@RequestBody Building building) {
-        return RestResponse.create(
-            buildingService.createBuilding(building),
-            null,
-            HttpStatus.CREATED
+    public ResponseEntity<RestResponse<Object>> create(@RequestBody BuildingDto building) {
+        return restHandler(
+            HttpStatus.CREATED,
+            () -> buildingService.createBuilding(building.toEntity()).toDto()
         );
     }
 
-    @GetMapping("/{id}")
+    /**
+     * GET endpoint to retrieve a building.
+     *
+     * @return the requested building
+     */
+    @GetMapping(PATH_ID)
     @ResponseBody
-    public ResponseEntity<RestResponse<Object>> readBuilding(@PathVariable int id) {
-        return RestResponse.create(buildingService.readBuilding(id));
-    }
-
-    @PutMapping("/{id}")
-    @ResponseBody
-    public ResponseEntity<RestResponse<Object>> updateBuilding(
-        @RequestBody Building updated,
-        @PathVariable int id
-    ) {
-        return RestResponse.create(buildingService.updateBuilding(id, updated));
+    public ResponseEntity<RestResponse<Object>> read(@PathVariable Long id) {
+        return restHandler(() -> buildingService.readBuilding(id).toDto());
     }
 
     /**
-     * Delete building. TODO Sven
+     * PUT endpoint to update the building.
      *
-     * @param id id
-     * @return nothing
+     * @return the updated building
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<RestResponse<Object>> deleteBuilding(@PathVariable int id) {
-        buildingService.deleteBuilding(id);
-
-        return RestResponse.create(null, null, HttpStatus.OK);
+    @PutMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> update(
+        @RequestBody BuildingDto updated,
+        @PathVariable Long id
+    ) {
+        return restHandler(() -> buildingService.updateBuilding(id, updated.toEntity()).toDto());
     }
 
+    /**
+     * DELETE endpoint to delete a booking.
+     */
+    @DeleteMapping(PATH_ID)
+    @ResponseBody
+    public ResponseEntity<RestResponse<Object>> delete(@PathVariable Long id) {
+        return restHandler(() -> {
+            buildingService.deleteBuilding(id);
+
+            return null;
+        });
+    }
 }

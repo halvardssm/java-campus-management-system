@@ -1,7 +1,9 @@
 package nl.tudelft.oopp.group39.event.services;
 
 import java.util.List;
-import javassist.NotFoundException;
+import java.util.Map;
+import nl.tudelft.oopp.group39.config.exceptions.NotFoundException;
+import nl.tudelft.oopp.group39.event.dao.EventDao;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.event.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +15,16 @@ public class EventService {
 
     @Autowired
     private EventRepository eventRepository;
+    @Autowired
+    private EventDao eventDao;
 
     /**
      * List all events.
      *
      * @return a list of events {@link Event}.
      */
-    public List<Event> listEvents() {
-        return eventRepository.findAll();
+    public List<Event> listEvents(Map<String, String> params) {
+        return eventDao.filter(params);
     }
 
     /**
@@ -28,9 +32,9 @@ public class EventService {
      *
      * @return event by id {@link Event}.
      */
-    public Event readEvent(Integer id) throws NotFoundException {
-        return eventRepository.findById(id).orElseThrow(()
-            -> new NotFoundException(String.format(EXCEPTION_EVENT_NOT_FOUND, id)));
+    public Event readEvent(Long id) {
+        return eventRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException(Event.MAPPED_NAME, id));
     }
 
     /**
@@ -47,22 +51,24 @@ public class EventService {
      *
      * @return the updated event {@link Event}.
      */
-    public Event updateEvent(Integer id, Event newEvent) throws NotFoundException {
+    public Event updateEvent(Long id, Event newEvent) {
         return eventRepository.findById(id)
             .map(event -> {
-                event.setType(newEvent.getType());
-                event.setStartDate(newEvent.getStartDate());
-                event.setEndDate(newEvent.getEndDate());
+                event.setTitle(newEvent.getTitle());
+                event.setStartsAt(newEvent.getStartsAt());
+                event.setEndsAt(newEvent.getEndsAt());
+                event.setIsGlobal(newEvent.getIsGlobal());
+                event.setUser(newEvent.getUser());
                 event.setRooms(newEvent.getRooms());
                 return eventRepository.save(event);
             })
-            .orElseThrow(() -> new NotFoundException(String.format(EXCEPTION_EVENT_NOT_FOUND, id)));
+            .orElseThrow(() -> new NotFoundException(Event.MAPPED_NAME, id));
     }
 
     /**
      * Delete an event {@link Event}.
      */
-    public void deleteEvent(Integer id) {
+    public void deleteEvent(Long id) {
         eventRepository.deleteById(id);
     }
 }
