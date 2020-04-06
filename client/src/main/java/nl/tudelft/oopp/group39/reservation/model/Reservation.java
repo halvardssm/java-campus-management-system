@@ -117,4 +117,13 @@ public class Reservation {
     public LocalDateTime getDeliveryTime() {
         return LocalDateTime.parse(timeOfDelivery.replace(" ", "T"));
     }
+
+    /**
+     * Sets reservation amount.
+     *
+     * @param reservationAmounts the value to be set as
+     */
+    public void setReservationAmounts(ArrayNode reservationAmounts) {
+        this.reservationAmounts = reservationAmounts;
+    }
 }

@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.building.model.Building;
@@ -41,6 +42,8 @@ public class FoodCreateController extends FoodListController {
     private TextField nameField;
     @FXML
     private TextField descriptionField;
+    @FXML
+    private MenuBar navBar;
 
     /**
      * Initializes the data and makes it usable.
@@ -49,6 +52,7 @@ public class FoodCreateController extends FoodListController {
 
     public void initData() throws JsonProcessingException {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
         ObservableList<String> data = initBuildings();
         buildingBox.setItems(data);
         this.building = data.get(0);
@@ -105,7 +109,7 @@ public class FoodCreateController extends FoodListController {
             ? buildingIdsByName.get(building) :  buildingIdsByName.get(buildingObj.toString());
         String priceInputFirst = priceFieldFirst.getText();
         priceInputFirst = priceInputFirst.contentEquals("") ? priceFirst : priceInputFirst;
-        String priceInputSecond = priceFieldFirst.getText();
+        String priceInputSecond = priceFieldSecond.getText();
         priceInputSecond = priceInputSecond.contentEquals("") ? priceSecond : priceInputSecond;
         Double priceInput = getPrice(priceInputFirst, priceInputSecond);
         Food newFoodItem = new Food(-1L, nameInput, descriptionInput, priceInput, buildingInput);
