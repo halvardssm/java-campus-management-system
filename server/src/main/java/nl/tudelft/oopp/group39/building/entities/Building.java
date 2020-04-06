@@ -6,8 +6,10 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.building.dto.BuildingDto;
@@ -16,6 +18,7 @@ import nl.tudelft.oopp.group39.config.abstracts.AbstractEntity;
 import nl.tudelft.oopp.group39.reservable.entities.Reservable;
 import nl.tudelft.oopp.group39.room.dto.RoomDto;
 import nl.tudelft.oopp.group39.room.entities.Room;
+import org.hibernate.annotations.LazyGroup;
 
 @Entity
 @Table(name = Building.TABLE_NAME)
@@ -27,6 +30,7 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
     public static final String COL_DESC = "description";
     public static final String COL_OPEN = "open";
     public static final String COL_CLOSED = "closed";
+    public static final String COL_IMAGE = "image";
     public static final String COL_ROOMS = "rooms";
     public static final String COL_RESERVABLES = "reservables";
 
@@ -35,9 +39,13 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
     private String description;
     private LocalTime open;
     private LocalTime closed;
+    @Lob
+    @Basic(fetch = FetchType.EAGER)
+    @LazyGroup("lobs")
+    private byte[] image;
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
     private Set<Room> rooms = new HashSet<>();
-    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER) //TODO change to reservable id
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
     private Set<Reservable> reservables = new HashSet<>();
 
     /**
@@ -55,6 +63,7 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
      * @param description the description of the building
      * @param open        the opening time of the building
      * @param closed      the closing time of the building
+     * @param image       the image
      * @param rooms       the rooms of the building
      */
     public Building(
@@ -64,6 +73,7 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
         String description,
         LocalTime open,
         LocalTime closed,
+        String image,
         Set<Room> rooms,
         Set<Reservable> reservables
     ) {
@@ -73,27 +83,9 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
         setDescription(description);
         setOpen(open);
         setClosed(closed);
+        setImage(image);
         getRooms().addAll(initSet(rooms));
         getReservables().addAll(initSet(reservables));
-    }
-
-    /**
-     * Method to convert a Building object to BuildingDto for JSON serializing.
-     *
-     * @return the BuildingDto converted from building
-     */
-    public BuildingDto toDto() {
-        Set<RoomDto> roomDtoSet = Utils.setEntityToDto(rooms);
-
-        return new BuildingDto(
-            id,
-            name,
-            location,
-            description,
-            open,
-            closed,
-            roomDtoSet
-        );
     }
 
     /**
@@ -187,6 +179,24 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
     }
 
     /**
+     * Gets the image.
+     *
+     * @return the image
+     */
+    public String getImage() {
+        return Utils.fromByteToString(image);
+    }
+
+    /**
+     * Changes the image.
+     *
+     * @param image the new image
+     */
+    public void setImage(String image) {
+        this.image = Utils.fromStringToByte(image);
+    }
+
+    /**
      * Gets the rooms of the building.
      *
      * @return a set with all the rooms from the building
@@ -223,6 +233,26 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
     }
 
     /**
+     * Method to convert a Building object to BuildingDto for JSON serializing.
+     *
+     * @return the BuildingDto converted from building
+     */
+    public BuildingDto toDto() {
+        Set<RoomDto> roomDtoSet = Utils.setEntityToDto(rooms);
+
+        return new BuildingDto(
+            getId(),
+            getName(),
+            getLocation(),
+            getDescription(),
+            getOpen(),
+            getClosed(),
+            getImage(),
+            roomDtoSet
+        );
+    }
+
+    /**
      * Checks whether two rooms are equal.
      *
      * @param o the other object to compare
@@ -242,6 +272,7 @@ public class Building extends AbstractEntity<Building, BuildingDto> {
             && Objects.equals(getDescription(), building.getDescription())
             && Objects.equals(getOpen(), building.getOpen())
             && Objects.equals(getClosed(), building.getClosed())
+            && Objects.equals(getImage(), building.getImage())
             && Objects.equals(getRooms(), building.getRooms())
             && Objects.equals(getReservables(), building.getReservables());
     }

@@ -69,7 +69,6 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
     private ComboBox<String> startTimePicker = new ComboBox<>();
     private List<Integer> bookedBikeTimes = new ArrayList<>();
 
-
     /**
      * Sets up the page for food or bike.
      *
@@ -186,7 +185,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
      * @param name        name of the item
      * @param description description of the item
      * @param reservable  the reservable to be shown in the box
-     * @return HBox of the item
+     * @return            HBox of the item
      */
     public HBox createItemBox(String name, String description, Reservable reservable) {
         HBox item = new HBox(20);
@@ -377,6 +376,8 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
 
     /**
      * Checks if the cart is empty.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
     public void checkEmptyCart() throws JsonProcessingException {
         if (cartItems == 0) {
@@ -394,6 +395,8 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
 
     /**
      * Creates the interface for the user to select delivery time, date and room or duration.
+     *
+     * @throws JsonProcessingException when there is a processing exception
      */
     public void setDeliveryDetails() throws JsonProcessingException {
         timeselector.getChildren().clear();
@@ -450,8 +453,8 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
     /**
      * Retrieves the booked times for the bike on a given date.
      *
-     * @param date   the selected date
-     * @param bikeId the selected bike
+     * @param date                     the selected date
+     * @param bikeId                   the selected bike
      * @throws JsonProcessingException when there is a processing exception
      */
     public void getBikeTimes(String date, int bikeId) throws JsonProcessingException {
@@ -468,8 +471,8 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
     /**
      * Updates the start time picker for the bikes based on selected date.
      *
-     * @param date   the selected date
-     * @param bikeId the selected bike
+     * @param date                     the selected date
+     * @param bikeId                   the selected bike
      * @throws JsonProcessingException when there is a processing exception
      */
     public void updateBikeTimePicker(String date, int bikeId) throws JsonProcessingException {
@@ -582,7 +585,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
     /**
      * Gets a list of the rooms filtered on building id and shows them in a combobox.
      *
-     * @param id of the selected building
+     * @param id                       id of the selected building
      * @throws JsonProcessingException when there is a parsing exception
      */
     public void getRoomsList(Long id) throws JsonProcessingException {
@@ -601,7 +604,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
      * Retrieves the price label of given reservable.
      *
      * @param reservable of which the price label is needed
-     * @return Label containing the price in correct format
+     * @return           Label containing the price in correct format
      */
     public Label getPriceLabel(Reservable reservable) {
         Label priceLabel;
@@ -618,7 +621,7 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
      *
      * @param datePicker in which the date is selected by the user
      * @param timePicker in which the time is selected by the user
-     * @return String containing the time of pickup
+     * @return           String containing the time of pickup
      */
     public String getTimeOfPickup(DatePicker datePicker, ComboBox<String> timePicker) {
         LocalDate date = datePicker.getValue();
@@ -628,6 +631,8 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
 
     /**
      * Places a bike order.
+     *
+     * @throws IOException when an IO exception occurs
      */
     public void placeBikeOrder() throws IOException {
         DatePicker datePicker = (DatePicker) timeselector.lookup("#datePicker");
@@ -648,6 +653,8 @@ public class FoodAndBikeSceneController extends AbstractSceneController {
 
     /**
      * Places a food order.
+     *
+     * @throws IOException when an IO exception occurs
      */
     public void placeFoodOrder() throws IOException {
         DatePicker datePicker = (DatePicker) timeselector.lookup("#datePicker");

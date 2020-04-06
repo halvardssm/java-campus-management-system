@@ -1,5 +1,8 @@
 package nl.tudelft.oopp.group39.reservable.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(value = { "reservations" })
 public class Bike extends Reservable {
     private String bikeType;
     private String rentalDuration;

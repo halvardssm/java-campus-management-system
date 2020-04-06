@@ -130,26 +130,56 @@ public class Building {
         return rooms;
     }
 
+    /**
+     * Changes the id.
+     *
+     * @param id the new id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Changes the name of the building.
+     *
+     * @param name the new name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Changes the address of the building.
+     *
+     * @param location the new location
+     */
     public void setLocation(String location) {
         this.location = location;
     }
 
+    /**
+     * Changes the description of the building.
+     *
+     * @param description the new description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Changes the opening time of the building.
+     *
+     * @param open the new opening time
+     */
     public void setOpen(LocalTime open) {
         this.open = open;
     }
 
+    /**
+     * Changes the closing time of the building.
+     *
+     * @param closed the new closing time
+     */
     public void setClosed(LocalTime closed) {
         this.closed = closed;
     }
@@ -163,6 +193,12 @@ public class Building {
         this.rooms = rooms;
     }
 
+    /**
+     * Checks whether two buildings are equal.
+     *
+     * @param o the othter object
+     * @return true if the two buildings are equal, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -196,6 +232,11 @@ public class Building {
         return max.getCapacity();
     }
 
+    /**
+     * Returns a hash code for this object.
+     *
+     * @return a hash code
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id);

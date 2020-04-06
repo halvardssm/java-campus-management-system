@@ -33,16 +33,12 @@ public class RoomControllerTest extends AbstractControllerTest {
         "Drebbelweg",
         LocalTime.of(6, 0),
         LocalTime.of(17, 30),
-        null,
+        null, null,
         null
     );
     private final Room testRoom = new Room(
         null,
-        testBuilding,
-        "Projectroom 1",
-        8,
-        true,
-        "This is another room for testing purposes",
+        "Projectroom 1", "This is another room for testing purposes", 8, true, null, testBuilding,
         null,
         null,
         null

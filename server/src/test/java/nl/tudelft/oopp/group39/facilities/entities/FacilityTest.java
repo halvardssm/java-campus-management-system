@@ -41,6 +41,13 @@ public class FacilityTest extends AbstractTest {
     @Test
     void equalsTest() {
         assertEquals(facility1, facility2);
+        assertEquals(facility1, facility1);
         assertNotEquals(facility1, facility3);
+    }
+
+    @Test
+    void notEqualsTest() {
+        assertNotEquals(facility1, null);
+        assertNotEquals(facility1, new Object());
     }
 }

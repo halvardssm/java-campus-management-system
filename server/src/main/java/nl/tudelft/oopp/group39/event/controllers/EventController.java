@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
@@ -54,7 +53,7 @@ public class EventController extends AbstractController {
     }
 
     /**
-     * POST Endpoint to create event.
+     * POST Endpoint to create an event.
      *
      * @return the created event {@link Event}.
      */
@@ -64,12 +63,19 @@ public class EventController extends AbstractController {
         return restHandler(HttpStatus.CREATED, () -> {
             Event event1 = event.toEntity();
             event1.setUser(userService.readUser(event.getUser()));
+
+            if (event.getRooms() != null && !event.getRooms().isEmpty()) {
+                Map<String, String> params = new HashMap<>();
+                params.put(Room.COL_ID, Utils.listToString(event.getRooms()));
+                event1.setRooms(new HashSet<>(roomService.listRooms(params)));
+            }
+
             return eventService.createEvent(event1).toDto();
         });
     }
 
     /**
-     * GET Endpoint to retrieve event.
+     * GET Endpoint to retrieve an event.
      *
      * @return the requested event {@link Event}.
      */
@@ -80,7 +86,7 @@ public class EventController extends AbstractController {
     }
 
     /**
-     * PUT Endpoint to update event.
+     * PUT Endpoint to update an event.
      *
      * @return the updated event {@link Event}.
      */
@@ -93,23 +99,13 @@ public class EventController extends AbstractController {
         return restHandler(() -> {
             Set<Room> rooms = new HashSet<>();
 
-            if (event.getRooms() != null && event.getRooms().size() > 0) {
-                Map<String, String> roomMap = new HashMap<>();
-
-                roomMap.put(
-                    Room.COL_ID,
-                    String.join(
-                        ",",
-                        event.getRooms().stream()
-                            .map(String::valueOf)
-                            .collect(Collectors.joining(","))
-                    )
-                );
-
-                rooms.addAll(roomService.filterRooms(roomMap));
-            }
-
             Event event1 = event.toEntity();
+
+            if (event.getRooms() != null && !event.getRooms().isEmpty()) {
+                Map<String, String> params = new HashMap<>();
+                params.put(Room.COL_ID, Utils.listToString(event.getRooms()));
+                event1.setRooms(new HashSet<>(roomService.listRooms(params)));
+            }
 
             event1.setUser(
                 event.getUser() != null
@@ -123,7 +119,7 @@ public class EventController extends AbstractController {
     }
 
     /**
-     * DELETE Endpoint to delete event.
+     * DELETE Endpoint to delete an event.
      */
     @DeleteMapping(PATH_ID)
     @ResponseBody

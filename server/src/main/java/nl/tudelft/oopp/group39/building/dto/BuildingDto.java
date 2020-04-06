@@ -19,6 +19,7 @@ public class BuildingDto extends AbstractDto<Building, BuildingDto> {
     private String description;
     private LocalTime open;
     private LocalTime closed;
+    private String image;
     private Set<RoomDto> rooms = new HashSet<>();
 
     /**
@@ -35,6 +36,7 @@ public class BuildingDto extends AbstractDto<Building, BuildingDto> {
      * @param description description of building
      * @param open        opening time of the building
      * @param closed      closing time of the building
+     * @param image       the image
      * @param rooms       the set of rooms contained in building (in RoomDto form)
      * @see RoomDto
      */
@@ -45,6 +47,7 @@ public class BuildingDto extends AbstractDto<Building, BuildingDto> {
         String description,
         LocalTime open,
         LocalTime closed,
+        String image,
         Set<RoomDto> rooms
     ) {
         setId(id);
@@ -53,6 +56,7 @@ public class BuildingDto extends AbstractDto<Building, BuildingDto> {
         setDescription(description);
         setOpen(open);
         setClosed(closed);
+        setImage(image);
         getRooms().addAll(initSet(rooms));
     }
 
@@ -146,6 +150,14 @@ public class BuildingDto extends AbstractDto<Building, BuildingDto> {
         this.closed = closed;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     /**
      * Gets the rooms of the building.
      *
@@ -184,6 +196,7 @@ public class BuildingDto extends AbstractDto<Building, BuildingDto> {
             getDescription(),
             getOpen(),
             getClosed(),
+            getImage(),
             rooms1,
             null
         );

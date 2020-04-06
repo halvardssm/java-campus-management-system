@@ -1,12 +1,16 @@
 package nl.tudelft.oopp.group39.reservable.controllers;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import nl.tudelft.oopp.group39.config.RestResponse;
 import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.config.abstracts.AbstractController;
 import nl.tudelft.oopp.group39.reservable.dto.BikeDto;
 import nl.tudelft.oopp.group39.reservable.entities.Bike;
+import nl.tudelft.oopp.group39.reservable.enums.BikeType;
 import nl.tudelft.oopp.group39.reservable.services.BikeService;
+import nl.tudelft.oopp.group39.user.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(BikeController.REST_MAPPING)
 public class BikeController extends AbstractController {
     public static final String REST_MAPPING = "/bike";
+    public static final String REST_MAPPING_ROLE = "/types";
 
     @Autowired
     private BikeService bikeService;
@@ -38,6 +43,17 @@ public class BikeController extends AbstractController {
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> list(@RequestParam Map<String, String> params) {
         return restHandler(() -> Utils.listEntityToDto(bikeService.listBikes(params)));
+    }
+
+    /**
+     * GET Endpoint to retrieve all bike types.
+     *
+     * @return a list of types.
+     */
+    @GetMapping(REST_MAPPING_ROLE)
+    public ResponseEntity<RestResponse<Object>> listBikeTypes() {
+        List<BikeType> enums = Arrays.asList(BikeType.values());
+        return RestResponse.create(enums);
     }
 
     /**
@@ -74,9 +90,9 @@ public class BikeController extends AbstractController {
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> update(
         @PathVariable Long id,
-        @RequestBody Bike bike
+        @RequestBody BikeDto bike
     ) {
-        return restHandler(() -> bikeService.updateBike(id, bike).toDto());
+        return restHandler(() -> bikeService.updateBike(id, bike.toEntity()).toDto());
     }
 
     /**

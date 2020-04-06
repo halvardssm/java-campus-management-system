@@ -84,10 +84,20 @@ public class Event extends AbstractEntity<Event, EventDto> {
         getRooms().addAll(initSet(rooms));
     }
 
+    /**
+     * Gets the title of the event.
+     *
+     * @return the title of the event
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Changes the title of the event.
+     *
+     * @param title the new title of the event
+     */
     public void setTitle(String title) {
         this.title = title;
     }
@@ -128,18 +138,38 @@ public class Event extends AbstractEntity<Event, EventDto> {
         this.endsAt = endDate;
     }
 
+    /**
+     * Checks whether the event is global.
+     *
+     * @return true if the event is global, false otherwise
+     */
     public Boolean getIsGlobal() {
         return isGlobal;
     }
 
+    /**
+     * Changes whether this event is global.
+     *
+     * @param isGlobal true if you want the event to be global, false otherwise
+     */
     public void setIsGlobal(Boolean isGlobal) {
         this.isGlobal = isGlobal;
     }
 
+    /**
+     * Gets the user who owns the event.
+     *
+     * @return the user who owns the event
+     */
     public User getUser() {
         return user;
     }
 
+    /**
+     * Changes the user who owns the event.
+     *
+     * @param user the new user who owns the event
+     */
     public void setUser(User user) {
         this.user = user;
     }

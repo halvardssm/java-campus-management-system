@@ -47,7 +47,7 @@
                    GridPane.columnIndex="0" GridPane.rowIndex="1"/>
 
             <TextField fx:id="usernameField"
-                    GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                       GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
             <Label styleClass="labeltext" text="Password:"
                    GridPane.columnIndex="0" GridPane.rowIndex="2"/>
@@ -55,14 +55,14 @@
             <PasswordField fx:id="passwordField"
                            GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-            <Button styleClass="buttons" id="big" text="Sign In" onAction="#login"
-                    GridPane.columnIndex="1" GridPane.rowIndex = "3"/>
+            <Button styleClass="buttons" id="big" text="Sign In" defaultButton="true" onAction="#login"
+                    GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
             <Text text="Don't have an account yet?"
                   GridPane.columnIndex="0" GridPane.rowIndex="5"/>
 
-            <Button fx:id="signupbtn" styleClass="buttons" id="small" text="Sign Up" onAction="#goToSignupScene"
-                    GridPane.columnIndex="1" GridPane.rowIndex = "5"/>
+            <Button styleClass="buttons" id="small" text="Sign Up" onAction="#goToSignupScene"
+                    GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
             <Label id="errorfield" fx:id="errormsg" GridPane.columnIndex="1" GridPane.rowIndex="4"
                    GridPane.columnSpan="2"/>

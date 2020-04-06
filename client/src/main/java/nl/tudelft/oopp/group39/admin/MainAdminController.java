@@ -12,14 +12,21 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
 public class MainAdminController extends AbstractSceneController implements Initializable {
+    /**
+     * The initializer.
+     *
+     * @param location  the location
+     * @param resources the resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
     }
+
     /**
      * Used to switch between different FXML files/scenes.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     @FXML
     public FXMLLoader mainSwitch(String resource, Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(resource));

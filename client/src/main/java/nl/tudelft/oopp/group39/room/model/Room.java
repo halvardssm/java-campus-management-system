@@ -25,7 +25,6 @@ public class Room {
     /**
      * Is used to get the ID of a building.
      */
-
     @JsonProperty("building")
     public void setBuildingId(JsonNode building) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
@@ -177,6 +176,12 @@ public class Room {
         }
     }
 
+    /**
+     * Checks whether two rooms are equal.
+     *
+     * @param o the other object
+     * @return  true if the two rooms are equal, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Room)) {
@@ -210,6 +215,11 @@ public class Room {
         return mapper.readValue(buildingAsString, Building.class);
     }
 
+    /**
+     * Returns a hash code for this room.
+     *
+     * @return a hash code for this room
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id);

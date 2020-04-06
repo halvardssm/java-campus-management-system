@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import java.sql.Blob;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +19,7 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import nl.tudelft.oopp.group39.booking.entities.Booking;
+import nl.tudelft.oopp.group39.config.Utils;
 import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.user.enums.Role;
@@ -37,7 +37,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 @JsonIgnoreProperties(allowSetters = true, value = {
     User.COL_BOOKINGS,
     User.COL_PASSWORD,
-    User.COL_IMAGE,
     User.COL_RESERVATIONS,
     User.COL_EVENTS
 })
@@ -60,7 +59,7 @@ public class User implements UserDetails {
     @Lob
     @Basic(fetch = FetchType.EAGER)
     @LazyGroup("lobs")
-    private Blob image;
+    private byte[] image;
     @Enumerated(EnumType.STRING)
     private Role role;
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
@@ -89,14 +88,14 @@ public class User implements UserDetails {
         String username,
         String email,
         String password,
-        Blob image,
+        String image,
         Role role
     ) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.image = image;
+        setUsername(username);
+        setEmail(email);
+        setPassword(password);
+        setImage(image);
+        setRole(role);
     }
 
     /**
@@ -174,21 +173,21 @@ public class User implements UserDetails {
     }
 
     /**
-     * Gets the image of the user.
+     * Gets the image.
      *
-     * @return the image of the user
+     * @return the image
      */
-    public Blob getImage() {
-        return this.image;
+    public String getImage() {
+        return Utils.fromByteToString(image);
     }
 
     /**
-     * Changes the image of the user.
+     * Changes the image.
      *
-     * @param image the new image of the user
+     * @param image the new image
      */
-    public void setImage(Blob image) {
-        this.image = image;
+    public void setImage(String image) {
+        this.image = Utils.fromStringToByte(image);
     }
 
     /**
