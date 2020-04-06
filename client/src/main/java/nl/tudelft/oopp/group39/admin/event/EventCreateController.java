@@ -2,6 +2,8 @@ package nl.tudelft.oopp.group39.admin.event;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -67,6 +69,7 @@ public class EventCreateController extends EventListController {
         userComboBox.getSelectionModel().selectFirst();
         startField.setPromptText(LocalDate.now().toString());
         endField.setPromptText(LocalDate.now().toString());
+        uncheckUserComboBox();
     }
 
     /**
@@ -173,5 +176,16 @@ public class EventCreateController extends EventListController {
     @FXML
     private void getBack() throws IOException {
         switchEventView(currentStage);
+    }
+
+    /**
+     * If the event is selected to be global, this method disables the combobox to choose a user.
+     */
+    public void uncheckUserComboBox() {
+        if(globalCheckbox.isSelected()) {
+            userComboBox.setDisable(true);
+        } else {
+            userComboBox.setDisable(false);
+        }
     }
 }

@@ -18,29 +18,28 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="window" prefHeight="600.0" prefWidth="900.0"
-            stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/8.0.171"
-            fx:controller="nl.tudelft.oopp.group39.admin.event.EventEditController">
+
+<BorderPane fx:id="window" prefHeight="600.0" prefWidth="900.0" stylesheets="@../../style/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.admin.event.EventEditController">
     <top>
         <HBox spacing="10" styleClass="bar">
             <padding>
-                <Insets top="10" right="15" bottom="10" left="15"/>
+                <Insets bottom="10" left="15" right="15" top="10" />
             </padding>
             <VBox alignment="CENTER">
-                <Button onAction="#toggleSidebar" id="menubtn" alignment="CENTER">
+                <Button id="menubtn" alignment="CENTER" onAction="#toggleSidebar">
                     <graphic>
                         <ImageView fitHeight="30" fitWidth="30">
-                            <Image url="@../../icons/menu-icon.png"/>
+                            <Image url="@../../icons/menu-icon.png" />
                         </ImageView>
                     </graphic>
                 </Button>
             </VBox>
             <VBox alignment="CENTER">
-                <Label id="title" text="ADMIN: Update event" alignment="BOTTOM_CENTER"/>
+                <Label id="title" alignment="BOTTOM_CENTER" text="ADMIN: Update event" />
             </VBox>
-            <Region HBox.hgrow="ALWAYS"/>
+            <Region HBox.hgrow="ALWAYS" />
             <VBox fx:id="userBox" alignment="CENTER">
-                <Button id="loginbtn" fx:id="userButton" onAction="#goToLoginScene" text="Login"/>
+                <Button id="loginbtn" fx:id="userButton" onAction="#goToLoginScene" text="Login" />
             </VBox>
         </HBox>
     </top>
@@ -49,7 +48,7 @@
             <padding>
                 <Insets bottom="15" left="15" right="15" top="15" />
             </padding>
-            <Button id="backbtn" fx:id="backbtn" onAction="#goToAdminEventScene" text="◀ Back"/>
+            <Button id="backbtn" fx:id="backbtn" onAction="#goToAdminEventScene" text="◀ Back" />
         </HBox>
     </bottom>
    <left>
@@ -90,7 +89,7 @@
                     <Font name="System Bold" size="17.0" />
                 </font>
             </Text>
-            <CheckBox fx:id="globalCheckbox" layoutX="201.0" layoutY="400.0" mnemonicParsing="false" />
+            <CheckBox fx:id="globalCheckbox" layoutX="201.0" layoutY="400.0" mnemonicParsing="false" onAction="#uncheckUserComboBox" />
          <MenuBar fx:id="navBar" prefHeight="35.0" prefWidth="897.0" />
         </AnchorPane>
    </left>
