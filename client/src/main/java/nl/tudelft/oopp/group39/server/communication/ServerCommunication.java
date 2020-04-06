@@ -12,6 +12,7 @@ import java.net.http.HttpResponse;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.event.model.Event;
 import nl.tudelft.oopp.group39.reservable.model.Bike;
+import nl.tudelft.oopp.group39.reservable.model.Food;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 import nl.tudelft.oopp.group39.user.model.User;
@@ -264,6 +265,8 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
+
+
     /**
      * Adds a room on the server.
      *
@@ -297,10 +300,10 @@ public class ServerCommunication {
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }
-
     /**
      * Adds an event to the server.
      */
+
     public static String addEvent(
             String title,
             String startDate,
@@ -387,6 +390,45 @@ public class ServerCommunication {
         HttpRequest request = HttpRequest.newBuilder().PUT(newEvent)
             .header("Authorization", "Bearer " + AbstractSceneController.jwt)
             .uri(URI.create(url + event + "/" + id))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Updates event in the server.
+     *
+     * @param foodObj the new food item
+     * @param id       id of the to be updated event
+     * @return the body of a put request to the server.
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public static String updateFoodItem(Food foodObj, Long id) throws JsonProcessingException {
+        String eventJson = mapper.writeValueAsString(foodObj);
+        HttpRequest.BodyPublisher newFoodItem = HttpRequest.BodyPublishers
+            .ofString(eventJson);
+        HttpRequest request = HttpRequest.newBuilder().PUT(newFoodItem)
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .uri(URI.create(url + food + "/" + id))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+
+    /**
+     * Updates event in the server.
+     *
+     * @param bikeObj the new bike
+     * @param id       id of the to be updated event
+     * @return the body of a put request to the server.
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public static String updateBike(Bike bikeObj, Long id) throws JsonProcessingException {
+        String eventJson = mapper.writeValueAsString(bikeObj);
+        HttpRequest.BodyPublisher newBike = HttpRequest.BodyPublishers
+            .ofString(eventJson);
+        HttpRequest request = HttpRequest.newBuilder().PUT(newBike)
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .uri(URI.create(url + bike + "/" + id))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }
@@ -487,6 +529,8 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
+
+
     /**
      * Updates the user on the server.
      *
@@ -546,6 +590,26 @@ public class ServerCommunication {
         HttpRequest request = HttpRequest.newBuilder().DELETE()
             .header("Authorization", "Bearer " + AbstractSceneController.jwt)
             .uri(URI.create(url + "user/" + id)).build();
+        httpRequest(request);
+    }
+
+    /**
+     * DELETE HTTP request to remove a food item based on a String parameter id.
+     */
+    public static void removeFoodItem(String id) {
+        HttpRequest request = HttpRequest.newBuilder().DELETE()
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .uri(URI.create(url + "food/" + id)).build();
+        httpRequest(request);
+    }
+
+    /**
+     * DELETE HTTP request to remove a bike based on a String parameter id.
+     */
+    public static void removeBike(String id) {
+        HttpRequest request = HttpRequest.newBuilder().DELETE()
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .uri(URI.create(url + "bike/" + id)).build();
         httpRequest(request);
     }
 

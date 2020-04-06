@@ -21,6 +21,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import nl.tudelft.oopp.group39.admin.AdminPanelController;
+import nl.tudelft.oopp.group39.admin.booking.BookingListController;
+import nl.tudelft.oopp.group39.admin.building.BuildingListController;
+import nl.tudelft.oopp.group39.admin.event.EventListController;
+import nl.tudelft.oopp.group39.admin.reservable.BikeListController;
+import nl.tudelft.oopp.group39.admin.reservable.FoodListController;
+import nl.tudelft.oopp.group39.admin.room.RoomListController;
+import nl.tudelft.oopp.group39.admin.user.UserListController;
 import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.event.model.Event;
@@ -103,8 +110,8 @@ public abstract class AbstractSceneController {
      *
      */
     public AbstractSceneController goToAdmin(String location) throws IOException {
-        AbstractSceneController controller = AdminPanel.sceneControllerHandler(location);
-        controller.changeUserBox();
+        AbstractSceneController controller = UsersDisplay.sceneControllerHandler(location);
+//        controller.changeUserBox();
         return controller;
     }
 
@@ -125,7 +132,8 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminBuildingScene() throws IOException {
-        goToAdmin("/admin/building/BuildingList.fxml");
+        BuildingListController controller = (BuildingListController) goToAdmin("/admin/building/BuildingList.fxml");
+        controller.customInit();
     }
 
     /**
@@ -134,7 +142,8 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminRoomScene() throws IOException {
-        goToAdmin("/admin/room/RoomList.fxml");
+        RoomListController controller = (RoomListController) goToAdmin("/admin/room/RoomList.fxml");
+        controller.customInit();
     }
 
     /**
@@ -143,7 +152,8 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminBookingsScene() throws IOException {
-        goToAdmin("/admin/booking/BookingList.fxml");
+        BookingListController controller = (BookingListController) goToAdmin("/admin/booking/BookingList.fxml");
+        controller.customInit();
     }
 
     /**
@@ -152,7 +162,8 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminUserScene() throws IOException {
-        goToAdmin("/admin/user/UserList.fxml");
+        UserListController controller = (UserListController) goToAdmin("/admin/user/UserList.fxml");
+        controller.customInit();
     }
 
     /**
@@ -161,9 +172,29 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminEventScene() throws IOException {
-        goToAdmin("/admin/event/EventList.fxml");
+        EventListController controller = (EventListController) goToAdmin("/admin/event/EventList.fxml");
+        controller.customInit();
     }
 
+    /**
+     * Switches view to the admin Food scene.
+     *
+     * @throws IOException if the scene wasn't found
+     */
+    public void goToAdminFoodScene() throws IOException {
+        FoodListController controller = (FoodListController) goToAdmin("/admin/reservable/FoodList.fxml");
+        controller.customInit();
+    }
+
+    /**
+     * Switches view to the admin Bike scene.
+     *
+     * @throws IOException if the scene wasn't found
+     */
+    public void goToAdminBikeScene() throws IOException {
+        BikeListController controller = (BikeListController) goToAdmin("/admin/reservable/BikeList.fxml");
+        controller.customInit();
+    }
     /**
      * Switches view to the building scene.
      *
