@@ -84,7 +84,7 @@ public class UserService implements UserDetailsService {
                 user.setRole(newUser.getRole());
 
                 if (newUser.getImage() != null) {
-                    user.setImage(user.getImage());
+                    user.setImage(newUser.getImage());
                 }
 
                 return userRepository.save(user);
