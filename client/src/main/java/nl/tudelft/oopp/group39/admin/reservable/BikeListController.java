@@ -168,8 +168,8 @@ public class BikeListController extends AdminPanelController {
 
     public void editBikeItem(Bike bike) throws IOException {
         FXMLLoader loader = switchFunc("/admin/reservable/BikeEdit.fxml");
-        //        FoodEditController controller = loader.getController();
-        //        controller.initData(bike);
+        BikeEditController controller = loader.getController();
+        controller.initData(bike);
     }
 
     /**
