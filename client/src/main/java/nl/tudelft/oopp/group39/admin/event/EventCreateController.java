@@ -1,27 +1,34 @@
 package nl.tudelft.oopp.group39.admin.event;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.event.model.Event;
+import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 
 public class EventCreateController extends EventListController {
     private Stage currentStage;
+    private List<CheckBox> rooms = new ArrayList<>();
+    @FXML
+    private CheckBox selectAll;
     @FXML
     private Button backbtn;
     @FXML
@@ -33,11 +40,13 @@ public class EventCreateController extends EventListController {
     @FXML
     private DatePicker endField;
     @FXML
-    private TextArea dateMessage;
+    private Label dateMessage;
     @FXML
     private ComboBox<String> userComboBox;
     @FXML
     private CheckBox globalCheckbox;
+    @FXML
+    private VBox roomSelector;
 
     /**
      * Initializes scene.
@@ -66,6 +75,7 @@ public class EventCreateController extends EventListController {
         startField.setPromptText(LocalDate.now().toString());
         endField.setPromptText(LocalDate.now().toString());
         uncheckUserComboBox();
+        setRoomSelector();
     }
 
     /**
@@ -86,7 +96,9 @@ public class EventCreateController extends EventListController {
         boolean endNull = end == null;
         boolean globalBool = globalCheckbox.isSelected();
         String endDate = endNull ? LocalDateTime.now().toString() : end.toString() + " 23:59:59";
-        checkValidity(startDate, endDate, startNull, endNull, title, globalBool, userId);
+        if (checkRoomSelected()) {
+            checkValidity(startDate, endDate, startNull, endNull, title, globalBool, userId);
+        }
     }
 
     /**
@@ -95,7 +107,8 @@ public class EventCreateController extends EventListController {
     public void createEventFinal(
             String title, String startDate, String endDate,
             boolean globalBool, String userId) throws IOException {
-        Event newEvent = new Event(title,startDate,endDate, globalBool,userId, new ArrayList<>());
+        List<Long> roomsList = createRoomsList();
+        Event newEvent = new Event(title, startDate, endDate, globalBool, userId, roomsList);
         createAlert(ServerCommunication.addEvent(newEvent));
         goToAdminEventScene();
         createAlert("Created an event of type: " + title);
@@ -162,6 +175,55 @@ public class EventCreateController extends EventListController {
         }
         dateMessage.setStyle("-fx-text-fill: Red");
         dateMessage.setText("Please input a start date or an end date.");
+    }
+
+    public List<Long> createRoomsList() {
+        List<Long> roomsList = new ArrayList<>();
+        for (CheckBox roomBox : rooms) {
+            if (roomBox.isSelected()) {
+                roomsList.add(Long.parseLong(roomBox.getId()));
+            }
+        }
+        return roomsList;
+    }
+
+    public boolean checkRoomSelected() {
+        boolean roomSelected = false;
+        for (CheckBox roomBox : rooms) {
+            if (roomBox.isSelected()) {
+                roomSelected = true;
+            }
+        }
+        if (!roomSelected) {
+            dateMessage.setStyle("-fx-text-fill: Red");
+            dateMessage.setText("Please select the rooms the event affects");
+        }
+        return roomSelected;
+    }
+
+    public void setRoomSelector() throws JsonProcessingException {
+        String roomString = ServerCommunication.get(ServerCommunication.room);
+        ArrayNode body = (ArrayNode) mapper.readTree(roomString).get("body");
+        roomString = mapper.writeValueAsString(body);
+        Room[] roomList = mapper.readValue(roomString, Room[].class);
+        for (Room room : roomList) {
+            CheckBox roomBox = new CheckBox(room.getName());
+            roomBox.setId(room.getId().toString());
+            rooms.add(roomBox);
+            roomSelector.getChildren().add(roomBox);
+        }
+    }
+
+    public void selectAllRooms() {
+        if (selectAll.isSelected()) {
+            for (CheckBox roomBox : rooms) {
+                roomBox.setSelected(true);
+            }
+        } else {
+            for (CheckBox roomBox : rooms) {
+                roomBox.setSelected(false);
+            }
+        }
     }
 
     /**

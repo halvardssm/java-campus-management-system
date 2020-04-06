@@ -156,6 +156,7 @@ public class UserPageController extends AbstractSceneController {
             ImageIO.write(bufferedImage, format, byteArrayOutputStream);
             byte[] data = byteArrayOutputStream.toByteArray();
             user.setImageString(data);
+            System.out.println(user.getImage());
             System.out.println(ServerCommunication.updateUser(user));
         }
     }

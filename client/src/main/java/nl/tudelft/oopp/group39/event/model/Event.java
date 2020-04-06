@@ -2,6 +2,7 @@ package nl.tudelft.oopp.group39.event.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -15,6 +16,7 @@ public class Event {
     private String endsAt;
     private Boolean global;
     private String user;
+    @JsonDeserialize
     private List<Long> rooms;
 
     /**
