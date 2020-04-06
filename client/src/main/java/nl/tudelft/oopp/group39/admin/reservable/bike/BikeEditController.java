@@ -153,6 +153,9 @@ public class BikeEditController extends BikeListController {
         goToAdminBikeScene();
     }
 
+    /**
+     * Gets double price from two string values.
+     */
     public Double getPrice(String first, String second) {
         return Double.valueOf(first + "." + second);
     }

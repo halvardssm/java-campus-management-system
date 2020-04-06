@@ -115,6 +115,9 @@ public class FoodCreateController extends FoodListController {
         goToAdminFoodScene();
     }
 
+    /**
+     * Gets double price from two string values.
+     */
     public Double getPrice(String first, String second) {
         return Double.valueOf(first + "." + second);
     }

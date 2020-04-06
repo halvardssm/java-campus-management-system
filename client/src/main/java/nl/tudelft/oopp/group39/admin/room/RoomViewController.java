@@ -86,7 +86,6 @@ public class RoomViewController extends RoomListController {
 
     /**
      * Goes back to main Room panel.
-     * TODO -- why doesn't this work?
      *
      * @throws IOException if an error occurs during loading
      */
