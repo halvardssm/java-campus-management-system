@@ -147,9 +147,9 @@ public class BikeListController extends AdminPanelController {
      * Switches scene to the createUser one.
      */
     public void createBike() throws IOException {
-        FXMLLoader loader = switchFunc("/admin/user/UserCreate.fxml");
-        UserCreateController controller = loader.getController();
-        controller.customInit();
+        FXMLLoader loader = switchFunc("/admin/reservable/BikeCreate.fxml");
+        BikeCreateController controller = loader.getController();
+        controller.initData();
     }
     /**
      * Deletes selected user.

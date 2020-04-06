@@ -108,7 +108,7 @@ public class FoodCreateController extends FoodListController {
         String priceInputSecond = priceFieldFirst.getText();
         priceInputSecond = priceInputSecond.contentEquals("") ? priceSecond : priceInputSecond;
         Double priceInput = getPrice(priceInputFirst, priceInputSecond);
-        Food newFoodItem = new Food(1L, nameInput, descriptionInput, priceInput, buildingInput);
+        Food newFoodItem = new Food(-1L, nameInput, descriptionInput, priceInput, buildingInput);
         ServerCommunication.addFoodItem(newFoodItem);
         getBack();
     }

@@ -12,15 +12,13 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.reservable.model.Bike;
-import nl.tudelft.oopp.group39.reservable.model.Food;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
-public class BikeEditController extends BikeListController {
+public class BikeCreateController extends BikeListController {
 
     private String building;
     private String rentalDuration;
@@ -29,7 +27,6 @@ public class BikeEditController extends BikeListController {
     private String priceSecond;
     private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
-    private Bike bike;
     private HashMap<String, Long> buildingIdsByName = new HashMap<>();
     @FXML
     private Button backbtn;
@@ -43,36 +40,31 @@ public class BikeEditController extends BikeListController {
     private ComboBox<String> bikeTypeField;
     @FXML
     private TextField rentalDurationField;
-    @FXML
-    private MenuBar navBar;
 
 
     /**
      * Initializes the data of a User and makes it usable.
-     * @param bike Object bike
      * @throws JsonProcessingException when there is a processing exception.
      */
 
-    public void initData(Bike bike) throws JsonProcessingException {
+    public void initData() throws JsonProcessingException {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
-        setNavBar(navBar, currentStage);
-        this.bike = bike;
         ObservableList<String> data = initBuildings();
         buildingBox.setItems(data);
-        this.building = bike.getBuildingObj().getName();
+        this.building = data.get(0);
         buildingBox.getSelectionModel().select(building);
-        String price = Double.toString(bike.getPrice());
+        String price = Double.toString(0.0);
         System.out.println(price);
         String[] priceArray = price.split("\\.");
         this.priceFirst = priceArray[0];
         this.priceSecond = priceArray[1];
         priceFieldFirst.setPromptText(priceFirst);
         priceFieldSecond.setPromptText(priceSecond);
-        this.bikeType = bike.getBikeType();
         ObservableList<String> types = initTypes();
+        this.bikeType = types.get(0);
         bikeTypeField.setItems(types);
         bikeTypeField.getSelectionModel().select(bikeType);
-        this.rentalDuration = bike.getRentalDuration();
+        this.rentalDuration = "";
         rentalDurationField.setPromptText(rentalDuration);
     }
 
@@ -117,7 +109,7 @@ public class BikeEditController extends BikeListController {
      * Edits user values and sends them to database.
      */
 
-    public void editBike() throws IOException {
+    public void addBike() throws IOException {
         Object typeObj = bikeTypeField.getValue();
         String typeInput = typeObj == null ? bikeType : typeObj.toString();
         String rentalDurationInput = rentalDurationField.getText();
@@ -130,9 +122,9 @@ public class BikeEditController extends BikeListController {
         String priceInputSecond = priceFieldFirst.getText();
         priceInputSecond = priceInputSecond.contentEquals("") ? priceSecond : priceInputSecond;
         Double priceInput = getPrice(priceInputFirst, priceInputSecond);
-        Bike newBike = new Bike(bike.getId(),priceInput,buildingInput,typeInput,rentalDurationInput);
+        Bike newBike = new Bike(-1L,priceInput,buildingInput,typeInput,rentalDurationInput);
 //        Food newFoodItem = new Food(food.getId(), nameInput, descriptionInput, priceInput, buildingInput);
-        ServerCommunication.updateBike(newBike, bike.getId());
+        ServerCommunication.addBike(newBike);
         getBack();
     }
 

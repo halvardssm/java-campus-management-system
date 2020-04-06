@@ -350,7 +350,7 @@ public class ServerCommunication {
 
 
     /**
-     * Adds an event on the server.
+     * Adds a food item on the server.
      *
      * @return the body of a post request to the server.
      */
@@ -362,6 +362,23 @@ public class ServerCommunication {
         HttpRequest request = HttpRequest.newBuilder().POST(newFoodItem)
             .header("Authorization", "Bearer " + AbstractSceneController.jwt)
             .uri(URI.create(url + food))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Adds a bike on the server.
+     *
+     * @return the body of a post request to the server.
+     */
+    public static String addBike(Bike bikeObj) throws JsonProcessingException {
+        String eventJson = mapper.writeValueAsString(bikeObj);
+        System.out.println(eventJson);
+        HttpRequest.BodyPublisher newBike = HttpRequest.BodyPublishers
+            .ofString(eventJson);
+        HttpRequest request = HttpRequest.newBuilder().POST(newBike)
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .uri(URI.create(url + bike))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }

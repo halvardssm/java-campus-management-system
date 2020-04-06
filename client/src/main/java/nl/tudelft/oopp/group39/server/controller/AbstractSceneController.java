@@ -26,6 +26,8 @@ import nl.tudelft.oopp.group39.admin.building.BuildingListController;
 import nl.tudelft.oopp.group39.admin.event.EventListController;
 import nl.tudelft.oopp.group39.admin.reservable.BikeListController;
 import nl.tudelft.oopp.group39.admin.reservable.FoodListController;
+import nl.tudelft.oopp.group39.admin.room.RoomListController;
+import nl.tudelft.oopp.group39.admin.user.UserListController;
 import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.event.model.Event;
@@ -115,7 +117,8 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminBuildingScene() throws IOException {
-        goTo("/admin/building/BuildingList.fxml");
+        BuildingListController controller = (BuildingListController) goTo("/admin/building/BuildingList.fxml");
+        controller.customInit();
     }
 
     /**
@@ -124,7 +127,8 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminRoomScene() throws IOException {
-        goTo("/admin/room/RoomList.fxml");
+        RoomListController controller = (RoomListController) goTo("/admin/room/RoomList.fxml");
+        controller.customInit();
     }
 
     /**
@@ -133,7 +137,8 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminBookingsScene() throws IOException {
-        goTo("/admin/booking/BookingList.fxml");
+        BookingListController controller = (BookingListController) goTo("/admin/booking/BookingList.fxml");
+        controller.customInit();
     }
 
     /**
@@ -142,7 +147,8 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminUserScene() throws IOException {
-        goTo("/admin/user/UserList.fxml");
+        UserListController controller = (UserListController) goTo("/admin/user/UserList.fxml");
+        controller.customInit();
     }
 
     /**
@@ -151,7 +157,8 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminEventScene() throws IOException {
-        goTo("/admin/event/EventList.fxml");
+        EventListController controller = (EventListController) goTo("/admin/event/EventList.fxml");
+        controller.customInit();
     }
 
     /**
