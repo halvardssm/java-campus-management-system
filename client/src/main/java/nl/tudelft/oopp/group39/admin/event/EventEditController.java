@@ -119,7 +119,7 @@ public class EventEditController extends EventListController {
             userId,
             new ArrayList<>());
         ServerCommunication.updateEvent(newEvent, Long.valueOf(id));
-        getBack();
+        goToAdminEventScene();
     }
 
     /**

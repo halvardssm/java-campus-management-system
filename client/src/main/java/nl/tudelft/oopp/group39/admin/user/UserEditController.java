@@ -72,6 +72,6 @@ public class UserEditController extends UserListController {
         email = role.contentEquals("STUDENT") ? "student." + email : email;
         email = name + "@" + email;
         ServerCommunication.updateUserAdmin(user.getUsername(), email, role);
-        getBack();
+        goToAdminUserScene();
     }
 }

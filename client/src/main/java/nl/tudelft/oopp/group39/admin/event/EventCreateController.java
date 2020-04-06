@@ -2,14 +2,11 @@ package nl.tudelft.oopp.group39.admin.event;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -20,11 +17,8 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import nl.tudelft.oopp.group39.event.model.Event;
-import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.user.model.User;
 
 
 public class EventCreateController extends EventListController {
@@ -104,7 +98,7 @@ public class EventCreateController extends EventListController {
             boolean globalBool, String userId) throws IOException {
         Event newEvent = new Event(title,startDate,endDate, globalBool,userId, new ArrayList<>());
         createAlert(ServerCommunication.addEvent(newEvent));
-        getBack();
+        goToAdminEventScene();
         createAlert("Created an event of type: " + title);
     }
 

@@ -80,7 +80,7 @@ public class BikeCreateController extends BikeListController {
         List<String> buildingNames = new ArrayList<>();
         for (Building building : list) {
             buildingNames.add(building.getName());
-            buildingIdsByName.put(building.getName(), Long.valueOf(building.getId()));
+            buildingIdsByName.put(building.getName(), building.getId());
         }
         return FXCollections.observableArrayList(buildingNames);
     }
@@ -110,22 +110,22 @@ public class BikeCreateController extends BikeListController {
      */
 
     public void addBike() throws IOException {
-        Object typeObj = bikeTypeField.getValue();
-        String typeInput = typeObj == null ? bikeType : typeObj.toString();
         String rentalDurationInput = rentalDurationField.getText();
-        rentalDurationInput = rentalDurationInput.contentEquals("") ? rentalDuration : rentalDurationInput;
+        rentalDurationInput =
+            rentalDurationInput.contentEquals("") ? rentalDuration : rentalDurationInput;
         Object buildingObj = buildingBox.getValue();
-        Long buildingInput = buildingObj == null ?  buildingIdsByName.get(building) :
+        Long buildingInput = buildingObj == null ? buildingIdsByName.get(building) :
             buildingIdsByName.get(buildingObj.toString());
         String priceInputFirst = priceFieldFirst.getText();
         priceInputFirst = priceInputFirst.contentEquals("") ? priceFirst : priceInputFirst;
         String priceInputSecond = priceFieldFirst.getText();
         priceInputSecond = priceInputSecond.contentEquals("") ? priceSecond : priceInputSecond;
         Double priceInput = getPrice(priceInputFirst, priceInputSecond);
-        Bike newBike = new Bike(-1L,priceInput,buildingInput,typeInput,rentalDurationInput);
-//        Food newFoodItem = new Food(food.getId(), nameInput, descriptionInput, priceInput, buildingInput);
+        Object typeObj = bikeTypeField.getValue();
+        String typeInput = typeObj == null ? bikeType : typeObj.toString();
+        Bike newBike = new Bike(-1L, priceInput, buildingInput, typeInput, rentalDurationInput);
         ServerCommunication.addBike(newBike);
-        getBack();
+        goToAdminBikeScene();
     }
 
     public Double getPrice(String first, String second) {

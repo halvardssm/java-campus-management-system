@@ -15,7 +15,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.admin.AdminPanelController;
@@ -246,6 +254,7 @@ public class RoomListController extends AdminPanelController {
         FXMLLoader loader = switchFunc("/admin/room/RoomCreate.fxml");
         RoomCreateController controller = loader.getController();
         controller.customInit();
+        controller.changeUserBox();
     }
 
     /**
@@ -268,6 +277,7 @@ public class RoomListController extends AdminPanelController {
         FXMLLoader loader = switchFunc("/admin/room/RoomEdit.fxml");
         RoomEditController controller = loader.getController();
         controller.initData(room);
+        controller.changeUserBox();
     }
 
     /**
@@ -279,6 +289,7 @@ public class RoomListController extends AdminPanelController {
         FXMLLoader loader = switchFunc("/admin/room/RoomView.fxml");
         RoomViewController controller = loader.getController();
         controller.initData(room);
+        controller.changeUserBox();
     }
 
     /**

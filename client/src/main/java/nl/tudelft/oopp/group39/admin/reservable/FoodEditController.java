@@ -15,11 +15,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.admin.user.UserListController;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.reservable.model.Food;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.user.model.User;
 
 public class FoodEditController extends FoodListController {
 
@@ -121,7 +119,7 @@ public class FoodEditController extends FoodListController {
         Food newFoodItem =
             new Food(food.getId(), nameInput, descriptionInput, priceInput, buildingInput);
         ServerCommunication.updateFoodItem(newFoodItem, food.getId());
-        getBack();
+        goToAdminFoodScene();
     }
 
     public Double getPrice(String first, String second) {

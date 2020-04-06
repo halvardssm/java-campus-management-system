@@ -144,7 +144,9 @@ public class RoomReservationController extends AbstractSceneController {
                     bookedTimes.add(endTime);
                 }
             }
-            String eventFilters = "user=" + user.getUsername() + "&date=" + date;
+            String eventFilters = "user=" + user.getUsername()
+                + "&date=" + date
+                + "&isGlobal=false";
             Set<Event> events = getEvents(eventFilters);
             if (events.size() != 0) {
                 for (Event event : events) {

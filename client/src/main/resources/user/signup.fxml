@@ -67,8 +67,8 @@
             <PasswordField fx:id="confirmpasswordField"
                            GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
-            <Button styleClass="buttons" id="big" text="Sign Up" onAction="#signup"
-                    GridPane.columnIndex="1" GridPane.rowIndex = "5"/>
+            <Button styleClass="buttons" id="big" text="Sign Up" defaultButton="true" onAction="#signup"
+                    GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
             <Label id="errorfield" fx:id="errormsg" GridPane.columnIndex="1" GridPane.rowIndex="6"
                    GridPane.columnSpan="2"/>

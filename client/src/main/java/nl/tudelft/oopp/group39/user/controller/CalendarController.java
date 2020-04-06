@@ -138,7 +138,7 @@ public class CalendarController extends AbstractSceneController {
         Reservation[] reservations = mapper.readValue(reservationString, Reservation[].class);
         for (Reservation reservation : reservations) {
             if (reservation.getTimeOfDelivery() != null && reservation.getRoom() == null) {
-                Bike bike = ServerCommunication.getBike(reservation.getReservable());
+                Bike bike = ServerCommunication.getBike(reservation.getReservables().get(0));
                 String location = bike.getBuildingObj().getName();
                 Interval interval =
                     new Interval(reservation.getPickupTime(), reservation.getDeliveryTime());

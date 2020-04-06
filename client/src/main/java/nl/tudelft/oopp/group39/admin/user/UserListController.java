@@ -195,6 +195,7 @@ public class UserListController extends AdminPanelController {
         FXMLLoader loader = switchFunc("/admin/user/UserCreate.fxml");
         UserCreateController controller = loader.getController();
         controller.customInit();
+        controller.changeUserBox();
     }
 
     /**
@@ -217,6 +218,7 @@ public class UserListController extends AdminPanelController {
         FXMLLoader loader = switchFunc("/admin/user/UserEdit.fxml");
         UserEditController controller = loader.getController();
         controller.initData(user);
+        controller.changeUserBox();
     }
 
     /**

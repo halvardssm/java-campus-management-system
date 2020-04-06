@@ -11,7 +11,11 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
@@ -111,7 +115,7 @@ public class RoomEditController extends RoomListController {
         onlyStaff = Boolean.toString((onlyStaff).contentEquals("Only staff members"));
         System.out.println(building + " " + buildingId + " " + this.room.getBuilding());
         ServerCommunication.updateRoom(buildingId, roomCap, roomDesc, roomID, onlyStaff, name);
-        getBack();
+        goToAdminRoomScene();
     }
 
     /**

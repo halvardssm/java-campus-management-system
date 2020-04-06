@@ -110,7 +110,7 @@ public class FoodCreateController extends FoodListController {
         Double priceInput = getPrice(priceInputFirst, priceInputSecond);
         Food newFoodItem = new Food(-1L, nameInput, descriptionInput, priceInput, buildingInput);
         ServerCommunication.addFoodItem(newFoodItem);
-        getBack();
+        goToAdminFoodScene();
     }
 
     public Double getPrice(String first, String second) {

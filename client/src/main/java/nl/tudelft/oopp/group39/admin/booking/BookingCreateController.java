@@ -2,7 +2,6 @@ package nl.tudelft.oopp.group39.admin.booking;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
@@ -13,7 +12,12 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.building.model.Building;
@@ -72,6 +76,15 @@ public class BookingCreateController extends BookingListController {
                 e.printStackTrace();
             }
         });
+        reservationDate.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+
+                setDisable(empty || date.compareTo(today) < 0);
+            }
+        });
+        reservationDate.setValue(LocalDate.now());
         try {
             initRooms();
             initUsers();
@@ -128,13 +141,23 @@ public class BookingCreateController extends BookingListController {
         List<String> timeSlots = initiateTimeslots(date);
         ObservableList<String> listString = FXCollections.observableArrayList(timeSlots);
         startTimeBox.getItems().clear();
-        endTimeBox.getItems().clear();
         start = listString.get(0);
-        end = listString.get(1);
-        startTimeBox.setPromptText(start);
-        endTimeBox.setPromptText(end);
+        startTimeBox.setValue(start);
         startTimeBox.setItems(listString);
-        endTimeBox.setItems(listString);
+        startTimeBox.setOnAction(event -> {
+            try {
+                String fromValue;
+                if (startTimeBox.getSelectionModel().isEmpty()) {
+                    fromValue = building.getOpen().toString();
+                } else {
+                    fromValue = startTimeBox.getValue();
+                }
+                updateEndSlots(date, fromValue);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        });
+        updateEndSlots(date, building.getOpen().toString());
     }
 
     /**
@@ -198,6 +221,53 @@ public class BookingCreateController extends BookingListController {
     }
 
     /**
+     * Updates the end timeslots based on selected date and from time.
+     *
+     * @param date selected date
+     * @param time selected time
+     * @throws JsonProcessingException when there is something wrong with processing
+     */
+    public void updateEndSlots(String date, String time) throws JsonProcessingException {
+        int timeAsInt = Integer.parseInt(time.split(":")[0]);
+        List<Integer> bookedTimes = getBookedTimes(date);
+        endTimeBox.getItems().clear();
+        int closed = Integer.parseInt(building.getClosed().toString().split(":")[0]);
+        List<Integer> times = new ArrayList<>();
+        for (int i = timeAsInt + 1; i < timeAsInt + 5; i++) {
+            if (i <= closed) {
+                times.add(i);
+            }
+        }
+        if (bookedTimes.size() != 0) {
+            for (int j = 0; j < bookedTimes.size(); j = j + 2) {
+                for (int i = timeAsInt + 1; i < timeAsInt + 5; i++) {
+                    if (i > bookedTimes.get(j) && i <= bookedTimes.get(j + 1)) {
+                        times.remove((Integer) i);
+                    }
+                }
+
+            }
+        }
+        for (int t = timeAsInt + 2; t < timeAsInt + 5; t++) {
+            if (!times.contains(t - 1)) {
+                Integer remove = t;
+                times.remove(remove);
+            }
+        }
+        for (int i : times) {
+            String timeSlot;
+            if (i <= closed) {
+                if (i < 10) {
+                    timeSlot = "0" + i + ":00";
+                } else {
+                    timeSlot = i + ":00";
+                }
+                endTimeBox.getItems().add(timeSlot);
+            }
+        }
+    }
+
+    /**
      * Returns a list containing times where there is a booking.
      *
      * @throws JsonProcessingException when there is a processing exception
@@ -249,16 +319,16 @@ public class BookingCreateController extends BookingListController {
         String user = userIdByNameMap.get(userObj.toString());
         LocalDate reservationDateValue = reservationDate.getValue();
         String reservationDateString = reservationDateValue
-                == null ? date : reservationDateValue.toString();
+            == null ? date : reservationDateValue.toString();
         Object reservationStartValue = startTimeBox.getValue();
         String reservationStartString = reservationStartValue
-                == null ? start + ":00" : reservationStartValue.toString() + ":00";
+            == null ? start + ":00" : reservationStartValue.toString() + ":00";
         Object reservationEndValue = endTimeBox.getValue();
         String reservationEndString = reservationEndValue
-                == null ? end + ":00" : reservationEndValue.toString() + ":00";
+            == null ? end + ":00" : reservationEndValue.toString() + ":00";
         ServerCommunication.addBooking(
-                reservationDateString, reservationStartString, reservationEndString, user, roomId);
-        getBack();
+            reservationDateString, reservationStartString, reservationEndString, user, roomId);
+        goToAdminBookingsScene();
         createAlert("Updated the booking!");
     }
 }

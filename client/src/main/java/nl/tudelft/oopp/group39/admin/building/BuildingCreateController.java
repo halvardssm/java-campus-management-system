@@ -73,8 +73,8 @@ public class BuildingCreateController extends BuildingListController {
             + ":00" : reservationEndValue.toString() + ":00";
 
         ServerCommunication.addBuilding(
-                name, location, desc, reservationStartString, reservationEndString);
-        getBack();
+            name, location, desc, reservationStartString, reservationEndString);
+        goToAdminBuildingScene();
         nameFieldNew.clear();
         locationFieldNew.clear();
         descriptionFieldNew.clear();

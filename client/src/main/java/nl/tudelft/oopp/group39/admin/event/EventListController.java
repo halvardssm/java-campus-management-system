@@ -166,6 +166,7 @@ public class EventListController extends AdminPanelController {
         FXMLLoader loader = switchFunc("/admin/event/EventCreate.fxml");
         EventCreateController controller = loader.getController();
         controller.customInit();
+        controller.changeUserBox();
     }
 
     /**
@@ -188,6 +189,7 @@ public class EventListController extends AdminPanelController {
         FXMLLoader loader = switchFunc("/admin/event/EventEdit.fxml");
         EventEditController controller = loader.getController();
         controller.initData(event);
+        controller.changeUserBox();
     }
 
     /**

@@ -158,6 +158,7 @@ public class BookingListController extends AdminPanelController {
         FXMLLoader loader = switchFunc("/admin/booking/BookingCreate.fxml");
         BookingCreateController controller = loader.getController();
         controller.customInit();
+        controller.changeUserBox();
     }
 
     /**
@@ -181,6 +182,7 @@ public class BookingListController extends AdminPanelController {
         FXMLLoader loader = switchFunc("/admin/booking/BookingEdit.fxml");
         BookingEditController controller = loader.getController();
         controller.initData(booking);
+        controller.changeUserBox();
     }
 
 

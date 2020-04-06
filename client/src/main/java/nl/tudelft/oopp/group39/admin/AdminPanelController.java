@@ -10,8 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.admin.booking.BookingListController;
 import nl.tudelft.oopp.group39.admin.building.BuildingListController;
@@ -44,7 +42,7 @@ public class AdminPanelController extends MainAdminController implements Initial
         userListLabel.setStyle("-fx-text-fill: black");
         userListLabel.setOnMouseClicked(event -> {
             try {
-                switchUserView(currentstage);
+                goToAdminUserScene();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -56,7 +54,7 @@ public class AdminPanelController extends MainAdminController implements Initial
         roomListLabel.setStyle("-fx-text-fill: black");
         roomListLabel.setOnMouseClicked(event -> {
             try {
-                switchRoomView(currentstage);
+                goToAdminRoomScene();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -68,7 +66,7 @@ public class AdminPanelController extends MainAdminController implements Initial
         eventListLabel.setStyle("-fx-text-fill: black");
         eventListLabel.setOnMouseClicked(event -> {
             try {
-                switchEventView(currentstage);
+                goToAdminEventScene();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -80,7 +78,7 @@ public class AdminPanelController extends MainAdminController implements Initial
         buildingListLabel.setStyle("-fx-text-fill: black");
         buildingListLabel.setOnMouseClicked(event -> {
             try {
-                switchBuildingView(currentstage);
+                goToAdminBuildingScene();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -92,7 +90,7 @@ public class AdminPanelController extends MainAdminController implements Initial
         reservationListLabel.setStyle("-fx-text-fill: black");
         reservationListLabel.setOnMouseClicked(event -> {
             try {
-                switchBookingsView(currentstage);
+                goToAdminBookingsScene();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -104,7 +102,7 @@ public class AdminPanelController extends MainAdminController implements Initial
         foodListLabel.setStyle("-fx-text-fill: black");
         foodListLabel.setOnMouseClicked(event -> {
             try {
-                switchFoodView(currentstage);
+                goToAdminFoodScene();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -116,7 +114,7 @@ public class AdminPanelController extends MainAdminController implements Initial
         bikeListLabel.setStyle("-fx-text-fill: black");
         bikeListLabel.setOnMouseClicked(event -> {
             try {
-                switchBikeView(currentstage);
+                goToAdminBikeScene();
             } catch (IOException e) {
                 e.printStackTrace();
             }

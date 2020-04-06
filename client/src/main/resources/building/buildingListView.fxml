@@ -35,7 +35,7 @@
           <Region HBox.hgrow="ALWAYS"/>
           <GridPane hgap="5" fx:id="search" alignment="CENTER">
               <TextField fx:id="searchField" GridPane.columnIndex="0"/>
-              <Button id="searchButton" onAction="#searchBuildings" GridPane.columnIndex="1">
+              <Button id="searchButton" onAction="#searchBuildings" defaultButton="true" GridPane.columnIndex="1">
                   <graphic>
                       <ImageView fitHeight="20" fitWidth="20">
                           <Image url="@../icons/search-icon.png"/>

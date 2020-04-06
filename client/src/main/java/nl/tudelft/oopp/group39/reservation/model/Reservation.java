@@ -3,6 +3,8 @@ package nl.tudelft.oopp.group39.reservation.model;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Reservation {
     private Integer id;
@@ -89,9 +91,13 @@ public class Reservation {
      *
      * @return the reservable
      */
-    public Long getReservable() {
-        JsonNode reservationAmount = reservationAmounts.get(0);
-        return reservationAmount.get("reservable").asLong();
+    public List<Long> getReservables() {
+        List<Long> reservables = new ArrayList<>();
+        for (JsonNode reservationAmount : reservationAmounts) {
+            Long reservable = reservationAmount.get("reservable").asLong();
+            reservables.add(reservable);
+        }
+        return reservables;
     }
 
     /**

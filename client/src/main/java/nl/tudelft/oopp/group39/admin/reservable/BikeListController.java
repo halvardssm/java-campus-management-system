@@ -4,24 +4,23 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.admin.AdminPanelController;
-import nl.tudelft.oopp.group39.admin.user.UserCreateController;
-import nl.tudelft.oopp.group39.admin.user.UserEditController;
 import nl.tudelft.oopp.group39.reservable.model.Bike;
-import nl.tudelft.oopp.group39.reservable.model.Food;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.user.model.User;
 
 public class BikeListController extends AdminPanelController {
 
@@ -150,6 +149,7 @@ public class BikeListController extends AdminPanelController {
         FXMLLoader loader = switchFunc("/admin/reservable/BikeCreate.fxml");
         BikeCreateController controller = loader.getController();
         controller.initData();
+        controller.changeUserBox();
     }
     /**
      * Deletes selected user.
@@ -168,6 +168,7 @@ public class BikeListController extends AdminPanelController {
         FXMLLoader loader = switchFunc("/admin/reservable/BikeEdit.fxml");
         BikeEditController controller = loader.getController();
         controller.initData(bike);
+        controller.changeUserBox();
     }
 
     /**

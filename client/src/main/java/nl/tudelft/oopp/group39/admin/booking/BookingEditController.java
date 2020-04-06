@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
@@ -76,6 +77,14 @@ public class BookingEditController extends BookingListController {
                 e.printStackTrace();
             }
         });
+        reservationDate.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+                setDisable(empty || date.compareTo(today) < 0);
+            }
+        });
+        reservationDate.setValue(LocalDate.parse(booking.getDate()));
     }
 
     /**
@@ -136,13 +145,25 @@ public class BookingEditController extends BookingListController {
      */
     private void setTimeSlots(String date) throws JsonProcessingException {
         List<String> timeSlots = initiateTimeslots(date);
-        startTimeBox.getItems().clear();
-        endTimeBox.getItems().clear();
         ObservableList<String> listString = FXCollections.observableArrayList(timeSlots);
+        startTimeBox.getItems().clear();
+        startTimeBox.setItems(listString);
+        startTimeBox.setOnAction(event -> {
+            try {
+                String fromValue;
+                if (startTimeBox.getSelectionModel().isEmpty()) {
+                    fromValue = building.getOpen().toString();
+                } else {
+                    fromValue = startTimeBox.getValue();
+                }
+                updateEndSlots(date, fromValue);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        });
+        updateEndSlots(date, building.getOpen().toString());
         startTimeBox.setPromptText(booking.getStartTime());
         endTimeBox.setPromptText(booking.getEndTime());
-        startTimeBox.setItems(listString);
-        endTimeBox.setItems(listString);
     }
 
     /**
@@ -206,6 +227,53 @@ public class BookingEditController extends BookingListController {
     }
 
     /**
+     * Updates the end timeslots based on selected date and from time.
+     *
+     * @param date selected date
+     * @param time selected time
+     * @throws JsonProcessingException when there is something wrong with processing
+     */
+    public void updateEndSlots(String date, String time) throws JsonProcessingException {
+        int timeAsInt = Integer.parseInt(time.split(":")[0]);
+        List<Integer> bookedTimes = getBookedTimes(date);
+        endTimeBox.getItems().clear();
+        int closed = Integer.parseInt(building.getClosed().toString().split(":")[0]);
+        List<Integer> times = new ArrayList<>();
+        for (int i = timeAsInt + 1; i < timeAsInt + 5; i++) {
+            if (i <= closed) {
+                times.add(i);
+            }
+        }
+        if (bookedTimes.size() != 0) {
+            for (int j = 0; j < bookedTimes.size(); j = j + 2) {
+                for (int i = timeAsInt + 1; i < timeAsInt + 5; i++) {
+                    if (i > bookedTimes.get(j) && i <= bookedTimes.get(j + 1)) {
+                        times.remove((Integer) i);
+                    }
+                }
+
+            }
+        }
+        for (int t = timeAsInt + 2; t < timeAsInt + 5; t++) {
+            if (!times.contains(t - 1)) {
+                Integer remove = t;
+                times.remove(remove);
+            }
+        }
+        for (int i : times) {
+            String timeSlot;
+            if (i <= closed) {
+                if (i < 10) {
+                    timeSlot = "0" + i + ":00";
+                } else {
+                    timeSlot = i + ":00";
+                }
+                endTimeBox.getItems().add(timeSlot);
+            }
+        }
+    }
+
+    /**
      * Returns a list containing times that are booked.
      *
      * @throws JsonProcessingException when there is a processing exception
@@ -220,10 +288,12 @@ public class BookingEditController extends BookingListController {
         Booking[] bookingsList = mapper.readValue(bookingString, Booking[].class);
         List<Integer> bookedTimes = new ArrayList<>();
         for (Booking booking : bookingsList) {
-            int startTime = Integer.parseInt(booking.getStartTime().split(":")[0]);
-            bookedTimes.add(startTime);
-            int endTime = Integer.parseInt(booking.getEndTime().split(":")[0]);
-            bookedTimes.add(endTime);
+            if (!this.booking.equals(booking)) {
+                int startTime = Integer.parseInt(booking.getStartTime().split(":")[0]);
+                bookedTimes.add(startTime);
+                int endTime = Integer.parseInt(booking.getEndTime().split(":")[0]);
+                bookedTimes.add(endTime);
+            }
         }
         System.out.println(bookedTimes);
         return bookedTimes;
@@ -252,23 +322,23 @@ public class BookingEditController extends BookingListController {
         String user = userObj == null ? booking.getUser() : userIdByNameMap.get(userObj.toString());
         LocalDate reservationDateValue = reservationDate.getValue();
         String reservationDateString = reservationDateValue
-                == null ? booking.getDate() : reservationDateValue.toString();
+            == null ? booking.getDate() : reservationDateValue.toString();
         String id = Integer.toString(booking.getId());
         Object reservationStartValue = startTimeBox.getValue();
         String reservationStartString = reservationStartValue
-                == null ? booking.getStartTime() : reservationStartValue.toString() + ":00";
+            == null ? booking.getStartTime() : reservationStartValue.toString() + ":00";
         Object reservationEndValue = endTimeBox.getValue();
         String reservationEndString = reservationEndValue
-                == null ? booking.getEndTime() : reservationEndValue.toString() + ":00";
+            == null ? booking.getEndTime() : reservationEndValue.toString() + ":00";
         System.out.println(reservationStartString + " : " + reservationEndString);
         ServerCommunication.updateBooking(
-               reservationDateString,
-               reservationStartString,
-               reservationEndString,
-               user,
-               roomId,
-               id);
-        getBack();
+            reservationDateString,
+            reservationStartString,
+            reservationEndString,
+            user,
+            roomId,
+            id);
+        goToAdminBookingsScene();
         createAlert("Updated the booking!");
     }
 }

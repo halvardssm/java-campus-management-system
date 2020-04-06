@@ -11,7 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.building.model.Building; // need to use other model
+import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 
@@ -89,14 +89,14 @@ public class BuildingEditController extends BuildingListController {
         desc = desc.contentEquals("") ? building.getDescription() : desc;
         Object reservationStartValue = timeOpenFieldNew.getValue();
         String reservationStartString = reservationStartValue == null ? start + ":00"
-                : reservationStartValue.toString() + ":00";
+            : reservationStartValue.toString() + ":00";
         Object reservationEndValue = timeClosedFieldNew.getValue();
         String reservationEndString = reservationEndValue == null ? end + ":00"
-              : reservationEndValue.toString() + ":00";
+            : reservationEndValue.toString() + ":00";
         String id = Long.toString(building.getId());
         ServerCommunication.updateBuilding(
-                name, location, desc, reservationStartString, reservationEndString, id);
-        getBack();
+            name, location, desc, reservationStartString, reservationEndString, id);
+        goToAdminBuildingScene();
 
         nameFieldNew.clear();
         locationFieldNew.clear();

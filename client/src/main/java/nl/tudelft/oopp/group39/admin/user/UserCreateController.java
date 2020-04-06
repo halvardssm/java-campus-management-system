@@ -154,6 +154,6 @@ public class UserCreateController extends UserListController {
         email = roleObj.contentEquals("STUDENT") ? "student." + email : email;
         email = name + "@" + email;
         ServerCommunication.createUser(name, email, roleObj, password);
-        getBack();
+        goToAdminUserScene();
     }
 }

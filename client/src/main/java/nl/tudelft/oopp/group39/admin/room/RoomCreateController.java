@@ -129,6 +129,6 @@ public class RoomCreateController extends RoomListController {
         String onlyStaff = onlyStaffObj == null ? Boolean.toString(false) : onlyStaffObj;
         onlyStaff = Boolean.toString((onlyStaff).contentEquals("Only staff members"));
         ServerCommunication.addRoom(buildingId, roomCap, roomDesc, onlyStaff, name);
-        getBack();
+        goToAdminRoomScene();
     }
 }

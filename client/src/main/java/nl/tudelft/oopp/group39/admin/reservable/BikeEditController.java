@@ -17,7 +17,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.reservable.model.Bike;
-import nl.tudelft.oopp.group39.reservable.model.Food;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 public class BikeEditController extends BikeListController {
@@ -88,7 +87,7 @@ public class BikeEditController extends BikeListController {
         List<String> buildingNames = new ArrayList<>();
         for (Building building : list) {
             buildingNames.add(building.getName());
-            buildingIdsByName.put(building.getName(), Long.valueOf(building.getId()));
+            buildingIdsByName.put(building.getName(), building.getId());
         }
         return FXCollections.observableArrayList(buildingNames);
     }
@@ -118,22 +117,23 @@ public class BikeEditController extends BikeListController {
      */
 
     public void editBike() throws IOException {
-        Object typeObj = bikeTypeField.getValue();
-        String typeInput = typeObj == null ? bikeType : typeObj.toString();
         String rentalDurationInput = rentalDurationField.getText();
-        rentalDurationInput = rentalDurationInput.contentEquals("") ? rentalDuration : rentalDurationInput;
+        rentalDurationInput =
+            rentalDurationInput.contentEquals("") ? rentalDuration : rentalDurationInput;
         Object buildingObj = buildingBox.getValue();
-        Long buildingInput = buildingObj == null ?  buildingIdsByName.get(building) :
+        Long buildingInput = buildingObj == null ? buildingIdsByName.get(building) :
             buildingIdsByName.get(buildingObj.toString());
         String priceInputFirst = priceFieldFirst.getText();
         priceInputFirst = priceInputFirst.contentEquals("") ? priceFirst : priceInputFirst;
         String priceInputSecond = priceFieldFirst.getText();
         priceInputSecond = priceInputSecond.contentEquals("") ? priceSecond : priceInputSecond;
         Double priceInput = getPrice(priceInputFirst, priceInputSecond);
-        Bike newBike = new Bike(bike.getId(),priceInput,buildingInput,typeInput,rentalDurationInput);
-//        Food newFoodItem = new Food(food.getId(), nameInput, descriptionInput, priceInput, buildingInput);
+        Object typeObj = bikeTypeField.getValue();
+        String typeInput = typeObj == null ? bikeType : typeObj.toString();
+        Bike newBike =
+            new Bike(bike.getId(), priceInput, buildingInput, typeInput, rentalDurationInput);
         ServerCommunication.updateBike(newBike, bike.getId());
-        getBack();
+        goToAdminBikeScene();
     }
 
     public Double getPrice(String first, String second) {

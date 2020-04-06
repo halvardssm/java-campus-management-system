@@ -2,85 +2,89 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
-<BorderPane fx:id="window" prefHeight="621.0" prefWidth="900.0" style="-fx-padding: 4px;" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nl.tudelft.oopp.group39.admin.AdminPanelController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="window" prefHeight="621.0" prefWidth="900.0"
+            stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/8.0.171"
+            fx:controller="nl.tudelft.oopp.group39.admin.AdminPanelController">
    <top>
       <HBox spacing="10" styleClass="bar">
          <padding>
-            <Insets bottom="15" left="15" right="15" top="15" />
+            <Insets top="10" right="15" bottom="10" left="15"/>
          </padding>
-         <VBox prefHeight="0.0" prefWidth="100.0">
-            <Button id="menubtn" alignment="CENTER" onAction="#toggleAdminSidebar">
+         <VBox alignment="CENTER">
+            <Button onAction="#toggleSidebar" id="menubtn" alignment="CENTER">
                <graphic>
                   <ImageView fitHeight="30" fitWidth="30">
-                     <Image url="@../icons/menu-icon.png" />
+                     <Image url="@../icons/menu-icon.png"/>
                   </ImageView>
                </graphic>
             </Button>
          </VBox>
-         <Text id="title" text="Admin Navigation" />
+         <VBox alignment="CENTER">
+            <Label id="title" text="ADMIN PANEL" alignment="BOTTOM_CENTER"/>
+         </VBox>
+         <Region HBox.hgrow="ALWAYS"/>
          <VBox fx:id="userBox" alignment="CENTER">
-            <padding>
-               <Insets left="450.0" />
-            </padding>
-            <Button id="loginbtn" fx:id="userButton" onAction="#goToLoginScene" text="Login" />
+            <Button id="loginbtn" fx:id="userButton" onAction="#goToLoginScene" text="Login"/>
          </VBox>
       </HBox>
    </top>
-   <bottom>
-      <HBox prefHeight="80.0" prefWidth="892.0" spacing="10" styleClass="bar">
-         <padding>
-            <Insets bottom="15" left="15" right="15" top="15" />
-         </padding>
-         <Button mnemonicParsing="false" onMouseClicked="#getBackFromAdmin" text="Back" />
-      </HBox>
-   </bottom>
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <ImageView fitHeight="478.0" fitWidth="892.0" layoutY="-2.0" opacity="0.58" pickOnBounds="true" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="-2.0">
-            <Image url="@../icons/Library.png" />
+         <ImageView fitHeight="478.0" fitWidth="892.0" layoutY="-2.0" opacity="0.58" pickOnBounds="true"
+                    AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0"
+                    AnchorPane.topAnchor="-2.0">
+            <Image url="@../icons/Library.png"/>
          </ImageView>
-         <Button fx:id="buildingView" layoutX="71.0" layoutY="59.0" mnemonicParsing="false" onAction="#switchBuildingView" prefHeight="112.0" prefWidth="165.0" text="Building View" AnchorPane.leftAnchor="70.0">
+         <Button fx:id="buildingView" layoutX="71.0" layoutY="59.0" mnemonicParsing="false"
+                 onAction="#goToAdminBuildingScene" prefHeight="112.0" prefWidth="165.0" text="Building View"
+                 AnchorPane.leftAnchor="70.0">
             <font>
-               <Font name="System Bold" size="19.0" />
+               <Font name="System Bold" size="19.0"/>
             </font>
          </Button>
-         <Button layoutX="650.0" layoutY="70.0" mnemonicParsing="false" onAction="#switchUserView" prefHeight="112.0" prefWidth="165.0" text="User View" AnchorPane.rightAnchor="70.0">
+         <Button layoutX="650.0" layoutY="70.0" mnemonicParsing="false" onAction="#goToAdminUserScene"
+                 prefHeight="112.0" prefWidth="165.0" text="User View" AnchorPane.rightAnchor="70.0">
             <font>
-               <Font name="System Bold" size="19.0" />
+               <Font name="System Bold" size="19.0"/>
             </font>
          </Button>
-         <Button layoutX="71.0" layoutY="298.0" mnemonicParsing="false" onAction="#switchRoomView" prefHeight="112.0" prefWidth="165.0" text="Room View" AnchorPane.leftAnchor="70.0">
+         <Button layoutX="71.0" layoutY="298.0" mnemonicParsing="false" onAction="#goToAdminRoomScene"
+                 prefHeight="112.0" prefWidth="165.0" text="Room View" AnchorPane.leftAnchor="70.0">
             <font>
-               <Font name="System Bold" size="19.0" />
+               <Font name="System Bold" size="19.0"/>
             </font>
          </Button>
-         <Button layoutX="630.0" layoutY="308.0" mnemonicParsing="false" onAction="#switchEventView" prefHeight="112.0" prefWidth="165.0" text="Event View" AnchorPane.rightAnchor="70.0">
+         <Button layoutX="630.0" layoutY="308.0" mnemonicParsing="false" onAction="#goToAdminEventScene"
+                 prefHeight="112.0" prefWidth="165.0" text="Event View" AnchorPane.rightAnchor="70.0">
             <font>
-               <Font name="System Bold" size="19.0" />
+               <Font name="System Bold" size="19.0"/>
             </font>
          </Button>
-         <Button layoutX="363.0" layoutY="186.0" mnemonicParsing="false" onAction="#switchBookingsView" prefHeight="112.0" prefWidth="165.0" text="Bookings View">
+         <Button layoutX="363.0" layoutY="186.0" mnemonicParsing="false" onAction="#goToAdminBookingsScene"
+                 prefHeight="112.0" prefWidth="165.0" text="Bookings View">
             <font>
-               <Font name="System Bold" size="19.0" />
+               <Font name="System Bold" size="19.0"/>
             </font>
          </Button>
-         <Button layoutX="363.0" layoutY="14.0" mnemonicParsing="false" onAction="#switchFoodView" prefHeight="112.0" prefWidth="165.0" text="Food View">
+         <Button layoutX="363.0" layoutY="14.0" mnemonicParsing="false" onAction="#goToAdminFoodScene"
+                 prefHeight="112.0" prefWidth="165.0" text="Food View">
             <font>
-               <Font name="System Bold" size="19.0" />
+               <Font name="System Bold" size="19.0"/>
             </font>
          </Button>
-         <Button layoutX="364.0" layoutY="354.0" mnemonicParsing="false" onAction="#switchBikeView" prefHeight="112.0" prefWidth="165.0" text="Bike View">
+         <Button layoutX="364.0" layoutY="354.0" mnemonicParsing="false" onAction="#goToAdminBikeScene"
+                 prefHeight="112.0" prefWidth="165.0" text="Bike View">
             <font>
-               <Font name="System Bold" size="19.0" />
+               <Font name="System Bold" size="19.0"/>
             </font>
          </Button>
       </AnchorPane>

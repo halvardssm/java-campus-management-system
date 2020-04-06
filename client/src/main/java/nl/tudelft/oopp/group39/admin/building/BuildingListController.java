@@ -227,6 +227,7 @@ public class BuildingListController extends AdminPanelController {
         FXMLLoader loader = switchFunc("/admin/building/BuildingCreate.fxml");
         BuildingCreateController controller = loader.getController();
         controller.customInit();
+        controller.changeUserBox();
     }
 
     /**
@@ -249,6 +250,7 @@ public class BuildingListController extends AdminPanelController {
         FXMLLoader loader = switchFunc("/admin/building/BuildingEdit.fxml");
         BuildingEditController controller = loader.getController();
         controller.initData(building);
+        controller.changeUserBox();
     }
 
     /**

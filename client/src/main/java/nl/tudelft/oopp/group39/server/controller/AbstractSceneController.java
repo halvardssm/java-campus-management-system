@@ -20,7 +20,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import nl.tudelft.oopp.group39.admin.AdminPanelController;
 import nl.tudelft.oopp.group39.admin.booking.BookingListController;
 import nl.tudelft.oopp.group39.admin.building.BuildingListController;
 import nl.tudelft.oopp.group39.admin.event.EventListController;
@@ -117,7 +116,8 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminBuildingScene() throws IOException {
-        BuildingListController controller = (BuildingListController) goTo("/admin/building/BuildingList.fxml");
+        BuildingListController controller =
+            (BuildingListController) goTo("/admin/building/BuildingList.fxml");
         controller.customInit();
     }
 
@@ -137,7 +137,8 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminBookingsScene() throws IOException {
-        BookingListController controller = (BookingListController) goTo("/admin/booking/BookingList.fxml");
+        BookingListController controller =
+            (BookingListController) goTo("/admin/booking/BookingList.fxml");
         controller.customInit();
     }
 
@@ -387,7 +388,8 @@ public abstract class AbstractSceneController {
      */
     public boolean checkDate(String date, Long room) throws JsonProcessingException {
         LocalDate check = LocalDate.parse(date, dateFormatter);
-        Set<Event> events = room == null ? getEvents("isGlobal=true") : getEvents("rooms=" + room);
+        Set<Event> events = room == null ? getEvents("isGlobal=true")
+            : getEvents("rooms=" + room + "&isGlobal=true");
         if (events.size() != 0) {
             for (Event event : events) {
                 LocalDate start = event.getStartTime().toLocalDate();
@@ -429,6 +431,6 @@ public abstract class AbstractSceneController {
     }
 
     public void goToAdminScene() throws IOException {
-        MainDisplay.sceneHandler("/admin/AdminPanel.fxml");
+        goTo("/admin/AdminPanel.fxml");
     }
 }
