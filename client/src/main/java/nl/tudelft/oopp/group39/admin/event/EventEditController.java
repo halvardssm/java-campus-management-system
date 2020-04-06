@@ -61,7 +61,6 @@ public class EventEditController extends EventListController {
      */
     public void initData(Event abcEvent) throws JsonProcessingException {
         customInit();
-        setRoomSelector();
         this.abcEvent = abcEvent;
         titleField.setPromptText(abcEvent.getTitle());
         globalCheckbox.setSelected(abcEvent.isGlobal());
@@ -78,6 +77,7 @@ public class EventEditController extends EventListController {
         endField.setPromptText(abcEvent.getEndsAt().toString());
         setNavBar(navBar, currentStage);
         uncheckUserComboBox();
+        setRoomSelector();
     }
 
     /**
@@ -150,10 +150,10 @@ public class EventEditController extends EventListController {
             dateMessage.setStyle("-fx-text-fill: Red");
             dateMessage.setText(
                 "The end date needs to be later than the start date!\n(Start date was: "
-                + start.toString() + ", end date was: " + end.toString() + " )");
+                    + start.toString() + ", end date was: " + end.toString() + " )");
             return;
         }
-        if (!start.isAfter(LocalDateTime.now())) {
+        if (!start.isAfter(LocalDateTime.now().minusDays(1))) {
             dateMessage.setStyle("-fx-text-fill: Red");
             dateMessage.setText(
                 "The start date needs to be later than today!\n(Start date was: "
@@ -165,6 +165,11 @@ public class EventEditController extends EventListController {
         createEventFinal(id, title, startDate, endDate, userId, globalBool);
     }
 
+    /**
+     * Creates a list of selected room id's.
+     *
+     * @return List of room id's
+     */
     public List<Long> createRoomsList() {
         List<Long> roomsList = new ArrayList<>();
         for (CheckBox roomBox : rooms) {
@@ -175,6 +180,11 @@ public class EventEditController extends EventListController {
         return roomsList;
     }
 
+    /**
+     * Checks if a room is selected.
+     *
+     * @return boolean true if a room is selected, false otherwise
+     */
     public boolean checkRoomSelected() {
         boolean roomSelected = false;
         for (CheckBox roomBox : rooms) {
@@ -189,6 +199,11 @@ public class EventEditController extends EventListController {
         return roomSelected;
     }
 
+    /**
+     * Sets up the room selector.
+     *
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public void setRoomSelector() throws JsonProcessingException {
         String roomString = ServerCommunication.get(ServerCommunication.room);
         ArrayNode body = (ArrayNode) mapper.readTree(roomString).get("body");
@@ -212,6 +227,9 @@ public class EventEditController extends EventListController {
         }
     }
 
+    /**
+     * Selects all rooms.
+     */
     public void selectAllRooms() {
         if (selectAll.isSelected()) {
             for (CheckBox roomBox : rooms) {

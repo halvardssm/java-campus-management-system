@@ -177,6 +177,11 @@ public class EventCreateController extends EventListController {
         dateMessage.setText("Please input a start date or an end date.");
     }
 
+    /**
+     * Creates a list of selected room id's.
+     *
+     * @return List of room id's
+     */
     public List<Long> createRoomsList() {
         List<Long> roomsList = new ArrayList<>();
         for (CheckBox roomBox : rooms) {
@@ -187,6 +192,11 @@ public class EventCreateController extends EventListController {
         return roomsList;
     }
 
+    /**
+     * Checks if a room is selected.
+     *
+     * @return boolean true if a room is selected, false otherwise
+     */
     public boolean checkRoomSelected() {
         boolean roomSelected = false;
         for (CheckBox roomBox : rooms) {
@@ -201,6 +211,11 @@ public class EventCreateController extends EventListController {
         return roomSelected;
     }
 
+    /**
+     * Sets up the room selector.
+     *
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public void setRoomSelector() throws JsonProcessingException {
         String roomString = ServerCommunication.get(ServerCommunication.room);
         ArrayNode body = (ArrayNode) mapper.readTree(roomString).get("body");
@@ -214,6 +229,9 @@ public class EventCreateController extends EventListController {
         }
     }
 
+    /**
+     * Selects all rooms.
+     */
     public void selectAllRooms() {
         if (selectAll.isSelected()) {
             for (CheckBox roomBox : rooms) {

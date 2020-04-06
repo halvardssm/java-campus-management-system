@@ -47,7 +47,7 @@
             <VBox prefHeight="300.0" prefWidth="200.0" alignment="CENTER_LEFT" spacing="15">
                 <ImageView fx:id="userImage" fitHeight="146.0" fitWidth="152.0" pickOnBounds="true" smooth="false">
                 </ImageView>
-                <Button text="Change image" onAction="#changeUserImage"/>
+                <Button styleClass="buttons" text="Change image" onAction="#changeUserImage"/>
                 <Label fx:id="accountName" text="Your Name">
                     <font>
                         <Font size="23.0"/>
