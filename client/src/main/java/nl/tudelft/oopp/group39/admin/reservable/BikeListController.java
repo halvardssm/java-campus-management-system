@@ -23,6 +23,8 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.admin.AdminPanelController;
 import nl.tudelft.oopp.group39.admin.user.UserCreateController;
 import nl.tudelft.oopp.group39.admin.user.UserEditController;
+import nl.tudelft.oopp.group39.reservable.model.Bike;
+import nl.tudelft.oopp.group39.reservable.model.Food;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
 
@@ -34,14 +36,16 @@ public class BikeListController extends AdminPanelController {
     private String allRoles = "ALL ROLES";
     @FXML
     private Button backbtn;
-    @FXML private TableView<User> usertable;
-    @FXML private TableColumn<User, String> idCol;
-    @FXML private TableColumn<User, String> emailCol;
-    @FXML private TableColumn<User, String> statusCol;
+    @FXML private TableView<Bike> foodTable;
+    @FXML private TableColumn<Bike, String> idCol;
+    @FXML private TableColumn<Bike, String> bikeTypeCol;
+    @FXML private TableColumn<Bike, String> rentalDurationCol;
+    @FXML private TableColumn<Bike, Double> priceCol;
+    @FXML private TableColumn<Bike, String> buildingCol;
     @FXML
-    private TableColumn<User, User> deleteCol = new TableColumn<>("Delete");
+    private TableColumn<Bike, Bike> deleteCol = new TableColumn<>("Delete");
     @FXML
-    private TableColumn<User, User> updateCol = new TableColumn<>("Update");
+    private TableColumn<Bike, Bike> updateCol = new TableColumn<>("Update");
     @FXML
     private ComboBox<String> roleBox;
     @FXML
@@ -52,100 +56,59 @@ public class BikeListController extends AdminPanelController {
      */
     public void customInit() {
         try {
-            loadUsersStandard();
+            loadFood();
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         Stage currentStage = (Stage) backbtn.getScene().getWindow();
     }
-    /**
-     * Loads users when no filtering is enabled.
-     * @throws JsonProcessingException when there is a processing exception
-     */
 
-    public void loadUsersStandard() throws JsonProcessingException {
-        this.lastSelectedRole = allRoles;
-        this.lastSelectedName = "";
-        String users = ServerCommunication.get(ServerCommunication.user);
-        System.out.println(users);
-        loadUsers(users);
-    }
-    /**
-     * First filters through users based on criteria and then calls loadUsers.
-     * @throws JsonProcessingException when there is a processing exception
-     */
-
-    public void filterUsers() throws JsonProcessingException {
-        String name = usernameField.getText();
-        name = name == null ? "" : name;
-        this.lastSelectedName = name;
-        Object roleObj = roleBox.getValue();
-        String role = roleObj == null ? "" : roleObj.toString();
-        this.lastSelectedRole = role.contentEquals("") ? allRoles : role;
-        role = role.contentEquals(allRoles) ? "" : role;
-        String users = ServerCommunication.getFilteredUsers(name, role);
-        loadUsers(users);
-    }
-
-    void loadFiltering() throws JsonProcessingException {
-        usernameField.clear();
-        usernameField.setText(lastSelectedName);
-        roleBox.getItems().clear();
-        String roles = ServerCommunication.getUserRoles();
-        ArrayNode body = (ArrayNode) mapper.readTree(roles).get("body");
-        roles = mapper.writeValueAsString(body);
-        String[] list = mapper.readValue(roles, String[].class);
-        List<String> roleList = new ArrayList<>();
-        roleList.add(allRoles);
-        roleList.addAll(Arrays.asList(list));
-        ObservableList<String> data = FXCollections.observableArrayList(roleList);
-        roleBox.setItems(data);
-        roleBox.getSelectionModel().select(this.lastSelectedRole);
-    }
     /**
      * Display users and data into tableView named userTable.
      */
 
-    void loadUsers(String users) throws JsonProcessingException {
-        loadFiltering();
-        usertable.setVisible(true);
-        usertable.getItems().clear();
-        usertable.getColumns().clear();
-        System.out.println(users);
-        if (!users.contains("\"body\" : null,")) {
-            ArrayNode body = (ArrayNode) mapper.readTree(users).get("body");
-            users = mapper.writeValueAsString(body);
-
-            idCol.setCellValueFactory(new PropertyValueFactory<>("username"));
-            emailCol.setCellValueFactory(new PropertyValueFactory<>("email"));
-            statusCol.setCellValueFactory(new PropertyValueFactory<>("role"));
-            deleteCol.setCellValueFactory(
-                param -> new ReadOnlyObjectWrapper<>(param.getValue())
-            );
-            deleteCol.setCellFactory(param -> returnCell("Delete"));
-            updateCol.setCellValueFactory(
-                param -> new ReadOnlyObjectWrapper<>(param.getValue())
-            );
-            User[] list = mapper.readValue(users, User[].class);
-            updateCol.setCellFactory(param -> returnCell("Update"));
-            ObservableList<User> data = FXCollections.observableArrayList(list);
-            usertable.setItems(data);
-            usertable.getColumns().addAll(idCol, emailCol, statusCol, deleteCol, updateCol);
-        }
+    void loadFood() throws JsonProcessingException {
+//        String foodItems = ServerCommunication.get(ServerCommunication.food);
+//        foodTable.setVisible(true);
+//        foodTable.getItems().clear();
+//        foodTable.getColumns().clear();
+//        System.out.println(foodItems);
+//        if (!foodItems.contains("\"body\" : null,")) {
+//            ArrayNode body = (ArrayNode) mapper.readTree(foodItems).get("body");
+//            foodItems = mapper.writeValueAsString(body);
+//
+//            idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+//            nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+//            priceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+//            buildingCol.setCellValueFactory(new PropertyValueFactory<>("building"));
+//            descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+//            deleteCol.setCellValueFactory(
+//                param -> new ReadOnlyObjectWrapper<>(param.getValue())
+//            );
+//            deleteCol.setCellFactory(param -> returnCell("Delete"));
+//            updateCol.setCellValueFactory(
+//                param -> new ReadOnlyObjectWrapper<>(param.getValue())
+//            );
+//            Food[] list = mapper.readValue(foodItems, Food[].class);
+//            updateCol.setCellFactory(param -> returnCell("Update"));
+//            ObservableList<Food> data = FXCollections.observableArrayList(list);
+//            foodTable.setItems(data);
+//            foodTable.getColumns().addAll(idCol, nameCol, priceCol, buildingCol, descriptionCol, deleteCol, updateCol);
+//        }
     }
     /**
      * Inserts the update and delete buttons into table.
      */
 
-    public TableCell<User, User> returnCell(String button) {
+    public TableCell<Food, Food> returnCell(String button) {
         return new TableCell<>() {
             private final Button updateButton = new Button(button);
 
             @Override
-            protected void updateItem(User user, boolean empty) {
-                super.updateItem(user, empty);
+            protected void updateItem(Food food, boolean empty) {
+                super.updateItem(food, empty);
 
-                if (user == null) {
+                if (food == null) {
                     setGraphic(null);
                     return;
                 }
@@ -156,10 +119,10 @@ public class BikeListController extends AdminPanelController {
                         try {
                             switch (button) {
                                 case "Update":
-                                    editUser(user);
+                                    editFoodItem(food);
                                     break;
                                 case "Delete":
-                                    deleteUser(user);
+                                    deleteFoodItem(food);
                                     break;
                                 default:
                                     break;
@@ -177,7 +140,7 @@ public class BikeListController extends AdminPanelController {
     /**
      * Switches scene to the createUser one.
      */
-    public void createUser() throws IOException {
+    public void createFoodItem() throws IOException {
         FXMLLoader loader = switchFunc("/admin/user/UserCreate.fxml");
         UserCreateController controller = loader.getController();
         controller.customInit();
@@ -186,19 +149,19 @@ public class BikeListController extends AdminPanelController {
      * Deletes selected user.
      */
 
-    public void deleteUser(User user) throws IOException {
-        String id = user.getUsername();
-        ServerCommunication.removeUser(id);
-        loadUsersStandard();
+    public void deleteFoodItem(Food food) throws IOException {
+        String id = Long.toString(food.getId());
+        ServerCommunication.removeFoodItem(id);
+        loadFood();
     }
     /**
      * Sends user to the user edit page.
      */
 
-    public void editUser(User user) throws IOException {
-        FXMLLoader loader = switchFunc("/admin/user/UserEdit.fxml");
-        UserEditController controller = loader.getController();
-        controller.initData(user);
+    public void editFoodItem(Food food) throws IOException {
+        FXMLLoader loader = switchFunc("/admin/reservable/FoodEdit.fxml");
+        FoodEditController controller = loader.getController();
+        controller.initData(food);
     }
 
     /**
