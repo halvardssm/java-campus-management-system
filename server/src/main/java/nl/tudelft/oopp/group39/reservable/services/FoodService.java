@@ -54,8 +54,10 @@ public class FoodService {
     public Food updateFood(Long id, Food newFood) {
         return foodRepository.findById(id)
             .map(food -> {
-                newFood.setId(id);
-                food = newFood;
+                food.setName(newFood.getName());
+                food.setDescription(newFood.getDescription());
+                food.setBuilding(newFood.getBuilding());
+                food.setPrice(newFood.getPrice());
 
                 return foodRepository.save(food);
             })

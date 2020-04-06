@@ -53,8 +53,9 @@ public class BikeService {
     public Bike updateBike(Long id, Bike newBike) {
         return bikeRepository.findById(id)
             .map(bike -> {
-                newBike.setId(id);
-                bike = newBike;
+                bike.setPrice(newBike.getPrice());
+                bike.setBikeType(newBike.getBikeType());
+                bike.setBuilding(newBike.getBuilding());
 
                 return bikeRepository.save(bike);
             })
