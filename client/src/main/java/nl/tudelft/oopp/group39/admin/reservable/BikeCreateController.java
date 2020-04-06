@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.building.model.Building;
@@ -40,6 +41,8 @@ public class BikeCreateController extends BikeListController {
     private ComboBox<String> bikeTypeField;
     @FXML
     private TextField rentalDurationField;
+    @FXML
+    private MenuBar navBar;
 
 
     /**
@@ -49,6 +52,7 @@ public class BikeCreateController extends BikeListController {
 
     public void initData() throws JsonProcessingException {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
         ObservableList<String> data = initBuildings();
         buildingBox.setItems(data);
         this.building = data.get(0);
@@ -111,9 +115,9 @@ public class BikeCreateController extends BikeListController {
 
     public void addBike() throws IOException {
         Object typeObj = bikeTypeField.getValue();
-        String typeInput = typeObj == null ? bikeType : typeObj.toString();
         String rentalDurationInput = rentalDurationField.getText();
         rentalDurationInput = rentalDurationInput.contentEquals("") ? rentalDuration : rentalDurationInput;
+        String typeInput = typeObj == null ? bikeType : typeObj.toString();
         Object buildingObj = buildingBox.getValue();
         Long buildingInput = buildingObj == null ?  buildingIdsByName.get(building) :
             buildingIdsByName.get(buildingObj.toString());
@@ -123,7 +127,6 @@ public class BikeCreateController extends BikeListController {
         priceInputSecond = priceInputSecond.contentEquals("") ? priceSecond : priceInputSecond;
         Double priceInput = getPrice(priceInputFirst, priceInputSecond);
         Bike newBike = new Bike(-1L,priceInput,buildingInput,typeInput,rentalDurationInput);
-//        Food newFoodItem = new Food(food.getId(), nameInput, descriptionInput, priceInput, buildingInput);
         ServerCommunication.addBike(newBike);
         getBack();
     }

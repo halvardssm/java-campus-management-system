@@ -119,8 +119,8 @@ public class BikeEditController extends BikeListController {
 
     public void editBike() throws IOException {
         Object typeObj = bikeTypeField.getValue();
-        String typeInput = typeObj == null ? bikeType : typeObj.toString();
         String rentalDurationInput = rentalDurationField.getText();
+        String typeInput = typeObj == null ? bikeType : typeObj.toString();
         rentalDurationInput = rentalDurationInput.contentEquals("") ? rentalDuration : rentalDurationInput;
         Object buildingObj = buildingBox.getValue();
         Long buildingInput = buildingObj == null ?  buildingIdsByName.get(building) :
@@ -130,8 +130,8 @@ public class BikeEditController extends BikeListController {
         String priceInputSecond = priceFieldFirst.getText();
         priceInputSecond = priceInputSecond.contentEquals("") ? priceSecond : priceInputSecond;
         Double priceInput = getPrice(priceInputFirst, priceInputSecond);
-        Bike newBike = new Bike(bike.getId(),priceInput,buildingInput,typeInput,rentalDurationInput);
-//        Food newFoodItem = new Food(food.getId(), nameInput, descriptionInput, priceInput, buildingInput);
+        Bike newBike = new Bike(
+                bike.getId(),priceInput,buildingInput,typeInput,rentalDurationInput);
         ServerCommunication.updateBike(newBike, bike.getId());
         getBack();
     }

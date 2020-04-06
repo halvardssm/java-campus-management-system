@@ -100,16 +100,6 @@ public abstract class AbstractSceneController {
         return controller;
     }
 
-    //    /**
-    //    * Switches view to the admin building list scene.
-    //    *
-    //    * @throws IOException if the scene wasn't found
-    //    */
-    //
-    //    public void goToAdminFoodAndBikeScene() throws IOException {
-    //           goTo("/admin/FoodAndBike/BuildingList.fxml");
-    //    }
-
 
     /**
      * Switches view to the admin building list scene.
@@ -117,7 +107,8 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminBuildingScene() throws IOException {
-        BuildingListController controller = (BuildingListController) goTo("/admin/building/BuildingList.fxml");
+        BuildingListController controller = (BuildingListController) goTo(
+                "/admin/building/BuildingList.fxml");
         controller.customInit();
     }
 
@@ -137,7 +128,8 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminBookingsScene() throws IOException {
-        BookingListController controller = (BookingListController) goTo("/admin/booking/BookingList.fxml");
+        BookingListController controller = (BookingListController) goTo(
+                "/admin/booking/BookingList.fxml");
         controller.customInit();
     }
 

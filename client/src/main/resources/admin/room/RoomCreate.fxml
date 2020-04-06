@@ -22,7 +22,7 @@
                 <Insets bottom="15" left="15" right="15" top="15" />
             </padding>
             <VBox prefHeight="0.0" prefWidth="100.0">
-                <Button id="menubtn" alignment="CENTER" onMouseClicked="#toggleAdminSidebar">
+                <Button id="menubtn" alignment="CENTER" onMouseClicked="#toggleSidebar">
                     <graphic>
                         <ImageView fitHeight="30" fitWidth="30">
                             <Image url="@../../icons/menu-icon.png" />
