@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.group39.admin.room;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 public class RoomEditController extends RoomListController {
     private Stage currentStage;
-    private ObjectMapper mapper = new ObjectMapper();
     private Room room;
     private HashMap<String, Long> buildingsByName = new HashMap<>();
     private HashMap<Long, String> buildingsById = new HashMap<>();

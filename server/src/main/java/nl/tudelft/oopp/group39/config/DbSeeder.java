@@ -126,7 +126,7 @@ public class DbSeeder {
             "Prometheuseplein 1",
             "A place where TU Delft students can study and lend books",
             LocalTime.of(8, 0),
-            LocalTime.of(0, 0),
+            LocalTime.of(23, 59),
             null, null,
             null
         );
@@ -138,7 +138,7 @@ public class DbSeeder {
             "Landbergstraat 19",
             "A new education building for TU Delft students to study and take lectures",
             LocalTime.of(8, 0),
-            LocalTime.of(0, 0),
+            LocalTime.of(23, 59),
             null, null,
             null
         );

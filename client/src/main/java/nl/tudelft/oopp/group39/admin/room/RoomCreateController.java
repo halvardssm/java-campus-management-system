@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.group39.admin.room;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 @SuppressWarnings("MismatchedQueryAndUpdateOfCollection, ALL")
 public class RoomCreateController extends RoomListController {
     private Stage currentStage;
-    private ObjectMapper mapper = new ObjectMapper();
     private HashMap<String, Long> buildingsByName = new HashMap<>();
     private HashMap<Long, Building> buildingById = new HashMap<>();
     @FXML

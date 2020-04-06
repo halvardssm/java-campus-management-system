@@ -2,7 +2,6 @@ package nl.tudelft.oopp.group39.admin.booking;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
@@ -28,7 +27,6 @@ import nl.tudelft.oopp.group39.user.model.User;
 
 public class BookingEditController extends BookingListController {
     private Stage currentStage;
-    private ObjectMapper mapper = new ObjectMapper();
     private Booking booking;
     private String date;
     private Room room;

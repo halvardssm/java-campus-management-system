@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.group39.admin.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +26,6 @@ import nl.tudelft.oopp.group39.user.model.User;
 
 @SuppressWarnings("unchecked")
 public class UserListController extends AdminPanelController {
-    private ObjectMapper mapper = new ObjectMapper();
     private String lastSelectedRole;
     private String lastSelectedName;
     private String allRoles = "ALL ROLES";

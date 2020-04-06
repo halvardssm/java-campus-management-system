@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.group39.admin.reservable;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +26,6 @@ public class BikeCreateController extends BikeListController {
     private String priceFirst;
     private String priceSecond;
     private Stage currentStage;
-    private ObjectMapper mapper = new ObjectMapper();
     private HashMap<String, Long> buildingIdsByName = new HashMap<>();
     @FXML
     private Button backbtn;

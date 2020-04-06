@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.group39.admin.building;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalTime;
@@ -29,7 +28,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 public class BuildingListController extends AdminPanelController {
     private String start;
     private String end;
-    private ObjectMapper mapper = new ObjectMapper();
     @FXML
     private ComboBox<String> openingBox;
     @FXML

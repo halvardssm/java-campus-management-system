@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.group39.admin.event;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,7 +23,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 @SuppressWarnings("ALL")
 public class EventEditController extends EventListController {
     private Stage currentStage;
-    private ObjectMapper mapper = new ObjectMapper();
     private Event abcEvent;
     @FXML
     private Button backbtn;

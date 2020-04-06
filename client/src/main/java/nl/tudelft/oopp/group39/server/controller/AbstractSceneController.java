@@ -40,9 +40,11 @@ import nl.tudelft.oopp.group39.user.controller.CalendarController;
 import nl.tudelft.oopp.group39.user.controller.SignupController;
 import nl.tudelft.oopp.group39.user.controller.UserPageController;
 import nl.tudelft.oopp.group39.user.model.User;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
 
 public abstract class AbstractSceneController {
-    protected ObjectMapper mapper = new ObjectMapper()
+    public ObjectMapper mapper = new ObjectMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     public static boolean loggedIn = false;
     public static String jwt = "";
@@ -193,16 +195,9 @@ public abstract class AbstractSceneController {
         goTo("/building/buildingListView.fxml");
     }
 
-    /**
-     * Switches to the user page scene.
-     *
-     * @throws IOException if the scene wasn't found
-     */
-    public void goToUserPageScene() throws IOException {
-        UserPageController controller =
-            (UserPageController) MainDisplay.sceneControllerHandler("/user/userPage.fxml");
-        controller.changeUserBox();
-        controller.showBookings();
+    public static String encodeUsingApacheCommons(byte[] bytes)
+        throws DecoderException {
+        return Hex.encodeHexString(bytes);
     }
 
     /**
@@ -432,5 +427,22 @@ public abstract class AbstractSceneController {
 
     public void goToAdminScene() throws IOException {
         goTo("/admin/AdminPanel.fxml");
+    }
+
+    public static byte[] decodeUsingApacheCommons(String hexString)
+        throws DecoderException {
+        return Hex.decodeHex(hexString);
+    }
+
+    /**
+     * Switches to the user page scene.
+     *
+     * @throws IOException if the scene wasn't found
+     */
+    public void goToUserPageScene() throws IOException, DecoderException {
+        UserPageController controller =
+            (UserPageController) MainDisplay.sceneControllerHandler("/user/userPage.fxml");
+        controller.changeUserBox();
+        controller.showBookings();
     }
 }

@@ -3,7 +3,6 @@ package nl.tudelft.oopp.group39.admin.room;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,7 +33,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 @SuppressWarnings("unchecked, MismatchedQueryAndUpdateOfCollection")
 public class RoomListController extends AdminPanelController {
-    private ObjectMapper mapper = new ObjectMapper();
     @FXML
     private Button backbtn;
     @FXML

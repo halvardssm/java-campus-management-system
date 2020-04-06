@@ -576,7 +576,23 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
-
+    /**
+     * Updates user in the server.
+     *
+     * @param changeUser updated object of User.
+     * @return the body of a put request to the server.
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public static String updateUser(User changeUser) throws JsonProcessingException {
+        String newUser = mapper.writeValueAsString(changeUser);
+        HttpRequest.BodyPublisher userUpdate = HttpRequest.BodyPublishers
+            .ofString(newUser);
+        HttpRequest request = HttpRequest.newBuilder().PUT(userUpdate)
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .uri(URI.create(url + user + "/" + changeUser.getUsername()))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
 
     /**
      * Updates the user on the server.
@@ -584,15 +600,13 @@ public class ServerCommunication {
      * @return the body of a post request to the server.
      */
     public static String updateUser(
-            String username,
-            String email,
-            String password,
-            String bookings
+        String username,
+        String email,
+        String image
     ) {
         HttpRequest.BodyPublisher newUser = HttpRequest.BodyPublishers
-                .ofString("{\"username\": \"" + username + "\", \"email\":\"" + email
-                         + "\", \"password\":\"" + password + "\", \"bookings\":\""
-                         + bookings + "\"}");
+            .ofString("{\"username\": \"" + username + "\", \"email\":\"" + email
+                + "\", \"image\":\"" + image + "\"}");
         HttpRequest request = HttpRequest.newBuilder().PUT(newUser)
             .header("Authorization", "Bearer " + AbstractSceneController.jwt)
             .uri(URI.create(url + "user/" + username))

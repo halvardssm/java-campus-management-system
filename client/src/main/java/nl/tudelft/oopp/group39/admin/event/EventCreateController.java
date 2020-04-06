@@ -1,9 +1,6 @@
 package nl.tudelft.oopp.group39.admin.event;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,7 +21,6 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 
 public class EventCreateController extends EventListController {
-    private ObjectMapper mapper = new ObjectMapper();
     private Stage currentStage;
     @FXML
     private Button backbtn;
@@ -89,7 +85,7 @@ public class EventCreateController extends EventListController {
         String userId = userComboBox.getValue();
         boolean endNull = end == null;
         boolean globalBool = globalCheckbox.isSelected();
-        String endDate = endNull ? LocalDateTime.now().toString() : end.toString() + " 23:59:00";
+        String endDate = endNull ? LocalDateTime.now().toString() : end.toString() + " 23:59:59";
         checkValidity(startDate, endDate, startNull, endNull, title, globalBool, userId);
     }
 

@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.group39.admin.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.util.Arrays;
@@ -20,7 +19,6 @@ import nl.tudelft.oopp.group39.user.model.User;
 
 public class UserCreateController extends UserListController {
     private Stage currentStage;
-    private ObjectMapper mapper = new ObjectMapper();
     private List<User> users;
     @FXML
     private Button backbtn;
