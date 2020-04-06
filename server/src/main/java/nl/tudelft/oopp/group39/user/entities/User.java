@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import java.sql.Blob;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -59,7 +58,7 @@ public class User implements UserDetails {
     @Lob
     @Basic(fetch = FetchType.EAGER)
     @LazyGroup("lobs")
-    private Blob image;
+    private byte[] image;
     @Enumerated(EnumType.STRING)
     private Role role;
     @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
@@ -88,7 +87,7 @@ public class User implements UserDetails {
         String username,
         String email,
         String password,
-        Blob image,
+        byte[] image,
         Role role
     ) {
         this.username = username;
@@ -177,7 +176,7 @@ public class User implements UserDetails {
      *
      * @return the image of the user
      */
-    public Blob getImage() {
+    public byte[] getImage() {
         return this.image;
     }
 
@@ -186,7 +185,7 @@ public class User implements UserDetails {
      *
      * @param image the new image of the user
      */
-    public void setImage(Blob image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 
