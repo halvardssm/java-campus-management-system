@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import nl.tudelft.oopp.group39.reservation.model.Reservation;
@@ -61,7 +62,7 @@ class ReservationTest {
 
     @Test
     void getReservable() {
-        assertEquals(testReservation.getReservable(), 1L);
+        assertEquals(testReservation.getReservables(), Arrays.asList(1L,4L));
     }
 
     @Test
