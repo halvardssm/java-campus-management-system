@@ -12,11 +12,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.admin.user.UserListController;
-import nl.tudelft.oopp.group39.models.Building;
+import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.reservable.model.Food;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
@@ -44,8 +43,7 @@ public class FoodEditController extends FoodListController {
     private TextField nameField;
     @FXML
     private TextField descriptionField;
-    @FXML
-    private MenuBar navBar;
+
 
     /**
      * Initializes the data of a User and makes it usable.
@@ -55,7 +53,6 @@ public class FoodEditController extends FoodListController {
 
     public void initData(Food food) throws JsonProcessingException {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
-        setNavBar(navBar, currentStage);
         this.food = food;
         ObservableList<String> data = initBuildings();
         buildingBox.setItems(data);
@@ -72,7 +69,6 @@ public class FoodEditController extends FoodListController {
         nameField.setPromptText(name);
         this.description = food.getDescription();
         descriptionField.setPromptText(description);
-
     }
 
     /**
@@ -87,7 +83,7 @@ public class FoodEditController extends FoodListController {
         List<String> buildingNames = new ArrayList<>();
         for (Building building : list) {
             buildingNames.add(building.getName());
-            buildingIdsByName.put(building.getName(), Long.valueOf(building.getId()));
+            buildingIdsByName.put(building.getName(), building.getId());
         }
         return FXCollections.observableArrayList(buildingNames);
     }
@@ -117,8 +113,8 @@ public class FoodEditController extends FoodListController {
         String priceInputSecond = priceFieldFirst.getText();
         priceInputSecond = priceInputSecond.contentEquals("") ? priceSecond : priceInputSecond;
         Double priceInput = getPrice(priceInputFirst, priceInputSecond);
-        Food newFoodItem = new Food(
-                food.getId(), nameInput, descriptionInput, priceInput, buildingInput);
+        Food newFoodItem =
+            new Food(food.getId(), nameInput, descriptionInput, priceInput, buildingInput);
         ServerCommunication.updateFoodItem(newFoodItem, food.getId());
         getBack();
     }

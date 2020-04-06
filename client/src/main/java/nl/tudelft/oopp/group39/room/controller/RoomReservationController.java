@@ -19,7 +19,7 @@ import nl.tudelft.oopp.group39.event.model.Event;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
-import nl.tudelft.oopp.group39.server.views.UsersDisplay;
+import nl.tudelft.oopp.group39.server.views.MainDisplay;
 
 
 public class RoomReservationController extends AbstractSceneController {
@@ -336,6 +336,6 @@ public class RoomReservationController extends AbstractSceneController {
      */
     @FXML
     private void backToRoom() {
-        UsersDisplay.backToPrevious();
+        MainDisplay.backToPrevious();
     }
 }

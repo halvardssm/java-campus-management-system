@@ -26,8 +26,6 @@ import nl.tudelft.oopp.group39.admin.building.BuildingListController;
 import nl.tudelft.oopp.group39.admin.event.EventListController;
 import nl.tudelft.oopp.group39.admin.reservable.BikeListController;
 import nl.tudelft.oopp.group39.admin.reservable.FoodListController;
-import nl.tudelft.oopp.group39.admin.room.RoomListController;
-import nl.tudelft.oopp.group39.admin.user.UserListController;
 import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.event.model.Event;
@@ -36,12 +34,11 @@ import nl.tudelft.oopp.group39.room.controller.RoomReservationController;
 import nl.tudelft.oopp.group39.room.controller.RoomSceneController;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.server.views.UsersDisplay;
+import nl.tudelft.oopp.group39.server.views.MainDisplay;
 import nl.tudelft.oopp.group39.user.controller.CalendarController;
 import nl.tudelft.oopp.group39.user.controller.SignupController;
 import nl.tudelft.oopp.group39.user.controller.UserPageController;
 import nl.tudelft.oopp.group39.user.model.User;
-import nl.tudelft.oopp.group39.views.AdminPanel;
 
 public abstract class AbstractSceneController {
     protected ObjectMapper mapper = new ObjectMapper()
@@ -96,34 +93,20 @@ public abstract class AbstractSceneController {
      * @throws IOException if said xml file does not exist.
      */
     public AbstractSceneController goTo(String location) throws IOException {
-        AbstractSceneController controller = UsersDisplay.sceneControllerHandler(location);
+        AbstractSceneController controller = MainDisplay.sceneControllerHandler(location);
         controller.changeUserBox();
         return controller;
     }
 
-    /**
-     * Method to go to a specific screen in admin panel.
-     *
-     * @param location location of the xml file
-     * @return the controller for said xml file(for additional purposes)
-     * @throws IOException if said xml file does not exist.
-     *
-     */
-    public AbstractSceneController goToAdmin(String location) throws IOException {
-        AbstractSceneController controller = UsersDisplay.sceneControllerHandler(location);
-        //        controller.changeUserBox();
-        return controller;
-    }
-
-    /**
-    * Switches view to the admin building list scene.
-    *
-    * @throws IOException if the scene wasn't found
-    */
-
-    public void goToAdminFoodAndBikeScene() throws IOException {
-    //       goToAdmin("/admin/FoodAndBike/BuildingList.fxml");
-    }
+    //    /**
+    //    * Switches view to the admin building list scene.
+    //    *
+    //    * @throws IOException if the scene wasn't found
+    //    */
+    //
+    //    public void goToAdminFoodAndBikeScene() throws IOException {
+    //           goTo("/admin/FoodAndBike/BuildingList.fxml");
+    //    }
 
 
     /**
@@ -132,8 +115,7 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminBuildingScene() throws IOException {
-        BuildingListController controller = (BuildingListController) goToAdmin("/admin/building/BuildingList.fxml");
-        controller.customInit();
+        goTo("/admin/building/BuildingList.fxml");
     }
 
     /**
@@ -142,8 +124,7 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminRoomScene() throws IOException {
-        RoomListController controller = (RoomListController) goToAdmin("/admin/room/RoomList.fxml");
-        controller.customInit();
+        goTo("/admin/room/RoomList.fxml");
     }
 
     /**
@@ -152,8 +133,7 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminBookingsScene() throws IOException {
-        BookingListController controller = (BookingListController) goToAdmin("/admin/booking/BookingList.fxml");
-        controller.customInit();
+        goTo("/admin/booking/BookingList.fxml");
     }
 
     /**
@@ -162,8 +142,7 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminUserScene() throws IOException {
-        UserListController controller = (UserListController) goToAdmin("/admin/user/UserList.fxml");
-        controller.customInit();
+        goTo("/admin/user/UserList.fxml");
     }
 
     /**
@@ -172,8 +151,7 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminEventScene() throws IOException {
-        EventListController controller = (EventListController) goToAdmin("/admin/event/EventList.fxml");
-        controller.customInit();
+        goTo("/admin/event/EventList.fxml");
     }
 
     /**
@@ -182,7 +160,8 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminFoodScene() throws IOException {
-        FoodListController controller = (FoodListController) goToAdmin("/admin/reservable/FoodList.fxml");
+        FoodListController controller =
+            (FoodListController) goTo("/admin/reservable/FoodList.fxml");
         controller.customInit();
     }
 
@@ -192,16 +171,16 @@ public abstract class AbstractSceneController {
      * @throws IOException if the scene wasn't found
      */
     public void goToAdminBikeScene() throws IOException {
-        BikeListController controller = (BikeListController) goToAdmin(
-                "/admin/reservable/BikeList.fxml");
+        BikeListController controller =
+            (BikeListController) goTo("/admin/reservable/BikeList.fxml");
         controller.customInit();
     }
+
     /**
      * Switches view to the building scene.
      *
      * @throws IOException if the scene wasn't found
      */
-
     public void goToBuildingScene() throws IOException {
         goTo("/building/buildingListView.fxml");
     }
@@ -213,7 +192,7 @@ public abstract class AbstractSceneController {
      */
     public void goToUserPageScene() throws IOException {
         UserPageController controller =
-            (UserPageController) UsersDisplay.sceneControllerHandler("/user/userPage.fxml");
+            (UserPageController) MainDisplay.sceneControllerHandler("/user/userPage.fxml");
         controller.changeUserBox();
         controller.showBookings();
     }
@@ -234,7 +213,7 @@ public abstract class AbstractSceneController {
      */
     public void goToSignupScene() throws IOException {
         SignupController controller =
-            (SignupController) UsersDisplay.sceneControllerHandler("/user/signup.fxml");
+            (SignupController) MainDisplay.sceneControllerHandler("/user/signup.fxml");
         controller.changeUserBox();
     }
 
@@ -443,6 +422,6 @@ public abstract class AbstractSceneController {
     }
 
     public void goToAdminScene() throws IOException {
-        UsersDisplay.sceneHandler("/admin/AdminPanel.fxml");
+        MainDisplay.sceneHandler("/admin/AdminPanel.fxml");
     }
 }

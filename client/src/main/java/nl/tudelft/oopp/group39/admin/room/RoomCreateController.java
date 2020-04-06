@@ -16,7 +16,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.models.Building;
+import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 // Suppress all only used for Suspicious call to 'HashMap.get' in line 126
@@ -24,8 +24,8 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 public class RoomCreateController extends RoomListController {
     private Stage currentStage;
     private ObjectMapper mapper = new ObjectMapper();
-    private HashMap<String, Integer> buildingsByName = new HashMap<>();
-    private HashMap<Integer, Building> buildingById = new HashMap<>();
+    private HashMap<String, Long> buildingsByName = new HashMap<>();
+    private HashMap<Long, Building> buildingById = new HashMap<>();
     @FXML
     private Button backbtn;
     @FXML
@@ -122,8 +122,8 @@ public class RoomCreateController extends RoomListController {
         roomCap = roomCap == null || roomCap.contentEquals("") ? "0" : roomCap;
         String roomDesc = roomDescriptionField.getText();
         roomDesc = roomDesc == null ? "" : roomDesc;
-        String buildingId = building == null ? Integer.toString(buildingsByName.get(
-                buildingsByName.keySet().toArray()[0])) : Integer.toString(
+        String buildingId = building == null ? Long.toString(buildingsByName.get(
+                buildingsByName.keySet().toArray()[0])) : Long.toString(
                         this.buildingsByName.get(building.toString()));
         String onlyStaffObj = roomOnlyStaffField.getValue();
         String onlyStaff = onlyStaffObj == null ? Boolean.toString(false) : onlyStaffObj;

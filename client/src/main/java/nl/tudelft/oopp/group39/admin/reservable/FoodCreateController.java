@@ -12,10 +12,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.models.Building;
+import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.reservable.model.Food;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
@@ -42,8 +41,6 @@ public class FoodCreateController extends FoodListController {
     private TextField nameField;
     @FXML
     private TextField descriptionField;
-    @FXML
-    private MenuBar navBar;
 
     /**
      * Initializes the data and makes it usable.
@@ -66,7 +63,6 @@ public class FoodCreateController extends FoodListController {
         nameField.setPromptText("name");
         this.description = "";
         descriptionField.setPromptText("description");
-        setNavBar(navBar, currentStage);
     }
 
     /**
@@ -82,7 +78,7 @@ public class FoodCreateController extends FoodListController {
         List<String> buildingNames = new ArrayList<>();
         for (Building building : list) {
             buildingNames.add(building.getName());
-            buildingIdsByName.put(building.getName(), Long.valueOf(building.getId()));
+            buildingIdsByName.put(building.getName(), building.getId());
         }
         return FXCollections.observableArrayList(buildingNames);
     }
@@ -105,8 +101,8 @@ public class FoodCreateController extends FoodListController {
         String descriptionInput = descriptionField.getText();
         descriptionInput = descriptionInput.contentEquals("") ? description : descriptionInput;
         Object buildingObj = buildingBox.getValue();
-        Long buildingInput = buildingObj == null ?  buildingIdsByName.get(
-                building) :  buildingIdsByName.get(buildingObj.toString());
+        Long buildingInput = buildingObj == null
+            ? buildingIdsByName.get(building) :  buildingIdsByName.get(buildingObj.toString());
         String priceInputFirst = priceFieldFirst.getText();
         priceInputFirst = priceInputFirst.contentEquals("") ? priceFirst : priceInputFirst;
         String priceInputSecond = priceFieldFirst.getText();

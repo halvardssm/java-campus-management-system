@@ -88,10 +88,10 @@ public class BuildingEditController extends BuildingListController {
         String desc = descriptionFieldNew.getText();
         desc = desc.contentEquals("") ? building.getDescription() : desc;
         Object reservationStartValue = timeOpenFieldNew.getValue();
-        String reservationStartString = reservationStartValue == null ? start
+        String reservationStartString = reservationStartValue == null ? start + ":00"
                 : reservationStartValue.toString() + ":00";
         Object reservationEndValue = timeClosedFieldNew.getValue();
-        String reservationEndString = reservationEndValue == null ? end
+        String reservationEndString = reservationEndValue == null ? end + ":00"
               : reservationEndValue.toString() + ":00";
         String id = Long.toString(building.getId());
         ServerCommunication.updateBuilding(

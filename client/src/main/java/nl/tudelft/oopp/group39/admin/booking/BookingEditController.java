@@ -20,7 +20,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.booking.model.Booking;
-import nl.tudelft.oopp.group39.models.Building;
+import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
@@ -175,8 +175,8 @@ public class BookingEditController extends BookingListController {
      */
     private List<String> initiateTimeslots(String date) throws JsonProcessingException {
         List<String> times = new ArrayList<>();
-        int open = Integer.parseInt(building.getOpen().split(":")[0]);
-        int closed = Integer.parseInt(building.getClosed().split(":")[0]);
+        int open = Integer.parseInt(building.getOpen().toString().split(":")[0]);
+        int closed = Integer.parseInt(building.getClosed().toString().split(":")[0]);
         List<Integer> bookedTimes = getBookedTimes(date);
         for (int i = open; i < closed; i++) {
             String time;

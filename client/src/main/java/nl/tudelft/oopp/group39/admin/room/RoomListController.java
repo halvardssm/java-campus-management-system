@@ -18,7 +18,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -27,8 +26,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.admin.AdminPanelController;
+import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.facility.model.Facility;
-import nl.tudelft.oopp.group39.models.Building;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
@@ -55,8 +54,8 @@ public class RoomListController extends AdminPanelController {
     private TableColumn<Room, Room> viewCol = new TableColumn<>("View");
     @FXML
     private TableColumn<Room, Room> updateCol = new TableColumn<>("Update");
-    private HashMap<String, Integer> buildingsByName = new HashMap<>();
-    private HashMap<Integer, String> buildingsById = new HashMap<>();
+    private HashMap<String, Long> buildingsByName = new HashMap<>();
+    private HashMap<Long, String> buildingsById = new HashMap<>();
     private HashMap<String, Long> facilitiesByName = new HashMap<>();
     private HashMap<Long, String> facilitiesById = new HashMap<>();
     @FXML
@@ -389,7 +388,7 @@ public class RoomListController extends AdminPanelController {
         String description = descriptionFilter.getText();
         String building = buildingObj == null ? "" : buildingObj.toString();
         building = building.contentEquals("All buildings") || building.contentEquals(
-                "") ? "" : Integer.toString(buildingsByName.get(building));
+                "") ? "" : Long.toString(buildingsByName.get(building));
         filters = addToFilter("name", name, filters);
         filters = addToFilter("description", description, filters);
         filters = addToFilter("onlyStaff", onlyStaff, filters);

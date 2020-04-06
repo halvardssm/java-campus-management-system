@@ -165,10 +165,9 @@ public class CalendarController extends AbstractSceneController {
      */
     public void handleEvent(CalendarEvent e) throws JsonProcessingException {
         if (e.isEntryAdded()) {
-            System.out.println(e.getEntry());
             addEntry(e.getEntry());
         } else if (e.isEntryRemoved()) {
-            System.out.println("remove entry");
+            removeEntry(e.getEntry());
         } else if (e.getEventType().getSuperType().equals(CalendarEvent.ENTRY_CHANGED)) {
             changeEntry(e);
         }
@@ -182,13 +181,26 @@ public class CalendarController extends AbstractSceneController {
      */
     public void changeEntry(CalendarEvent event) throws JsonProcessingException {
         Entry<?> entry = event.getEntry();
+        System.out.println(entry);
         String title = event.getOldText() == null ? entry.getTitle() : event.getOldText();
-        LocalDateTime startsAt =
-            event.getOldInterval() == null ? entry.getStartAsLocalDateTime()
-                : event.getOldInterval().getStartDateTime();
-        LocalDateTime endsAt =
-            event.getOldInterval() == null ? entry.getEndAsLocalDateTime()
-                : event.getOldInterval().getEndDateTime();
+        LocalDateTime startsAt;
+        LocalDateTime endsAt;
+        System.out.println(event.getOldFullDay());
+        if (event.getOldFullDay()) {
+            startsAt = LocalDateTime.of(
+                event.getOldInterval().getStartDate(),
+                LocalTime.of(0, 0, 0));
+            endsAt = LocalDateTime.of(
+                event.getOldInterval().getEndDate(),
+                LocalTime.of(23, 59, 59));
+        } else {
+            startsAt =
+                event.getOldInterval() == null ? entry.getStartAsLocalDateTime()
+                    : event.getOldInterval().getStartDateTime();
+            endsAt =
+                event.getOldInterval() == null ? entry.getEndAsLocalDateTime()
+                    : event.getOldInterval().getEndDateTime();
+        }
         String filters = "title=" + title.replace(" ", "%20")
             + "&startsAt=" + startsAt
             + "&endsAt=" + endsAt
@@ -230,5 +242,25 @@ public class CalendarController extends AbstractSceneController {
             user.getUsername(),
             null);
         ServerCommunication.addEvent(event);
+    }
+
+    /**
+     * Removes a personal event from database.
+     *
+     * @param entry that needs to be removed
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public void removeEntry(Entry<?> entry) throws JsonProcessingException {
+        System.out.println(entry);
+        String title = entry.getTitle();
+        LocalDateTime startsAt = entry.getStartAsLocalDateTime();
+        LocalDateTime endsAt = entry.getEndAsLocalDateTime();
+        String filters = "title=" + title.replace(" ", "%20")
+            + "&startsAt=" + startsAt
+            + "&endsAt=" + endsAt
+            + "&user=" + user.getUsername()
+            + "&isGlobal=false";
+        Event oldEvent = ServerCommunication.getEvents(filters)[0];
+        ServerCommunication.removeEvent(oldEvent.getId().toString());
     }
 }
