@@ -128,6 +128,17 @@ public class ServerCommunication {
     }
 
     /**
+     * Gets the types of bikes.
+     */
+    public static String getBikeTypes() {
+        HttpRequest request = HttpRequest.newBuilder()
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .GET().uri(URI.create(url + "bike/types")).build();
+        return httpRequest(request);
+    }
+
+
+    /**
      * Gets the roles of users i.e student/staff.
      */
     public static String getUserRoles() {

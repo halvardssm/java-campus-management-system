@@ -15,10 +15,13 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.HashSet;
+import java.util.List;
 import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.config.Constants;
 import nl.tudelft.oopp.group39.event.dto.EventDto;
 import nl.tudelft.oopp.group39.event.entities.Event;
+import nl.tudelft.oopp.group39.room.entities.Room;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -113,6 +116,40 @@ class EventControllerTest extends AbstractControllerTest {
             .andExpect(jsonPath("$.body." + Event.COL_TITLE, is(testEvent.getTitle())));
 
         testEvent.setTitle("test");
+    }
+
+    @Test
+    void updateEventWithRooms() throws Exception {
+        Room room1 = new Room(
+            null,
+            null,
+            null,
+            null,
+            false,
+            null,
+            null,
+            null,
+            null
+        );
+
+        Room room = roomService.createRoom(room1);
+        room1.setId(room.getId());
+
+        testEvent.setRooms(new HashSet<>(List.of(room1)));
+        testEvent.setTitle("test2");
+        String json = objectMapper.writeValueAsString(testEvent.toDto());
+
+        mockMvc.perform(put(REST_MAPPING + "/" + testEvent.getId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(json)
+            .header(HttpHeaders.AUTHORIZATION, Constants.HEADER_BEARER + jwt))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.body").isMap())
+            .andExpect(jsonPath("$.body." + Event.COL_TITLE, is(testEvent.getTitle())));
+
+        testEvent.setTitle("test");
+
+        roomService.deleteRoom(room1.getId());
     }
 
     @Test
