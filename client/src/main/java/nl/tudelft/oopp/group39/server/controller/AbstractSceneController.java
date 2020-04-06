@@ -109,6 +109,17 @@ public abstract class AbstractSceneController {
     }
 
     /**
+    * Switches view to the admin building list scene.
+    *
+    * @throws IOException if the scene wasn't found
+    */
+
+    public void goToAdminFoodAndBikeScene() throws IOException {
+    //       goToAdmin("/admin/FoodAndBike/BuildingList.fxml");
+    }
+
+
+    /**
      * Switches view to the admin building list scene.
      *
      * @throws IOException if the scene wasn't found
