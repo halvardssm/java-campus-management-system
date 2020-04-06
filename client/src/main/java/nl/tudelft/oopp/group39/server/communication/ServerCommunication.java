@@ -336,6 +336,24 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
+
+    /**
+     * Adds an event on the server.
+     *
+     * @return the body of a post request to the server.
+     */
+    public static String addFoodItem(Food foodObj) throws JsonProcessingException {
+        String eventJson = mapper.writeValueAsString(foodObj);
+        System.out.println(eventJson);
+        HttpRequest.BodyPublisher newFoodItem = HttpRequest.BodyPublishers
+            .ofString(eventJson);
+        HttpRequest request = HttpRequest.newBuilder().POST(newFoodItem)
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .uri(URI.create(url + food))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
     /**
      * Retrieves array of filtered events from server.
      *

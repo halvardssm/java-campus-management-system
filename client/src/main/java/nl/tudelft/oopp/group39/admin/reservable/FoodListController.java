@@ -53,7 +53,7 @@ public class FoodListController extends AdminPanelController {
     /**
      * Initializes scene.
      */
-    public void customInit() {
+    public void customInit() throws JsonProcessingException {
         try {
             loadFood();
         } catch (JsonProcessingException e) {
@@ -140,9 +140,9 @@ public class FoodListController extends AdminPanelController {
      * Switches scene to the createUser one.
      */
     public void createFoodItem() throws IOException {
-        FXMLLoader loader = switchFunc("/admin/user/UserCreate.fxml");
-        UserCreateController controller = loader.getController();
-        controller.customInit();
+        FXMLLoader loader = switchFunc("/admin/reservable/FoodCreate.fxml");
+        FoodCreateController controller = loader.getController();
+        controller.initData();
     }
     /**
      * Deletes selected user.
