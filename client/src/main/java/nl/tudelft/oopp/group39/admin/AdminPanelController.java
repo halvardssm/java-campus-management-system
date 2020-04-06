@@ -110,18 +110,18 @@ public class AdminPanelController extends MainAdminController implements Initial
         Menu fileMenuButton6 = new Menu();
         fileMenuButton6.setGraphic(foodListLabel);
         menuBar.getMenus().add(fileMenuButton6);
-//        Label bikeListLabel = new Label("Bike list");
-//        bikeListLabel.setStyle("-fx-text-fill: black");
-//        bikeListLabel.setOnMouseClicked(event -> {
-//            try {
-//                goToAdminBikeScene();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//        Menu fileMenuButton7 = new Menu();
-//        fileMenuButton7.setGraphic(bikeListLabel);
-//        menuBar.getMenus().add(fileMenuButton7);
+        Label bikeListLabel = new Label("Bike list");
+        bikeListLabel.setStyle("-fx-text-fill: black");
+        bikeListLabel.setOnMouseClicked(event -> {
+            try {
+                goToAdminBikeScene();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        Menu fileMenuButton7 = new Menu();
+        fileMenuButton7.setGraphic(bikeListLabel);
+        menuBar.getMenus().add(fileMenuButton7);
     }
 
 
