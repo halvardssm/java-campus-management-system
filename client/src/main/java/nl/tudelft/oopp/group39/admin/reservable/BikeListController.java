@@ -69,10 +69,10 @@ public class BikeListController extends AdminPanelController {
 
     @SuppressWarnings("checkstyle:CommentsIndentation")
     void loadBike() throws JsonProcessingException {
-        String bikes = ServerCommunication.get(ServerCommunication.bike);
         bikeTable.setVisible(true);
         bikeTable.getItems().clear();
         bikeTable.getColumns().clear();
+        String bikes = ServerCommunication.get(ServerCommunication.bike);
         System.out.println(bikes);
         if (!bikes.contains("\"body\" : null,")) {
             ArrayNode body = (ArrayNode) mapper.readTree(bikes).get("body");
@@ -94,7 +94,14 @@ public class BikeListController extends AdminPanelController {
             updateCol.setCellFactory(param -> returnCell("Update"));
             ObservableList<Bike> data = FXCollections.observableArrayList(list);
             bikeTable.setItems(data);
-            bikeTable.getColumns().addAll(idCol, bikeTypeCol, priceCol, buildingCol, rentalDurationCol, deleteCol, updateCol);
+            bikeTable.getColumns().addAll(
+                idCol,
+                bikeTypeCol,
+                priceCol,
+                buildingCol,
+                rentalDurationCol,
+                deleteCol,
+                updateCol);
         }
     }
     /**
@@ -161,8 +168,8 @@ public class BikeListController extends AdminPanelController {
 
     public void editBikeItem(Bike bike) throws IOException {
         FXMLLoader loader = switchFunc("/admin/reservable/BikeEdit.fxml");
-//        FoodEditController controller = loader.getController();
-//        controller.initData(bike);
+        //        FoodEditController controller = loader.getController();
+        //        controller.initData(bike);
     }
 
     /**

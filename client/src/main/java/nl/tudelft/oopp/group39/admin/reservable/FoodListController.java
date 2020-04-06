@@ -53,7 +53,7 @@ public class FoodListController extends AdminPanelController {
     /**
      * Initializes scene.
      */
-    public void customInit() throws JsonProcessingException {
+    public void customInit() {
         try {
             loadFood();
         } catch (JsonProcessingException e) {
@@ -67,10 +67,10 @@ public class FoodListController extends AdminPanelController {
      */
 
     void loadFood() throws JsonProcessingException {
-        String foodItems = ServerCommunication.get(ServerCommunication.food);
         foodTable.setVisible(true);
         foodTable.getItems().clear();
         foodTable.getColumns().clear();
+        String foodItems = ServerCommunication.get(ServerCommunication.food);
         System.out.println(foodItems);
         if (!foodItems.contains("\"body\" : null,")) {
             ArrayNode body = (ArrayNode) mapper.readTree(foodItems).get("body");
@@ -92,7 +92,14 @@ public class FoodListController extends AdminPanelController {
             updateCol.setCellFactory(param -> returnCell("Update"));
             ObservableList<Food> data = FXCollections.observableArrayList(list);
             foodTable.setItems(data);
-            foodTable.getColumns().addAll(idCol, nameCol, priceCol, buildingCol, descriptionCol, deleteCol, updateCol);
+            foodTable.getColumns().addAll(
+                idCol,
+                nameCol,
+                priceCol,
+                buildingCol,
+                descriptionCol,
+                deleteCol,
+                updateCol);
         }
     }
     /**
