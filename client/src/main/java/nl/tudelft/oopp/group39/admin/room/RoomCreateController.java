@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.group39.admin.room;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,17 +15,15 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import nl.tudelft.oopp.group39.models.Building;
+import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 // Suppress all only used for Suspicious call to 'HashMap.get' in line 126
 @SuppressWarnings("MismatchedQueryAndUpdateOfCollection, ALL")
 public class RoomCreateController extends RoomListController {
-
     private Stage currentStage;
-    private ObjectMapper mapper = new ObjectMapper();
-    private HashMap<String, Integer> buildingsByName = new HashMap<>();
-    private HashMap<Integer, Building> buildingById = new HashMap<>();
+    private HashMap<String, Long> buildingsByName = new HashMap<>();
+    private HashMap<Long, Building> buildingById = new HashMap<>();
     @FXML
     private Button backbtn;
     @FXML
@@ -39,6 +36,8 @@ public class RoomCreateController extends RoomListController {
     private ComboBox<String> roomOnlyStaffField;
     @FXML
     private TextField roomCapacityField;
+    @FXML
+    private MenuBar navBar;
 
     /**
      * Initializes the scene.
@@ -50,10 +49,12 @@ public class RoomCreateController extends RoomListController {
             e.printStackTrace();
         }
         this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
 
     /**
      * Creates a list of buildings.
+     *
      * @throws JsonProcessingException when there is a processing exception.
      */
     public List<Building> getBuildings(String buildings) throws JsonProcessingException {
@@ -79,9 +80,9 @@ public class RoomCreateController extends RoomListController {
 
     /**
      * Initializes data for usage in creating room.
+     *
      * @throws JsonProcessingException when there is a processing exception.
      */
-
     public void initData() throws JsonProcessingException {
         String b = ServerCommunication.get(ServerCommunication.building);
         ObservableList<String> data = getData(b);
@@ -98,8 +99,9 @@ public class RoomCreateController extends RoomListController {
 
     /**
      * Goes back to main Room panel.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     @FXML
     private void getBack() throws IOException {
         switchRoomView(currentStage);
@@ -107,8 +109,9 @@ public class RoomCreateController extends RoomListController {
 
     /**
      * Creates a room.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     public void createRoom() throws IOException {
         String name = roomNameField.getText();
         name = name == null ? "" : name;
@@ -117,14 +120,13 @@ public class RoomCreateController extends RoomListController {
         roomCap = roomCap == null || roomCap.contentEquals("") ? "0" : roomCap;
         String roomDesc = roomDescriptionField.getText();
         roomDesc = roomDesc == null ? "" : roomDesc;
-        String buildingId = building == null ? Integer.toString(buildingsByName.get(
-                buildingsByName.keySet().toArray()[0])) : Integer.toString(
+        String buildingId = building == null ? Long.toString(buildingsByName.get(
+                buildingsByName.keySet().toArray()[0])) : Long.toString(
                         this.buildingsByName.get(building.toString()));
         String onlyStaffObj = roomOnlyStaffField.getValue();
         String onlyStaff = onlyStaffObj == null ? Boolean.toString(false) : onlyStaffObj;
         onlyStaff = Boolean.toString((onlyStaff).contentEquals("Only staff members"));
         ServerCommunication.addRoom(buildingId, roomCap, roomDesc, onlyStaff, name);
-        getBack();
+        goToAdminRoomScene();
     }
-
 }

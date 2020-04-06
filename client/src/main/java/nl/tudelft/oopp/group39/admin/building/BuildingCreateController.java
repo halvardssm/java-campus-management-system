@@ -15,10 +15,11 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 
 public class BuildingCreateController extends BuildingListController {
-
     private Stage currentStage;
     private String start;
     private String end;
+    @FXML
+    private MenuBar navBar;
     @FXML
     private Button backbtn;
     @FXML
@@ -38,6 +39,7 @@ public class BuildingCreateController extends BuildingListController {
      */
     public void customInit() {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
         List<String> timeSlots = null;
         try {
             timeSlots = initiateTimeslots();
@@ -53,10 +55,12 @@ public class BuildingCreateController extends BuildingListController {
         timeOpenFieldNew.setItems(list);
         timeClosedFieldNew.setItems(list);
     }
+
     /**
      * Adds a new building with auto-generated ID.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     public void addBuilding() throws IOException {
         String name = nameFieldNew.getText();
         String location = locationFieldNew.getText();
@@ -69,12 +73,11 @@ public class BuildingCreateController extends BuildingListController {
             + ":00" : reservationEndValue.toString() + ":00";
 
         ServerCommunication.addBuilding(
-                name, location, desc, reservationStartString, reservationEndString);
-        getBack();
+            name, location, desc, reservationStartString, reservationEndString);
+        goToAdminBuildingScene();
         nameFieldNew.clear();
         locationFieldNew.clear();
         descriptionFieldNew.clear();
-
     }
 
     /**
@@ -98,11 +101,11 @@ public class BuildingCreateController extends BuildingListController {
 
     /**
      * Goes back to main Building panel.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     @FXML
     private void getBack() throws IOException {
         switchBuildingView(currentStage);
     }
-
 }

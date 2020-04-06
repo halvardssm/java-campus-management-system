@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.config.Constants;
+import nl.tudelft.oopp.group39.reservable.dto.FoodDto;
 import nl.tudelft.oopp.group39.reservable.entities.Food;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.user.entities.User;
@@ -124,7 +125,7 @@ class FoodControllerTest extends AbstractControllerTest {
 
         assertEquals(
             "Food with id '0' wasn't found.",
-            foodController.update(0L, null).getBody().getError()
+            foodController.update(0L, new FoodDto()).getBody().getError()
         );
     }
 }

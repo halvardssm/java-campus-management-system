@@ -1,15 +1,17 @@
 package nl.tudelft.oopp.group39.user.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import java.sql.Blob;
+import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
+import org.apache.commons.codec.DecoderException;
 
 @JsonIgnoreProperties(value = { "events"})
 public class User {
     private String username;
     private String email;
     private String password;
-    private Blob image;
+    private String image;
     private String role;
     private ArrayNode bookings;
 
@@ -28,7 +30,7 @@ public class User {
      * @param image    image of the user
      * @param role     role of the user
      */
-    public User(String username, String email, String password, Blob image, String role) {
+    public User(String username, String email, String password, String image, String role) {
         this.username = username;
         this.email = email;
         this.password = password;
@@ -68,8 +70,13 @@ public class User {
      *
      * @return the image of the user
      */
-    public Blob getImage() {
+    public String getImage() {
         return image;
+    }
+
+    @JsonIgnore
+    public void setImageString(byte[] image) throws DecoderException {
+        this.image = AbstractSceneController.encodeUsingApacheCommons(image);
     }
 
     /**

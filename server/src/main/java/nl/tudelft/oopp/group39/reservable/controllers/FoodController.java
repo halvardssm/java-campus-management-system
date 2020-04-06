@@ -74,9 +74,9 @@ public class FoodController extends AbstractController {
     @ResponseBody
     public ResponseEntity<RestResponse<Object>> update(
         @PathVariable Long id,
-        @RequestBody Food food
+        @RequestBody FoodDto food
     ) {
-        return restHandler(() -> foodService.updateFood(id, food).toDto());
+        return restHandler(() -> foodService.updateFood(id, food.toEntity()).toDto());
     }
 
     /**

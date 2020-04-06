@@ -36,18 +36,19 @@ public class BookingTest {
         );
         this.room = new Room(
             null,
+            "Projectroom 1",
+            "This is another room for testing purposes",
+            8,
+            true,
+            null,
             new Building(null, "Drebbelweg",
                 "Drebbelweg 5",
                 "Drebbelweg",
                 LocalTime.of(6, 0),
                 LocalTime.of(17, 30),
-                null,
+                null, null,
                 null
             ),
-            "Projectroom 1",
-            8,
-            true,
-            "This is another room for testing purposes",
             null,
             null,
             null

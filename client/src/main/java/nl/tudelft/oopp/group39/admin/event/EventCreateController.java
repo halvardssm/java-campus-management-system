@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.group39.admin.event;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -9,30 +8,31 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import nl.tudelft.oopp.group39.event.model.Event;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
-import nl.tudelft.oopp.group39.user.model.User;
 
 
 public class EventCreateController extends EventListController {
-
-    private ObjectMapper mapper = new ObjectMapper();
     private Stage currentStage;
+    private List<CheckBox> rooms = new ArrayList<>();
+    @FXML
+    private CheckBox selectAll;
     @FXML
     private Button backbtn;
+    @FXML
+    private MenuBar navBar;
     @FXML
     private TextField titleField;
     @FXML
@@ -40,11 +40,13 @@ public class EventCreateController extends EventListController {
     @FXML
     private DatePicker endField;
     @FXML
-    private TextArea dateMessage;
+    private Label dateMessage;
     @FXML
     private ComboBox<String> userComboBox;
     @FXML
     private CheckBox globalCheckbox;
+    @FXML
+    private VBox roomSelector;
 
     /**
      * Initializes scene.
@@ -56,11 +58,14 @@ public class EventCreateController extends EventListController {
             e.printStackTrace();
         }
         this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
     }
-    /**
-     * .
-     */
 
+    /**
+     * Initializes the data.
+     *
+     * @throws JsonProcessingException when there is a processing exception
+     */
     public void initData() throws JsonProcessingException {
         dateMessage.setText("");
 
@@ -69,11 +74,15 @@ public class EventCreateController extends EventListController {
         userComboBox.getSelectionModel().selectFirst();
         startField.setPromptText(LocalDate.now().toString());
         endField.setPromptText(LocalDate.now().toString());
+        uncheckUserComboBox();
+        setRoomSelector();
     }
+
     /**
      * Gains the information needed to create event.
+     *
+     * @throws IOException when there is an IO exception
      */
-
     public void createEvent() throws IOException {
         dateMessage.setText("");
         String title = titleField.getText();
@@ -86,25 +95,28 @@ public class EventCreateController extends EventListController {
         String userId = userComboBox.getValue();
         boolean endNull = end == null;
         boolean globalBool = globalCheckbox.isSelected();
-        String endDate = endNull ? LocalDateTime.now().toString() : end.toString() + " 23:59:00";
-        checkValidity(startDate, endDate, startNull, endNull, title, globalBool, userId);
+        String endDate = endNull ? LocalDateTime.now().toString() : end.toString() + " 23:59:59";
+        if (checkRoomSelected()) {
+            checkValidity(startDate, endDate, startNull, endNull, title, globalBool, userId);
+        }
     }
+
     /**
      * Communicates information to create event to server.
      */
-
     public void createEventFinal(
             String title, String startDate, String endDate,
             boolean globalBool, String userId) throws IOException {
-        Event newEvent = new Event(title,startDate,endDate, globalBool,userId, new ArrayList<>());
+        List<Long> roomsList = createRoomsList();
+        Event newEvent = new Event(title, startDate, endDate, globalBool, userId, roomsList);
         createAlert(ServerCommunication.addEvent(newEvent));
-        getBack();
+        goToAdminEventScene();
         createAlert("Created an event of type: " + title);
     }
+
     /**
      * Makes sure that values put into event are valid.
      */
-
     public void checkValidity(
           String startDate,
           String endDate,
@@ -164,13 +176,92 @@ public class EventCreateController extends EventListController {
         dateMessage.setStyle("-fx-text-fill: Red");
         dateMessage.setText("Please input a start date or an end date.");
     }
+
+    /**
+     * Creates a list of selected room id's.
+     *
+     * @return List of room id's
+     */
+    public List<Long> createRoomsList() {
+        List<Long> roomsList = new ArrayList<>();
+        for (CheckBox roomBox : rooms) {
+            if (roomBox.isSelected()) {
+                roomsList.add(Long.parseLong(roomBox.getId()));
+            }
+        }
+        return roomsList;
+    }
+
+    /**
+     * Checks if a room is selected.
+     *
+     * @return boolean true if a room is selected, false otherwise
+     */
+    public boolean checkRoomSelected() {
+        boolean roomSelected = false;
+        for (CheckBox roomBox : rooms) {
+            if (roomBox.isSelected()) {
+                roomSelected = true;
+            }
+        }
+        if (!roomSelected) {
+            dateMessage.setStyle("-fx-text-fill: Red");
+            dateMessage.setText("Please select the rooms the event affects");
+        }
+        return roomSelected;
+    }
+
+    /**
+     * Sets up the room selector.
+     *
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public void setRoomSelector() throws JsonProcessingException {
+        String roomString = ServerCommunication.get(ServerCommunication.room);
+        ArrayNode body = (ArrayNode) mapper.readTree(roomString).get("body");
+        roomString = mapper.writeValueAsString(body);
+        Room[] roomList = mapper.readValue(roomString, Room[].class);
+        for (Room room : roomList) {
+            CheckBox roomBox = new CheckBox(room.getName());
+            roomBox.setId(room.getId().toString());
+            rooms.add(roomBox);
+            roomSelector.getChildren().add(roomBox);
+        }
+    }
+
+    /**
+     * Selects all rooms.
+     */
+    public void selectAllRooms() {
+        if (selectAll.isSelected()) {
+            for (CheckBox roomBox : rooms) {
+                roomBox.setSelected(true);
+            }
+        } else {
+            for (CheckBox roomBox : rooms) {
+                roomBox.setSelected(false);
+            }
+        }
+    }
+
     /**
      * Goes back to main admin panel.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     @FXML
     private void getBack() throws IOException {
         switchEventView(currentStage);
     }
 
+    /**
+     * If the event is selected to be global, this method disables the combobox to choose a user.
+     */
+    public void uncheckUserComboBox() {
+        if (globalCheckbox.isSelected()) {
+            userComboBox.setDisable(true);
+        } else {
+            userComboBox.setDisable(false);
+        }
+    }
 }

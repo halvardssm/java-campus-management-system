@@ -7,11 +7,13 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -24,6 +26,7 @@ import nl.tudelft.oopp.group39.event.entities.Event;
 import nl.tudelft.oopp.group39.facility.entities.Facility;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
 import nl.tudelft.oopp.group39.room.dto.RoomDto;
+import org.hibernate.annotations.LazyGroup;
 
 @Entity
 @Table(name = Room.TABLE_NAME)
@@ -35,6 +38,7 @@ public class Room extends AbstractEntity<Room, RoomDto> {
     public static final String COL_CAPACITY = "capacity";
     public static final String COL_ONLY_STAFF = "onlyStaff";
     public static final String COL_DESCRIPTION = "description";
+    public static final String COL_IMAGE = "image";
     public static final String COL_BUILDING = "building";
     public static final String COL_FACILITIES = "facilities";
     public static final String COL_EVENTS = "events";
@@ -42,13 +46,22 @@ public class Room extends AbstractEntity<Room, RoomDto> {
     public static final String COL_RESERVATIONS = "reservations";
 
     private String name;
+    private String description;
     private Integer capacity;
     private Boolean onlyStaff;
-    private String description;
+    @Lob
+    @Basic(fetch = FetchType.EAGER)
+    @LazyGroup("lobs")
+    private byte[] image;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Building.MAPPED_NAME)
     private Building building;
-
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
+    private Set<Booking> bookings = new HashSet<>();
+    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
+    private Set<Reservation> reservations = new HashSet<>();
+    @ManyToMany(mappedBy = TABLE_NAME, fetch = FetchType.EAGER)
+    private Set<Event> events = new HashSet<>();
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = (TABLE_NAME + "_" + Facility.TABLE_NAME),
         joinColumns = {
@@ -61,14 +74,6 @@ public class Room extends AbstractEntity<Room, RoomDto> {
         })
     private Set<Facility> facilities = new HashSet<>();
 
-    @ManyToMany(mappedBy = TABLE_NAME, fetch = FetchType.EAGER)
-    private Set<Event> events = new HashSet<>();
-
-    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
-    private Set<Booking> bookings = new HashSet<>();
-    @OneToMany(mappedBy = MAPPED_NAME, fetch = FetchType.EAGER)
-    private Set<Reservation> reservations = new HashSet<>();
-
     /**
      * Creates a room.
      */
@@ -79,32 +84,35 @@ public class Room extends AbstractEntity<Room, RoomDto> {
      * Creates a room.
      *
      * @param id          the id
-     * @param building    the building
      * @param name        name of the room
+     * @param description description of the room
      * @param capacity    capacity of the room
      * @param onlyStaff   whether the room is only accessible to staff
-     * @param description description of the room
+     * @param image       the image
+     * @param building    the building
      * @param events      set of events the room has
      * @param facilities  set of facilities the room has
      * @param bookings    set of bookings for the room
      */
     public Room(
         Long id,
-        Building building,
         String name,
+        String description,
         Integer capacity,
         Boolean onlyStaff,
-        String description,
+        String image,
+        Building building,
         Set<Event> events,
         Set<Facility> facilities,
         Set<Booking> bookings
     ) {
         setId(id);
-        setBuilding(building);
         setName(name);
+        setDescription(description);
         setCapacity(capacity);
         setOnlyStaff(onlyStaff);
-        setDescription(description);
+        setImage(image);
+        setBuilding(building);
         getEvents().addAll(initSet(events));
         getFacilities().addAll(initSet(facilities));
         getBookings().addAll(initSet(bookings));
@@ -201,6 +209,24 @@ public class Room extends AbstractEntity<Room, RoomDto> {
     }
 
     /**
+     * Gets the image.
+     *
+     * @return the image
+     */
+    public String getImage() {
+        return Utils.fromByteToString(image);
+    }
+
+    /**
+     * Changes the image.
+     *
+     * @param image the new image
+     */
+    public void setImage(String image) {
+        this.image = Utils.fromStringToByte(image);
+    }
+
+    /**
      * Gets the facilities that the room has to offer.
      *
      * @return a set with the facilities that the room has to offer
@@ -281,11 +307,12 @@ public class Room extends AbstractEntity<Room, RoomDto> {
     public RoomDto toDto() {
         return new RoomDto(
             getId(),
-            getBuilding().getId(),
             getName(),
+            getDescription(),
             getCapacity(),
             getOnlyStaff(),
-            getDescription(),
+            getBuilding().getId(),
+            getImage(),
             getFacilities(),
             Utils.setEntityToDto(getBookings())
         );
@@ -309,6 +336,7 @@ public class Room extends AbstractEntity<Room, RoomDto> {
         return Objects.equals(getId(), room.getId())
             && Objects.equals(getName(), room.getName())
             && Objects.equals(getBuilding(), room.getBuilding())
+            && Objects.equals(getImage(), room.getImage())
             && Objects.equals(getCapacity(), room.getCapacity())
             && Objects.equals(getOnlyStaff(), room.getOnlyStaff())
             && Objects.equals(getDescription(), room.getDescription())

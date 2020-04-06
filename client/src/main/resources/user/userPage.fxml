@@ -45,11 +45,9 @@
                 <Insets top="20" bottom="20" right="50" left="50"/>
             </padding>
             <VBox prefHeight="300.0" prefWidth="200.0" alignment="CENTER_LEFT" spacing="15">
-                <ImageView fitHeight="146.0" fitWidth="152.0" pickOnBounds="true" smooth="false">
-                    <image>
-                        <Image url="@../icons/testimage.jpg"/>
-                    </image>
+                <ImageView fx:id="userImage" fitHeight="146.0" fitWidth="152.0" pickOnBounds="true" smooth="false">
                 </ImageView>
+                <Button styleClass="buttons" text="Change image" onAction="#changeUserImage"/>
                 <Label fx:id="accountName" text="Your Name">
                     <font>
                         <Font size="23.0"/>

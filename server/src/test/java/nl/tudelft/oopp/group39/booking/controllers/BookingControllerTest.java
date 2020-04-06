@@ -24,11 +24,7 @@ public class BookingControllerTest extends AbstractControllerTest {
     private final LocalTime end = LocalTime.of(6, 9, 20);
     private final Room testRoom = new Room(
         null,
-        null,
-        "Projectroom 1",
-        8,
-        true,
-        "This is another room for testing purposes",
+        "Projectroom 1", "This is another room for testing purposes", 8, true, null, null,
         null,
         null,
         null

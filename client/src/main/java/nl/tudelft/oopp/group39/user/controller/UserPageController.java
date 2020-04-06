@@ -1,6 +1,11 @@
 package nl.tudelft.oopp.group39.user.controller;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
@@ -13,12 +18,18 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
+import javax.imageio.ImageIO;
 import nl.tudelft.oopp.group39.booking.model.Booking;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
+import nl.tudelft.oopp.group39.server.views.MainDisplay;
+import org.apache.commons.codec.DecoderException;
 
 public class UserPageController extends AbstractSceneController {
     @FXML
@@ -45,15 +56,14 @@ public class UserPageController extends AbstractSceneController {
     private DatePicker editDate;
     @FXML
     private Button doneButton;
+    @FXML
+    private ImageView userImage;
 
     /**
      * Updates all the information on the user page.
      */
-    public void showBookings() {
-        accountName.setText(user.getUsername());
-        accountRole.setText(user.getRole());
-        accountEmail.setText(user.getEmail());
-
+    public void showBookings() throws IOException, DecoderException {
+        showUserInfo();
         flowPane.getChildren().clear();
         try {
             String bookingString = ServerCommunication.getBookings("user=" + user.getUsername());
@@ -97,6 +107,61 @@ public class UserPageController extends AbstractSceneController {
     }
 
     /**
+     * Shows the user information.
+     *
+     * @throws IOException      when there is an IO exception
+     * @throws DecoderException when there is a decoder exception
+     */
+    public void showUserInfo() throws IOException, DecoderException {
+        accountName.setText(user.getUsername());
+        accountRole.setText(user.getRole());
+        accountEmail.setText(user.getEmail());
+        if (user.getImage() == null) {
+            Image standardUser =
+                new Image(new FileInputStream("client/src/main/resources/icons/user-icon.png"));
+            userImage.setImage(standardUser);
+        } else {
+            byte[] image = decodeUsingApacheCommons(user.getImage());
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(image);
+            BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "jpg", out);
+            ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+            Image userPhoto = new Image(in);
+            userImage.setImage(userPhoto);
+        }
+    }
+
+    /**
+     * Changes the user image.
+     *
+     * @throws IOException      when there is an IO exception
+     * @throws DecoderException when there is a decoder exception
+     */
+    public void changeUserImage() throws IOException, DecoderException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choose picture");
+        fileChooser.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("JPG", "*.jpg")
+        );
+        File file = fileChooser.showOpenDialog(MainDisplay.window);
+        if (file != null) {
+            Image newImage = new Image(file.toURI().toString());
+            userImage.setImage(newImage);
+            BufferedImage bufferedImage = ImageIO.read(file);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            System.out.println(file.getName());
+            String[] fileName = file.getName().split("\\.");
+            String format = fileName[fileName.length - 1];
+            ImageIO.write(bufferedImage, format, byteArrayOutputStream);
+            byte[] data = byteArrayOutputStream.toByteArray();
+            user.setImageString(data);
+            System.out.println(user.getImage());
+            System.out.println(ServerCommunication.updateUser(user));
+        }
+    }
+
+    /**
      * Calculates the difference between two times in HH:MM:SS format.
      *
      * @param l1 the starting time
@@ -110,7 +175,7 @@ public class UserPageController extends AbstractSceneController {
     /**
      * Deletes the booking after a 'warning' has been fired.
      */
-    public void deleteBooking() throws IOException {
+    public void deleteBooking() throws IOException, DecoderException {
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setContentText("Are you sure you want to delete the booking?");
         confirmation.setTitle("Delete");
@@ -210,9 +275,9 @@ public class UserPageController extends AbstractSceneController {
             createAlert("Invalid Time String");
         } catch (IOException e) {
             createAlert("Error: Wrong IO");
+        } catch (DecoderException e) {
+            e.printStackTrace();
         }
-
-
     }
 
     /**

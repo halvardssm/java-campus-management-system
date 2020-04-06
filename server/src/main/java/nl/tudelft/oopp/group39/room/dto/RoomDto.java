@@ -19,6 +19,7 @@ public class RoomDto extends AbstractDto<Room, RoomDto> {
     private Integer capacity;
     private Boolean onlyStaff;
     private String description;
+    private String image;
     private Set<Facility> facilities = new HashSet<>();
     private Set<BookingDto> bookings = new HashSet<>();
 
@@ -32,21 +33,23 @@ public class RoomDto extends AbstractDto<Room, RoomDto> {
      * Creates a RoomDto object.
      *
      * @param id          the id of the Room
-     * @param building    building id that contains the room
      * @param name        the name of the room
+     * @param description a description for the room
      * @param capacity    the capacity of the room
      * @param onlyStaff   value that determines if the room is only for staff or not
-     * @param description a description for the room
+     * @param building    building id that contains the room
+     * @param image       the image
      * @param facilities  the facilities that are contained in the room
      * @param bookings    the bookings made for the room (in dto form)
      */
     public RoomDto(
         Long id,
-        Long building,
         String name,
+        String description,
         Integer capacity,
         Boolean onlyStaff,
-        String description,
+        Long building,
+        String image,
         Set<Facility> facilities,
         Set<BookingDto> bookings
     ) {
@@ -56,6 +59,7 @@ public class RoomDto extends AbstractDto<Room, RoomDto> {
         setCapacity(capacity);
         setOnlyStaff(onlyStaff);
         setDescription(description);
+        setImage(image);
         getFacilities().addAll(facilities);
         getBookings().addAll(initSet(bookings));
 
@@ -151,6 +155,14 @@ public class RoomDto extends AbstractDto<Room, RoomDto> {
         this.description = description;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     /**
      * Gets the facilities that the room has to offer.
      *
@@ -196,11 +208,12 @@ public class RoomDto extends AbstractDto<Room, RoomDto> {
     public Room toEntity() {
         return new Room(
             getId(),
-            Utils.idToEntity(getBuilding(), Building.class),
             getName(),
+            getDescription(),
             getCapacity(),
             isOnlyStaff(),
-            getDescription(),
+            getImage(),
+            Utils.idToEntity(getBuilding(), Building.class),
             null,
             getFacilities(),
             Utils.setDtoToEntity(getBookings())

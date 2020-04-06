@@ -10,7 +10,6 @@ import nl.tudelft.oopp.group39.reservable.enums.BikeType;
 import nl.tudelft.oopp.group39.reservation.dto.ReservationAmountDto;
 
 public class BikeDto extends ReservableDto<Bike, BikeDto> {
-
     private BikeType bikeType;
 
     /**

@@ -310,3 +310,14 @@
 .roomSelector {
     -fx-text-fill: black;
 }
+
+.adminPanelButton {
+    -fx-pref-width: 168;
+    -fx-pref-height: 112;
+    -fx-font-size: 19;
+    -fx-background-color: rgba(106, 123, 127, 0.18);
+}
+
+.adminPanelButton:hover {
+    -fx-background-color: rgba(106, 123, 127, 0.3);
+}

@@ -12,6 +12,8 @@ import java.net.http.HttpResponse;
 import nl.tudelft.oopp.group39.building.model.Building;
 import nl.tudelft.oopp.group39.event.model.Event;
 import nl.tudelft.oopp.group39.reservable.model.Bike;
+import nl.tudelft.oopp.group39.reservable.model.Food;
+import nl.tudelft.oopp.group39.reservation.model.Reservation;
 import nl.tudelft.oopp.group39.room.model.Room;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 import nl.tudelft.oopp.group39.user.model.User;
@@ -27,6 +29,7 @@ public class ServerCommunication {
     public static String food = "food";
     public static String bike = "bike";
     public static String event = "event";
+    public static String reservable = "reservable";
     private static HttpClient client = HttpClient.newBuilder().build();
     public static String url;
     private static ObjectMapper mapper =
@@ -72,6 +75,21 @@ public class ServerCommunication {
             .header("Authorization", "Bearer " + AbstractSceneController.jwt)
             .GET().uri(URI.create(url + building + "/" + id)).build();
         return httpRequest(request);
+    }
+
+    /**
+     * Retrieves reservations filtered on id.
+     *
+     * @param id of wanted building
+     * @return the body of a get request to the server.
+     */
+    public static Reservation getReservationById(long id) throws JsonProcessingException {
+        HttpRequest request = HttpRequest.newBuilder()
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .GET().uri(URI.create(url + reservation + "/" + id)).build();
+        JsonNode roomJson = mapper.readTree(httpRequest(request)).get("body");
+        String roomAsString = mapper.writeValueAsString(roomJson);
+        return mapper.readValue(roomAsString, Reservation.class);
     }
     /**
      * Retrieves building filtered on id. The difference between the other getBuilding method
@@ -125,6 +143,17 @@ public class ServerCommunication {
             .GET().uri(URI.create(url + "event/types")).build();
         return httpRequest(request);
     }
+
+    /**
+     * Gets the types of bikes.
+     */
+    public static String getBikeTypes() {
+        HttpRequest request = HttpRequest.newBuilder()
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .GET().uri(URI.create(url + "bike/types")).build();
+        return httpRequest(request);
+    }
+
 
     /**
      * Gets the roles of users i.e student/staff.
@@ -259,6 +288,7 @@ public class ServerCommunication {
                 + "\", \"description\":\"" + description + "\", \"open\":\"" + open
                 + "\", \"closed\":\"" + closed + "\"}");
         HttpRequest request = HttpRequest.newBuilder().POST(newBuilding)
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
             .uri(URI.create(url + "building"))
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
@@ -335,6 +365,41 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
+
+    /**
+     * Adds a food item on the server.
+     *
+     * @return the body of a post request to the server.
+     */
+    public static String addFoodItem(Food foodObj) throws JsonProcessingException {
+        String eventJson = mapper.writeValueAsString(foodObj);
+        System.out.println(eventJson);
+        HttpRequest.BodyPublisher newFoodItem = HttpRequest.BodyPublishers
+            .ofString(eventJson);
+        HttpRequest request = HttpRequest.newBuilder().POST(newFoodItem)
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .uri(URI.create(url + food))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Adds a bike on the server.
+     *
+     * @return the body of a post request to the server.
+     */
+    public static String addBike(Bike bikeObj) throws JsonProcessingException {
+        String eventJson = mapper.writeValueAsString(bikeObj);
+        System.out.println(eventJson);
+        HttpRequest.BodyPublisher newBike = HttpRequest.BodyPublishers
+            .ofString(eventJson);
+        HttpRequest request = HttpRequest.newBuilder().POST(newBike)
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .uri(URI.create(url + bike))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
     /**
      * Retrieves array of filtered events from server.
      *
@@ -352,10 +417,10 @@ public class ServerCommunication {
         String eventAsString = mapper.writeValueAsString(eventJson);
         return mapper.readValue(eventAsString, Event[].class);
     }
+
     /**
      * Updates events on the server.
      */
-
     public static String updateEvent(
             String id,
             String title,
@@ -394,6 +459,63 @@ public class ServerCommunication {
     }
 
     /**
+     * Updates event in the server.
+     *
+     * @param foodObj the new food item
+     * @param id       id of the to be updated event
+     * @return the body of a put request to the server.
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public static String updateFoodItem(Food foodObj, Long id) throws JsonProcessingException {
+        String eventJson = mapper.writeValueAsString(foodObj);
+        HttpRequest.BodyPublisher newFoodItem = HttpRequest.BodyPublishers
+            .ofString(eventJson);
+        HttpRequest request = HttpRequest.newBuilder().PUT(newFoodItem)
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .uri(URI.create(url + food + "/" + id))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    /**
+     * Updates event in the server.
+     *
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public static String updateReservation(
+            Reservation resObj,
+            Long id) throws JsonProcessingException {
+        String eventJson = mapper.writeValueAsString(resObj);
+        HttpRequest.BodyPublisher newFoodItem = HttpRequest.BodyPublishers
+            .ofString(eventJson);
+        HttpRequest request = HttpRequest.newBuilder().PUT(newFoodItem)
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .uri(URI.create(url + reservation + "/" + id))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+
+    /**
+     * Updates event in the server.
+     *
+     * @param bikeObj the new bike
+     * @param id       id of the to be updated event
+     * @return the body of a put request to the server.
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public static String updateBike(Bike bikeObj, Long id) throws JsonProcessingException {
+        String eventJson = mapper.writeValueAsString(bikeObj);
+        HttpRequest.BodyPublisher newBike = HttpRequest.BodyPublishers
+            .ofString(eventJson);
+        HttpRequest request = HttpRequest.newBuilder().PUT(newBike)
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .uri(URI.create(url + bike + "/" + id))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
+
+    /**
      * Updates bookings on the server.
      *
      * @return the body of a put request to the server.
@@ -416,8 +538,6 @@ public class ServerCommunication {
             .header("Content-Type", "application/json").build();
         return httpRequest(request);
     }
-
-
 
     /**
      * Updates Rooms on the server.
@@ -491,6 +611,23 @@ public class ServerCommunication {
         return httpRequest(request);
     }
 
+    /**
+     * Updates user in the server.
+     *
+     * @param changeUser updated object of User.
+     * @return the body of a put request to the server.
+     * @throws JsonProcessingException when there is a processing exception
+     */
+    public static String updateUser(User changeUser) throws JsonProcessingException {
+        String newUser = mapper.writeValueAsString(changeUser);
+        HttpRequest.BodyPublisher userUpdate = HttpRequest.BodyPublishers
+            .ofString(newUser);
+        HttpRequest request = HttpRequest.newBuilder().PUT(userUpdate)
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .uri(URI.create(url + user + "/" + changeUser.getUsername()))
+            .header("Content-Type", "application/json").build();
+        return httpRequest(request);
+    }
 
     /**
      * Updates the user on the server.
@@ -498,15 +635,13 @@ public class ServerCommunication {
      * @return the body of a post request to the server.
      */
     public static String updateUser(
-            String username,
-            String email,
-            String password,
-            String bookings
+        String username,
+        String email,
+        String image
     ) {
         HttpRequest.BodyPublisher newUser = HttpRequest.BodyPublishers
-                .ofString("{\"username\": \"" + username + "\", \"email\":\"" + email
-                         + "\", \"password\":\"" + password + "\", \"bookings\":\""
-                         + bookings + "\"}");
+            .ofString("{\"username\": \"" + username + "\", \"email\":\"" + email
+                + "\", \"image\":\"" + image + "\"}");
         HttpRequest request = HttpRequest.newBuilder().PUT(newUser)
             .header("Authorization", "Bearer " + AbstractSceneController.jwt)
             .uri(URI.create(url + "user/" + username))
@@ -518,7 +653,6 @@ public class ServerCommunication {
      * Updates the user on the server.
      *
      */
-
     public static String updateUserAdmin(
         String username,
         String email,
@@ -543,15 +677,35 @@ public class ServerCommunication {
             .uri(URI.create(url + "building/" + id)).build();
         httpRequest(request);
     }
+
     /**
      * DELETE HTTP request to remove a User.
      * @param id events id
      */
-
     public static void removeUser(String id) {
         HttpRequest request = HttpRequest.newBuilder().DELETE()
             .header("Authorization", "Bearer " + AbstractSceneController.jwt)
             .uri(URI.create(url + "user/" + id)).build();
+        httpRequest(request);
+    }
+
+    /**
+     * DELETE HTTP request to remove a food item based on a String parameter id.
+     */
+    public static void removeFoodItem(String id) {
+        HttpRequest request = HttpRequest.newBuilder().DELETE()
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .uri(URI.create(url + "food/" + id)).build();
+        httpRequest(request);
+    }
+
+    /**
+     * DELETE HTTP request to remove a bike based on a String parameter id.
+     */
+    public static void removeBike(String id) {
+        HttpRequest request = HttpRequest.newBuilder().DELETE()
+            .header("Authorization", "Bearer " + AbstractSceneController.jwt)
+            .uri(URI.create(url + "bike/" + id)).build();
         httpRequest(request);
     }
 
@@ -575,8 +729,6 @@ public class ServerCommunication {
             .uri(URI.create(url + "room/" + id)).build();
         httpRequest(request);
     }
-
-
 
     /**
      * Retrieves all bookings from the server.
@@ -613,7 +765,6 @@ public class ServerCommunication {
             .uri(URI.create(url + "booking/" + id)).build();
         httpRequest(request);
     }
-
 
     /**
      * Retrieves bikes filtered on building id.
@@ -665,7 +816,7 @@ public class ServerCommunication {
      * @param user           netid of user making the order
      * @param roomId         id of the room the food needs to be delivered to
      * @param reservable     list of reservables
-     * @return @return the body of a post request to the server.
+     * @return               the body of a post request to the server.
      */
     public static String orderFoodBike(
         String timeOfPickup,

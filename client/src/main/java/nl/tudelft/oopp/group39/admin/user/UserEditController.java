@@ -1,7 +1,6 @@
 package nl.tudelft.oopp.group39.admin.user;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 import javafx.collections.FXCollections;
@@ -16,9 +15,7 @@ import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.user.model.User;
 
 public class UserEditController extends UserListController {
-
     private Stage currentStage;
-    private ObjectMapper mapper = new ObjectMapper();
     private User user;
     @FXML
     private Button backbtn;
@@ -26,16 +23,18 @@ public class UserEditController extends UserListController {
     private ComboBox<String> roleBox;
     @FXML
     private TextField emailField;
-
+    @FXML
+    private MenuBar navBar;
 
     /**
      * Initializes the data of a User and makes it usable.
-     * @param user Object user
+     *
+     * @param user                     Object user
      * @throws JsonProcessingException when there is a processing exception.
      */
-
     public void initData(User user) throws JsonProcessingException {
         this.currentStage = (Stage) backbtn.getScene().getWindow();
+        setNavBar(navBar, currentStage);
         this.user = user;
         String roles = ServerCommunication.getUserRoles();
         ArrayNode body = (ArrayNode) mapper.readTree(roles).get("body");
@@ -49,16 +48,19 @@ public class UserEditController extends UserListController {
 
     /**
      * Goes back to main User panel.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     @FXML
     private void getBack() throws IOException {
         switchUserView(currentStage);
     }
+
     /**
      * Edits user values and sends them to database.
+     *
+     * @throws IOException if an error occurs during loading
      */
-
     public void editUser() throws IOException {
         String name = emailField.getText();
         name = name.contentEquals("") ? user.getUsername() : name;
@@ -68,7 +70,6 @@ public class UserEditController extends UserListController {
         email = role.contentEquals("STUDENT") ? "student." + email : email;
         email = name + "@" + email;
         ServerCommunication.updateUserAdmin(user.getUsername(), email, role);
-        getBack();
+        goToAdminUserScene();
     }
-
 }

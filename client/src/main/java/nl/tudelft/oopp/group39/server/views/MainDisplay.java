@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import nl.tudelft.oopp.group39.server.communication.ServerCommunication;
 import nl.tudelft.oopp.group39.server.controller.AbstractSceneController;
 
-public class UsersDisplay extends Application {
+public class MainDisplay extends Application {
     public static void main(String[] args) {
         launch(args);
     }
@@ -45,7 +45,7 @@ public class UsersDisplay extends Application {
         throws IOException {
         System.out.println("Scene changing...");
 
-        FXMLLoader loader = new FXMLLoader(UsersDisplay.class.getResource(location));
+        FXMLLoader loader = new FXMLLoader(MainDisplay.class.getResource(location));
         root = loader.load();
         previous = window.getScene();
         window.setScene(new Scene(root, previous.getWidth(), previous.getHeight()));
