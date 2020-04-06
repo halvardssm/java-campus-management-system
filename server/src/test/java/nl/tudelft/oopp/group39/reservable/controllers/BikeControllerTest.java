@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import nl.tudelft.oopp.group39.AbstractControllerTest;
 import nl.tudelft.oopp.group39.config.Constants;
+import nl.tudelft.oopp.group39.reservable.dto.BikeDto;
 import nl.tudelft.oopp.group39.reservable.entities.Bike;
 import nl.tudelft.oopp.group39.reservable.enums.BikeType;
 import nl.tudelft.oopp.group39.reservation.entities.Reservation;
@@ -123,7 +124,7 @@ class BikeControllerTest extends AbstractControllerTest {
 
         assertEquals(
             "Bike with id '0' wasn't found.",
-            bikeController.update(0L, null).getBody().getError()
+            bikeController.update(0L, new BikeDto()).getBody().getError()
         );
     }
 }
