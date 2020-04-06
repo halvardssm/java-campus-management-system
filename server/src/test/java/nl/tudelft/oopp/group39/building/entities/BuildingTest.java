@@ -29,11 +29,7 @@ public class BuildingTest extends AbstractTest {
     void testBuilding() {
         roomService.createRoom(new Room(
             null,
-            building1,
-            "Lecture Hall Ampere",
-            50,
-            false,
-            "Lecture hall in EEMCS",
+            "Lecture Hall Ampere", "Lecture hall in EEMCS", 50, false, null, building1,
             null,
             null,
             null
@@ -49,11 +45,11 @@ public class BuildingTest extends AbstractTest {
         this.reservables.addAll(initSet(reservables));
         this.building1 = new Building(
             null, name, location, description,
-            open, closed, rooms, reservables
+            open, closed, null, rooms, reservables
         );
         this.building2 = new Building(
             null, name, location, description,
-            open, closed, rooms, reservables
+            open, closed, null, rooms, reservables
         );
         this.building3 = new Building(
             null,
@@ -62,7 +58,7 @@ public class BuildingTest extends AbstractTest {
             "Drebbelweg",
             LocalTime.of(6, 0),
             LocalTime.of(17, 30),
-            null,
+            null, null,
             null
         );
     }

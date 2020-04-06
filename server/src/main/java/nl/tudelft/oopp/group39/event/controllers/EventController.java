@@ -106,7 +106,7 @@ public class EventController extends AbstractController {
                     )
                 );
 
-                rooms.addAll(roomService.filterRooms(roomMap));
+                rooms.addAll(roomService.listRooms(roomMap));
             }
 
             Event event1 = event.toEntity();

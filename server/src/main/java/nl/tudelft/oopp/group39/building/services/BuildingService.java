@@ -74,8 +74,16 @@ public class BuildingService {
     public Building updateBuilding(Long id, Building newBuilding) throws NotFoundException {
         return buildingRepository.findById(id)
             .map(building -> {
-                newBuilding.setId(id);
-                building = newBuilding;
+                building.setName(newBuilding.getName());
+                building.setDescription(newBuilding.getDescription());
+                building.setLocation(newBuilding.getLocation());
+                building.setOpen(newBuilding.getOpen());
+                building.setClosed(newBuilding.getClosed());
+
+                if (newBuilding.getImage() != null) {
+                    building.setImage(newBuilding.getImage());
+                }
+
                 return buildingRepository.save(building);
             }).orElseThrow(() -> new NotFoundException(Building.MAPPED_NAME, id));
     }

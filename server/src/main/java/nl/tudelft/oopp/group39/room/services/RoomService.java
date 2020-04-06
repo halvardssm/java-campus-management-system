@@ -39,8 +39,8 @@ public class RoomService {
      *
      * @return a list of rooms
      */
-    public List<Room> listRooms() {
-        return roomRepository.findAll();
+    public List<Room> listRooms(Map<String, String> params) {
+        return roomDao.roomFilter(params);
     }
 
     /**
@@ -61,22 +61,20 @@ public class RoomService {
     public Room updateRoom(Room newRoom, Long id) throws NotFoundException {
         return roomRepository.findById(id)
             .map(room -> {
-                newRoom.setId(id);
-                room = newRoom;
-                mapFacilitiesForRooms(room);
+                mapFacilitiesForRooms(newRoom);
+                room.setName(newRoom.getName());
+                room.setDescription(newRoom.getDescription());
+                room.setCapacity(newRoom.getCapacity());
+                room.setOnlyStaff(newRoom.getOnlyStaff());
+                room.setBuilding(newRoom.getBuilding());
+                room.setFacilities(newRoom.getFacilities());
+
+                if (newRoom.getImage() != null) {
+                    room.setImage(newRoom.getImage());
+                }
 
                 return roomRepository.save(room);
             }).orElseThrow(() -> new NotFoundException(Room.MAPPED_NAME, id));
-    }
-
-    /**
-     * Method to filter rooms.
-     * Based on capacity, a room being accessible to students or not, the facilities that should
-     * be present (if so their facility ids should be in the facilities array), the building name
-     * and a string of the inputted location
-     */
-    public List<Room> filterRooms(Map<String, String> allParams) {
-        return roomDao.roomFilter(allParams);
     }
 
     /**

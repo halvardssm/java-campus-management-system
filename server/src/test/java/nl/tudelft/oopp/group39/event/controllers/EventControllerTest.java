@@ -122,11 +122,7 @@ class EventControllerTest extends AbstractControllerTest {
     void updateEventWithRooms() throws Exception {
         Room room1 = new Room(
             null,
-            null,
-            null,
-            null,
-            false,
-            null,
+            null, null, null, false, null, null,
             null,
             null,
             null

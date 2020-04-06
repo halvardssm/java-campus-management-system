@@ -37,7 +37,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 @JsonIgnoreProperties(allowSetters = true, value = {
     User.COL_BOOKINGS,
     User.COL_PASSWORD,
-    User.COL_IMAGE,
     User.COL_RESERVATIONS,
     User.COL_EVENTS
 })
