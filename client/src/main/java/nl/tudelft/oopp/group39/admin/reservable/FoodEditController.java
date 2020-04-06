@@ -115,7 +115,7 @@ public class FoodEditController extends FoodListController {
             buildingIdsByName.get(buildingObj.toString());
         String priceInputFirst = priceFieldFirst.getText();
         priceInputFirst = priceInputFirst.contentEquals("") ? priceFirst : priceInputFirst;
-        String priceInputSecond = priceFieldFirst.getText();
+        String priceInputSecond = priceFieldSecond.getText();
         priceInputSecond = priceInputSecond.contentEquals("") ? priceSecond : priceInputSecond;
         Double priceInput = getPrice(priceInputFirst, priceInputSecond);
         Food newFoodItem =

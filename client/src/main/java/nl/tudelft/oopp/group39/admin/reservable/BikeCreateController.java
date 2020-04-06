@@ -84,7 +84,7 @@ public class BikeCreateController extends BikeListController {
         List<String> buildingNames = new ArrayList<>();
         for (Building building : list) {
             buildingNames.add(building.getName());
-            buildingIdsByName.put(building.getName(), Long.valueOf(building.getId()));
+            buildingIdsByName.put(building.getName(), building.getId());
         }
         return FXCollections.observableArrayList(buildingNames);
     }
@@ -116,14 +116,15 @@ public class BikeCreateController extends BikeListController {
     public void addBike() throws IOException {
         Object typeObj = bikeTypeField.getValue();
         String rentalDurationInput = rentalDurationField.getText();
-        rentalDurationInput = rentalDurationInput.contentEquals("") ? rentalDuration : rentalDurationInput;
+        rentalDurationInput = rentalDurationInput.contentEquals("")
+            ? rentalDuration : rentalDurationInput;
         String typeInput = typeObj == null ? bikeType : typeObj.toString();
         Object buildingObj = buildingBox.getValue();
         Long buildingInput = buildingObj == null ?  buildingIdsByName.get(building) :
             buildingIdsByName.get(buildingObj.toString());
         String priceInputFirst = priceFieldFirst.getText();
         priceInputFirst = priceInputFirst.contentEquals("") ? priceFirst : priceInputFirst;
-        String priceInputSecond = priceFieldFirst.getText();
+        String priceInputSecond = priceFieldSecond.getText();
         priceInputSecond = priceInputSecond.contentEquals("") ? priceSecond : priceInputSecond;
         Double priceInput = getPrice(priceInputFirst, priceInputSecond);
         Bike newBike = new Bike(-1L,priceInput,buildingInput,typeInput,rentalDurationInput);

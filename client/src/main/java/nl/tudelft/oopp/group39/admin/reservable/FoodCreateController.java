@@ -109,7 +109,7 @@ public class FoodCreateController extends FoodListController {
             ? buildingIdsByName.get(building) :  buildingIdsByName.get(buildingObj.toString());
         String priceInputFirst = priceFieldFirst.getText();
         priceInputFirst = priceInputFirst.contentEquals("") ? priceFirst : priceInputFirst;
-        String priceInputSecond = priceFieldFirst.getText();
+        String priceInputSecond = priceFieldSecond.getText();
         priceInputSecond = priceInputSecond.contentEquals("") ? priceSecond : priceInputSecond;
         Double priceInput = getPrice(priceInputFirst, priceInputSecond);
         Food newFoodItem = new Food(-1L, nameInput, descriptionInput, priceInput, buildingInput);
