@@ -11,11 +11,11 @@ The project supports implementation for rooms, buildings, reservations, users, f
 
 ## Group members
 
-| 📸 | Name | Email |
+| 📸 | Name | GitHub/Email |
 |---|---|---|
 | ![](https://secure.gravatar.com/avatar/684c9e21fe9ad90b8db4b5e367d4522b?s=800&d=identicon&name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Sven van den Berg | S.T.vandenBerg@student.tudelft.nl |
 | ![](https://secure.gravatar.com/avatar/e4b013974481d3287b5f152a6c2318bc?s=800&d=identicon&name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Patrick Hibbs | p.j.hibbs@student.tudelft.nl |
-| ![](https://secure.gravatar.com/avatar/0875b15007013d48ce951184d0bd17e9?s=800&d=identicon&name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Halvard Mørstad | h.s.s.morstad@student.tudelft.nl |
+| ![](https://avatars1.githubusercontent.com/u/33620089) | Halvard Mørstad | [halvardssm](https://github.com/halvardssm/) |
 | ![](https://secure.gravatar.com/avatar/b579391cd4f740bf04d01c34c0c0d369?s=800&d=identicon&name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Shirley Li | S.X.Li@student.tudelft.nl |
 | ![](https://secure.gravatar.com/avatar/74b45fdb633e5e3e92a8e40c40c5069d?s=800&d=identicon&name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Alexandru Toader | A.Toader@student.tudelft.nl |
 | ![](https://secure.gravatar.com/avatar/25bb90af11a76524a605818d10d44fb4?s=800&d=identicon&name=OOPP&length=4&size=50&color=DDD&background=777&font-size=0.325) | Chuckyin Sin | C.Y.Sin@student.tudelft.nl |
